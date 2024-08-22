@@ -2,9 +2,9 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   # use this to run once
-  # name: post-install
+  # name: pre-install
   # use this to run with every update
-  generateName: post-install
+  generateName: pre-install
   namespace: argocd
   annotations:
     argocd.argoproj.io/hook: PreSync
@@ -26,7 +26,7 @@ spec:
               curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
               chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
               set -vx
-              token=$(curl -s -H  "X-Vault-Token: $VAULT_TOKEN" -X GET $EXTERNAL_VAULT_ADDR/v1/kv/data/minikube/vault/transit/seal | jq -r '.data.data.token')
+              token=$(curl -s -H  "X-Vault-Token: $VAULT_TOKEN" -X GET $VAULT_ADDR/v1/kv/data/minikube/vault/transit/seal | jq -r '.data.data.token')
               kubectl create namespace external-secrets || true
               kubectl -n external-secrets \
                   create secret generic vault-token \
