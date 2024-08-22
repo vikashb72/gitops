@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/vikashb72/argocd.git
+    repoURL: https://github.com/vikashb72/gitops.git
     path: charts/argo-cd
     targetRevision: HEAD
   destination:
