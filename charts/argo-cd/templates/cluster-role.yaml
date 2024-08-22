@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argocd-internal-deployer-cluster-role
+rules:
+- apiGroups: [""]
+  resources:
+    - deployments
+    - pods
+    - daemonsets
+    - secrets
+  verbs: 
+    - get
+    - list
+    - watch
+    - patch
+    - create 
