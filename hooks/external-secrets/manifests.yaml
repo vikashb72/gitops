@@ -23,6 +23,7 @@ spec:
               apk add --no-cache --update curl jq
               curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
               chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
+              set -vx
               token=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" -X GET ${VAULT_ADDR}/v1/kv/data/minikube/vault/transit/seal | jq -r '.data.data.token')
               kubectl create namespace external-secrets || true
               kubectl -n external-secrets \
