@@ -4,10 +4,11 @@ metadata:
   # use this to run once
   name: pre-install
   # use this to run with every update
-  # generateName: pre-install
+  #generateName: pre-install
   namespace: argocd
   annotations:
     argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
     #argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   template:
@@ -17,28 +18,36 @@ spec:
         - name: sleep
           imagePullPolicy: IfNotPresent
           image: alpine:latest
+          #image: curlimages/curl
           command: ["/bin/sh", "-c"]
           args:
             - |
+              set -euo pipefile
               apk add --no-cache --update curl jq
-              curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
-              chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
-              set -vx
-              token=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" -X GET ${VAULT_ADDR}/v1/kv/data/minikube/vault/transit/seal | jq -r '.data.data.token')
-              kubectl create namespace external-secrets || true
-              kubectl -n external-secrets \
-                  create secret generic vault-token \
-                  --from-literal=token="${token}"
+              BASE_URL="https://kubernetes.default.svc.cluster.local/"
+              BEARER=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+              curl -ik \
+                  -H "Authorization: Bearer ${BEARER}" \
+                  ${BASE_URL}/api/v1/namespaces/default/pods
+
+              #curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+              #chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
+              #set -vx
+              #token=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" -X GET ${VAULT_ADDR}/v1/kv/data/minikube/vault/transit/seal | jq -r '.data.data.token')
+              #kubectl create namespace external-secrets || true
+              #kubectl -n external-secrets \
+              #    create secret generic vault-token \
+              #    --from-literal=token="${token}"
           env:
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: argo-boostrap-eso-vault
-                  key: addr
+                  key: token
             - name: VAULT_ADDR
               valueFrom:
                 secretKeyRef:
                   name: argo-boostrap-eso-vault
-                  key: token
+                  key: addr
       restartPolicy: Never
   backoffLimit: 0
