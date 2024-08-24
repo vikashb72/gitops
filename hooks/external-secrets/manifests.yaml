@@ -9,8 +9,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "-5"
     argocd.argoproj.io/hook: PreSync
-    #argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
-    #argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/hook-delete-policy: HookFailed
 spec:
   template:
     spec:
@@ -52,4 +51,4 @@ spec:
                   name: argo-boostrap-eso-vault
                   key: path
       restartPolicy: Never
-  backoffLimit: 0
+  backoffLimit: 1
