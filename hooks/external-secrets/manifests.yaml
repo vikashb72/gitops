@@ -24,6 +24,7 @@ spec:
             - |
               #set -euo pipefile
               apk add --no-cache --update curl jq
+              set -vx
               BASE_URL="https://kubernetes.default.svc.cluster.local/"
               BEARER=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
               curl -ik \
