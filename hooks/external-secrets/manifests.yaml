@@ -8,7 +8,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    #argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
     #argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   template:
@@ -18,23 +18,18 @@ spec:
         - name: sleep
           imagePullPolicy: IfNotPresent
           image: alpine:latest
-          #image: curlimages/curl
           command: ["/bin/sh", "-c"]
           args:
             - |
-              #set -euo pipefile
-              apk add --no-cache --update curl jq
               set -vx
-              BASE_URL="https://kubernetes.default.svc.cluster.local/"
-              BEARER=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
-              curl -ik \
-                  -H "Authorization: Bearer ${BEARER}" \
-                  ${BASE_URL}/api/v1/namespaces/default/pods
-
+              apk add --no-cache --update curl jq
+              # install kubectl
               curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
               chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
-              kubectl -n default get endpoints kubernetes --no-headers
-              token=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" -X GET ${VAULT_ADDR}/v1/kv/data/minikube/vault/transit/seal | jq -r '.data.data.token')
+              # Get ESO Token from Vault
+              token=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" \
+                   -X GET ${VAULT_ADDR}/v1/kv/data/${SEAL_PATH} \
+                   | jq -r '.data.data.token')
               kubectl create namespace external-secrets || true
               kubectl -n external-secrets \
                   create secret generic vault-token \
@@ -50,5 +45,10 @@ spec:
                 secretKeyRef:
                   name: argo-boostrap-eso-vault
                   key: addr
+            - name: SEAL_PATH
+              valueFrom:
+                secretKeyRef:
+                  name: argo-boostrap-eso-vault
+                  key: path
       restartPolicy: Never
   backoffLimit: 0
