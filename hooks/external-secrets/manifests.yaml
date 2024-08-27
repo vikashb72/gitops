@@ -23,17 +23,17 @@ spec:
             - |
               set -vx
               apk add --no-cache --update curl jq
-              # install kubectl
+              # Install kubectl
               curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
               chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
               # Get ESO Token from Vault
-              token=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" \
+              TOKEN=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" \
                    -X GET ${VAULT_ADDR}/v1/kv/data/${SEAL_PATH} \
                    | jq -r '.data.data.token')
               kubectl create namespace external-secrets || true
               kubectl -n external-secrets \
-                  create secret generic vault-token \
-                  --from-literal=token="${token}" || true
+                  create secret generic hashicorp-vault-token \
+                  --from-literal=token="${TOKEN}" || true
           env:
             - name: VAULT_TOKEN
               valueFrom:
