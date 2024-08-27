@@ -1,4 +1,4 @@
-hashicorp-vault:
+vault:
   global:
     enabled: true
     tlsDisable: false
