@@ -5,7 +5,7 @@ vault:
   csi:
     enabled: false
   injector:
-    enabled: false
+    enabled: true
   ui:
     enabled: true
     serviceType: NodePort
