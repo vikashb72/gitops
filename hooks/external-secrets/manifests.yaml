@@ -2,12 +2,11 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   # use this to run once
-  name: post-install
+  name: eso-init-sync-hook
   # use this to run with every update
-  #generateName: pre-install
+  #generateName: eso-init-sync-hook
   namespace: argocd
   annotations:
-    #argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookFailed
 spec:
@@ -26,14 +25,18 @@ spec:
               # Install kubectl
               curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
               chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
-              # Get ESO Token from Vault
-              TOKEN=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" \
+              # Check if namespace exists (create if missing)
+              kubectl describe ns external-secrets || \
+                  kubectl create namespace external-secrets || true
+              # Get ESO Token from Vault if it does not exist
+              kubectl -n external-secrets \
+                  describe secret hashicorp-vault-token || \
+              ( TOKEN=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" \
                    -X GET ${VAULT_ADDR}/v1/kv/data/${SEAL_PATH} \
                    | jq -r '.data.data.token')
-              kubectl create namespace external-secrets || true
               kubectl -n external-secrets \
                   create secret generic hashicorp-vault-token \
-                  --from-literal=token="${TOKEN}" || true
+                  --from-literal=token="${TOKEN}" || true )
           env:
             - name: VAULT_TOKEN
               valueFrom:
