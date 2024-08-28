@@ -3,7 +3,7 @@ vault-raft-snapshot-agent:
     namespace: vault
   deployment:
     strategy:
-      type: "RollingUpdate"
+      type: "Recreate"
       #extraEnv:
       #  - name: AZURE_STORAGE_ACCOUNT
       #    valueFrom:
