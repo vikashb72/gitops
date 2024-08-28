@@ -28,18 +28,18 @@ vault-raft-snapshot-agent:
       retain: 5
       storages:
         local:
-          enabled: false
+          enabled: true
           path: /vault/snapshots
           volume:
             emptyDir: {}
-            #persistentVolumeClaim:
-            #  storageClassName: nfs-client
-            #  #storageClassName: managed-csi
-            #  accessModes:
-            #    - ReadWriteOnce
-            #  resources:
-            #    requests:
-            #      storage: "4Gi"
-            #  #claimName: vault-raft-snapshot-agent-storage
+            persistentVolumeClaim:
+              storageClassName: nfs-client
+              #storageClassName: managed-csi
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: "4Gi"
+              #claimName: vault-raft-snapshot-agent-storage
         # azure:
         #   container: acrgisshubmgmt01.azurecr.io/snapshots/raft/uat
