@@ -1,19 +1,19 @@
 vault-raft-snapshot-agent:
-  global: 
+  global:
     namespace: vault
-  
+
   deployment:
-    #extraEnv:
-    #  - name: AZURE_STORAGE_ACCOUNT
-    #    valueFrom:
-    #      secretKeyRef:
-    #        name: raft-snapshot-az-storage
-    #        key: AZURE_STORAGE_ACCOUNT
-    #  - name: AZURE_STORAGE_KEY
-    #    valueFrom:
-    #      secretKeyRef:
-    #        name: raft-snapshot-az-storage
-    #        key: AZURE_STORAGE_KEY
+    # extraEnv:
+    #   - name: AZURE_STORAGE_ACCOUNT
+    #     valueFrom:
+    #       secretKeyRef:
+    #         name: raft-snapshot-az-storage
+    #         key: AZURE_STORAGE_ACCOUNT
+    #   - name: AZURE_STORAGE_KEY
+    #     valueFrom:
+    #       secretKeyRef:
+    #         name: raft-snapshot-az-storage
+    #         key: AZURE_STORAGE_KEY
   config:
     vault:
       #url: https://vault-active.vault-system.svc.cluster.local:8200
@@ -29,15 +29,15 @@ vault-raft-snapshot-agent:
         enabled: false
         local:
           path: /vault/snapshots
-          volume:
-            persistentVolumeClaim:
-              claimName: vault-raft-snapshot-agent-storage
-              storageClassName: nfs-client
-              #storageClassName: managed-csi
-              accessModes:
-                - ReadWriteOnce
-              resources:
-                requests:
-                  storage: "4Gi"
-        #azure:
-        #  container: acrgisshubmgmt01.azurecr.io/snapshots/raft/uat
+          #volume:
+          #  persistentVolumeClaim:
+          #    claimName: vault-raft-snapshot-agent-storage
+          #    storageClassName: nfs-client
+          #    # storageClassName: managed-csi
+          #    accessModes:
+          #      - ReadWriteOnce
+          #    resources:
+          #      requests:
+          #        storage: "4Gi"
+        # azure:
+        #   container: acrgisshubmgmt01.azurecr.io/snapshots/raft/uat
