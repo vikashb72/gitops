@@ -1,0 +1,42 @@
+vault-raft-snapshot-agent:
+  namespace: vault
+
+deployment:
+  #extraEnv:
+  #  - name: AZURE_STORAGE_ACCOUNT
+  #    valueFrom:
+  #      secretKeyRef:
+  #        name: raft-snapshot-az-storage
+  #        key: AZURE_STORAGE_ACCOUNT
+  #  - name: AZURE_STORAGE_KEY
+  #    valueFrom:
+  #      secretKeyRef:
+  #        name: raft-snapshot-az-storage
+  #        key: AZURE_STORAGE_KEY
+config:
+  vault:
+    #url: https://vault-active.vault-system.svc.cluster.local:8200
+    url: https://vault-active.vault.svc.cluster.local:8200
+    insecure: true
+    auth:
+      kubernetes:
+        role: vault-raft-snapshot-agent
+  snapshots:
+    frequency: 5m
+    retain: 5
+    storages:
+      enabled: false
+      local:
+        path: /vault/snapshots
+        volume:
+          persistentVolumeClaim:
+            claimName: vault-raft-snapshot-agent-storage
+            storageClassName: nfs-client
+            #storageClassName: managed-csi
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: "4Gi"
+      #azure:
+      #  container: acrgisshubmgmt01.azurecr.io/snapshots/raft/uat
