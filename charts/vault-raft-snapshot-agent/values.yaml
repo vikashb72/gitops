@@ -33,6 +33,7 @@ vault-raft-snapshot-agent:
           volume:
             emptyDir: {}
             persistentVolumeClaim:
+              create: true
               storageClassName: nfs-client
               #storageClassName: managed-csi
               accessModes:
