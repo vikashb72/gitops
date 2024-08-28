@@ -27,12 +27,12 @@ vault-raft-snapshot-agent:
       frequency: 5m
       retain: 5
       storages:
-        enabled: false
         local:
+          enabled: false
           path: /vault/snapshots
           volume:
             persistentVolumeClaim:
-              claimName: vault-raft-snapshot-agent-storage
+              #claimName: vault-raft-snapshot-agent-storage
               storageClassName: nfs-client
               # storageClassName: managed-csi
               accessModes:
