@@ -9,7 +9,7 @@ spec:
   schedule: "*/5 * * * *"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 0
-  successfulJobsHistoryLimit: 32
+  successfulJobsHistoryLimit: 1
   workflowSpec:
     entrypoint: snapshot
     templates:
