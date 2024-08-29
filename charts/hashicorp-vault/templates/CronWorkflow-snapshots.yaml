@@ -5,6 +5,7 @@ metadata:
   name: raft-snapshot-cron
   namespace: argocd
 spec:
+  serviceAccountName: argocd-application-controller
   schedule: "*/5 * * * *"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 0
@@ -13,7 +14,6 @@ spec:
     entrypoint: snapshot
     templates:
       - name: snapshot
-        serviceAccountName: argocd-application-controller
         container:
           image: alpine:latest
           command: ["/bin/sh", "-c"]
