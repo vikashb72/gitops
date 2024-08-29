@@ -20,38 +20,31 @@ spec:
           args:
             - |
               set -vx
-              echo "looks ok"
-              echo "done $(date)"
-#            #apk add --no-cache --update curl jq
-#            # Install kubectl
-#            #curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
-#            #chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
-#            # 
-#            # Check if namespace exists (create if missing)
-#            #kubectl describe ns external-secrets || \
-#            #    kubectl create namespace external-secrets || true
-#            # Get ESO Token from Vault if it does not exist
-#            #kubectl -n external-secrets \
-#            #    describe secret hashicorp-vault-token || \
-#            #( TOKEN=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" \
-#            #     -X GET ${VAULT_ADDR}/v1/kv/data/${SEAL_PATH} \
-#            #     | jq -r '.data.data.token')
-#            #kubectl -n external-secrets \
-#            #    create secret generic hashicorp-vault-token \
-#            #    --from-literal=token="${TOKEN}" || true )
-#        #env:
-#        #  - name: VAULT_TOKEN
-#        #    valueFrom:
-#        #      secretKeyRef:
-#        #        name: argo-boostrap-eso-vault
-#        #        key: token
-#        #  - name: VAULT_ADDR
-#        #    valueFrom:
-#        #      secretKeyRef:
-#        #        name: argo-boostrap-eso-vault
-#        #        key: addr
-#        #  - name: SEAL_PATH
-#        #    valueFrom:
-#        #      secretKeyRef:
-#        #        name: argo-boostrap-eso-vault
-#        #        key: path
+              apk add --no-cache --update curl jq
+              # Install kubectl
+              #curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+              curl -sLO http://192.168.0.5/linux/kubectl kubectl && \
+              chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
+              curl -sLO http://192.168.0.5/linux/vault vault && \
+              chmod +x vault && mv vault /usr/local/bin/vault
+              vault login ${VAULT_TOKEN}
+              vault operator raft snapshot save test
+              # Get 
+              curl -vL -X PUT -H  "X-Vault-Token: ${VAULT_TOKEN}" \
+                  ${VAULT_ADDR}/v1/sys/storage/raft/snapshot -O test
+          env:
+            - name: VAULT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: argo-boostrap-eso-vault
+                  key: token
+            - name: VAULT_ADDR
+              valueFrom:
+                secretKeyRef:
+                  name: argo-boostrap-eso-vault
+                  key: addr
+            - name: SEAL_PATH
+              valueFrom:
+                secretKeyRef:
+                  name: argo-boostrap-eso-vault
+                  key: path
