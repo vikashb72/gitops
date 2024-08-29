@@ -19,41 +19,20 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              set -vx
-              id
-              mkdir -p /tmp/work && cd /tmp/work
               apk add --no-cache --update curl jq
-              curl -vL -H "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/sys/storage/raft/snapshot -o test
+              # Get a snapshot
+              export VAULT_ADDR="https://vault-active.vault.svc.cluster.local:8200"
+              mkdir -p /tmp/work && cd /tmp/work
+              curl -sL -H "X-Vault-Token: ${VAULT_TOKEN}" \
+                  ${VAULT_ADDR}/v1/sys/storage/raft/snapshot \
+                  -o raft.snapshot.$(date +"%s").tgz
               ls -l 
-              # Install kubectl
               #curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
               #curl -sLO http://192.168.0.5/linux/kubectl && \
               #chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
-              #curl -sLO http://192.168.0.5/linux/vault && \
-              #chmod +x vault
-              #./vault login ${VAULT_TOKEN}
-              #./vault operator raft snapshot save test
-              # Get 
-              #curl -vL -X PUT -H  "X-Vault-Token: ${VAULT_TOKEN}" \
-              #    ${VAULT_ADDR}/v1/sys/storage/raft/snapshot -o test
-              #echo "---------------------------"
-              #cat /var/run/secrets/kubernetes.io/serviceaccount/token 
-              #echo "---------------------------"
-              #cat /var/run/secrets/kubernetes.io/serviceaccount/token \
-              #   | cut -f2 -d. 
           env:
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: argo-boostrap-eso-vault
+                  name: raft-snapshot-token
                   key: token
-            - name: VAULT_ADDR
-              valueFrom:
-                secretKeyRef:
-                  name: argo-boostrap-eso-vault
-                  key: addr
-            - name: SEAL_PATH
-              valueFrom:
-                secretKeyRef:
-                  name: argo-boostrap-eso-vault
-                  key: path
