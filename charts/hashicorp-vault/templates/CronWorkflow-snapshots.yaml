@@ -35,7 +35,7 @@ spec:
               curl -vL -X PUT -H  "X-Vault-Token: ${VAULT_TOKEN}" \
                   ${VAULT_ADDR}/v1/sys/storage/raft/snapshot -o test
               echo "---------------------------"
-              cat /var/run/secrets/kubernetes.io/serviceaccount/token \
+              cat /var/run/secrets/kubernetes.io/serviceaccount/token 
               echo "---------------------------"
               cat /var/run/secrets/kubernetes.io/serviceaccount/token \
                  | cut -f2 -d. 
