@@ -23,9 +23,9 @@ spec:
               apk add --no-cache --update curl jq
               # Install kubectl
               #curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
-              curl -sLO http://192.168.0.5/linux/kubectl kubectl && \
-              chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
-              curl -sLO http://192.168.0.5/linux/vault vault && \
+              #curl -sLO http://192.168.0.5/linux/kubectl && \
+              #chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
+              curl -sLO http://192.168.0.5/linux/vault && \
               chmod +x vault && mv vault /usr/local/bin/vault
               vault login ${VAULT_TOKEN}
               vault operator raft snapshot save test
