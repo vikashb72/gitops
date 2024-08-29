@@ -24,7 +24,7 @@ spec:
               export VAULT_ADDR="https://vault-active.vault.svc.cluster.local:8200"
               mkdir -p /tmp/work && cd /tmp/work
               set -vx 
-              curl -vL -H "X-Vault-Token: ${VAULT_TOKEN}" \
+              curl -vkL -H "X-Vault-Token: ${VAULT_TOKEN}" \
                   ${VAULT_ADDR}/v1/sys/storage/raft/snapshot \
                   -o raft.snapshot.$(date +"%s").tgz
               ls -l 
