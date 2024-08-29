@@ -12,3 +12,10 @@ argo-cd:
     service:
       type: NodePort
       #type: LoadBalancer
+
+argo-workflows:
+  namespaceOverride: "argocd"
+  workflow:
+    serviceAccount:
+      create: true
+      name: "argo-workflow"
