@@ -20,18 +20,20 @@ spec:
           args:
             - |
               set -vx
+              id
+              cd /tmp/
               apk add --no-cache --update curl jq
               # Install kubectl
               #curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
               #curl -sLO http://192.168.0.5/linux/kubectl && \
               #chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
               curl -sLO http://192.168.0.5/linux/vault && \
-              chmod +x vault && mv vault /usr/local/bin/vault
-              vault login ${VAULT_TOKEN}
-              vault operator raft snapshot save test
+              chmod +x vault
+              ./vault login ${VAULT_TOKEN}
+              ./vault operator raft snapshot save test
               # Get 
               curl -vL -X PUT -H  "X-Vault-Token: ${VAULT_TOKEN}" \
-                  ${VAULT_ADDR}/v1/sys/storage/raft/snapshot -O test
+                  ${VAULT_ADDR}/v1/sys/storage/raft/snapshot -o test
           env:
             - name: VAULT_TOKEN
               valueFrom:
