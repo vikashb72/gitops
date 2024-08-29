@@ -19,3 +19,10 @@ argo-workflows:
     serviceAccount:
       create: true
       name: "argo-workflow"
+    rbac:
+      create: true
+  controller:
+    workflowDefaults:
+      spec:
+        serviceAccountName: argo-workflow
+
