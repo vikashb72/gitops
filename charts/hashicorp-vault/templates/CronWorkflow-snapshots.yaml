@@ -36,19 +36,19 @@ spec:
             #kubectl -n external-secrets \
             #    create secret generic hashicorp-vault-token \
             #    --from-literal=token="${TOKEN}" || true )
-        env:
-          - name: VAULT_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: argo-boostrap-eso-vault
-                key: token
-          - name: VAULT_ADDR
-            valueFrom:
-              secretKeyRef:
-                name: argo-boostrap-eso-vault
-                key: addr
-          - name: SEAL_PATH
-            valueFrom:
-              secretKeyRef:
-                name: argo-boostrap-eso-vault
-                key: path
+        #env:
+        #  - name: VAULT_TOKEN
+        #    valueFrom:
+        #      secretKeyRef:
+        #        name: argo-boostrap-eso-vault
+        #        key: token
+        #  - name: VAULT_ADDR
+        #    valueFrom:
+        #      secretKeyRef:
+        #        name: argo-boostrap-eso-vault
+        #        key: addr
+        #  - name: SEAL_PATH
+        #    valueFrom:
+        #      secretKeyRef:
+        #        name: argo-boostrap-eso-vault
+        #        key: path
