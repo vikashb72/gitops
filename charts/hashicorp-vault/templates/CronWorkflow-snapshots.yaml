@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
 spec:
   serviceAccountName: argocd-application-controller
-  schedule: "*/5 * * * *"
+  schedule: "* * * * *"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 0
   successfulJobsHistoryLimit: 32
