@@ -3,14 +3,17 @@ apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
   name: raft-snapshot-cron
+  namespace: argocd
 spec:
   schedule: "*/5 * * * *"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 0
+  successfulJobsHistoryLimit: 32
   workflowSpec:
     entrypoint: snapshot
     templates:
       - name: snapshot
+        serviceAccountName: argocd-application-controller
         container:
           image: alpine:latest
           command: ["/bin/sh", "-c"]
