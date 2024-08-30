@@ -23,17 +23,46 @@ spec:
               # Get a snapshot
               export VAULT_ADDR="https://vault-active.vault.svc.cluster.local:8200"
               mkdir -p /tmp/work && cd /tmp/work
-              set -vx 
-              curl -vkL -H "X-Vault-Token: ${VAULT_TOKEN}" \
+              SNAP_FILE="raft.snapshot.$(date +"%s").tgz"
+              curl -skL -H "X-Vault-Token: ${VAULT_TOKEN}" \
                   ${VAULT_ADDR}/v1/sys/storage/raft/snapshot \
-                  -o raft.snapshot.$(date +"%s").tgz
-              ls -l 
-              #curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
-              #curl -sLO http://192.168.0.5/linux/kubectl && \
-              #chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
+                  -o ${SNAP_FILE}
+              # Get token
+              token=$(curl -s -X POST \
+                  -d "grant_type=client_credentials&client_id=${APP_ID}&client_secret=${APP_SECRET}&resource=https://${STORAGENODE}.blob.core.windows.net/" \
+                  https://login.microsoftonline.com/${TENANT_ID}/oauth2/token \
+                  | jq -r '.access_token')
+              # push to az storage
+              curl -X PUT -H "Authorization: Bearer $token" \
+                  -H "x-ms-version: 2020-04-08" \
+                  -H "x-ms-date: $(date -u  +"%a, %d %b %Y %R:%M GMT")" \
+                  -H "x-ms-blob-type: BlockBlob" \
+                  -H "Content-Type: application/octet-stream" \
+                  --data @${SNAP_FILE} \
+                  https://${STORAGENODE}.blob.core.windows.net/raft-snapshots/${SNAP_FILE}
           env:
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: raft-snapshot-token
                   key: token
+            - name: APP_ID
+              valueFrom:
+                secretKeyRef:
+                  name: raft-snapshot-az-creds
+                  key: app_id
+            - name: APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: raft-snapshot-az-creds
+                  key: secret
+            - name: TENANT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: raft-snapshot-az-creds
+                  key: tenant_id
+            - name: STORAGENODE
+              valueFrom:
+                secretKeyRef:
+                  name: raft-snapshot-az-creds
+                  key: storagenode
