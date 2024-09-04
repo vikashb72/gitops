@@ -1,3 +1,6 @@
+env:
+  EVT: minikube
+
 cert-manager:
   crds:
     enabled: true
