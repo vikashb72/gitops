@@ -7,6 +7,9 @@ spec:
   vault:
     server: https://vault-active.vault.svc.cluster.local:8200
     path: pki/sign/generate-cert-role
+    caBundleSecretRef:
+      name: vault-ca
+      key: vault.ca
     auth:
       kubernetes:
         mountPath: /v1/auth/kubernetes
