@@ -13,7 +13,7 @@ spec:
     auth:
       kubernetes:
         mountPath: /v1/auth/kubernetes
-        role: issuer
+        role: vault-cert-issuer
         secretRef:
           name: vault-cert-issuer-token
           key: token
