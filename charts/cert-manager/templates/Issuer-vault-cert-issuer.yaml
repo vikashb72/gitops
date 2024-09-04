@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-cert-issuer
+  namespace: cert-manager
+spec:
+  vault:
+    server: https://vault-active.vault.svc.cluster.local:8200
+    path: pki/sign/generate-cert-role
+    auth:
+      kubernetes:
+        mountPath: /v1/auth/kubernetes
+        role: issuer
+        secretRef:
+          name: vault-cert-issuer-token
+          key: token
