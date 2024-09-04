@@ -54,13 +54,28 @@ vault:
           storage "raft" {
              path = "/vault/data"
           }
+          #https://developer.hashicorp.com/vault/docs/configuration/seal/transit
           #seal "transit" {
-          #   address = "http://192.168.0.22:8200"
-          #   token= "<token>"
-          #   disable_renewal = "false"
-          #   key_name = "autounseal"
+          #   address = "http://192.168.0.22:8200"   # env:VAULT_ADDR
+          #   token= "<token>"                       # env:VAULT_TOKEN
+          #   disable_renewal = "false"       
+          #   key_name = "autounseal"          # env:VAULT_TRANSIT_SEAL_KEY_NAME
           #   mount_path = "transit/"
           #   tls_skip_verify = "true"
+          #   tls_ca_cert (string: ""):        # env:VAULT_CACERT 
+          #   tls_client_cert (string: ""):    # env:VAULT_CLIENT_CERT 
+          #   tls_client_key (string: ""):     # env:VAULT_CLIENT_KEY
+          #   tls_server_name (string: ""):    # env:VAULT_TLS_SERVER_NAME
+          #   tls_skip_verify (bool: "false"): # env:VAULT_SKIP_VERIFY
           #}
+          #https://developer.hashicorp.com/vault/docs/configuration/seal/azurekeyvault
+          #seal "azurekeyvault" {
+          #  tenant_id      = ""       # env:AZURE_TENANT_ID
+          #  client_id      = ""       # env:AZURE_CLIENT_ID
+          #  client_secret  = ""       # env:AZURE_CLIENT_SECRET
+          #  vault_name     = ""       # env:VAULT_AZUREKEYVAULT_VAULT_NAME
+          #  key_name       = ""       # env:VAULT_AZUREKEYVAULT_KEY_NAME
+          #}
+
           disable_mlock = true
           service_registration "kubernetes" {}
