@@ -1,0 +1,10 @@
+cert-manager:
+  installCRDs: true
+  crds:
+    enabled: true
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  namespace: cert-manager
