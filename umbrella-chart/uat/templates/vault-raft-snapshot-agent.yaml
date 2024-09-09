@@ -1,0 +1,25 @@
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: vault-raft-snapshot-agent
+#  namespace: argocd
+#  finalizers:
+#    - resources-finalizer.argocd.argoproj.io
+#spec:
+#  project: default
+#  sources:
+#    - repoURL: https://github.com/vikashb72/gitops.git
+#      path: charts/vault-raft-snapshot-agent
+#      targetRevision: HEAD
+#      helm:
+#        valueFiles:
+#          - values-uat.yaml
+#  destination:
+#    server: https://kubernetes.default.svc
+#    namespace: vault
+#  syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#      - CreateNamespace=true
