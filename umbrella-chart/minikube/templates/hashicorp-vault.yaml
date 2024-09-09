@@ -1,7 +1,7 @@
 #apiVersion: argoproj.io/v1alpha1
 #kind: Application
 #metadata:
-#  name: vault-raft-snapshot-agent
+#  name: vault
 #  namespace: argocd
 #  finalizers:
 #    - resources-finalizer.argocd.argoproj.io
@@ -9,8 +9,11 @@
 #  project: default
 #  sources:
 #    - repoURL: https://github.com/vikashb72/gitops.git
-#      path: charts/vault-raft-snapshot-agent
+#      path: charts/hashicorp-vault
 #      targetRevision: HEAD
+#      helm:
+#        valueFiles:
+#          - values-minikube.yaml
 #  destination:
 #    server: https://kubernetes.default.svc
 #    namespace: vault
@@ -20,3 +23,8 @@
 #      selfHeal: true
 #    syncOptions:
 #      - CreateNamespace=true
+#  ignoreDifferences:
+#    - group: admissionregistration.k8s.io
+#      kind: MutatingWebhookConfiguration
+#      jqPathExpressions:
+#        - .webhooks[]?.clientConfig.caBundle
