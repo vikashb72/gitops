@@ -11,5 +11,5 @@ external-secrets:
     conversion:
       enabled: true
 env:
-   VAULT_ADDR: http://192.168.0.22:8200
+   VAULT_ADDR: https://192.168.0.22:8200
    EVT: minikube

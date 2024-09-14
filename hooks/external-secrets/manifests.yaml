@@ -1,58 +1,58 @@
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  # use this to run once
-  name: eso-init-sync-hook
-  # use this to run with every update
-  #generateName: eso-init-sync-hook
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: HookFailed
-spec:
-  template:
-    spec:
-      serviceAccountName: argocd-application-controller
-      containers:
-        - name: sleep
-          imagePullPolicy: IfNotPresent
-          image: alpine:latest
-          command: ["/bin/sh", "-c"]
-          args:
-            - |
-              set -vx
-              apk add --no-cache --update curl jq
-              # Install kubectl
-              curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
-              chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
-              # Check if namespace exists (create if missing)
-              kubectl describe ns external-secrets || \
-                  kubectl create namespace external-secrets || true
-              # Get ESO Token from Vault if it does not exist
-              kubectl -n external-secrets \
-                  describe secret hashicorp-vault-token || \
-              ( TOKEN=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" \
-                   -X GET ${VAULT_ADDR}/v1/kv/data/${SEAL_PATH} \
-                   | jq -r '.data.data.token')
-              kubectl -n external-secrets \
-                  create secret generic hashicorp-vault-token \
-                  --from-literal=token="${TOKEN}" || true )
-          env:
-            - name: VAULT_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: argo-boostrap-eso-vault
-                  key: token
-            - name: VAULT_ADDR
-              valueFrom:
-                secretKeyRef:
-                  name: argo-boostrap-eso-vault
-                  key: addr
-            - name: SEAL_PATH
-              valueFrom:
-                secretKeyRef:
-                  name: argo-boostrap-eso-vault
-                  key: path
-      restartPolicy: Never
-  backoffLimit: 1
+#---
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  # use this to run once
+#  name: eso-init-sync-hook
+#  # use this to run with every update
+#  #generateName: eso-init-sync-hook
+#  namespace: argocd
+#  annotations:
+#    argocd.argoproj.io/hook: Sync
+#    argocd.argoproj.io/hook-delete-policy: HookFailed
+#spec:
+#  template:
+#    spec:
+#      serviceAccountName: argocd-application-controller
+#      containers:
+#        - name: sleep
+#          imagePullPolicy: IfNotPresent
+#          image: alpine:latest
+#          command: ["/bin/sh", "-c"]
+#          args:
+#            - |
+#              set -vx
+#              apk add --no-cache --update curl jq
+#              # Install kubectl
+#              curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+#              chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
+#              # Check if namespace exists (create if missing)
+#              kubectl describe ns external-secrets || \
+#                  kubectl create namespace external-secrets || true
+#              # Get ESO Token from Vault if it does not exist
+#              kubectl -n external-secrets \
+#                  describe secret hashicorp-vault-token || \
+#              ( TOKEN=$(curl -s -H  "X-Vault-Token: ${VAULT_TOKEN}" \
+#                   -X GET ${VAULT_ADDR}/v1/kv/data/${SEAL_PATH} \
+#                   | jq -r '.data.data.token')
+#              kubectl -n external-secrets \
+#                  create secret generic hashicorp-vault-token \
+#                  --from-literal=token="${TOKEN}" || true )
+#          env:
+#            - name: VAULT_TOKEN
+#              valueFrom:
+#                secretKeyRef:
+#                  name: argo-boostrap-eso-vault
+#                  key: token
+#            - name: VAULT_ADDR
+#              valueFrom:
+#                secretKeyRef:
+#                  name: argo-boostrap-eso-vault
+#                  key: addr
+#            - name: SEAL_PATH
+#              valueFrom:
+#                secretKeyRef:
+#                  name: argo-boostrap-eso-vault
+#                  key: path
+#      restartPolicy: Never
+#  backoffLimit: 1
