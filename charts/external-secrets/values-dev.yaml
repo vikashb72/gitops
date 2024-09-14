@@ -1,0 +1,15 @@
+external-secrets:
+  global:
+    compatibility:
+      openshift:
+        adaptSecurityContext: disabled
+  installCRDs: true
+  crds:
+    createClusterExternalSecret: true
+    createClusterSecretStore: true
+    createPushSecret: true
+    conversion:
+      enabled: true
+env:
+   VAULT_ADDR: https://192.168.0.22:8200
+   EVT: dev
