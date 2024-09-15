@@ -1,5 +1,5 @@
-env:
-  EVT: minikube
+#env:
+#  EVT: dev
 
 vault:
   global:
@@ -22,6 +22,7 @@ vault:
       VAULT_CACERT: /vault/userconfig/vault-ha-tls/vault.ca
       VAULT_TLSCERT: /vault/userconfig/vault-ha-tls/vault.crt
       VAULT_TLSKEY: /vault/userconfig/vault-ha-tls/vault.key
+      VAULT_TOKEN: /vault/userconfig/vault-ha-tls/vault_token
     volumes:
       - name: userconfig-vault-ha-tls
         secret:
@@ -55,19 +56,18 @@ vault:
              path = "/vault/data"
           }
           #https://developer.hashicorp.com/vault/docs/configuration/seal/transit
-          #seal "transit" {
-          #   address = "http://192.168.0.22:8200"   # env:VAULT_ADDR
+          seal "transit" {
+             address = "https://192.168.0.22:8200"   # env:VAULT_ADDR
           #   token= "<token>"                       # env:VAULT_TOKEN
-          #   disable_renewal = "false"       
-          #   key_name = "autounseal"          # env:VAULT_TRANSIT_SEAL_KEY_NAME
-          #   mount_path = "transit/"
+             disable_renewal = "false"       
+             key_name = "autounseal-{{ .Values.env.EVT }}" # env:VAULT_TRANSIT_SEAL_KEY_NAME
+             mount_path = "transit/"
           #   tls_skip_verify = "true"
           #   tls_ca_cert (string: ""):        # env:VAULT_CACERT 
           #   tls_client_cert (string: ""):    # env:VAULT_CLIENT_CERT 
           #   tls_client_key (string: ""):     # env:VAULT_CLIENT_KEY
           #   tls_server_name (string: ""):    # env:VAULT_TLS_SERVER_NAME
-          #   tls_skip_verify (bool: "false"): # env:VAULT_SKIP_VERIFY
-          #}
+          }
           #https://developer.hashicorp.com/vault/docs/configuration/seal/azurekeyvault
           #seal "azurekeyvault" {
           #  tenant_id      = ""       # env:AZURE_TENANT_ID
