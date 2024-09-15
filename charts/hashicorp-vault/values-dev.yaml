@@ -59,12 +59,10 @@ vault:
           }
           #https://developer.hashicorp.com/vault/docs/configuration/seal/transit
           seal "transit" {
-             #address = "{{ .Values.env.EXTERNAL_VAULT_ADDR }}"   # env:VAULT_ADDR
              address = "https://192.168.0.22:8200"   # env:VAULT_ADDR
              #token= "<token>"                       # env:VAULT_TOKEN
              disable_renewal = "false"       
              key_name = "autounseal-dev" # env:VAULT_TRANSIT_SEAL_KEY_NAME
-             #key_name = "autounseal-{{ .Values.env.EVT }}" # env:VAULT_TRANSIT_SEAL_KEY_NAME
              mount_path = "transit/"
              tls_ca_cert: "/vault/userconfig/vault-ha-tls/vault.ca"
           }
