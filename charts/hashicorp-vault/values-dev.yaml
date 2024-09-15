@@ -26,8 +26,8 @@ vault:
         secretKey: vault_token
     extraEnvironmentVars:
       VAULT_CACERT: /vault/userconfig/vault-ha-tls/vault.ca
-      VAULT_TLSCERT: /vault/userconfig/vault-ha-tls/vault.crt
-      VAULT_TLSKEY: /vault/userconfig/vault-ha-tls/vault.key
+      VAULT_TLSCERT: /vault/userconfig/vault-ha-tls/tls.crt
+      VAULT_TLSKEY: /vault/userconfig/vault-ha-tls/tls.key
     volumes:
       - name: userconfig-vault-ha-tls
         secret:
@@ -53,8 +53,8 @@ vault:
              tls_disable = 0
              address = "[::]:8200"
              cluster_address = "[::]:8201"
-             tls_cert_file = "/vault/userconfig/vault-ha-tls/vault.crt"
-             tls_key_file  = "/vault/userconfig/vault-ha-tls/vault.key"
+             tls_cert_file = "/vault/userconfig/vault-ha-tls/tls.crt"
+             tls_key_file  = "/vault/userconfig/vault-ha-tls/tls.key"
              tls_client_ca_file = "/vault/userconfig/vault-ha-tls/vault.ca"
           }
           storage "raft" {
