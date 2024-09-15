@@ -64,7 +64,7 @@ vault:
              disable_renewal = "false"       
              key_name = "autounseal-dev" # env:VAULT_TRANSIT_SEAL_KEY_NAME
              mount_path = "transit/"
-             tls_ca_cert: "/vault/userconfig/vault-ha-tls/vault.ca"
+             tls_ca_cert = "/vault/userconfig/vault-ha-tls/vault.ca"
           }
           #https://developer.hashicorp.com/vault/docs/configuration/seal/azurekeyvault
           #seal "azurekeyvault" {
