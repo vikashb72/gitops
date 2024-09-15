@@ -1,5 +1,7 @@
 #env:
 #  EVT: dev
+#  EXTERNAL_VAULT_ADDR: https://192.168.0.22:8200
+#  VAULT_EXTERNAL_IP: 192.168.49.2
 
 vault:
   global:
@@ -14,7 +16,7 @@ vault:
     serviceType: NodePort
     serviceNodePort: 30001
     externalIPs:
-      - 192.168.49.2
+      - {{ .Values.env.VAULT_EXTERNAL_IP }}
   server:
     dataStorage:
       storageClass: nfs-client
@@ -57,16 +59,13 @@ vault:
           }
           #https://developer.hashicorp.com/vault/docs/configuration/seal/transit
           seal "transit" {
-             address = "https://192.168.0.22:8200"   # env:VAULT_ADDR
-          #   token= "<token>"                       # env:VAULT_TOKEN
+             address = "{{ .Values.env.EXTERNAL_VAULT_ADDR }}"   # env:VAULT_ADDR
+             #address = "https://192.168.0.22:8200"   # env:VAULT_ADDR
+             #token= "<token>"                       # env:VAULT_TOKEN
              disable_renewal = "false"       
              key_name = "autounseal-{{ .Values.env.EVT }}" # env:VAULT_TRANSIT_SEAL_KEY_NAME
              mount_path = "transit/"
-          #   tls_skip_verify = "true"
-          #   tls_ca_cert (string: ""):        # env:VAULT_CACERT 
-          #   tls_client_cert (string: ""):    # env:VAULT_CLIENT_CERT 
-          #   tls_client_key (string: ""):     # env:VAULT_CLIENT_KEY
-          #   tls_server_name (string: ""):    # env:VAULT_TLS_SERVER_NAME
+             tls_ca_cert: "/vault/userconfig/vault-ha-tls/vault.ca"
           }
           #https://developer.hashicorp.com/vault/docs/configuration/seal/azurekeyvault
           #seal "azurekeyvault" {
