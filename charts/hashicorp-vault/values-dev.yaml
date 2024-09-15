@@ -20,11 +20,15 @@ vault:
   server:
     dataStorage:
       storageClass: nfs-client
+    extraSecretEnvironmentVars:
+      - envName: VAULT_TOKEN
+        secretName: vault-ha-tls
+       secretKey: vault_token
     extraEnvironmentVars:
       VAULT_CACERT: /vault/userconfig/vault-ha-tls/vault.ca
       VAULT_TLSCERT: /vault/userconfig/vault-ha-tls/vault.crt
       VAULT_TLSKEY: /vault/userconfig/vault-ha-tls/vault.key
-      VAULT_TOKEN: /vault/userconfig/vault-ha-tls/vault_token
+      #VAULT_TOKEN: /vault/userconfig/vault-ha-tls/vault_token
     volumes:
       - name: userconfig-vault-ha-tls
         secret:
@@ -66,6 +70,7 @@ vault:
              mount_path = "transit/"
              tls_ca_cert = "/vault/userconfig/vault-ha-tls/vault.ca"
           }
+
           #https://developer.hashicorp.com/vault/docs/configuration/seal/azurekeyvault
           #seal "azurekeyvault" {
           #  tenant_id      = ""       # env:AZURE_TENANT_ID
