@@ -1,8 +1,8 @@
-global:
-  env:
-    EVT: dev
-    EXTERNAL_VAULT_ADDR: https://192.168.0.22:8200
-    VAULT_EXTERNAL_IP: 192.168.49.2
+#global:
+#  env:
+#    EVT: dev
+#    EXTERNAL_VAULT_ADDR: https://192.168.0.22:8200
+#    VAULT_EXTERNAL_IP: 192.168.49.2
 
 # override the namings to avoid obvious conflicts between created resources
 
