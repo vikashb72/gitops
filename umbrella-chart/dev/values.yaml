@@ -33,12 +33,13 @@ argocdManaged:
     # repoURL: https://github.com/vikashb72/gitops.git
     path: charts/argo-cd
     # targetRevision: HEAD
+    noHelmValues: false
     helm:
       ValuesFile: true
       values: |
         global:
-          domain: {{ $.Values.global.hostname }}
-        env: {{ $.Values.global.env }}
+          domain: u22-dev.home.where-ever.za.net
+        env: dev
     # targetNamespace: somewhereelse
     disableAutomated: false
     automated:
@@ -53,7 +54,7 @@ argocdManaged:
     #  repoURL: https://github.com/vikashb72/gitops.git
     # targetRevision: HEAD
     path: umbrella-chart/dev
-    helmValuesFile: false
+    noHelmValues: true
     disableAutomated: false
     automated:
       allowEmpty: true

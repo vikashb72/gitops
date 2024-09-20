@@ -17,13 +17,18 @@ spec:
     repoURL:  {{ default $.Values.global.spec.repoURL .repoURL }}
     targetRevision: {{ default $.Values.global.spec.targetRevision .targetRevision }}
     path: {{ .path }}
+    {{- if not .noHelmValues }}
     helm:
-    {{- if .helmValuesFile }}
+      {{- if .helm.envFile }}
       valueFiles:
         - values-{{ $.Values.global.env }}.yaml
+      {{- end }}
+      {{- if .helm.values }}
+      values: {{- .helm.values | toYaml | indent 6 }}
+      {{- end }}
     {{- end }}
   destination:
-    namespace: {{ default $.Values.global.spec.namespace .targetNamespace }}
+    namespace: {{ default $.Values.global.metadata.namespace .targetNamespace }}
     server: {{ $.Values.global.spec.destination.server }}
   syncPolicy:
     {{- if not .disableAutomated }}
