@@ -101,14 +101,18 @@ argocd login 192.168.49.2:30080 --insecure
 argocd cluster list
 
 cat > ${EVT}.yaml <<EOF
-clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
-destinations:
-  - namespace: '*'
-    server: '*'
-sourceRepos:
-  - '*'
+metadata:
+  name: ${EVT}
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - namespace: '*'
+      server: '*'
+  sourceRepos:
+    - '*'
 EOF
 
 argocd proj create $EVT -f ${EVT}.yaml
