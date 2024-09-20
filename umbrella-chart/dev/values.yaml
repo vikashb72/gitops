@@ -5,39 +5,52 @@ global:
       addr: https://192.168.0.22:8200
     k8s:
       ip: 192.168.49.2
+  metadata:
+    namespace: argocd
+    finalisers: resources-finalizer.argocd.argoproj.io
+  annotations:
+    syncwave: "0"
   spec:
     project: dev
+    repoURL: https://github.com/vikashb72/gitops.git
+    targetRevision: HEAD
     destination:
       server: https://kubernetes.default.svc
-    finalisers: resources-finalizer.argocd.argoproj.io
-    syncwave: "0"
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
 
 argocdManaged:
-  umbrella-chart:
-    # finaliser: resources-finalizer.argocd.argoproj.io
-    disableAutomated: false
-    disableFinalisers: false
-    disable: false
-    name: umbrella-chart
-    namespace: argocd
-    syncwave: "-9"
-    source:
-      repoURL: https://github.com/vikashb72/gitops.git
-      path: umbrella-chart/dev
-      targetRevision: HEAD
-      helmValuesFile: false
   argocd:
-    disableAutomated: false
-    disableFinalisers: false
     disable: false
     name: argo-cd
-    namespace: argocd
+    # namespace: argocd
+    disableFinalisers: false
+    # finaliser: resources-finalizer.argocd.argoproj.io 
     syncwave: "-10"
-    source:
-      repoURL: https://github.com/vikashb72/gitops.git
-      path: charts/argo-cd
-      targetRevision: HEAD
-      helmValuesFile: true
+    # repoURL: https://github.com/vikashb72/gitops.git
+    path: charts/argo-cd
+    # targetRevision: HEAD
+    helmValuesFile: true
+    # targetNamespace: somewhereelse
+    disableAutomated: false
+    automated:
+      allowEmpty: false
+  umbrella-chart:
+    disable: false
+    name: umbrella-chart
+    # namespace: argocd
+    disableFinalisers: false
+    # finaliser: resources-finalizer.argocd.argoproj.io
+    syncwave: "-9"
+    #  repoURL: https://github.com/vikashb72/gitops.git
+    # targetRevision: HEAD
+    path: umbrella-chart/dev
+    helmValuesFile: false
+    disableAutomated: false
+    automated:
+      allowEmpty: true
 
 # override the namings to avoid obvious conflicts between created resources
 
