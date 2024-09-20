@@ -1,8 +1,37 @@
-#global:
-#  env:
-#    EVT: dev
-#    EXTERNAL_VAULT_ADDR: https://192.168.0.22:8200
-#    VAULT_EXTERNAL_IP: 192.168.49.2
+global:
+  env:
+    EVT: dev
+    EXTERNAL_VAULT_ADDR: https://192.168.0.22:8200
+    VAULT_EXTERNAL_IP: 192.168.49.2
+    valuesFile: values-dev.yaml
+  spec:
+    project: dev
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: argocd
+    source:
+      repoURL: https://github.com/vikashb72/gitops.git
+      path: umbrella-chart/dev
+      targetRevision: HEAD
+
+argocdManaged:
+  argocd:
+    disableAutomated: false
+    disable: false
+    name: argo-cd
+    namespace: argocd
+    helm: true
+    sync-wave: "-10"
+    source:
+      path: charts/argo-cd
+      targetRevision: HEAD
+      helm: true
+    syncPolicy:
+      automated:
+        selfHeal: true
+        prune: true
+      syncOptions:
+        - CreateNamespace=true
 
 # override the namings to avoid obvious conflicts between created resources
 
