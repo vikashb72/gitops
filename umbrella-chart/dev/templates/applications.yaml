@@ -5,12 +5,12 @@ kind: Application
 metadata:
   name: {{ .name }}
   namespace: {{ .namespace }}
-{{ - if not .disableFinalisers }}
+{{- if not .disableFinalisers }}
   finalizers:
     - {{ default $.Values.global.spec.finalisers .finaliser }}
-{{ - end }}
+{{- end }}
   annotations:
-    argocd.argoproj.io/sync-wave: "{{ default $.Values.global.spec.syncwave .syncwave }}
+    argocd.argoproj.io/sync-wave: "{{ default $.Values.global.spec.syncwave .syncwave }}"
 spec:
   project: {{ $.Values.global.spec.project }}
   source:
