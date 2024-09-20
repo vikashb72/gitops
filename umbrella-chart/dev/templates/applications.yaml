@@ -5,16 +5,22 @@ kind: Application
 metadata:
   name: {{ .name }}
   namespace: {{ .namespace }}
+{{ - if not .disableFinalisers }}
+  finalizers:
+    - {{ default $.Values.global.spec.finalisers .finaliser }}
+{{ - end }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{ default $.Values.global.spec.syncwave .syncwave }}
 spec:
   project: {{ $.Values.global.spec.project }}
   source:
     repoURL:  {{ .source.repoURL }}
     targetRevision: {{ .source.targetRevision }}
     path: {{ .source.path }}
-    {{- if .source.helm }}
+    {{- if .source.helmValuesFile }}
     helm:
       valueFiles:
-        - values-{{ $.Values.global.env.EVT }}.yaml
+        - values-{{ $.Values.global.env }}.yaml
     {{- end }}
   destination:
     namespace: {{ .namespace }}

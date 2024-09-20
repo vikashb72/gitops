@@ -1,37 +1,43 @@
 global:
-  env:
-    EVT: dev
-    EXTERNAL_VAULT_ADDR: https://192.168.0.22:8200
-    VAULT_EXTERNAL_IP: 192.168.49.2
-    valuesFile: values-dev.yaml
+  env: dev
+  hvault:
+    external:
+      addr: https://192.168.0.22:8200
+    k8s:
+      ip: 192.168.49.2
   spec:
     project: dev
     destination:
       server: https://kubernetes.default.svc
-      namespace: argocd
+    finalisers: resources-finalizer.argocd.argoproj.io
+    sync-wave: "0"
+
+argocdManaged:
+  umbrella-chart:
+    # finaliser: resources-finalizer.argocd.argoproj.io
+    disableAutomated: false
+    disableFinalisers: false
+    disable: false
+    name: umbrella-chart
+    namespace: argocd
+    syncwave: "-9"
     source:
       repoURL: https://github.com/vikashb72/gitops.git
       path: umbrella-chart/dev
       targetRevision: HEAD
-
-argocdManaged:
+      helmValuesFile: false
   argocd:
     disableAutomated: false
+    disableFinalisers: false
     disable: false
     name: argo-cd
     namespace: argocd
-    helm: true
-    sync-wave: "-10"
+    syncwave: "-10"
     source:
+      repoURL: https://github.com/vikashb72/gitops.git
       path: charts/argo-cd
       targetRevision: HEAD
-      helm: true
-    syncPolicy:
-      automated:
-        selfHeal: true
-        prune: true
-      syncOptions:
-        - CreateNamespace=true
+      helmValuesFile: true
 
 # override the namings to avoid obvious conflicts between created resources
 
