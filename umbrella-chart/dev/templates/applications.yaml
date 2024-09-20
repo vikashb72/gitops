@@ -26,6 +26,12 @@ spec:
       {{- if .helm.values }}
       values: {{- .helm.values | toYaml | indent 6 }}
       {{- end }}
+      {{- if .helm.valuesObject }}
+      valuesObject: {{- .helm.valuesObject | toYaml | indent 6 }}
+      {{- end }}
+      {{- if .helm.parameters }}
+      parameters: {{- .helm.parameters: | toYaml | indent 6 }}
+      {{- end }}
     {{- end }}
   destination:
     namespace: {{ default $.Values.global.metadata.namespace .targetNamespace }}

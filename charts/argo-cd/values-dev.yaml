@@ -1,4 +1,5 @@
 env: dev
+hostname: u22-dev.home.where-ever.za.net
 
 argo-cd:
   namespaceOverride: "argocd"
