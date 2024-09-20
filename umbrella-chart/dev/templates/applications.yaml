@@ -14,7 +14,7 @@ spec:
     {{- if .source.helm }}
     helm:
       valueFiles:
-        - values-{{ $.Values.global.env }}.yaml
+        - values-{{ $.Values.global.env.EVT }}.yaml
     {{- end }}
   destination:
     namespace: {{ .namespace }}
