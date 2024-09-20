@@ -36,10 +36,10 @@ argocdManaged:
     noHelmValues: false
     helm:
       ValuesFile: true
-      values: |
-        global:
-          domain: u22-dev.home.where-ever.za.net
-        env: dev
+      #values: |
+      #  global:
+      #    domain: u22-dev.home.where-ever.za.net
+      #  env: dev
     # targetNamespace: somewhereelse
     disableAutomated: false
     automated:

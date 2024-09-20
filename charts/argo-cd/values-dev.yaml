@@ -1,5 +1,4 @@
-env:
-  EVT: dev
+env: dev
 
 argo-cd:
   namespaceOverride: "argocd"
@@ -10,8 +9,7 @@ argo-cd:
   global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    #domain: u22-dev.home.where-ever.za.net
-    domain: dev
+    domain: u22-dev.home.where-ever.za.net
   server:
     service:
       type: NodePort
