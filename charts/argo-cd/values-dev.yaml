@@ -1,5 +1,5 @@
 env:
-  EVT: {{ default $.Values.global.env 'dev' }}
+  EVT: dev
 
 argo-cd:
   namespaceOverride: "argocd"
