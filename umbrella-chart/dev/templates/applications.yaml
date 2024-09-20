@@ -28,9 +28,9 @@ spec:
   syncPolicy:
     {{- if not .disableAutomated }}
     automated:
-      prune: {{ $.Values.global.automated.prune .automated.prune }}
-      selfHeal: {{ $.Values.global.automated.selfHeal .automated.selfHeal }}
-      allowEmpty: {{ $.Values.global.automated.allowEmpty .automated.allowEmpty }}
+      prune: {{ $.Values.global.spec.automated.prune .automated.prune }}
+      selfHeal: {{ $.Values.global.spec.automated.selfHeal .automated.selfHeal }}
+      allowEmpty: {{ $.Values.global.spec.automated.allowEmpty .automated.allowEmpty }}
     {{- end }}
     syncOptions:
       - CreateNamespace=true
