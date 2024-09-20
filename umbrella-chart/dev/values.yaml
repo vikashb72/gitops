@@ -35,7 +35,7 @@ argocdManaged:
     # targetRevision: HEAD
     noHelmValues: false
     helm:
-      ValuesFile: true
+      envFile: true
       #values: |
       #  global:
       #    domain: u22-dev.home.where-ever.za.net
