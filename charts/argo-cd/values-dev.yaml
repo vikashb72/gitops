@@ -11,7 +11,7 @@ argo-cd:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
     #domain: u22-dev.home.where-ever.za.net
-    domain: {{ default $.Values.global.hostname 'dev' }}
+    domain: dev
   server:
     service:
       type: NodePort

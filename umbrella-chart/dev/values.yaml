@@ -33,7 +33,12 @@ argocdManaged:
     # repoURL: https://github.com/vikashb72/gitops.git
     path: charts/argo-cd
     # targetRevision: HEAD
-    helmValuesFile: true
+    helm:
+      ValuesFile: true
+      values: |
+        global:
+          domain: {{ $.Values.global.hostname }}
+        env: {{ $.Values.global.env }}
     # targetNamespace: somewhereelse
     disableAutomated: false
     automated:

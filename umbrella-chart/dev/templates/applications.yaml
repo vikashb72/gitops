@@ -17,8 +17,8 @@ spec:
     repoURL:  {{ default $.Values.global.spec.repoURL .repoURL }}
     targetRevision: {{ default $.Values.global.spec.targetRevision .targetRevision }}
     path: {{ .path }}
-    {{- if .helmValuesFile }}
     helm:
+    {{- if .helmValuesFile }}
       valueFiles:
         - values-{{ $.Values.global.env }}.yaml
     {{- end }}
