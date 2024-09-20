@@ -94,9 +94,25 @@ helm install -n argocd argo-cd  gitops/charts/argo-cd \
 
 kubectl -n argocd get secret argocd-initial-admin-secret \
     -o jsonpath="{.data.password}" | base64 -d > argocd.adm.pw
-echo "\n$(cat argocd.adm.pw)\n"
+echo ""
+echo "$(cat argocd.adm.pw)"
+echo ""
 argocd login 192.168.49.2:30080 --insecure
 argocd cluster list
+
+cat > ${EVT}.yaml <<EOF
+clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+destinations:
+  - namespace: '*'
+    server: '*'
+sourceRepos:
+  - '*'
+EOF
+
+argocd proj create $EVT -f ${EVT}.yaml
+    
 helm template gitops/umbrella-chart/${EVT} | kubectl -n argocd apply -f -
 argocd cluster list
 argocd app list
