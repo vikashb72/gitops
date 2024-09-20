@@ -10,7 +10,7 @@ global:
     destination:
       server: https://kubernetes.default.svc
     finalisers: resources-finalizer.argocd.argoproj.io
-    sync-wave: "0"
+    syncwave: "0"
 
 argocdManaged:
   umbrella-chart:
