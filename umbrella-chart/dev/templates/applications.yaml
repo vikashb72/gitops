@@ -30,7 +30,7 @@ spec:
       valuesObject: {{- .helm.valuesObject | toYaml | indent 6 }}
       {{- end }}
       {{- if .helm.parameters }}
-      parameters: {{- .helm.parameters: | toYaml | indent 6 }}
+      parameters: {{- .helm.parameters | toYaml | indent 6 }}
       {{- end }}
     {{- end }}
   destination:
