@@ -22,8 +22,8 @@ spec:
       {{- if .chart }}
       chart: {{ .chart }}
       {{- end }}
-      {{- if not .noHelmValues }}
       targetRevision: {{ default $.Values.global.spec.targetRevision .targetRevision }}
+      {{- if not .noHelmValues }}
       helm:
         {{- if .helm.envFile }}
         valueFiles:
@@ -54,6 +54,17 @@ spec:
     {{- end }}
     syncOptions:
       - CreateNamespace=true
+  {{- if .ignoreDifferences }}
+    ignoreDifferencesConfig:
+    {{- range .ignoreDifferencesConfig }}
+      - group: {{ .group }}
+        kind: {{ .kind }}
+        jqPathExpressions:
+          {{- range .jqPathExpressions }}
+          - {{ . }}
+          {{- end }}
+    {{- end }}
+  {{- end }}
 ---
 {{- end }}
 {{- end }}
