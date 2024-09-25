@@ -1,7 +1,0 @@
-apiVersion: v2
-name: vault-raft-snapshot-agent
-version: 1.0.0
-dependencies:
-  - name: vault-raft-snapshot-agent
-    version: 0.4.20
-    repository: https://argelbargel.github.io/vault-raft-snapshot-agent-helm
