@@ -14,9 +14,14 @@ metadata:
 spec:
   project: {{ $.Values.global.spec.project }}
   source:
-    repoURL:  {{ default $.Values.global.spec.repoURL .repoURL }}
+    repoURL: {{ default $.Values.global.spec.repoURL .repoURL }}
     targetRevision: {{ default $.Values.global.spec.targetRevision .targetRevision }}
+    {{- if .path }}
     path: {{ .path }}
+    {{- end }}
+    {{- if .chart }}
+    chart: {{ .chart }}
+    {{- end }}
     {{- if not .noHelmValues }}
     helm:
       {{- if .helm.envFile }}

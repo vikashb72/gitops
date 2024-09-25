@@ -23,41 +23,87 @@ global:
       allowEmpty: false
 
 argocdManaged:
-  argocd:
-    disable: false
-    name: argo-cd
-    # namespace: argocd
-    disableFinalisers: false
-    # finaliser: resources-finalizer.argocd.argoproj.io 
-    syncwave: "-10"
-    # repoURL: https://github.com/vikashb72/gitops.git
-    path: charts/argo-cd
-    # targetRevision: HEAD
-    noHelmValues: false
-    helm:
-      envFile: true
-      #values: |
-      #  global:
-      #    domain: u22-dev.home.where-ever.za.net
-      #  env: dev
-    # targetNamespace: somewhereelse
-    disableAutomated: false
-    automated:
-      allowEmpty: false
-  umbrella-chart:
-    disable: false
-    name: umbrella-chart
-    # namespace: argocd
-    disableFinalisers: false
-    # finaliser: resources-finalizer.argocd.argoproj.io
-    syncwave: "-9"
-    #  repoURL: https://github.com/vikashb72/gitops.git
-    # targetRevision: HEAD
-    path: umbrella-chart/dev
-    noHelmValues: true
-    disableAutomated: false
-    automated:
-      allowEmpty: true
+  #argocd:
+  #  disable: false
+  #  name: argo-cd
+  #  # namespace: argocd
+  #  disableFinalisers: false
+  #  # finaliser: resources-finalizer.argocd.argoproj.io 
+  #  syncwave: "-10"
+  #  # repoURL: https://github.com/vikashb72/gitops.git
+  #  path: charts/argo-cd
+  #  # targetRevision: HEAD
+  #  noHelmValues: false
+  #  helm:
+  #    envFile: true
+  #    #values: |
+  #    #  global:
+  #    #    domain: u22-dev.home.where-ever.za.net
+  #    #  env: dev
+  #  # targetNamespace: somewhereelse
+  #  disableAutomated: false
+  #  automated:
+  #    allowEmpty: false
+  #umbrella-chart:
+  #  disable: false
+  #  name: umbrella-chart
+  #  # namespace: argocd
+  #  disableFinalisers: false
+  #  # finaliser: resources-finalizer.argocd.argoproj.io
+  #  syncwave: "-9"
+  #  #  repoURL: https://github.com/vikashb72/gitops.git
+  #  # targetRevision: HEAD
+  #  path: umbrella-chart/dev
+  #  noHelmValues: true
+  #  disableAutomated: false
+  #  automated:
+  #    allowEmpty: true
+  #vpa:
+  #  disable: false
+  #  name: vpa
+  #  targetNamespace: vpa
+  #  disableFinalisers: false
+  #  syncwave: "-1"
+  #  repoURL: https://charts.fairwinds.com/stable
+  #  chart: vpa
+  #  targetRevision: 4.5.0
+  #  noHelmValues: true
+  #  disableAutomated: false
+  #  automated: {}
+  #goldilocks:
+  #  disable: false
+  #  name: goldilocks
+  #  targetNamespace: goldilocks
+  #  disableFinalisers: false
+  #  syncwave: "0"
+  #  repoURL: https://charts.fairwinds.com/stable
+  #  targetRevision: 8.0.2
+  #  chart: goldilocks
+  #  noHelmValues: true
+  #  disableAutomated: false
+  #  automated: {}
+  #cert-manager:
+  #  disable: false
+  #  name: cert-manager
+  #  targetNamespace: cert-manager
+  #  disableFinalisers: false
+  #  path: charts/cert-manager
+  #  noHelmValues: false
+  #  helm:
+  #    envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #external-secrets:
+  #  disable: false
+  #  name: external-secrets
+  #  targetNamespace: external-secrets
+  #  disableFinalisers: false
+  #  path: charts/external-secrets
+  #  noHelmValues: false
+  #  helm:
+  #    envFile: true
+  #  disableAutomated: false
+  #  automated: {}
 
 # override the namings to avoid obvious conflicts between created resources
 
