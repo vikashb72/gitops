@@ -23,6 +23,121 @@ global:
       allowEmpty: false
 
 argocdManaged:
+  argocd:
+    disable: false
+    name: argo-cd
+    namespace: argocd
+    disableFinalisers: false
+    syncwave: "-10"
+    sources:
+      - path: charts/argo-cd
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated:
+      allowEmpty: false
+    ignoreDifferences: false 
+  umbrella-chart:
+    disable: false
+    name: umbrella-chart
+    sources:
+      - path: umbrella-chart/dev
+        noHelmValues: true
+    syncwave: "-9"
+    disableAutomated: false
+    automated:
+      allowEmpty: true
+    ignoreDifferences: false 
+  vpa:
+    disable: false
+    name: vpa
+    targetNamespace: vpa
+    syncwave: "-1"
+    sources:
+      - repoURL: https://charts.fairwinds.com/stable
+        chart: vpa
+        targetRevision: 4.5.0
+        noHelmValues: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
+  goldilocks:
+    disable: false
+    name: goldilocks
+    targetNamespace: goldilocks
+    syncwave: "0"
+    sources:
+      - repoURL: https://charts.fairwinds.com/stable
+        targetRevision: 8.0.2
+        chart: goldilocks
+        noHelmValues: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
+  #cert-manager:
+  #  disable: false
+  #  name: cert-manager
+  #  syncwave: "-5"
+  #  targetNamespace: cert-manager
+  #  sources:
+  #    - path: charts/cert-manager
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #  ignoreDifferences: false 
+  #external-secrets:
+  #  disable: false
+  #  name: external-secrets
+  #  targetNamespace: external-secrets
+  #  sources:
+  #    - path: hooks/external-secrets
+  #      noHelmValues: true
+  #    - path: charts/external-secrets
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #  ignoreDifferences: false 
+  #vault:
+  #  disable: false
+  #  name: vault
+  #  syncwave: "-5"
+  #  targetNamespace: vault-system
+  #  sources:
+  #    - path: charts/hashicorp-vault
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #  ignoreDifferences: true 
+  #  ignoreDifferencesConfig:
+  #    - group: admissionregistration.k8s.io
+  #      kind: MutatingWebhookConfiguration
+  #      jqPathExpressions:
+  #        - .webhooks[]?.clientConfig.caBundle
+  #prometheus:
+  #  disable: false
+  #  name: prometheus
+  #  targetNamespace: prometheus
+  #  sources:
+  #    - chart: prometheus
+  #      repoURL: https://prometheus-community.github.io/helm-charts
+  #      targetRevision: 25.26.0
+  #      noHelmValues: false
+  #      envFile: true
+  #      helm:
+  #        values: |
+  #          pushgateway:
+  #            enabled: false
+  #  disableAutomated: false
+  #  automated: {}
+  #  ignoreDifferences: false 
+
   #documentation:
   #  disable: false
   #  name: chart-name
@@ -57,80 +172,7 @@ argocdManaged:
   #        prune: true
   #        selfHeal: true
   #        allowEmpty: true
-  argocd:
-    disable: false
-    name: argo-cd
-    namespace: argocd
-    disableFinalisers: false
-    syncwave: "-10"
-    sources:
-      - path: charts/argo-cd
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated:
-      allowEmpty: false
-  #umbrella-chart:
-  #  disable: false
-  #  name: umbrella-chart
-  #  # namespace: argocd
-  #  disableFinalisers: false
-  #  # finaliser: resources-finalizer.argocd.argoproj.io
-  #  syncwave: "-9"
-  #  #  repoURL: https://github.com/vikashb72/gitops.git
-  #  # targetRevision: HEAD
-  #  path: umbrella-chart/dev
-  #  noHelmValues: true
-  #  disableAutomated: false
-  #  automated:
-  #    allowEmpty: true
-  #vpa:
-  #  disable: false
-  #  name: vpa
-  #  targetNamespace: vpa
-  #  disableFinalisers: false
-  #  syncwave: "-1"
-  #  repoURL: https://charts.fairwinds.com/stable
-  #  chart: vpa
-  #  targetRevision: 4.5.0
-  #  noHelmValues: true
-  #  disableAutomated: false
-  #  automated: {}
-  #goldilocks:
-  #  disable: false
-  #  name: goldilocks
-  #  targetNamespace: goldilocks
-  #  disableFinalisers: false
-  #  syncwave: "0"
-  #  repoURL: https://charts.fairwinds.com/stable
-  #  targetRevision: 8.0.2
-  #  chart: goldilocks
-  #  noHelmValues: true
-  #  disableAutomated: false
-  #  automated: {}
-  #cert-manager:
-  #  disable: false
-  #  name: cert-manager
-  #  targetNamespace: cert-manager
-  #  disableFinalisers: false
-  #  path: charts/cert-manager
-  #  noHelmValues: false
-  #  helm:
-  #    envFile: true
-  #  disableAutomated: false
-  #  automated: {}
-  #external-secrets:
-  #  disable: false
-  #  name: external-secrets
-  #  targetNamespace: external-secrets
-  #  disableFinalisers: false
-  #  path: charts/external-secrets
-  #  noHelmValues: false
-  #  helm:
-  #    envFile: true
-  #  disableAutomated: false
-  #  automated: {}
+  #  ignoreDifferences: false 
 
 # override the namings to avoid obvious conflicts between created resources
 
