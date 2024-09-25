@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source ~/.external_hvault
+
 #
 # Functions
 #

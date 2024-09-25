@@ -13,3 +13,7 @@ external-secrets:
 env:
    VAULT_ADDR: https://192.168.0.22:8200
    EVT: dev
+
+#external-hashicorp-vault-token:
+#  secretName: external-hashicorp-vault-token
+#  secretKey: token

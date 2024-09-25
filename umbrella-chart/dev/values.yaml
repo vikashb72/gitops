@@ -100,33 +100,20 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
-  #cert-manager:
-  #  disable: false
-  #  name: cert-manager
-  #  syncwave: "-5"
-  #  targetNamespace: cert-manager
-  #  sources:
-  #    - path: charts/cert-manager
-  #      noHelmValues: false
-  #      helm:
-  #        envFile: true
-  #  disableAutomated: false
-  #  automated: {}
-  #  ignoreDifferences: false 
-  #external-secrets:
-  #  disable: false
-  #  name: external-secrets
-  #  targetNamespace: external-secrets
-  #  sources:
-  #    - path: hooks/external-secrets
-  #      noHelmValues: true
-  #    - path: charts/external-secrets
-  #      noHelmValues: false
-  #      helm:
-  #        envFile: true
-  #  disableAutomated: false
-  #  automated: {}
-  #  ignoreDifferences: false 
+  external-secrets:
+    disable: false
+    name: external-secrets
+    targetNamespace: external-secrets
+    sources:
+      - path: hooks/external-secrets
+        noHelmValues: true
+      - path: charts/external-secrets
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
   #vault:
   #  disable: false
   #  name: vault
@@ -162,7 +149,19 @@ argocdManaged:
   #  disableAutomated: false
   #  automated: {}
   #  ignoreDifferences: false 
-
+  #cert-manager:
+  #  disable: false
+  #  name: cert-manager
+  #  syncwave: "-5"
+  #  targetNamespace: cert-manager
+  #  sources:
+  #    - path: charts/cert-manager
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #  ignoreDifferences: false 
   #documentation:
   #  disable: false
   #  name: chart-name
