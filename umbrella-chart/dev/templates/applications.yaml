@@ -13,34 +13,38 @@ metadata:
     argocd.argoproj.io/sync-wave: "{{ default $.Values.global.annotations.syncwave .syncwave }}"
 spec:
   project: {{ $.Values.global.spec.project }}
-  source:
-    repoURL: {{ default $.Values.global.spec.repoURL .repoURL }}
-    targetRevision: {{ default $.Values.global.spec.targetRevision .targetRevision }}
-    {{- if .path }}
-    path: {{ .path }}
-    {{- end }}
-    {{- if .chart }}
-    chart: {{ .chart }}
-    {{- end }}
-    {{- if not .noHelmValues }}
-    helm:
-      {{- if .helm.envFile }}
-      valueFiles:
-        - values-{{ $.Values.global.env }}.yaml
+  sources:
+    {{- range .sources }}
+    - repoURL: {{ default $.Values.global.spec.repoURL .repoURL }}
+      {{- if .path }}
+      path: {{ .path }}
       {{- end }}
-      {{- if .helm.values }}
-      values: {{- .helm.values | toYaml | indent 6 }}
+      {{- if .chart }}
+      chart: {{ .chart }}
       {{- end }}
-      {{- if .helm.valuesObject }}
-      valuesObject: {{- .helm.valuesObject | toYaml | indent 6 }}
-      {{- end }}
-      {{- if .helm.parameters }}
-      parameters: {{- .helm.parameters | toYaml | indent 6 }}
+      {{- if not .noHelmValues }}
+      targetRevision: {{ default $.Values.global.spec.targetRevision .targetRevision }}
+      helm:
+        {{- if .helm.envFile }}
+        valueFiles:
+          - values-{{ $.Values.global.env }}.yaml
+        {{- end }}
+        {{- if .helm.values }}
+        values: {{ .helm.values | toYaml | indent 8 }}
+        {{- end -}}
+        {{- if .helm.valuesObject }}
+        valuesObject:
+{{ .helm.valuesObject | toYaml | indent 10 }}
+        {{- end -}}
+        {{- if .helm.parameters }}
+        parameters:
+{{ .helm.parameters | toYaml | indent 10 }}
+        {{- end -}}
       {{- end }}
     {{- end }}
   destination:
-    namespace: {{ default $.Values.global.metadata.namespace .targetNamespace }}
     server: {{ $.Values.global.spec.destination.server }}
+    namespace: {{ default $.Values.global.metadata.namespace .targetNamespace }}
   syncPolicy:
     {{- if not .disableAutomated }}
     automated:
