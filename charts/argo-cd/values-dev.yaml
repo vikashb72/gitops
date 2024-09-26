@@ -11,10 +11,65 @@ argo-cd:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
     domain: u22-dev.home.where-ever.za.net
+  controller:
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
+  dex:
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
+  redis:
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
   server:
     service:
       type: NodePort
       #type: LoadBalancer
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
+  repoServer:
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
+  applicationSet:
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
+  notifications:
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
 
 argo-workflows:
   namespaceOverride: "argocd"
@@ -28,4 +83,19 @@ argo-workflows:
     workflowDefaults:
       spec:
         serviceAccountName: argo-workflow
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
+  server:
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
 
