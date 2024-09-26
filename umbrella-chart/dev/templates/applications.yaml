@@ -55,14 +55,14 @@ spec:
     syncOptions:
       - CreateNamespace=true
   {{- if .ignoreDifferences }}
-    ignoreDifferencesConfig:
+  ignoreDifferencesConfig:
     {{- range .ignoreDifferencesConfig }}
-      - group: {{ .group }}
-        kind: {{ .kind }}
-        jqPathExpressions:
-          {{- range .jqPathExpressions }}
-          - {{ . }}
-          {{- end }}
+    - group: {{ .group }}
+      kind: {{ .kind }}
+      jqPathExpressions:
+        {{- range .jqPathExpressions }}
+        - {{ . }}
+        {{- end }}
     {{- end }}
   {{- end }}
 ---
