@@ -185,6 +185,21 @@ argocdManaged:
   #  disableAutomated: false
   #  automated: {}
   #  ignoreDifferences: false 
+  #
+  # TODO:
+  #     gha-runner-scale-set-controller
+  #     gha-runner-scale-set
+  # gloo
+  # grafana
+  # istio
+  # keda
+  # keycloak
+  # kiali
+  # loki
+  # promtail
+  # redis
+  # reloader
+  # 
   #documentation:
   #  disable: false
   #  name: chart-name
