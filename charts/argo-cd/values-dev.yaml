@@ -11,14 +11,14 @@ argo-cd:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
     domain: u22-dev.home.where-ever.za.net
-  controller:
-    resources:
-      requests:
-        cpu: 15m
-        memory: 250M
-      limits:
-        cpu: 15m
-        memory: 250M
+  #controller:
+  #  resources:
+  #    requests:
+  #      cpu: 15m
+  #      memory: 250M
+  #    limits:
+  #      cpu: 15m
+  #      memory: 250M
   dex:
     resources:
       requests:
