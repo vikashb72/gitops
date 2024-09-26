@@ -137,24 +137,24 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
-  #vault:
-  #  disable: false
-  #  name: vault
-  #  syncwave: "-5"
-  #  targetNamespace: vault-system
-  #  sources:
-  #    - path: charts/hashicorp-vault
-  #      noHelmValues: false
-  #      helm:
-  #        envFile: true
-  #  disableAutomated: false
-  #  automated: {}
-  #  ignoreDifferences: true 
-  #  ignoreDifferencesConfig:
-  #    - group: admissionregistration.k8s.io
-  #      kind: MutatingWebhookConfiguration
-  #      jqPathExpressions:
-  #        - .webhooks[]?.clientConfig.caBundle
+  vault:
+    disable: false
+    name: vault
+    syncwave: "-5"
+    targetNamespace: vault-system
+    sources:
+      - path: charts/hashicorp-vault
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: true 
+    ignoreDifferencesConfig:
+      - group: admissionregistration.k8s.io
+        kind: MutatingWebhookConfiguration
+        jqPathExpressions:
+          - .webhooks[]?.clientConfig.caBundle
   #prometheus:
   #  disable: false
   #  name: prometheus

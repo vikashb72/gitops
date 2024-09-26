@@ -38,7 +38,7 @@
 #                  -H "x-ms-date: $(date -u  +"%a, %d %b %Y %R:%M GMT")" \
 #                  -H "x-ms-blob-type: BlockBlob" \
 #                  -H "Content-Type: application/octet-stream" \
-#                  --data @${SNAP_FILE} \
+#                  -T ${SNAP_FILE} \
 #                  https://${STORAGENODE}.blob.core.windows.net/raft-snapshots/${SNAP_FILE}
 #          env:
 #            - name: VAULT_TOKEN
