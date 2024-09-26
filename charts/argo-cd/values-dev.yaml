@@ -54,14 +54,14 @@ argo-cd:
   #    limits:
   #      cpu: 15m
   #      memory: 105M
-  #applicationSet:
-  #  resources:
-  #    requests:
-  #      cpu: 15m
-  #      memory: 105M
-  #    limits:
-  #      cpu: 15m
-  #      memory: 105M
+  applicationSet:
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
   notifications:
     resources:
       requests:
