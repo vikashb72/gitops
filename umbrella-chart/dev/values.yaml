@@ -105,7 +105,6 @@ argocdManaged:
             dashboard:
               service:
                 type: NodePort
-                nodePort: 30180
               resources:
                 requests:
                   cpu: 15m
