@@ -19,57 +19,57 @@ argo-cd:
   #    limits:
   #      cpu: 15m
   #      memory: 250M
-  dex:
-    resources:
-      requests:
-        cpu: 15m
-        memory: 105M
-      limits:
-        cpu: 15m
-        memory: 105M
-  redis:
-    resources:
-      requests:
-        cpu: 15m
-        memory: 105M
-      limits:
-        cpu: 15m
-        memory: 105M
+  #dex:
+  #  resources:
+  #    requests:
+  #      cpu: 15m
+  #      memory: 105M
+  #    limits:
+  #      cpu: 15m
+  #      memory: 105M
+  #redis:
+  #  resources:
+  #    requests:
+  #      cpu: 15m
+  #      memory: 105M
+  #    limits:
+  #      cpu: 15m
+  #      memory: 105M
   server:
     service:
       type: NodePort
       #type: LoadBalancer
-    resources:
-      requests:
-        cpu: 15m
-        memory: 105M
-      limits:
-        cpu: 15m
-        memory: 105M
-  repoServer:
-    resources:
-      requests:
-        cpu: 15m
-        memory: 105M
-      limits:
-        cpu: 15m
-        memory: 105M
-  applicationSet:
-    resources:
-      requests:
-        cpu: 15m
-        memory: 105M
-      limits:
-        cpu: 15m
-        memory: 105M
-  notifications:
-    resources:
-      requests:
-        cpu: 15m
-        memory: 105M
-      limits:
-        cpu: 15m
-        memory: 105M
+  #  resources:
+  #    requests:
+  #      cpu: 15m
+  #      memory: 105M
+  #    limits:
+  #      cpu: 15m
+  #      memory: 105M
+  #repoServer:
+  #  resources:
+  #    requests:
+  #      cpu: 15m
+  #      memory: 105M
+  #    limits:
+  #      cpu: 15m
+  #      memory: 105M
+  #applicationSet:
+  #  resources:
+  #    requests:
+  #      cpu: 15m
+  #      memory: 105M
+  #    limits:
+  #      cpu: 15m
+  #      memory: 105M
+  #notifications:
+  #  resources:
+  #    requests:
+  #      cpu: 15m
+  #      memory: 105M
+  #    limits:
+  #      cpu: 15m
+  #      memory: 105M
 
 argo-workflows:
   namespaceOverride: "argocd"
