@@ -17,22 +17,22 @@ external-secrets:
     limits:
       cpu: 15m
       memory: 105M
-  #certController:
-  #  resources:
-  #    requests:
-  #      cpu: 15m
-  #      memory: 105M
-  #    limits:
-  #      cpu: 15m
-  #      memory: 105M
-  #webhook:
-  #  resources:
-  #    requests:
-  #      cpu: 15m
-  #      memory: 105M
-  #    limits:
-  #      cpu: 15m
-  #      memory: 105M
+  certController:
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
+  webhook:
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 15m
+        memory: 105M
 
 env:
    VAULT_ADDR: https://192.168.0.22:8200
