@@ -64,5 +64,14 @@ EOF
         rm -f /tmp/join-raft.sh
 done
 
+kubectl exec -n vault-system -it vault-0 -- \
+    vault secrets enable -path=kv kv-v2
+
+kubectl exec -n vault-system -it vault-0 -- \
+    vault auth enable kubernetes
+
+kubectl exec -ti vault-0 -n vault-system -c vault -- sh -c 'vault write auth/kubernetes/config kubernetes_host="https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT" kubernetes_ca_cert="$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt)" token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" disable_iss_validation=true disable_local_ca_jwt=true'
+
+
 echo "SAVE ..... "
 echo $CMD
