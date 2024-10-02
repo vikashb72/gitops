@@ -192,13 +192,13 @@ argocdManaged:
   # gloo
   # grafana
   # istio
-  # keda
+  #     keda
+  #    reloader
   # keycloak
   # kiali
   # loki
   # promtail
   # redis
-  # reloader
   # 
   #documentation:
   #  disable: false
