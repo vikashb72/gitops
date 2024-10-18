@@ -42,6 +42,8 @@ path "pki/issue/generate-cert-role"   { capabilities = ["create"] }
 EOF
 
 kubectl -n vault-system exec -it vault-0 -- vault login $VAULT_TOKEN
+kubectl -n vault-system exec -it vault-0 -- vault secrets enable pki
+kubectl -n vault-system exec -it vault-0 -- vault auth enable kubernetes
 kubectl -n vault-system cp policy.hc1 vault-0:/tmp/pki.policy.hc1
 kubectl -n vault-system exec -it vault-0 -- vault policy write pki /tmp/pki.policy.hc1
 rm policy.hc1
