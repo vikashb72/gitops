@@ -156,7 +156,7 @@ argocdManaged:
         jqPathExpressions:
           - .webhooks[]?.clientConfig.caBundle
   cert-manager:
-    disable: false
+    disable: true
     name: cert-manager
     syncwave: "-5"
     targetNamespace: cert-manager
