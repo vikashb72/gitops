@@ -1,0 +1,70 @@
+{{- range $app := .Values.argocdManaged -}}
+{{ if not .disable }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  namespace: {{ default $.Values.global.metadata.namespace .namespace }}
+{{- if not .disableFinalisers }}
+  finalizers:
+    - {{ default $.Values.global.metadata.finalisers .finaliser }}
+{{- end }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{ default $.Values.global.annotations.syncwave .syncwave }}"
+spec:
+  project: {{ $.Values.global.spec.project }}
+  sources:
+    {{- range .sources }}
+    - repoURL: {{ default $.Values.global.spec.repoURL .repoURL }}
+      {{- if .path }}
+      path: {{ .path }}
+      {{- end }}
+      {{- if .chart }}
+      chart: {{ .chart }}
+      {{- end }}
+      targetRevision: {{ default $.Values.global.spec.targetRevision .targetRevision }}
+      {{- if not .noHelmValues }}
+      helm:
+        {{- if .helm.envFile }}
+        valueFiles:
+          - values-{{ $.Values.global.env }}.yaml
+        {{- end }}
+        {{- if .helm.values }}
+        values: {{ .helm.values | toYaml | indent 8 }}
+        {{- end -}}
+        {{- if .helm.valuesObject }}
+        valuesObject:
+{{ .helm.valuesObject | toYaml | indent 10 }}
+        {{- end -}}
+        {{- if .helm.parameters }}
+        parameters:
+{{ .helm.parameters | toYaml | indent 10 }}
+        {{- end -}}
+      {{- end }}
+    {{- end }}
+  destination:
+    server: {{ $.Values.global.spec.destination.server }}
+    namespace: {{ default $.Values.global.metadata.namespace .targetNamespace }}
+  syncPolicy:
+    {{- if not .disableAutomated }}
+    automated:
+      prune: {{ default $.Values.global.spec.automated.prune .automated.prune }}
+      selfHeal: {{ default $.Values.global.spec.automated.selfHeal .automated.selfHeal }}
+      allowEmpty: {{ default $.Values.global.spec.automated.allowEmpty .automated.allowEmpty }}
+    {{- end }}
+    syncOptions:
+      - CreateNamespace=true
+  {{- if .ignoreDifferences }}
+  ignoreDifferences:
+    {{- range .ignoreDifferencesConfig }}
+    - group: {{ .group }}
+      kind: {{ .kind }}
+      jqPathExpressions:
+        {{- range .jqPathExpressions }}
+        - {{ . }}
+        {{- end }}
+    {{- end }}
+  {{- end }}
+---
+{{- end }}
+{{- end }}
