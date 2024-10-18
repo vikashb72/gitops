@@ -16,21 +16,25 @@ done
 
 # This is needed
 [ -z $EVT ] && echo "MISSING ENV: EVT" && usage && exit 2
+[ -z $VAULT_TOKEN ] && echo "MISSING ENV: VAULT_TOKEN" && exit 2
 
+VAULT_K8S_NAMESPACE="vault-system"
 WORKDIR=$(pwd)/work
 mkdir -p ${WORKDIR}
 UPPER_EVT=$(echo $EVT | tr '[:lower:]' '[:upper:]')
 
-vault secrets enable \
-    -description="${UPPER_EVT} Intermediate CA" \
-    -max-lease-ttl=87600h  \
-    -default-lease-ttl=87600h pki
+kubectl -n vault-system exec -it vault-0 -- \
+    vault secrets enable \
+        -description="${UPPER_EVT} Intermediate CA" \
+        -max-lease-ttl=87600h  \
+        -default-lease-ttl=87600h pki
 
-vault write -format=json \
-    pki/intermediate/generate/internal \
-    common_name="${UPPER_EVT} Intermediate Authority" \
-    ttl=43800h \
-    | jq -r '.data.csr' > ${WORKDIR}/${EVT}_intermediate_CA.csr
+kubectl -n vault-system exec -it vault-0 -- \
+    vault write -format=json \
+        pki/intermediate/generate/internal \
+        common_name="${UPPER_EVT} Intermediate Authority" \
+        ttl=43800h \
+        | jq -r '.data.csr' > ${WORKDIR}/${EVT}_intermediate_CA.csr
 
 echo "
 # from CA
