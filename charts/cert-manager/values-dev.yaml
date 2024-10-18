@@ -1,5 +1,5 @@
 env:
-  EVT: minikube
+  EVT: dev
 
 cert-manager:
   crds:

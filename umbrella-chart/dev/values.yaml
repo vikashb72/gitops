@@ -155,6 +155,19 @@ argocdManaged:
         kind: MutatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.clientConfig.caBundle
+  cert-manager:
+    disable: false
+    name: cert-manager
+    syncwave: "-5"
+    targetNamespace: cert-manager
+    sources:
+      - path: charts/cert-manager
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
   #prometheus:
   #  disable: false
   #  name: prometheus
@@ -169,19 +182,6 @@ argocdManaged:
   #        values: |
   #          pushgateway:
   #            enabled: false
-  #  disableAutomated: false
-  #  automated: {}
-  #  ignoreDifferences: false 
-  #cert-manager:
-  #  disable: false
-  #  name: cert-manager
-  #  syncwave: "-5"
-  #  targetNamespace: cert-manager
-  #  sources:
-  #    - path: charts/cert-manager
-  #      noHelmValues: false
-  #      helm:
-  #        envFile: true
   #  disableAutomated: false
   #  automated: {}
   #  ignoreDifferences: false 
