@@ -1,0 +1,7 @@
+apiVersion: v2
+name: gloo-platform
+version: 1.0.0
+dependencies:
+  - name: gloo-platform
+    version: 2.6.6
+    repository: https://storage.googleapis.com/gloo-platform/helm-charts

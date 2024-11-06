@@ -1,0 +1,7 @@
+apiVersion: v2
+name: gloo-ee
+version: 1.0.0
+dependencies:
+  - name: gloo-ee
+    version: 1.17.3
+    repository: https://storage.googleapis.com/gloo-ee-helm
