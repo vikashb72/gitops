@@ -1,54 +1,55 @@
-glooMgmtServer:
-  enabled: true
-  serviceType: ClusterIP
-  registerCluster: true
-  createGlobalWorkspace: true
-prometheus:
-  enabled: true
-redis:
-  deployment:
+gloo-ee:
+  glooMgmtServer:
     enabled: true
-telemetryCollector:
-  enabled: true
-  config:
-    exporters:
-      otlp:
-        endpoint: gloo-telemetry-gateway.gloo-mesh:4317
-glooUi:
-  enabled: true
-  serviceType: ClusterIP
-glooAgent:
-  enabled: true
-  relay:
-    serverAddress: gloo-mesh-mgmt-server:9900
-gloo:
-  settings:
-    create: true
-    watchNamespaces:
-      - gloo-system
-    extAuth:
-      requestTimeout: 30s
-  discovery:
+    serviceType: ClusterIP
+    registerCluster: true
+    createGlobalWorkspace: true
+  prometheus:
     enabled: true
-    fdsMode: WHITELIST
-    fdsOptions:
-      graphqlEnabled: false
-    udsOptions:
+  redis:
+    deployment:
       enabled: true
-  gatewayProxies:
-    gatewayProxy:
-      service:
-        type: "LoadBalancer"
-gloo-fed:
-  enabled: false
-global:
-  extensions:
-    extAuth:
-      deployment:
-        customEnv:
-          - name: LOG_LEVEL
-            value: debug
-grafana:
-  defaultInstallationEnabled: false
-observability:
-  enabled: false
+  telemetryCollector:
+    enabled: true
+    config:
+      exporters:
+        otlp:
+          endpoint: gloo-telemetry-gateway.gloo-mesh:4317
+  glooUi:
+    enabled: true
+    serviceType: ClusterIP
+  glooAgent:
+    enabled: true
+    relay:
+      serverAddress: gloo-mesh-mgmt-server:9900
+  gloo:
+    settings:
+      create: true
+      watchNamespaces:
+        - gloo-system
+      extAuth:
+        requestTimeout: 30s
+    discovery:
+      enabled: true
+      fdsMode: WHITELIST
+      fdsOptions:
+        graphqlEnabled: false
+      udsOptions:
+        enabled: true
+    gatewayProxies:
+      gatewayProxy:
+        service:
+          type: "LoadBalancer"
+  gloo-fed:
+    enabled: false
+  global:
+    extensions:
+      extAuth:
+        deployment:
+          customEnv:
+            - name: LOG_LEVEL
+              value: debug
+  grafana:
+    defaultInstallationEnabled: false
+  observability:
+    enabled: false

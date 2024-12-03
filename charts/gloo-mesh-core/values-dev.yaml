@@ -1,47 +1,48 @@
-glooMgmtServer:
-  enabled: true
-  registerCluster: true
-  serviceType: ClusterIP
-  relay:
-    disableCaCertGeneration: true
-    signingTlsSecret:
-      name: relay-tls-signing-secret
-      namespace: gloo-mesh
-    tlsSecret:
-      name: relay-server-tls-secret
-      namespace: gloo-mesh
-    tokenSecret:
-      key: token
-      name: relay-identity-token-secret
-      namespace: gloo-mesh
-glooAgent:
-  enabled: true
-  relay:
-    authority: gloo-mesh-mgmt-server.gloo-mesh
-    serverAddress: gloo-mesh-mgmt-server.gloo-mesh:9900
-    clientTlsSecretRotationGracePeriodRatio: ""
-    rootTlsSecret:
-      name: relay-root-tls-secret
-      namespace: gloo-mesh
-    tokenSecret:
-      key: token
-      name: relay-identity-token-secret
-      namespace: gloo-mesh
-telemetryCollector:
-  enabled: true
-  extraVolumes:
-    - name: root-ca
-      secret:
-        defaultMode: 420
-        optional: true
-        secretName: telemetry-root-secret
-    - configMap:
-        items:
-          - key: relay
-            path: relay.yaml
-        name: gloo-telemetry-collector-config
-      name: telemetry-configmap
-    - hostPath:
-        path: /var/run/cilium
-        type: DirectoryOrCreate
-      name: cilium-run
+gloo-platform:
+  glooMgmtServer:
+    enabled: true
+    registerCluster: true
+    serviceType: ClusterIP
+    relay:
+      disableCaCertGeneration: true
+      signingTlsSecret:
+        name: relay-tls-signing-secret
+        namespace: gloo-mesh
+      tlsSecret:
+        name: relay-server-tls-secret
+        namespace: gloo-mesh
+      tokenSecret:
+        key: token
+        name: relay-identity-token-secret
+        namespace: gloo-mesh
+  glooAgent:
+    enabled: true
+    relay:
+      authority: gloo-mesh-mgmt-server.gloo-mesh
+      serverAddress: gloo-mesh-mgmt-server.gloo-mesh:9900
+      clientTlsSecretRotationGracePeriodRatio: ""
+      rootTlsSecret:
+        name: relay-root-tls-secret
+        namespace: gloo-mesh
+      tokenSecret:
+        key: token
+        name: relay-identity-token-secret
+        namespace: gloo-mesh
+  telemetryCollector:
+    enabled: true
+    extraVolumes:
+      - name: root-ca
+        secret:
+          defaultMode: 420
+          optional: true
+          secretName: telemetry-root-secret
+      - configMap:
+          items:
+            - key: relay
+              path: relay.yaml
+          name: gloo-telemetry-collector-config
+        name: telemetry-configmap
+      - hostPath:
+          path: /var/run/cilium
+          type: DirectoryOrCreate
+        name: cilium-run

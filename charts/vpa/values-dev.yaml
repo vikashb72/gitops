@@ -1,12 +1,5 @@
-admissionController:
-  resources:
-    requests:
-      cpu: 15m
-      memory: 105M
-    limits:
-      cpu: 15m
-      memory: 105M
-  recommender:
+vpa:
+  admissionController:
     resources:
       requests:
         cpu: 15m
@@ -14,11 +7,19 @@ admissionController:
       limits:
         cpu: 15m
         memory: 105M
-  updater:
-    resources:
-      requests:
-        cpu: 15m
-        memory: 105M
-      limits:
-        cpu: 15m
-        memory: 105M
+    recommender:
+      resources:
+        requests:
+          cpu: 15m
+          memory: 105M
+        limits:
+          cpu: 15m
+          memory: 105M
+    updater:
+      resources:
+        requests:
+          cpu: 15m
+          memory: 105M
+        limits:
+          cpu: 15m
+          memory: 105M
