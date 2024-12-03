@@ -59,37 +59,6 @@ argocdManaged:
         noHelmValues: false
         helm:
           envFile: true
-    #  - repoURL: https://charts.fairwinds.com/stable
-    #    chart: vpa
-    #    targetRevision: 4.5.0
-    #    noHelmValues: false
-    #    helm:
-    #      envFile: false
-    #      values: |
-    #        admissionController:
-    #          resources:
-    #            requests:
-    #              cpu: 15m
-    #              memory: 105M
-    #            limits:
-    #              cpu: 15m
-    #              memory: 105M
-    #        recommender:
-    #          resources:
-    #            requests:
-    #              cpu: 15m
-    #              memory: 105M
-    #            limits:
-    #              cpu: 15m
-    #              memory: 105M
-    #        updater:
-    #          resources:
-    #            requests:
-    #              cpu: 15m
-    #              memory: 105M
-    #            limits:
-    #              cpu: 15m
-    #              memory: 105M
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
@@ -99,31 +68,35 @@ argocdManaged:
     targetNamespace: goldilocks
     syncwave: "0"
     sources:
-      - repoURL: https://charts.fairwinds.com/stable
-        targetRevision: 8.0.2
-        chart: goldilocks
+      - path: charts/goldilocks
         noHelmValues: false
         helm:
-          envFile: false
-          values: |
-            dashboard:
-              service:
-                type: NodePort
-              resources:
-                requests:
-                  cpu: 15m
-                  memory: 105M
-                limits:
-                  cpu: 15m
-                  memory: 105M
-            controller:
-              resources:
-                requests:
-                  cpu: 15m
-                  memory: 105M
-                limits:
-                  cpu: 15m
-                  memory: 105M
+          envFile: true
+      #- repoURL: https://charts.fairwinds.com/stable
+      #  targetRevision: 8.0.2
+      #  chart: goldilocks
+      #  noHelmValues: false
+      #  helm:
+      #    envFile: false
+      #    values: |
+      #      dashboard:
+      #        service:
+      #          type: NodePort
+      #        resources:
+      #          requests:
+      #            cpu: 15m
+      #            memory: 105M
+      #          limits:
+      #            cpu: 15m
+      #            memory: 105M
+      #      controller:
+      #        resources:
+      #          requests:
+      #            cpu: 15m
+      #            memory: 105M
+      #          limits:
+      #            cpu: 15m
+      #            memory: 105M
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
