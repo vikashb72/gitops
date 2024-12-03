@@ -185,6 +185,18 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
+  grafana:
+    disable: false
+    name: grafana
+    targetNamespace: grafana
+    sources:
+      - chart: grafana
+        repoURL: https://grafana.github.io/helm-charts
+        targetRevision: 8.6.4
+        noHelmValues: false
+        envFile: true
+    disableAutomated: false
+    automated: {}
   #gloo-ee:
   #  disable: true
   #  name: gloo-ee
@@ -211,7 +223,6 @@ argocdManaged:
   #     gha-runner-scale-set
   # gloo-ee
   # gloo-mesh-core
-  # grafana
   # istio
   # istio-base
   # keda
