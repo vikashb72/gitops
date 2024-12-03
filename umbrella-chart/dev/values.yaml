@@ -129,15 +129,6 @@ argocdManaged:
         noHelmValues: false
         helm:
           envFile: true
-      #- chart: prometheus
-      #  repoURL: https://prometheus-community.github.io/helm-charts
-      #  targetRevision: 26.0.0
-      #  noHelmValues: false
-      #  helm:
-      #    envFile: false
-      #    values: |
-      #      pushgateway:
-      #        enabled: false
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
@@ -146,10 +137,8 @@ argocdManaged:
     name: grafana
     targetNamespace: grafana
     sources:
-      - chart: grafana
-        repoURL: https://grafana.github.io/helm-charts
-        targetRevision: 8.6.4
-        noHelmValues: true
+      - path: charts/grafana
+        noHelmValues: false
         helm:
           envFile: true
     disableAutomated: false
