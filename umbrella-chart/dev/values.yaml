@@ -168,6 +168,23 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
+  prometheus:
+    disable: false
+    name: prometheus
+    targetNamespace: prometheus
+    sources:
+      - chart: prometheus
+        repoURL: https://prometheus-community.github.io/helm-charts
+        targetRevision: 26.0.0
+        noHelmValues: false
+        envFile: true
+        helm:
+          values: |
+            pushgateway:
+              enabled: false
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
   #gloo-ee:
   #  disable: true
   #  name: gloo-ee
@@ -178,45 +195,32 @@ argocdManaged:
   #      noHelmValues: false
   #      helm:
   #        envFile: true
-  #gloo-ee:
+  #gloo-core:
   #  disable: true
   #  name: gloo-platform
-  #  targetNamespace: gloo-platform
+  #  targetNamespace: gloo-core
   #  sources:
   #  disableAutomated: false
   #    - path: charts/gloo-mesh-core
   #      noHelmValues: false
   #      helm:
   #        envFile: true
-  #prometheus:
-  #  disable: false
-  #  name: prometheus
-  #  targetNamespace: prometheus
-  #  sources:
-  #    - chart: prometheus
-  #      repoURL: https://prometheus-community.github.io/helm-charts
-  #      targetRevision: 25.26.0
-  #      noHelmValues: false
-  #      envFile: true
-  #      helm:
-  #        values: |
-  #          pushgateway:
-  #            enabled: false
-  #  disableAutomated: false
-  #  automated: {}
-  #  ignoreDifferences: false 
   #
   # TODO:
   #     gha-runner-scale-set-controller
   #     gha-runner-scale-set
-  # gloo
+  # gloo-ee
+  # gloo-mesh-core
   # grafana
   # istio
-  #     keda
-  #    reloader
+  # istio-base
+  # keda
+  # reloader
+  # kafka
+  # kafka-strimzi-operator
   # keycloak
   # kiali
-  # loki
+  # loki-distributed
   # promtail
   # redis
   # 
