@@ -72,6 +72,10 @@ argocdManaged:
         noHelmValues: false
         helm:
           envFile: true
+          values: |
+            dashboard:
+              service:
+                type: NodePort
       #- repoURL: https://charts.fairwinds.com/stable
       #  targetRevision: 8.0.2
       #  chart: goldilocks
