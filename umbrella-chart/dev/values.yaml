@@ -177,8 +177,8 @@ argocdManaged:
         repoURL: https://prometheus-community.github.io/helm-charts
         targetRevision: 26.0.0
         noHelmValues: false
-        envFile: true
         helm:
+          envFile: false
           values: |
             pushgateway:
               enabled: false
@@ -194,7 +194,8 @@ argocdManaged:
         repoURL: https://grafana.github.io/helm-charts
         targetRevision: 8.6.4
         noHelmValues: false
-        envFile: true
+        helm:
+          envFile: true
     disableAutomated: false
     automated: {}
   #gloo-ee:
