@@ -7,13 +7,13 @@ goldilocks:
         cpu: 15m
         memory: 105M
       limits:
-        cpu: 15m
-        memory: 105M
+        cpu: 256m
+        memory: 404M
   controller:
     resources:
       requests:
         cpu: 15m
-        memory: 105M
+        memory: 105Mi
       limits:
-        cpu: 15m
-        memory: 105M
+        cpu: 119m
+        memory: 395Mi
