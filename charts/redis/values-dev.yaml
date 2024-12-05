@@ -3,13 +3,8 @@ redis:
     redis:
     password: ""
   auth:
-    enabled: true
+    enabled: false
     sentinel: true
-    password: ""
-    existingSecret: ""
-    existingSecretPasswordKey: ""
-    usePasswordFiles: false
-    usePasswordFileFromSecret: true
   master:
     resourcesPreset: "nano"
     kind: StatefulSet
