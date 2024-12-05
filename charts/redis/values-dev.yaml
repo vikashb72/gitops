@@ -1,19 +1,18 @@
 redis:
   global:
     redis:
-      configuration: |
-        maxmemory-policy allkeys-lru
-        maxmemory 2mb
-        appendonly yes
-  auth:
-    enabled: false
-    sentinel: true
-  commonConfiguration:
-    configuration: |
       maxmemory-policy allkeys-lru
       maxmemory 2mb
       appendonly yes
-      save ""
+  auth:
+    enabled: false
+    sentinel: true
+  #commonConfiguration:
+  #  configuration: |
+  #    maxmemory-policy allkeys-lru
+  #    maxmemory 2mb
+  #    appendonly yes
+  #    save ""
   master:
     resourcesPreset: "nano" 			# nano, micro, small, medium
     kind: StatefulSet
