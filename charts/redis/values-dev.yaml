@@ -4,7 +4,7 @@ redis:
   auth:
     enabled: false
     sentinel: true
-  commonConfiguration:
+  commonConfiguration: |
     maxmemory-policy allkeys-lru
     maxmemory 2mb
     appendonly yes
