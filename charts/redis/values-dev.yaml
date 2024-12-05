@@ -1,7 +1,10 @@
 redis:
   global:
     redis:
-    password: ""
+      configuration: |
+        maxmemory-policy allkeys-lru
+        maxmemory 2mb
+        appendonly yes
   auth:
     enabled: false
     sentinel: true
