@@ -1,8 +1,20 @@
 redis:
+  auth:
+    enabled: true
+    sentinel: true
+    password: ""
+    existingSecret: ""
+    existingSecretPasswordKey: ""
+    usePasswordFiles: false
+    usePasswordFileFromSecret: true
   master:
     resourcesPreset: "nano"
+    kind: StatefulSet
   replica:
     resourcesPreset: "nano"
+    kind: StatefulSet
+    replicaCount: 2
   sentinel:
     resourcesPreset: "nano"
+    kind: StatefulSet
   # nano, micro, small, medium
