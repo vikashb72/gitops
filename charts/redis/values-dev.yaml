@@ -1,0 +1,8 @@
+redis:
+  master:
+    resourcesPreset: "nano"
+  replica:
+    resourcesPreset: "nano"
+  sentinel:
+    resourcesPreset: "nano"
+  # nano, micro, small, medium

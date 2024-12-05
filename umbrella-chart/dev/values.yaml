@@ -143,6 +143,17 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+  redis:
+    disable: false
+    name: grafana
+    targetNamespace: redis
+    sources:
+      - path: charts/redis
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   #gloo-ee:
   #  disable: true
   #  name: gloo-ee
@@ -167,19 +178,18 @@ argocdManaged:
   # TODO:
   #     gha-runner-scale-set-controller
   #     gha-runner-scale-set
+  # kafka
+  # kafka-strimzi-operator
   # gloo-ee
   # gloo-mesh-core
   # istio
   # istio-base
+  # kiali --- stio console ??
   # keda
   # reloader
-  # kafka
-  # kafka-strimzi-operator
   # keycloak
-  # kiali
   # loki-distributed
   # promtail
-  # redis
   # 
   #documentation:
   #  disable: false
