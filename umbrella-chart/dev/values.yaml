@@ -145,7 +145,7 @@ argocdManaged:
     automated: {}
   redis:
     disable: false
-    name: grafana
+    name: redis
     targetNamespace: redis
     sources:
       - path: charts/redis
