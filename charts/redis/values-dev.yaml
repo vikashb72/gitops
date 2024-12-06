@@ -1,6 +1,5 @@
 redis:
-  global:
-    redis:
+  architecture: replication
   auth:
     enabled: false
     sentinel: true
@@ -17,11 +16,17 @@ redis:
   replica:
     resourcesPreset: "nano"
     kind: StatefulSet
-    replicaCount: 2
+    replicaCount: 3
     persistence:
+      enabled: false
+    externalMaster:
+      enabled: false
+    autoscaling
       enabled: false
   sentinel:
     resourcesPreset: "nano"
     kind: StatefulSet
     persistence:
+      enabled: false
+    externalMaster:
       enabled: false
