@@ -21,7 +21,7 @@ redis:
       enabled: false
     externalMaster:
       enabled: false
-    autoscaling
+    autoscaling:
       enabled: false
   sentinel:
     resourcesPreset: "nano"
