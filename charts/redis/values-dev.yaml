@@ -12,13 +12,16 @@ redis:
   master:
     resourcesPreset: "nano" 			# nano, micro, small, medium
     kind: StatefulSet
-    persistence: false
+    persistence: 
+      enabled: false
   replica:
     resourcesPreset: "nano"
     kind: StatefulSet
     replicaCount: 2
-    persistence: false
+    persistence:
+      enabled: false
   sentinel:
     resourcesPreset: "nano"
     kind: StatefulSet
-    persistence: false
+    persistence:
+      enabled: false
