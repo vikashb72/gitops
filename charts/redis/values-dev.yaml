@@ -9,6 +9,7 @@ redis:
     appendonly yes
     save ""
   master:
+    count: 1
     resourcesPreset: "nano" 			# nano, micro, small, medium
     kind: StatefulSet
     persistence: 
@@ -24,6 +25,7 @@ redis:
     autoscaling:
       enabled: false
   sentinel:
+    enabled: true
     resourcesPreset: "nano"
     kind: StatefulSet
     persistence:
