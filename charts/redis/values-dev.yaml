@@ -15,6 +15,15 @@ redis:
     kind: StatefulSet
     persistence: 
       enabled: false
+    resources:
+      limits:
+        cpu: 150m
+        ephemeral-storage: 1Gi
+        memory: 8Mi
+      requests:
+        cpu: 100m
+        ephemeral-storage: 50Mi
+        memory: 4Mi
   replica:
     resourcesPreset: "nano"
     kind: StatefulSet
@@ -25,6 +34,15 @@ redis:
       enabled: false
     autoscaling:
       enabled: false
+    resources:
+      limits:
+        cpu: 150m
+        ephemeral-storage: 1Gi
+        memory: 8Mi
+      requests:
+        cpu: 100m
+        ephemeral-storage: 50Mi
+        memory: 4Mi
   sentinel:
     enabled: true
     resourcesPreset: "nano"
