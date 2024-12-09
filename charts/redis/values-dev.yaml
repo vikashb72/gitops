@@ -32,10 +32,10 @@ redis:
       enabled: false
     externalMaster:
       enabled: false
-    configuration: |
-      dir "/tmp"
-      port 26379
-      sentinel monitor mymaster redis-node-0.redis-headless.redis.svc.cluster.local 6379 2
-      sentinel down-after-milliseconds mymaster 60000
-      sentinel failover-timeout mymaster 180000
-      sentinel parallel-syncs mymaster 1
+    #configuration: |
+    #  dir "/tmp"
+    #  port 26379
+    #  sentinel monitor mymaster redis-node-0.redis-headless.redis.svc.cluster.local 6379 2
+    #  sentinel down-after-milliseconds mymaster 60000
+    #  sentinel failover-timeout mymaster 180000
+    #  sentinel parallel-syncs mymaster 1
