@@ -5,7 +5,7 @@ redis:
     sentinel: true
   commonConfiguration: |
     maxmemory-policy allkeys-lru
-    maxmemory 128mb
+    maxmemory 16mb
     repl-backlog-size 2mb
     appendonly yes
     save ""
@@ -33,6 +33,15 @@ redis:
       enabled: false
     externalMaster:
       enabled: false
+    resources:
+      limits:
+        cpu: 150m
+        ephemeral-storage: 1Gi
+        memory: 8Mi
+      requests:
+        cpu: 100m
+        ephemeral-storage: 50Mi
+        memory: 4Mi
     #configuration: |
     #  dir "/tmp"
     #  port 26379
