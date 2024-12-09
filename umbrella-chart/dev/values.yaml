@@ -49,32 +49,32 @@ argocdManaged:
     automated:
       allowEmpty: true
     ignoreDifferences: false 
-  vpa:
-    disable: false
-    name: vpa
-    targetNamespace: vpa
-    syncwave: "-1"
-    sources:
-      - path: charts/vpa
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: false 
-  goldilocks:
-    disable: false
-    name: goldilocks
-    targetNamespace: goldilocks
-    syncwave: "0"
-    sources:
-      - path: charts/goldilocks
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: false 
+  #vpa:
+  #  disable: false
+  #  name: vpa
+  #  targetNamespace: vpa
+  #  syncwave: "-1"
+  #  sources:
+  #    - path: charts/vpa
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #  ignoreDifferences: false 
+  #goldilocks:
+  #  disable: false
+  #  name: goldilocks
+  #  targetNamespace: goldilocks
+  #  syncwave: "0"
+  #  sources:
+  #    - path: charts/goldilocks
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #  ignoreDifferences: false 
   external-secrets:
     disable: false
     name: external-secrets
@@ -107,53 +107,53 @@ argocdManaged:
         kind: MutatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.clientConfig.caBundle
-  cert-manager:
-    disable: false
-    name: cert-manager
-    syncwave: "-5"
-    targetNamespace: cert-manager
-    sources:
-      - path: charts/cert-manager
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: false 
-  prometheus:
-    disable: false
-    name: prometheus
-    targetNamespace: prometheus
-    sources:
-      - path: charts/prometheus
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: false 
-  grafana:
-    disable: false
-    name: grafana
-    targetNamespace: grafana
-    sources:
-      - path: charts/grafana
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-  redis:
-    disable: false
-    name: redis
-    targetNamespace: redis
-    sources:
-      - path: charts/redis
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
+  #cert-manager:
+  #  disable: false
+  #  name: cert-manager
+  #  syncwave: "-5"
+  #  targetNamespace: cert-manager
+  #  sources:
+  #    - path: charts/cert-manager
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #  ignoreDifferences: false 
+  #prometheus:
+  #  disable: false
+  #  name: prometheus
+  #  targetNamespace: prometheus
+  #  sources:
+  #    - path: charts/prometheus
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #  ignoreDifferences: false 
+  #grafana:
+  #  disable: false
+  #  name: grafana
+  #  targetNamespace: grafana
+  #  sources:
+  #    - path: charts/grafana
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #redis:
+  #  disable: false
+  #  name: redis
+  #  targetNamespace: redis
+  #  sources:
+  #    - path: charts/redis
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
   #gloo-ee:
   #  disable: true
   #  name: gloo-ee
