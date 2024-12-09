@@ -7,9 +7,9 @@ dependencies:
     repository: https://argoproj.github.io/argo-helm
   - name: argo-workflows
     version: 0.45.1
+    repository: https://argoproj.github.io/argo-helm
   - name: argo-rollouts
     version: 2.38.0
-    repository: https://argoproj.github.io/argo-helm
     repository: https://argoproj.github.io/argo-helm
 #  - name: argo-events
 #    version: 2.4.7
