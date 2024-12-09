@@ -5,7 +5,8 @@ redis:
     sentinel: true
   commonConfiguration: |
     maxmemory-policy allkeys-lru
-    maxmemory 8mb
+    maxmemory 128mb
+    repl-backlog-size 2mb
     appendonly yes
     save ""
   master:
