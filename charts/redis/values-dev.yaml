@@ -5,7 +5,7 @@ redis:
     sentinel: true
   commonConfiguration: |
     maxmemory-policy allkeys-lru
-    maxmemory 4mb
+    maxmemory 128mb
     repl-backlog-size 2mb
     appendonly yes
     save ""
@@ -15,15 +15,6 @@ redis:
     kind: StatefulSet
     persistence: 
       enabled: false
-    resources:
-      limits:
-        cpu: 150m
-        ephemeral-storage: 1Gi
-        memory: 8Mi
-      requests:
-        cpu: 100m
-        ephemeral-storage: 50Mi
-        memory: 4Mi
   replica:
     resourcesPreset: "nano"
     kind: StatefulSet
@@ -34,15 +25,6 @@ redis:
       enabled: false
     autoscaling:
       enabled: false
-    resources:
-      limits:
-        cpu: 150m
-        ephemeral-storage: 1Gi
-        memory: 8Mi
-      requests:
-        cpu: 100m
-        ephemeral-storage: 50Mi
-        memory: 4Mi
   sentinel:
     enabled: true
     resourcesPreset: "nano"
@@ -51,19 +33,3 @@ redis:
       enabled: false
     externalMaster:
       enabled: false
-    resources:
-      limits:
-        cpu: 150m
-        ephemeral-storage: 1Gi
-        memory: 8Mi
-      requests:
-        cpu: 100m
-        ephemeral-storage: 50Mi
-        memory: 4Mi
-    #configuration: |
-    #  dir "/tmp"
-    #  port 26379
-    #  sentinel monitor mymaster redis-node-0.redis-headless.redis.svc.cluster.local 6379 2
-    #  sentinel down-after-milliseconds mymaster 60000
-    #  sentinel failover-timeout mymaster 180000
-    #  sentinel parallel-syncs mymaster 1
