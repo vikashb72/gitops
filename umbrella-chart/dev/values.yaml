@@ -75,38 +75,38 @@ argocdManaged:
   #  disableAutomated: false
   #  automated: {}
   #  ignoreDifferences: false 
-  external-secrets:
-    disable: false
-    name: external-secrets
-    targetNamespace: external-secrets
-    sources:
-      - path: hooks/external-secrets
-        noHelmValues: true
-      - path: charts/external-secrets
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: false 
-  vault:
-    disable: false
-    name: vault
-    syncwave: "-5"
-    targetNamespace: vault-system
-    sources:
-      - path: charts/hashicorp-vault
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: true 
-    ignoreDifferencesConfig:
-      - group: admissionregistration.k8s.io
-        kind: MutatingWebhookConfiguration
-        jqPathExpressions:
-          - .webhooks[]?.clientConfig.caBundle
+  #external-secrets:
+  #  disable: false
+  #  name: external-secrets
+  #  targetNamespace: external-secrets
+  #  sources:
+  #    - path: hooks/external-secrets
+  #      noHelmValues: true
+  #    - path: charts/external-secrets
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #  ignoreDifferences: false 
+  #vault:
+  #  disable: false
+  #  name: vault
+  #  syncwave: "-5"
+  #  targetNamespace: vault-system
+  #  sources:
+  #    - path: charts/hashicorp-vault
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
+  #  ignoreDifferences: true 
+  #  ignoreDifferencesConfig:
+  #    - group: admissionregistration.k8s.io
+  #      kind: MutatingWebhookConfiguration
+  #      jqPathExpressions:
+  #        - .webhooks[]?.clientConfig.caBundle
   #cert-manager:
   #  disable: false
   #  name: cert-manager
