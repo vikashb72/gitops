@@ -154,6 +154,17 @@ argocdManaged:
   #        envFile: true
   #  disableAutomated: false
   #  automated: {}
+  strimzi-kafka-operator:
+    disable: false
+    name: strimzi-kafka-operator
+    targetNamespace: kafka-system
+    sources:
+      - path: charts/strimzi-kafka-operator
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   #gloo-ee:
   #  disable: true
   #  name: gloo-ee
@@ -178,8 +189,6 @@ argocdManaged:
   # TODO:
   #     gha-runner-scale-set-controller
   #     gha-runner-scale-set
-  # kafka
-  # kafka-strimzi-operator
   # gloo-ee
   # gloo-mesh-core
   # istio
