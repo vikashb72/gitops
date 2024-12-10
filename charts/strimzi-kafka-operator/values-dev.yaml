@@ -1,3 +1,5 @@
+env: dev
+
 strimzi-kafka-operator:
   replicas: 1
   watchNamespaces: []
@@ -12,3 +14,60 @@ strimzi-kafka-operator:
     enabled: false
   createGlobalResources: true
   createAggregateRoles: true
+
+cluster:
+  name: "kafka-cluster"
+  kafka:
+    version: 3.7.1
+    metadataVersion: "3.7"
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 250m
+      limits:
+        memory: 64Mi
+        cpu: 500m
+    jvmOptions:
+      xms: 32m
+      xmx: 32m
+    replicas: 3
+    loadbalancer:
+      enabled: true
+      port: 9094
+      tls: false
+      subnet: "snet-giss-dev-shared-nl01-workload01"
+    storage:
+      type: jbod
+      volumes:
+        - id: 0
+          type: persistent-claim
+          class: nfs-client
+          size: 2Gi
+          deleteClaim: true
+  zookeeper:
+    replicas: 3
+    storage:
+      type: persistent-claim
+      class: nfs-client
+      size: 2Gi
+      deleteClaim: true
+    logging:
+      type: inline
+      loggers:
+        kafka.root.logger.level: INFO
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 125m
+      limits:
+        memory: 1Gi
+        cpu: "2"
+
+topics:
+  - name: topic.1
+    retention: 7200000
+    size: 52428800
+    partitions: 1
+    replicas: 3
+  - name: topic.2
+    size: 52428800
