@@ -35,16 +35,16 @@ spec:
         tls: {{ .Values.cluster.kafka.loadbalancer.tls }}
         configuration:
           bootstrap:
-            annotations:
-              service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-              service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "{{ .Values.cluster.kafka.loadbalancer.subnet }}"
+            #annotations:
+            #  service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+            #  service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "{{ .Values.cluster.kafka.loadbalancer.subnet }}"
           brokers:
 {{- $count := (.Values.cluster.kafka.replicas | int) }}
 {{- range until $count }}
             - broker: {{.}}
-              annotations:
-                service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-                service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "{{ $.Values.cluster.kafka.loadbalancer.subnet }}"
+              #annotations:
+              #  service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+              #  service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "{{ $.Values.cluster.kafka.loadbalancer.subnet }}"
 {{- end }}
 {{- end }}
     config:
