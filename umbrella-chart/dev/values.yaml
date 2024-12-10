@@ -154,17 +154,17 @@ argocdManaged:
   #        envFile: true
   #  disableAutomated: false
   #  automated: {}
-  strimzi-kafka-operator:
-    disable: false
-    name: strimzi-kafka-operator
-    targetNamespace: kafka-system
-    sources:
-      - path: charts/strimzi-kafka-operator
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
+  #strimzi-kafka-operator:
+  #  disable: false
+  #  name: strimzi-kafka-operator
+  #  targetNamespace: kafka-system
+  #  sources:
+  #    - path: charts/strimzi-kafka-operator
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #  disableAutomated: false
+  #  automated: {}
   #gloo-ee:
   #  disable: true
   #  name: gloo-ee
