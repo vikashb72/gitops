@@ -30,9 +30,9 @@ cluster:
     jvmOptions:
       xms: 32m
       xmx: 32m
-    replicas: 3
+    replicas: 1
     loadbalancer:
-      enabled: true
+      enabled: false
       port: 9094
       tls: false
       subnet: "snet-giss-dev-shared-nl01-workload01"
@@ -45,7 +45,7 @@ cluster:
           size: 2Gi
           deleteClaim: true
   zookeeper:
-    replicas: 3
+    replicas: 1
     storage:
       type: persistent-claim
       class: nfs-client

@@ -46,6 +46,16 @@ spec:
               #  service.beta.kubernetes.io/azure-load-balancer-internal: "true"
               #  service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "{{ $.Values.cluster.kafka.loadbalancer.subnet }}"
 {{- end }}
+{{- else }}
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: false
 {{- end }}
     config:
       unclean.leader.election.enable: false
