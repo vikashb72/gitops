@@ -200,14 +200,11 @@ argocdManaged:
   # TODO:
   #     gha-runner-scale-set-controller
   #     gha-runner-scale-set
-  # gloo-ee
-  # gloo-mesh-core
   # istio
   # istio-base
   # kiali --- stio console ??
   # keda
   # reloader
-  # keycloak
   # loki-distributed
   # promtail
   # 
