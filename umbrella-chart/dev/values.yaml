@@ -165,6 +165,17 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+  keycloak:
+    disable: false
+    name: keycloak
+    targetNamespace: keycloak
+    sources:
+      - path: charts/keycloak
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   #gloo-ee:
   #  disable: true
   #  name: gloo-ee
