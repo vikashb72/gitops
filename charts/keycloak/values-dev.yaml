@@ -65,18 +65,26 @@ keycloak:
     #resources: {}
   postgresql:
     enabled: true
+  auth:
+    postgresPassword: ""
+    username: bn_keycloak
+    password: ""
+    database: bitnami_keycloak
+    existingSecret: "keycloak-postgresql"
+    secretKeys:
+      userPasswordKey: password
   externalDatabase:
     host: ""
     port: ""
     user: ""
     database: ""
     password: ""
-    existingSecret: keycloak-externaldb
-    existingSecretHostKey: db-host
-    existingSecretPortKey: db-port
-    existingSecretUserKey: db-user
-    existingSecretDatabaseKey: db-database
-    existingSecretPasswordKey: db-password
+    #existingSecret: keycloak-externaldb
+    #existingSecretHostKey: db-host
+    #existingSecretPortKey: db-port
+    #existingSecretUserKey: db-user
+    #existingSecretDatabaseKey: db-database
+    #existingSecretPasswordKey: db-password
   cache:
     enabled: false
   logging:
