@@ -166,7 +166,7 @@ argocdManaged:
     disableAutomated: false
     automated: {}
   keycloak:
-    disable: false
+    disable: true
     name: keycloak
     targetNamespace: keycloak
     sources:
