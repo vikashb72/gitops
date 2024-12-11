@@ -70,9 +70,10 @@ keycloak:
     username: bn_keycloak
     password: ""
     database: bitnami_keycloak
-    existingSecret: "keycloak-postgresql"
+    existingSecret: ""
     secretKeys:
       userPasswordKey: password
+      userPasswordKey: postgres-password
   externalDatabase:
     host: ""
     port: ""
