@@ -47,3 +47,30 @@ argocdManaged:
     automated:
       allowEmpty: true
     ignoreDifferences: false 
+  vpa:
+    disable: false
+    name: vpa
+    targetNamespace: vpa
+    syncwave: "-1"
+    sources:
+      - path: charts/vpa
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false
+  goldilocks:
+    disable: false
+    name: goldilocks
+    targetNamespace: goldilocks
+    syncwave: "0"
+    sources:
+      - path: charts/goldilocks
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false
+
