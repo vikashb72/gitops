@@ -32,7 +32,7 @@ cluster:
       xmx: 32m
     replicas: 3
     loadbalancer:
-      enabled: false
+      enabled: true
       port: 9094
       tls: false
       subnet: "snet-giss-dev-shared-nl01-workload01"
