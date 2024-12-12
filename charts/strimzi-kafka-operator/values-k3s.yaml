@@ -28,8 +28,8 @@ cluster:
     #    memory: 64Mi
     #    cpu: 500m
     jvmOptions:
-      xms: 32m
-      xmx: 32m
+      xms: 128m
+      xmx: 128m
     replicas: 3
     loadbalancer:
       enabled: true
