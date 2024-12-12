@@ -73,4 +73,14 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false
-
+  strimzi-kafka-operator:
+    disable: false
+    name: strimzi-kafka-operator
+    targetNamespace: kafka-system
+    sources:
+      - path: charts/strimzi-kafka-operator
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}

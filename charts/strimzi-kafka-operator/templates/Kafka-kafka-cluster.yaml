@@ -11,12 +11,14 @@ spec:
       loggers:
         kafka.root.logger.level: INFO
     resources:
+{{- if .Values.cluster.kafka.resources }}
       requests:
         memory: {{ .Values.cluster.kafka.resources.requests.memory }}
         cpu: {{ .Values.cluster.kafka.resources.requests.cpu }}
       limits:
         memory: {{ .Values.cluster.kafka.resources.limits.memory }}
         cpu: {{ .Values.cluster.kafka.resources.limits.cpu }}
+{{- end }}
     readinessProbe:
       initialDelaySeconds: 30
       timeoutSeconds: 10
@@ -85,6 +87,7 @@ spec:
       type: inline
       loggers:
         kafka.root.logger.level: INFO
+{{- if .Values.cluster.zookeeper.resources }}
     resources:
       requests:
         memory: {{ .Values.cluster.zookeeper.resources.requests.memory }}
@@ -92,6 +95,7 @@ spec:
       limits:
         memory: {{ .Values.cluster.zookeeper.resources.limits.memory }}
         cpu: {{ .Values.cluster.zookeeper.resources.limits.cpu }}
+{{- end }}
     readinessProbe:
       initialDelaySeconds: 30
       timeoutSeconds: 10
