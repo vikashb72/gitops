@@ -41,14 +41,14 @@ cluster:
       volumes:
         - id: 0
           type: persistent-claim
-          class: nfs-client
+          class: nfs-csi
           size: 2Gi
           deleteClaim: true
   zookeeper:
     replicas: 3
     storage:
       type: persistent-claim
-      class: nfs-client
+      class: nfs-csi
       size: 2Gi
       deleteClaim: true
     logging:
