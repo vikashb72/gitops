@@ -38,7 +38,7 @@ cluster:
           size: 2Gi
           deleteClaim: true
   zookeeper:
-    replicas: 1
+    replicas: 3
     storage:
       type: persistent-claim
       class: nfs-csi
