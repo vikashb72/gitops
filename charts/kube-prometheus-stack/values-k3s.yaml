@@ -67,7 +67,6 @@ prometheus:
   prometheus:
     prometheusSpec:
       retention: 3d
-  
       #replicas: 2
       #podAntiAffinity: "hard"
       storageSpec:
@@ -86,9 +85,12 @@ prometheus:
       #    cpu: 100m
       #    memory: 4Gi
       #priorityClassName: high-priority
-    #service:
+    service:
+      type: LoadBalancer
     #  sessionAffinity: "ClientIP"
   grafana:
+    service:
+      type: LoadBalancer
     plugins:
       - grafana-piechart-panel
     #resources:
