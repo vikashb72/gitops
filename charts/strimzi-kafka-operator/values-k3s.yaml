@@ -62,7 +62,7 @@ topics:
     size: 52428800
     partitions: 1
     replicas: 1
-#  - name: topic.2
-#    size: 52428800
-#    partitions: 1
-#    replicas: 1
+  - name: test.topic.2
+    size: 52428800
+    partitions: 1
+    replicas: 3
