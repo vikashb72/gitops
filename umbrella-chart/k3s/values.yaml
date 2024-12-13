@@ -74,7 +74,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false
   strimzi-kafka-operator:
-    disable: true
+    disable: false
     name: strimzi-kafka-operator
     targetNamespace: kafka-system
     sources:
