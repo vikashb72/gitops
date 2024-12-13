@@ -2,18 +2,6 @@ env: k3s
 
 strimzi-kafka-operator:
   replicas: 1
-  watchNamespaces: []
-  watchAnyNamespace: false
-  kubernetesServiceDnsDomain: cluster.local
-  tmpDirSizeLimit: 1Mi
-  rbac:
-    create: yes
-  serviceAccountCreate: yes
-  serviceAccount: strimzi-cluster-operator
-  dashboards:
-    enabled: false
-  createGlobalResources: true
-  createAggregateRoles: true
 
 cluster:
   name: "kafka-cluster"
