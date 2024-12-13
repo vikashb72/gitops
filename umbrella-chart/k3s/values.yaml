@@ -119,7 +119,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   prometheus:
-    disable: true
+    disable: false
     name: prometheus
     targetNamespace: prometheus
     sources:
