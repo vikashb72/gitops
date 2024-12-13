@@ -1,25 +1,25 @@
 vpa:
-  recommender:
-     resources:
-       requests:
-         cpu: 15m
-         memory: 105M
-       limits:
-         cpu: 120m
-         memory: 258M
-  updater:
-    resources:
-      requests:
-        cpu: 15m
-        memory: 105M
-      limits:
-        cpu: 120m
-        memory: 258M
-  admissionController:
-    resources:
-      requests:
-        cpu: 15m
-        memory: 105M
-      limits:
-        cpu: 121m
-        memory: 260M
+#  recommender:
+#     resources:
+#       requests:
+#         cpu: 15m
+#         memory: 105M
+#       limits:
+#         cpu: 120m
+#         memory: 258M
+#  updater:
+#    resources:
+#      requests:
+#        cpu: 15m
+#        memory: 105M
+#      limits:
+#        cpu: 120m
+#        memory: 258M
+#  admissionController:
+#    resources:
+#      requests:
+#        cpu: 15m
+#        memory: 105M
+#      limits:
+#        cpu: 121m
+#        memory: 260M

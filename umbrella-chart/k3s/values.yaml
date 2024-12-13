@@ -48,7 +48,7 @@ argocdManaged:
       allowEmpty: true
     ignoreDifferences: false 
   vpa:
-    disable: true
+    disable: false
     name: vpa
     targetNamespace: vpa
     syncwave: "-1"
