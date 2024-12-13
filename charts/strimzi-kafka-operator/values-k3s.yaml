@@ -10,17 +10,22 @@ cluster:
     metadataVersion: "3.7"
     #resources:
     #  requests:
-    #    memory: 64Mi
+    #    memory: 384Mi
     #    cpu: 250m
     #  limits:
-    #    memory: 64Mi
+    #    memory: 384Mi
     #    cpu: 500m
     jvmOptions:
-      xms: 128m
-      xmx: 128m
+      xms: 256m
+      xmx: 256m
     replicas: 3
-    loadbalancer:
+    external_listener:
+      annotations:
+        - "metallb.universe.tf/address-pool: default"
+        - 'service.beta.kubernetes.io/azure-load-balancer-internal: "true"'
+        - 'service.beta.kubernetes.io/azure-load-balancer-internal-subnet: snet-giss-dev-shared-nl01-workload01'
       enabled: true
+      type: loadbalancer
       port: 9094
       tls: false
       subnet: "snet-giss-dev-shared-nl01-workload01"
