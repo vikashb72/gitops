@@ -123,7 +123,7 @@ argocdManaged:
     name: prometheus
     targetNamespace: prometheus
     sources:
-      - path: charts/prometheus
+      - path: charts/kube-prometheus-stack
         noHelmValues: false
         helm:
           envFile: true
