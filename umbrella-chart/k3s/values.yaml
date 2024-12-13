@@ -59,7 +59,7 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-    ignoreDifferences: false
+    ignoreDifferences: false 
   goldilocks:
     disable: true
     name: goldilocks
@@ -72,7 +72,86 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-    ignoreDifferences: false
+    ignoreDifferences: false 
+  external-secrets:
+    disable: true
+    name: external-secrets
+    targetNamespace: external-secrets
+    sources:
+      - path: hooks/external-secrets
+        noHelmValues: true
+      - path: charts/external-secrets
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
+  vault:
+    disable: true
+    name: vault
+    syncwave: "-5"
+    targetNamespace: vault-system
+    sources:
+      - path: charts/hashicorp-vault
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: true 
+    ignoreDifferencesConfig:
+      - group: admissionregistration.k8s.io
+        kind: MutatingWebhookConfiguration
+        jqPathExpressions:
+          - .webhooks[]?.clientConfig.caBundle
+  cert-manager:
+    disable: true
+    name: cert-manager
+    syncwave: "-5"
+    targetNamespace: cert-manager
+    sources:
+      - path: charts/cert-manager
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
+  prometheus:
+    disable: true
+    name: prometheus
+    targetNamespace: prometheus
+    sources:
+      - path: charts/prometheus
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
+  grafana:
+    disable: true
+    name: grafana
+    targetNamespace: grafana
+    sources:
+      - path: charts/grafana
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  redis:
+    disable: true
+    name: redis
+    targetNamespace: redis
+    sources:
+      - path: charts/redis
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   strimzi-kafka-operator:
     disable: true
     name: strimzi-kafka-operator
@@ -84,3 +163,93 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+  keycloak:
+    disable: true
+    name: keycloak
+    targetNamespace: keycloak
+    sources:
+      - path: charts/keycloak
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  #gloo-ee:
+  #  disable: true
+  #  name: gloo-ee
+  #  targetNamespace: gloo-ee
+  #  sources:
+  #  disableAutomated: false
+  #    - path: charts/gloo-ee
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #gloo-core:
+  #  disable: true
+  #  name: gloo-platform
+  #  targetNamespace: gloo-core
+  #  sources:
+  #  disableAutomated: false
+  #    - path: charts/gloo-mesh-core
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #
+  # TODO:
+  #     gha-runner-scale-set-controller
+  #     gha-runner-scale-set
+  # istio
+  # istio-base
+  # kiali --- stio console ??
+  # keda
+  # reloader
+  # loki-distributed
+  # promtail
+  # 
+  #documentation:
+  #  disable: false
+  #  name: chart-name
+  #  namespace: overwrite-namespace
+  #  disableFinalisers: false
+  #  finaliser: resources-finalizer.argocd.argoproj.io
+  #  syncwave: "0"
+  #  sources:
+  #    - repoURL: url1
+  #      targetRevision: HEAD
+  #      path: path/to/chart
+  #      noHelmValues: true
+  #    - repoURL: url2
+  #      targetRevision: HEAD
+  #      chart: chartname
+  #      noHelmValues: false
+  #      envFile: true
+  #      helm:
+  #        values: |
+  #          global:
+  #            domain: u22-dev.home.where-ever.za.net
+  #          env: dev
+  #        valuesObject:
+  #          global:
+  #            domain: u22-dev.home.where-ever.za.net
+  #          env: dev
+  #        parameters:
+  #          env: dev
+  #      targetNamespace: target-namespace
+  #      disableAutomated: false
+  #      automated:
+  #        prune: true
+  #        selfHeal: true
+  #        allowEmpty: true
+  #  ignoreDifferences: false 
+
+# override the namings to avoid obvious conflicts between created resources
+
+#chart1:
+#  mongodb:
+#    nameOverride: "chart1-mongodb"
+#    fullnameOverride: "chart1-mongodb"
+#
+#chart2:
+#  mongodb:
+#    nameOverride: "chart2-mongodb"
+#    fullnameOverride: "chart2-mongodb
