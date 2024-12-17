@@ -198,6 +198,17 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+  reloader:
+    disable: true
+    name: reloader
+    targetNamespace: reloader
+    sources:
+      - path: charts/reloader
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   #gloo-ee:
   #  disable: true
   #  name: gloo-ee
@@ -226,7 +237,6 @@ argocdManaged:
   # istio-base
   # kiali --- stio console ??
   # keda
-  # reloader
   # 
   #documentation:
   #  disable: false
