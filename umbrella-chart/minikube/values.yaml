@@ -177,11 +177,22 @@ argocdManaged:
     disableAutomated: false
     automated: {}
   promtail:
-    disable: false
+    disable: true
     name: promtail
     targetNamespace: grafana
     sources:
       - path: charts/promtail
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  loki-distributed:
+    disable: true
+    name: promtail
+    targetNamespace: grafana
+    sources:
+      - path: charts/loki-distributed
         noHelmValues: false
         helm:
           envFile: true
@@ -216,7 +227,6 @@ argocdManaged:
   # kiali --- stio console ??
   # keda
   # reloader
-  # loki-distributed
   # 
   #documentation:
   #  disable: false

@@ -1,0 +1,78 @@
+loki-distributed:
+  loki:
+    #podLabels:
+    #  azure.workload.identity/use: 'true'
+    replicas: 1 # Increase based on your cluster size
+    structuredConfig:
+      limits_config:
+        enforce_metric_name: false
+        retention_period: 720h # 7 days
+      ingester:
+        lifecycler:
+          ring:
+            kvstore:
+              store: memberlist # Use a distributed store
+        chunk_idle_period: 30m # Adjust based on your log volume
+        chunk_retain_period: 10m # Adjust based on your log volume
+        chunk_target_size: 3072000 # Adjust based on your log volume
+        concurrent_flushes: 100 # Increase if you have high log volume
+      storage_config:
+        #azure:
+        #  account_name: env-storage-account
+        #  use_federated_token: true
+        #  container_name: loki-log
+        #  user_assigned_id: "00000000-0000-0000-0000-000000000000"
+        #  request_timeout: 0
+        boltdb_shipper:
+          active_index_directory: /var/loki/boltdb-shipper-active
+          cache_location: /var/loki/boltdb-shipper-cache
+          shared_store: azure
+        filesystem:
+          directory: /var/loki/chunks
+        index_queries_cache_config:
+          enable_fifocache: true
+          fifocache:
+            size: 1024
+            validity: 24h
+      schema_config:
+        configs:
+          - from: 2022-06-21
+            store: boltdb-shipper
+            object_store: azure
+            schema: v11
+            index:
+              prefix: loki_index_
+              period: 24h
+      compactor:
+        working_directory: /var/loki/compactor
+        shared_store: azure
+  queryFrontend:
+    replicas: 1 # Increase based on your cluster size
+    maxUnavailable: 1 # Add this line
+    config:
+      query_range:
+        results_cache:
+          cache:
+            config:
+              max_size: "2gb" # Increase based on your query patterns
+  distributor:
+    replicas: 1 # Increase based on your cluster size
+    maxUnavailable: 1
+  ingester:
+    replicas: 1 # Increase based on your cluster size
+    maxUnavailable: 1
+  querier:
+    replicas: 1 # Increase based on your cluster size
+    maxUnavailable: 1
+  compactor:
+    serviceAccount:
+      create: true
+      #labels:
+      #  azure.workload.identity/use: "true"
+      #annotations:
+      #  azure.workload.identity/client-id: "00000000-0000-0000-0000-000000000000"
+      # -- Set this toggle to false to opt out of automounting API credentials for the service account
+      automountServiceAccountToken: true
+    enabled: true
+    replicas: 1 # Increase based on your cluster size
+    maxUnavailable: 1
