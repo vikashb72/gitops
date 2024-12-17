@@ -3,4 +3,4 @@ grafana:
     enabled: false
   service:
     enabled: true
-    type: Loadbalancer
+    type: LoadBalancer
