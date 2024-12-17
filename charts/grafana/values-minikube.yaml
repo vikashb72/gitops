@@ -1,0 +1,6 @@
+grafana:
+  testFramework:
+    enabled: false
+  service:
+    enabled: true
+    type: Loadbalancer

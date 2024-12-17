@@ -121,7 +121,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   prometheus:
-    disable: true
+    disable: false
     name: prometheus
     targetNamespace: prometheus
     sources:
@@ -133,7 +133,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   grafana:
-    disable: true
+    disable: false
     name: grafana
     targetNamespace: grafana
     sources:
