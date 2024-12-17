@@ -1,0 +1,19 @@
+grafana-operator:
+  operator:
+    enabled: true
+    namespace: grafana
+    serviceAccount:
+      create: true
+      name: grafana-operator
+  grafana:
+    enabled: true
+    namespace: grafana
+    adminUser: admin
+    ingress:
+      enabled: false
+    service:
+      type: LoadBalancer
+      port: 80
+      targetPort: 3000
+  extraVolumes: []
+  extraVolumeMounts: []
