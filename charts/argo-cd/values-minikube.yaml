@@ -14,6 +14,7 @@ argo-cd:
   server:
     service:
       type: LoadBalancer
+      loadBalancerIP: 192.168.49.225
 
 argo-workflows:
   namespaceOverride: "argocd"
