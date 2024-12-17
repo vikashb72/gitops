@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasource-prometheus
+  namespace: grafana
+data:
+  prometheus.yaml: |-
+    {
+      "apiVersion": 1,
+      "datasources": [
+          {
+            "name": "prometheus",
+            "type": "prometheus",
+            "access":"proxy",
+            "url": "http://prometheus-service.prometheus.svc.cluster.local:80",
+            "orgId": 1,
+            "isDefault": true,
+            "editable": true,
+            "version": 1
+          }
+      ]
+    }
