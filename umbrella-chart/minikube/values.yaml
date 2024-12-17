@@ -176,6 +176,17 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+  promtail:
+    disable: false
+    name: promtail
+    targetNamespace: grafana
+    sources:
+      - path: charts/promtail
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   #gloo-ee:
   #  disable: true
   #  name: gloo-ee
@@ -206,7 +217,6 @@ argocdManaged:
   # keda
   # reloader
   # loki-distributed
-  # promtail
   # 
   #documentation:
   #  disable: false
