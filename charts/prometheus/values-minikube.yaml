@@ -1,3 +1,26 @@
 prometheus:
+  rbac:
+    create: true
+  serviceAccounts:
+    server:
+      create: true
+  server:
+    name: server
+    enableServiceLinks: true
+    extraFlags:
+      - web.enable-lifecycle
+    global:
+      scrape_interval: 1m
+      scrape_timeout: 10s
+      evaluation_interval: 1m
+    persistentVolume:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      mountPath: /data
+      size: 5Gi
+      storageClass: nfs-client
+    service:
+      enabled: true
   prometheus-pushgateway:
-    enable: false
+    enable: true
