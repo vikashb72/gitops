@@ -42,7 +42,7 @@ argocdManaged:
     disable: false
     name: umbrella-chart
     sources:
-      - path: umbrella-chart/dev
+      - path: umbrella-chart/minikube
         noHelmValues: true
     syncwave: "-9"
     disableAutomated: false
@@ -228,14 +228,14 @@ argocdManaged:
   #      helm:
   #        values: |
   #          global:
-  #            domain: u22-dev.home.where-ever.za.net
-  #          env: dev
+  #            domain: minikube.home.where-ever.za.net
+  #          env: minikube
   #        valuesObject:
   #          global:
-  #            domain: u22-dev.home.where-ever.za.net
-  #          env: dev
+  #            domain: minikube.home.where-ever.za.net
+  #          env: minikube
   #        parameters:
-  #          env: dev
+  #          env: minikube
   #      targetNamespace: target-namespace
   #      disableAutomated: false
   #      automated:
