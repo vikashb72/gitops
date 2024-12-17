@@ -13,8 +13,7 @@ argo-cd:
     domain: minikube.home.where-ever.za.net
   server:
     service:
-      type: NodePort
-      #type: LoadBalancer
+      type: LoadBalancer
 
 argo-workflows:
   namespaceOverride: "argocd"
