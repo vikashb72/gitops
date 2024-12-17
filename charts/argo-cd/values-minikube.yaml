@@ -1,0 +1,30 @@
+env: minikube
+hostname: minikube.home.where-ever.za.net
+
+argo-cd:
+  namespaceOverride: "argocd"
+  createAggregateRoles: true
+  openshift:
+    enabled: false
+  ## Globally shared configuration
+  global:
+    # -- Default domain used by all components
+    ## Used for ingresses, certificates, SSO, notifications, etc.
+    domain: minikube.home.where-ever.za.net
+  server:
+    service:
+      type: NodePort
+      #type: LoadBalancer
+
+argo-workflows:
+  namespaceOverride: "argocd"
+  workflow:
+    serviceAccount:
+      create: true
+      name: "argo-workflow"
+    rbac:
+      create: true
+  controller:
+    workflowDefaults:
+      spec:
+        serviceAccountName: argo-workflow
