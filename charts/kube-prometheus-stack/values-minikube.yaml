@@ -1,0 +1,17 @@
+prometheus:
+
+##
+alertmanager:
+  enabled: true
+grafana:
+  enabled: true
+  service:
+    type: LoadBalancer
+nodeExporter:
+  enabled: true
+prometheusOperator:
+  enabled: true
+prometheus:
+  enabled: true
+  service:
+    type: LoadBalancer

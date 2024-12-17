@@ -22,5 +22,6 @@ prometheus:
       storageClass: nfs-client
     service:
       enabled: true
+      type: LoadBalancer
   prometheus-pushgateway:
     enable: true
