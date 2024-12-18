@@ -209,6 +209,17 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+  keda:
+    disable: true
+    name: keda
+    targetNamespace: keda
+    sources:
+      - path: charts/keda
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   #gloo-ee:
   #  disable: true
   #  name: gloo-ee
@@ -235,8 +246,7 @@ argocdManaged:
   #     gha-runner-scale-set
   # istio
   # istio-base
-  # kiali --- stio console ??
-  # keda
+  # kiali --- istio console ??
   # 
   #documentation:
   #  disable: false
