@@ -17,7 +17,8 @@ gloo-ee:
           endpoint: gloo-telemetry-gateway.gloo-mesh:4317
   glooUi:
     enabled: true
-    serviceType: ClusterIP
+    serviceType: LoadBalancer
+    loadBalancerIP: 192.168.49.230
   glooAgent:
     enabled: true
     relay:
@@ -40,6 +41,7 @@ gloo-ee:
       gatewayProxy:
         service:
           type: "LoadBalancer"
+          loadBalancerIP: 192.168.49.229
   gloo-fed:
     enabled: false
   global:

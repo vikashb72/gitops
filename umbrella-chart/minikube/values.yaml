@@ -91,7 +91,7 @@ argocdManaged:
     ignoreDifferences: false 
   # TO TEST
   vault:
-    disable: false
+    disable: true
     name: vault
     syncwave: "-5"
     targetNamespace: vault-system

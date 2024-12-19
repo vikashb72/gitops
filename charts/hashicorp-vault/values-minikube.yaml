@@ -11,32 +11,30 @@ vault:
     enabled: true
   ui:
     enabled: true
-    serviceType: NodePort
-    serviceNodePort: 30001
-    externalIPs:
-      - 192.168.49.2
+    serviceType: LoadBalancer
+    loadBalancerIP: 192.168.49.228
   server:
     dataStorage:
       storageClass: nfs-client
     extraSecretEnvironmentVars:
-      #- envName: AZURE_CLIENT_ID
-      #  secretName: hvault-config
-      #  secretKey: AZURE_CLIENT_ID
-      #- envName: AZURE_CLIENT_SECRET
-      #  secretName: hvault-config
-      #  secretKey: AZURE_CLIENT_SECRET
-      #- envName: AZURE_TENANT_ID
-      #  secretName: hvault-config
-      #  secretKey: AZURE_TENANT_ID
-      #- envName: SUBSCRIPTION_ID
-      #  secretName: hvault-config
-      #  secretKey: SUBSCRIPTION_ID
-      #- envName: VAULT_AZUREKEYVAULT_KEY_NAME
-      #  secretName: hvault-config
-      #  secretKey: VAULT_AZUREKEYVAULT_KEY_NAME
-      #- envName: VAULT_AZUREKEYVAULT_VAULT_NAME
-      #  secretName: hvault-config
-      #  secretKey: VAULT_AZUREKEYVAULT_VAULT_NAME
+      - envName: AZURE_CLIENT_ID
+        secretName: hvault-config
+        secretKey: AZURE_CLIENT_ID
+      - envName: AZURE_CLIENT_SECRET
+        secretName: hvault-config
+        secretKey: AZURE_CLIENT_SECRET
+      - envName: AZURE_TENANT_ID
+        secretName: hvault-config
+        secretKey: AZURE_TENANT_ID
+      - envName: SUBSCRIPTION_ID
+        secretName: hvault-config
+        secretKey: SUBSCRIPTION_ID
+      - envName: VAULT_AZUREKEYVAULT_KEY_NAME
+        secretName: hvault-config
+        secretKey: VAULT_AZUREKEYVAULT_KEY_NAME
+      - envName: VAULT_AZUREKEYVAULT_VAULT_NAME
+        secretName: hvault-config
+        secretKey: VAULT_AZUREKEYVAULT_VAULT_NAME
       - envName: VAULT_TOKEN
         secretName: hvault-config
         secretKey: vault_token
@@ -58,7 +56,7 @@ vault:
     affinity: ""
     ha:
       enabled: true
-      replicas: 3
+      replicas: 1
       raft:
         enabled: true
         setNodeId: true
