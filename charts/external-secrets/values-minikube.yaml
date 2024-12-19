@@ -1,5 +1,4 @@
 env:
-  VAULT_ADDR: https://192.168.0.20:8200
   EVT: minikube
   namespace: external-secrets
 
@@ -23,22 +22,37 @@ ClusterSecretStores:
       vaultUrl:
         name: azure-eso-config
         key: vaultUrl
-  #vault:
+  #external-vault-backend:
   #  provider: vault
-  #  server: {{ .Values.env.VAULT_ADDR }}
-  #  path: "kv"
-  #  version: "v2"
+  #  server: https://192.168.0.20:8200
+  #  path: kv
+  #  version: v2
   #  auth:
   #    tokenSecretRef:
   #      name: external-hashicorp-vault-token
   #      namespace: external-secrets
-  #      key: "token"
+  #      key: token
   #  caProvider:
-  #    type: "Secret"
+  #    type: Secret
   #    name: external-hashicorp-vault-token
-  #    key: root.ca
+  #    key: ca.crt
   #    namespace: external-secrets
-     
+
+ClusterStoreSecrets:
+  external-hashicorp-vault-token:
+    namespace: external-secrets
+    refresh: 8h
+    store: azure-backend
+    properties:
+      - localkey: token
+        remotekey: "k8s-minikube-eso-external-vault"
+        remoteproperty: token
+      - localkey: ext-vault-addr
+        remotekey: "k8s-minikube-eso-external-vault"
+        remoteproperty: ext-vault-addr
+      - localkey: ca.crt
+        remotekey: "k8s-minikube-eso-external-vault"
+        remoteproperty: ca.crt
 
 external-secrets:
   global:
