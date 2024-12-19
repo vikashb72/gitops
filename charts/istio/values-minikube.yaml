@@ -54,3 +54,8 @@ istiod:
       }
   outboundTrafficPolicy:
     mode: REGISTRY_ONLY
+
+
+kiali-server:
+  replicas: 1
+
