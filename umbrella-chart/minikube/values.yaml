@@ -50,7 +50,7 @@ argocdManaged:
       allowEmpty: true
     ignoreDifferences: false 
   vpa:
-    disable: false
+    disable: true
     name: vpa
     targetNamespace: vpa
     syncwave: "-1"
@@ -63,7 +63,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   goldilocks:
-    disable: false
+    disable: true
     name: goldilocks
     targetNamespace: goldilocks
     syncwave: "0"
@@ -75,6 +75,7 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
+  # TO TEST
   external-secrets:
     disable: true
     name: external-secrets
