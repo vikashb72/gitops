@@ -9,7 +9,7 @@ ClusterSecretStores:
     namespace: external-secrets
     provider: azurekv
     authType: ServicePrincipal
-    vaultUrl: "https://xxxxxx.vault.azure.net"
+    vaultUrl: "https://kv-home-where-ever.vault.azure.net"
     authSecretRef:
       clientId:
         name: azure-eso-config
