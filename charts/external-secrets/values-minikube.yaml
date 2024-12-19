@@ -58,6 +58,20 @@ ClusterStoreSecrets:
       - localkey: ca.crt
         remotekey: "k8s-minikube-eso-external-vault"
         remoteproperty: ca.crt
+  vault-tls:
+    namespace: external-secrets
+    refresh: 1h
+    store: external-vault-backend
+    properties:
+      - localkey: ca.crt
+        remotekey: kv/minikube/vault/tls
+        remoteproperty: ca.crt
+      - localkey: tls.crt
+        remotekey: kv/minikube/vault/tls
+        remoteproperty: tls.crt
+      - localkey: tls.key
+        remotekey: kv/minikube/vault/tls
+        remoteproperty: tls.key
 
 external-secrets:
   global:
