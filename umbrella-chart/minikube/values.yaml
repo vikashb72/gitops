@@ -75,9 +75,8 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
-  # TO TEST
   external-secrets:
-    disable: true
+    disable: false
     name: external-secrets
     targetNamespace: external-secrets
     sources:
@@ -90,6 +89,7 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
+  # TO TEST
   vault:
     disable: true
     name: vault

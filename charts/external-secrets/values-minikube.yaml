@@ -1,3 +1,7 @@
+env:
+   VAULT_ADDR: https://192.168.0.20:8200
+   EVT: minikube
+
 external-secrets:
   global:
     compatibility:
@@ -33,11 +37,3 @@ external-secrets:
       limits:
         cpu: 15m
         memory: 105M
-
-env:
-   VAULT_ADDR: https://192.168.0.20:8200
-   EVT: dev
-
-#external-hashicorp-vault-token:
-#  secretName: external-hashicorp-vault-token
-#  secretKey: token
