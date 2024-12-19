@@ -1,7 +1,5 @@
 env:
-  EVT: dev
-  #EXTERNAL_VAULT_ADDR: https://192.168.0.22:8200
-  #VAULT_EXTERNAL_IP: 192.168.49.2
+  EVT: minikube
 
 vault:
   global:
@@ -21,27 +19,27 @@ vault:
     dataStorage:
       storageClass: nfs-client
     extraSecretEnvironmentVars:
-      - envName: AZURE_CLIENT_ID
-        secretName: hvault-config
-        secretKey: AZURE_CLIENT_ID
-      - envName: AZURE_CLIENT_SECRET
-        secretName: hvault-config
-        secretKey: AZURE_CLIENT_SECRET
-      - envName: AZURE_TENANT_ID
-        secretName: hvault-config
-        secretKey: AZURE_TENANT_ID
-      - envName: SUBSCRIPTION_ID
-        secretName: hvault-config
-        secretKey: SUBSCRIPTION_ID
-      - envName: VAULT_AZUREKEYVAULT_KEY_NAME
-        secretName: hvault-config
-        secretKey: VAULT_AZUREKEYVAULT_KEY_NAME
-      - envName: VAULT_AZUREKEYVAULT_VAULT_NAME
-        secretName: hvault-config
-        secretKey: VAULT_AZUREKEYVAULT_VAULT_NAME
-      #- envName: VAULT_TOKEN
+      #- envName: AZURE_CLIENT_ID
       #  secretName: hvault-config
-      #  secretKey: vault_token
+      #  secretKey: AZURE_CLIENT_ID
+      #- envName: AZURE_CLIENT_SECRET
+      #  secretName: hvault-config
+      #  secretKey: AZURE_CLIENT_SECRET
+      #- envName: AZURE_TENANT_ID
+      #  secretName: hvault-config
+      #  secretKey: AZURE_TENANT_ID
+      #- envName: SUBSCRIPTION_ID
+      #  secretName: hvault-config
+      #  secretKey: SUBSCRIPTION_ID
+      #- envName: VAULT_AZUREKEYVAULT_KEY_NAME
+      #  secretName: hvault-config
+      #  secretKey: VAULT_AZUREKEYVAULT_KEY_NAME
+      #- envName: VAULT_AZUREKEYVAULT_VAULT_NAME
+      #  secretName: hvault-config
+      #  secretKey: VAULT_AZUREKEYVAULT_VAULT_NAME
+      - envName: VAULT_TOKEN
+        secretName: hvault-config
+        secretKey: vault_token
     extraEnvironmentVars:
       VAULT_CACERT: /vault/userconfig/hvault-config/ca.crt
       VAULT_TLSCERT: /vault/userconfig/hvault-config/tls.crt
@@ -79,23 +77,23 @@ vault:
              path = "/vault/data"
           }
           #https://developer.hashicorp.com/vault/docs/configuration/seal/transit
-          #seal "transit" {
-          #   address = "https://192.168.0.22:8200"   # env:VAULT_ADDR
-          #   #token= "<token>"                       # env:VAULT_TOKEN
-          #   disable_renewal = "false"       
-          #   key_name = "autounseal-dev" # env:VAULT_TRANSIT_SEAL_KEY_NAME
-          #   mount_path = "transit/"
-          #   tls_ca_cert = "/vault/userconfig/vault-ha-tls/vault.ca"
-          #}
+          seal "transit" {
+             address = "https://192.168.0.20:8200"   # env:VAULT_ADDR
+             #token= "<token>"                       # env:VAULT_TOKEN
+             disable_renewal = "false"       
+             key_name = "autounseal-minikube" # env:VAULT_TRANSIT_SEAL_KEY_NAME
+             mount_path = "transit/"
+             tls_ca_cert = "/vault/userconfig/vault-ha-tls/vault.ca"
+          }
 
           #https://developer.hashicorp.com/vault/docs/configuration/seal/azurekeyvault
-          seal "azurekeyvault" {
+          #seal "azurekeyvault" {
           #  tenant_id      = ""       # env:AZURE_TENANT_ID
           #  client_id      = ""       # env:AZURE_CLIENT_ID
           #  client_secret  = ""       # env:AZURE_CLIENT_SECRET
           #  vault_name     = ""       # env:VAULT_AZUREKEYVAULT_VAULT_NAME
           #  key_name       = ""       # env:VAULT_AZUREKEYVAULT_KEY_NAME
-          }
+          #}
 
           disable_mlock = true
           service_registration "kubernetes" {}
