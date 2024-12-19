@@ -3,11 +3,18 @@ env:
   namespace: external-secrets
 
 ClusterSecretStores:
+  #azure-backend:
+  #  disable: false
+  #  namespace: external-secrets
+  #  provider: azurekv
+  #  authType: ManagedIdentity
+  #  identityId:
+  #  vaultUrl: "https://kv-home-where-ever.vault.azure.net"
   azure-backend:
     disable: false
     namespace: external-secrets
     provider: azurekv
-    authType: ServicePrincipal
+    #authType: ServicePrincipal
     vaultUrl: "https://kv-home-where-ever.vault.azure.net"
     authSecretRef:
       clientId:
