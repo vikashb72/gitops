@@ -14,7 +14,7 @@ ClusterSecretStores:
     disable: false
     namespace: external-secrets
     provider: azurekv
-    tenantId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    tenantId: e74a56d2-dbd3-4687-b57a-bed57155dbb6
     #authType: ServicePrincipal
     vaultUrl: "https://kv-home-where-ever.vault.azure.net"
     authSecretRef:
@@ -24,9 +24,9 @@ ClusterSecretStores:
       clientSecret:
         name: azure-eso-config
         key: clientSecret
-      tenantId:
-        name: azure-eso-config
-        key: tenantId
+      #tenantId:
+      #  name: azure-eso-config
+      #  key: tenantId
   #external-vault-backend:
   #  provider: vault
   #  server: https://192.168.0.20:8200
