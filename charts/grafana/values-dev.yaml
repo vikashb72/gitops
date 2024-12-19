@@ -1,6 +1,0 @@
-grafana:
-  testFramework:
-    enabled: false
-  service:
-    enabled: true
-    type: NodePort
