@@ -19,9 +19,6 @@ ClusterSecretStores:
       tenantId:
         name: azure-eso-config
         key: tenantId
-      vaultUrl:
-        name: azure-eso-config
-        key: vaultUrl
   #external-vault-backend:
   #  provider: vault
   #  server: https://192.168.0.20:8200
