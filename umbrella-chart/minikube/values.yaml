@@ -220,8 +220,6 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  #     gha-runner-scale-set-controller
-  #     gha-runner-scale-set
   gha-runner-controller:
     disable: true
     name: gha-runner-controller
@@ -264,10 +262,18 @@ argocdManaged:
   #      noHelmValues: false
   #      helm:
   #        envFile: true
+  #istio:
+  #  disable: true
+  #  name: istio
+  #  targetNamespace: istio-system
+  #  sources:
+  #  disableAutomated: false
+  #    - path: charts/istio
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
   #
   # TODO:
-  # istio
-  # istio-base
   # kiali --- istio console ??
   # 
   #documentation:
