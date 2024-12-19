@@ -14,6 +14,7 @@ ClusterSecretStores:
     disable: false
     namespace: external-secrets
     provider: azurekv
+    tenantId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     #authType: ServicePrincipal
     vaultUrl: "https://kv-home-where-ever.vault.azure.net"
     authSecretRef:
