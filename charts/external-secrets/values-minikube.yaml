@@ -17,21 +17,22 @@ ClusterSecretStores:
       clientSecret:
         name: azure-eso-config
         key: clientSecret
-  #external-vault-backend:
-  #  provider: vault
-  #  server: https://192.168.0.20:8200
-  #  path: kv
-  #  version: v2
-  #  auth:
-  #    tokenSecretRef:
-  #      name: external-hashicorp-vault-token
-  #      namespace: external-secrets
-  #      key: token
-  #  caProvider:
-  #    type: Secret
-  #    name: external-hashicorp-vault-token
-  #    key: ca.crt
-  #    namespace: external-secrets
+  external-vault-backend:
+    disable: false
+    provider: vault
+    server: https://192.168.0.20:8200
+    path: kv
+    version: v2
+    auth:
+      tokenSecretRef:
+        name: external-hashicorp-vault-token
+        namespace: external-secrets
+        key: token
+    caProvider:
+      type: Secret
+      name: external-hashicorp-vault-token
+      key: ca.crt
+      namespace: external-secrets
 
 ClusterStoreSecrets:
   external-hashicorp-vault-token:
