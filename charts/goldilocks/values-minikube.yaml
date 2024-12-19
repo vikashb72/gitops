@@ -1,7 +1,7 @@
 goldilocks:
   dashboard:
     service:
-      type: NodePort
+      type: LoadBalancer
 #    resources:
 #      requests:
 #        cpu: 15m
