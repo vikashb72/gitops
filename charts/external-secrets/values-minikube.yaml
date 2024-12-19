@@ -39,20 +39,20 @@ ClusterSecretStores:
   #    namespace: external-secrets
 
 ClusterStoreSecrets:
-  external-hashicorp-vault-token:
-    namespace: external-secrets
-    refresh: 8h
-    store: azure-backend
-    properties:
-      - localkey: token
-        remotekey: "k8s-minikube-eso-external-vault"
-        remoteproperty: token
-      - localkey: ext-vault-addr
-        remotekey: "k8s-minikube-eso-external-vault"
-        remoteproperty: ext-vault-addr
-      - localkey: ca.crt
-        remotekey: "k8s-minikube-eso-external-vault"
-        remoteproperty: ca.crt
+#  external-hashicorp-vault-token:
+#    namespace: external-secrets
+#    refresh: 8h
+#    store: azure-backend
+#    properties:
+#      - localkey: token
+#        remotekey: "k8s-minikube-eso-external-vault"
+#        remoteproperty: token
+#      - localkey: ext-vault-addr
+#        remotekey: "k8s-minikube-eso-external-vault"
+#        remoteproperty: ext-vault-addr
+#      - localkey: ca.crt
+#        remotekey: "k8s-minikube-eso-external-vault"
+#        remoteproperty: ca.crt
 
 external-secrets:
   global:
