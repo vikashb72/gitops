@@ -3,13 +3,6 @@ env:
   namespace: external-secrets
 
 ClusterSecretStores:
-  #azure-backend:
-  #  disable: false
-  #  namespace: external-secrets
-  #  provider: azurekv
-  #  authType: ManagedIdentity
-  #  identityId:
-  #  vaultUrl: "https://kv-home-where-ever.vault.azure.net"
   azure-backend:
     disable: false
     namespace: external-secrets
@@ -24,24 +17,21 @@ ClusterSecretStores:
       clientSecret:
         name: azure-eso-config
         key: clientSecret
-      #tenantId:
-      #  name: azure-eso-config
-      #  key: tenantId
-  external-vault-backend:
-    provider: vault
-    server: https://192.168.0.20:8200
-    path: kv
-    version: v2
-    auth:
-      tokenSecretRef:
-        name: external-hashicorp-vault-token
-        namespace: external-secrets
-        key: token
-    caProvider:
-      type: Secret
-      name: external-hashicorp-vault-token
-      key: ca.crt
-      namespace: external-secrets
+  #external-vault-backend:
+  #  provider: vault
+  #  server: https://192.168.0.20:8200
+  #  path: kv
+  #  version: v2
+  #  auth:
+  #    tokenSecretRef:
+  #      name: external-hashicorp-vault-token
+  #      namespace: external-secrets
+  #      key: token
+  #  caProvider:
+  #    type: Secret
+  #    name: external-hashicorp-vault-token
+  #    key: ca.crt
+  #    namespace: external-secrets
 
 ClusterStoreSecrets:
   external-hashicorp-vault-token:
@@ -58,20 +48,20 @@ ClusterStoreSecrets:
       - localkey: ca.crt
         remotekey: "k8s-minikube-eso-external-vault"
         remoteproperty: ca.crt
-  vault-tls:
-    namespace: external-secrets
-    refresh: 1h
-    store: external-vault-backend
-    properties:
-      - localkey: ca.crt
-        remotekey: kv/minikube/vault/tls
-        remoteproperty: ca.crt
-      - localkey: tls.crt
-        remotekey: kv/minikube/vault/tls
-        remoteproperty: tls.crt
-      - localkey: tls.key
-        remotekey: kv/minikube/vault/tls
-        remoteproperty: tls.key
+  #vault-tls:
+  #  namespace: external-secrets
+  #  refresh: 1h
+  #  store: external-vault-backend
+  #  properties:
+  #    - localkey: ca.crt
+  #      remotekey: kv/minikube/vault/tls
+  #      remoteproperty: ca.crt
+  #    - localkey: tls.crt
+  #      remotekey: kv/minikube/vault/tls
+  #      remoteproperty: tls.crt
+  #    - localkey: tls.key
+  #      remotekey: kv/minikube/vault/tls
+  #      remoteproperty: tls.key
 
 external-secrets:
   global:
