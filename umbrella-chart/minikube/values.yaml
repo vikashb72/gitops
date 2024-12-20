@@ -166,7 +166,7 @@ argocdManaged:
     disableAutomated: false
     automated: {}
   keda:
-    disable: false
+    disable: true
     name: keda
     targetNamespace: keda
     sources:
