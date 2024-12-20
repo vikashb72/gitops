@@ -180,7 +180,7 @@ argocdManaged:
       ServerSideApply: true
   # TO TEST/REFACTOR
   gha-runner-controller:
-    disable: true
+    disable: false
     name: gha-runner-controller
     targetNamespace: gha-runner-controller
     sources:
