@@ -120,9 +120,8 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
-  # TO TEST
   redis:
-    disable: false
+    disable: true
     name: redis
     targetNamespace: redis
     sources:
@@ -166,6 +165,7 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+  # TO TEST
   keycloak:
     disable: true
     name: keycloak
@@ -243,37 +243,36 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  #gloo-ee:
-  #  disable: true
-  #  name: gloo-ee
-  #  targetNamespace: gloo-ee
-  #  sources:
-  #  disableAutomated: false
-  #    - path: charts/gloo-ee
-  #      noHelmValues: false
-  #      helm:
-  #        envFile: true
-  #gloo-core:
-  #  disable: true
-  #  name: gloo-platform
-  #  targetNamespace: gloo-core
-  #  sources:
-  #  disableAutomated: false
-  #    - path: charts/gloo-mesh-core
-  #      noHelmValues: false
-  #      helm:
-  #        envFile: true
-  #istio:
-  #  disable: true
-  #  name: istio
-  #  targetNamespace: istio-system
-  #  sources:
-  #  disableAutomated: false
-  #    - path: charts/istio
-  #      noHelmValues: false
-  #      helm:
-  #        envFile: true
-  #
+  gloo-ee:
+    disable: true
+    name: gloo-ee
+    targetNamespace: gloo-ee
+    sources:
+    disableAutomated: false
+      - path: charts/gloo-ee
+        noHelmValues: false
+        helm:
+          envFile: true
+  gloo-core:
+    disable: true
+    name: gloo-platform
+    targetNamespace: gloo-core
+    sources:
+    disableAutomated: false
+      - path: charts/gloo-mesh-core
+        noHelmValues: false
+        helm:
+          envFile: true
+  istio:
+    disable: true
+    name: istio
+    targetNamespace: istio-system
+    sources:
+    disableAutomated: false
+      - path: charts/istio
+        noHelmValues: false
+        helm:
+          envFile: true
   # TODO:
   # kiali --- istio console ??
   # 
