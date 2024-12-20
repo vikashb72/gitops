@@ -2,7 +2,7 @@ env:
   EVT: minikube
 
 gha-runner-scale-set:
-  githubConfigUrl: "https://github.com/vikashb72"
+  githubConfigUrl: "https://github.com/where-ever"
   githubConfigSecret: "default-gha-runner-creds"
   
   maxRunners: 2
