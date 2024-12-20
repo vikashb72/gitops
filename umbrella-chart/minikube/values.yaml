@@ -202,9 +202,8 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  # TO TEST/REFACTOR
   istio:
-    disable: false
+    disable: true
     name: istio
     targetNamespace: istio-system
     sources:
@@ -220,6 +219,7 @@ argocdManaged:
         kind: ValidatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
+  # TO TEST/REFACTOR
   gloo-ee:
     disable: true
     name: gloo-ee
