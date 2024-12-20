@@ -107,7 +107,6 @@ argocdManaged:
         kind: MutatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.clientConfig.caBundle
-  # TO TEST
   cert-manager:
     disable: false
     name: cert-manager
@@ -121,6 +120,18 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
+  # TO TEST
+  redis:
+    disable: false
+    name: redis
+    targetNamespace: redis
+    sources:
+      - path: charts/redis
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   prometheus:
     disable: true
     name: prometheus
@@ -139,17 +150,6 @@ argocdManaged:
     targetNamespace: grafana
     sources:
       - path: charts/grafana
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-  redis:
-    disable: true
-    name: redis
-    targetNamespace: redis
-    sources:
-      - path: charts/redis
         noHelmValues: false
         helm:
           envFile: true
