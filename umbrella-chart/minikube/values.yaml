@@ -156,7 +156,7 @@ argocdManaged:
     automated: {}
   # TO TEST/REFACTOR
   reloader:
-    disable: true
+    disable: false
     name: reloader
     targetNamespace: reloader
     sources:
