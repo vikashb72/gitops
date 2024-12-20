@@ -133,7 +133,7 @@ argocdManaged:
     automated: {}
 
   strimzi-kafka-operator:
-    disable: false
+    disable: true
     name: strimzi-kafka-operator
     targetNamespace: kafka-system
     sources:
