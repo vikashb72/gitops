@@ -1,7 +1,8 @@
 gloo-ee:
   glooMgmtServer:
     enabled: true
-    serviceType: ClusterIP
+    serviceType: LoadBalancer
+    loadBalancerIP: 192.168.49.234
     registerCluster: true
     createGlobalWorkspace: true
   prometheus:
