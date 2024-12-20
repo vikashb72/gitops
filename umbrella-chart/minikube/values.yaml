@@ -131,31 +131,9 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  prometheus:
-    disable: true
-    name: prometheus
-    targetNamespace: prometheus
-    sources:
-      - path: charts/prometheus
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: false 
-  grafana:
-    disable: true
-    name: grafana
-    targetNamespace: grafana
-    sources:
-      - path: charts/grafana
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
+
   strimzi-kafka-operator:
-    disable: true
+    disable: false
     name: strimzi-kafka-operator
     targetNamespace: kafka-system
     sources:
@@ -165,9 +143,8 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  # TO TEST/REFACTOR
   keycloak:
-    disable: false
+    disable: true
     name: keycloak
     targetNamespace: keycloak
     sources:
@@ -177,28 +154,8 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  promtail:
-    disable: true
-    name: promtail
-    targetNamespace: grafana
-    sources:
-      - path: charts/promtail
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-  loki-distributed:
-    disable: true
-    name: promtail
-    targetNamespace: grafana
-    sources:
-      - path: charts/loki-distributed
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
+  # TO TEST/REFACTOR
+
   reloader:
     disable: true
     name: reloader
@@ -271,6 +228,51 @@ argocdManaged:
     targetNamespace: istio-system
     sources:
       - path: charts/istio
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  prometheus:
+    disable: true
+    name: prometheus
+    targetNamespace: prometheus
+    sources:
+      - path: charts/prometheus
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
+  grafana:
+    disable: true
+    name: grafana
+    targetNamespace: grafana
+    sources:
+      - path: charts/grafana
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  promtail:
+    disable: true
+    name: promtail
+    targetNamespace: grafana
+    sources:
+      - path: charts/promtail
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  loki-distributed:
+    disable: true
+    name: promtail
+    targetNamespace: grafana
+    sources:
+      - path: charts/loki-distributed
         noHelmValues: false
         helm:
           envFile: true
