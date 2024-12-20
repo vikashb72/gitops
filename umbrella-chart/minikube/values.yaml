@@ -248,31 +248,34 @@ argocdManaged:
     name: gloo-ee
     targetNamespace: gloo-ee
     sources:
-    disableAutomated: false
       - path: charts/gloo-ee
         noHelmValues: false
         helm:
           envFile: true
+    disableAutomated: false
+    automated: {}
   gloo-core:
     disable: true
     name: gloo-platform
     targetNamespace: gloo-core
     sources:
-    disableAutomated: false
       - path: charts/gloo-mesh-core
         noHelmValues: false
         helm:
           envFile: true
+    disableAutomated: false
+    automated: {}
   istio:
     disable: true
     name: istio
     targetNamespace: istio-system
     sources:
-    disableAutomated: false
       - path: charts/istio
         noHelmValues: false
         helm:
           envFile: true
+    disableAutomated: false
+    automated: {}
   # TODO:
   # kiali --- istio console ??
   # 
