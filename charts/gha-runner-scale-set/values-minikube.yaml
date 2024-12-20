@@ -1,15 +1,10 @@
-gha-runner-scale-set:
-  githubConfigUrl: ""
-  githubConfigSecret:
-    ### GitHub Apps Configuration
-    ## NOTE: IDs MUST be strings, use quotes
-    #github_app_id: ""
-    #github_app_installation_id: ""
-    #github_app_private_key: |
-  
-    ### GitHub PAT Configuration
-    #github_token: ""
+env:
+  EVT: minikube
 
+gha-runner-scale-set:
+  githubConfigUrl: "https://github.com/vikashb72"
+  githubConfigSecret: "default-gha-runner-creds"
+  
   maxRunners: 2
   minRunners: 1
   runnerGroup: "where-ever-default"
@@ -34,36 +29,6 @@ gha-runner-scale-set:
   #         fsGroup: 1001
   
   template:
-    ## with containerMode.type=kubernetes, 
-    ## we will populate the template.spec with following pod spec
-    ## template:
-    ##   spec:
-    ##     containers:
-    ##     - name: runner
-    ##       image: ghcr.io/actions/actions-runner:latest
-    ##       command: ["/home/runner/run.sh"]
-    ##       env:
-    ##         - name: ACTIONS_RUNNER_CONTAINER_HOOKS
-    ##           value: /home/runner/k8s/index.js
-    ##         - name: ACTIONS_RUNNER_POD_NAME
-    ##           valueFrom:
-    ##             fieldRef:
-    ##               fieldPath: metadata.name
-    ##         - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
-    ##           value: "true"
-    ##       volumeMounts:
-    ##         - name: work
-    ##           mountPath: /home/runner/_work
-    ##     volumes:
-    ##       - name: work
-    ##         ephemeral:
-    ##           volumeClaimTemplate:
-    ##             spec:
-    ##               accessModes: [ "ReadWriteOnce" ]
-    ##               storageClassName: "local-path"
-    ##               resources:
-    ##                 requests:
-    ##                   storage: 1Gi
     spec:
       containers:
         - name: runner
@@ -94,5 +59,66 @@ gha-runner-scale-set:
 
   
   controllerServiceAccount:
-    namespace: gha-runner-controller
+    namespace: gha-controller
     name: gha-runner-controller-gha-rs-controller
+
+#frontend-gha-runner:
+#  githubConfigUrl: "https://github.com/vikashb72"
+#  githubConfigSecret: "frontend-gha-runner-creds"
+#  
+#  maxRunners: 2
+#  minRunners: 1
+#  runnerGroup: "where-ever-frontend"
+#  
+#  containerMode:
+#    type: "kubernetes"
+#    #kubernetesModeWorkVolumeClaim:
+#    #  accessModes: ["ReadWriteOnce"]
+#    #  storageClassName: "default"
+#    #  resources:
+#    #    requests:
+#    #      storage: 4Gi
+#  
+#  runnerScaleSetName: "where-ever-frontend"
+#
+#  # listenerTemplate:
+#  #   spec:
+#  #     containers:
+#  #     - name: listener
+#  #       securityContext:
+#  #         runAsUser: 1000
+#  #         fsGroup: 1001
+#  
+#  template:
+#    spec:
+#      containers:
+#        - name: runner
+#          image: ghcr.io/actions/actions-runner:latest
+#          command: ["/home/runner/run.sh"]
+#          env:
+#            - name: ACTIONS_RUNNER_CONTAINER_HOOKS
+#              value: /home/runner/k8s/index.js
+#            - name: ACTIONS_RUNNER_POD_NAME
+#              valueFrom:
+#                fieldRef:
+#                  fieldPath: metadata.name
+#            - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
+#              value: "true"
+#          #volumeMounts:
+#          #  - name: work
+#          #    mountPath: /home/runner/_work
+#        #volumes:
+#        #  - name: work
+#        #    ephemeral:
+#        #      volumeClaimTemplate:
+#        #        spec:
+#        #          accessModes: [ "ReadWriteOnce" ]
+#        #          storageClassName: "local-path"
+#        #          resources:
+#        #            requests:
+#        #              storage: 1Gi
+#
+#  
+#  controllerServiceAccount:
+#    namespace: gha-controller
+#    name: gha-runner-controller-gha-rs-controller
