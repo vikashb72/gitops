@@ -20,7 +20,8 @@ keycloak:
   resourcesPreset: "small"
   resources: {}
   service:
-    type: ClusterIP
+    type: LoadBalancer
+    loadBalancerIP: 192.168.49.233
     http:
       enabled: true
     ports:
@@ -30,7 +31,6 @@ keycloak:
     #  http: ""
     #  https: ""
     #clusterIP: ""
-    #loadBalancerIP: ""
     #loadBalancerSourceRanges: []
     #externalTrafficPolicy: Cluster
   ingress:

@@ -165,9 +165,9 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  # TO TEST
+  # TO TEST/REFACTOR
   keycloak:
-    disable: true
+    disable: false
     name: keycloak
     targetNamespace: keycloak
     sources:
