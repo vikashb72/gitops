@@ -35,9 +35,9 @@ vault:
       - envName: VAULT_AZUREKEYVAULT_VAULT_NAME
         secretName: hvault-config
         secretKey: VAULT_AZUREKEYVAULT_VAULT_NAME
-      - envName: VAULT_TOKEN
-        secretName: hvault-config
-        secretKey: vault_token
+      #- envName: VAULT_TOKEN
+      #  secretName: hvault-config
+      #  secretKey: vault_token
     extraEnvironmentVars:
       VAULT_CACERT: /vault/userconfig/hvault-config/ca.crt
       VAULT_TLSCERT: /vault/userconfig/hvault-config/tls.crt
