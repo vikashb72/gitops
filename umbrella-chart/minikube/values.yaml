@@ -190,6 +190,8 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+    syncOptions:
+      ServerSideApply: true
   gha-runner-scale-set:
     disable: true
     name: gha-runner-scale-set
