@@ -75,23 +75,23 @@ vault:
              path = "/vault/data"
           }
           #https://developer.hashicorp.com/vault/docs/configuration/seal/transit
-          seal "transit" {
-             address = "https://192.168.0.20:8200"   # env:VAULT_ADDR
-             #token= "<token>"                       # env:VAULT_TOKEN
-             disable_renewal = "false"       
-             key_name = "autounseal-minikube" # env:VAULT_TRANSIT_SEAL_KEY_NAME
-             mount_path = "transit/"
-             tls_ca_cert = "/vault/userconfig/hvault-config/ca.crt"
-          }
+          #seal "transit" {
+          #   address = "https://192.168.0.20:8200"   # env:VAULT_ADDR
+          #   #token= "<token>"                       # env:VAULT_TOKEN
+          #   disable_renewal = "false"       
+          #   key_name = "autounseal-minikube" # env:VAULT_TRANSIT_SEAL_KEY_NAME
+          #   mount_path = "transit/"
+          #   tls_ca_cert = "/vault/userconfig/hvault-config/ca.crt"
+          #}
 
           #https://developer.hashicorp.com/vault/docs/configuration/seal/azurekeyvault
-          #seal "azurekeyvault" {
+          seal "azurekeyvault" {
           #  tenant_id      = ""       # env:AZURE_TENANT_ID
           #  client_id      = ""       # env:AZURE_CLIENT_ID
           #  client_secret  = ""       # env:AZURE_CLIENT_SECRET
           #  vault_name     = ""       # env:VAULT_AZUREKEYVAULT_VAULT_NAME
           #  key_name       = ""       # env:VAULT_AZUREKEYVAULT_KEY_NAME
-          #}
+          }
 
           disable_mlock = true
           service_registration "kubernetes" {}
