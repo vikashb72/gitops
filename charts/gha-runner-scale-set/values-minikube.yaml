@@ -13,10 +13,10 @@ gha-runner-scale-set:
     type: "kubernetes"
     #kubernetesModeWorkVolumeClaim:
     #  accessModes: ["ReadWriteOnce"]
-    #  storageClassName: "default"
+    #  storageClassName: "local-path"
     #  resources:
     #    requests:
-    #      storage: 4Gi
+    #      storage: 8Gi
   
   runnerScaleSetName: "where-ever-default"
 
@@ -43,20 +43,19 @@ gha-runner-scale-set:
                   fieldPath: metadata.name
             - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
               value: "true"
-          #volumeMounts:
-          #  - name: work
-          #    mountPath: /home/runner/_work
-        #volumes:
-        #  - name: work
-        #    ephemeral:
-        #      volumeClaimTemplate:
-        #        spec:
-        #          accessModes: [ "ReadWriteOnce" ]
-        #          storageClassName: "local-path"
-        #          resources:
-        #            requests:
-        #              storage: 1Gi
-
+          volumeMounts:
+            - name: work
+              mountPath: /home/runner/_work
+        volumes:
+          - name: work
+            ephemeral:
+              volumeClaimTemplate:
+                spec:
+                  accessModes: [ "ReadWriteOnce" ]
+                  storageClassName: "local-path"
+                  resources:
+                    requests:
+                      storage: 1Gi
   
   controllerServiceAccount:
     namespace: gha-controller
@@ -104,19 +103,19 @@ gha-runner-scale-set:
 #                  fieldPath: metadata.name
 #            - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
 #              value: "true"
-#          #volumeMounts:
-#          #  - name: work
-#          #    mountPath: /home/runner/_work
-#        #volumes:
-#        #  - name: work
-#        #    ephemeral:
-#        #      volumeClaimTemplate:
-#        #        spec:
-#        #          accessModes: [ "ReadWriteOnce" ]
-#        #          storageClassName: "local-path"
-#        #          resources:
-#        #            requests:
-#        #              storage: 1Gi
+#          volumeMounts:
+#            - name: work
+#              mountPath: /home/runner/_work
+#        volumes:
+#          - name: work
+#            ephemeral:
+#              volumeClaimTemplate:
+#                spec:
+#                  accessModes: [ "ReadWriteOnce" ]
+#                  storageClassName: "local-path"
+#                  resources:
+#                    requests:
+#                      storage: 8Gi
 #
 #  
 #  controllerServiceAccount:
