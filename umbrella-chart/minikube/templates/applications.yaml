@@ -54,6 +54,11 @@ spec:
     {{- end }}
     syncOptions:
       - CreateNamespace=true
+{{- if .syncOptions }}
+{{- if .syncOptions.ServerSideApply }}
+      - ServerSideApply=true
+{{- end }}
+{{- end }}
   {{- if .ignoreDifferences }}
   ignoreDifferences:
     {{- range .ignoreDifferencesConfig }}

@@ -176,6 +176,8 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+    syncOptions:
+      ServerSideApply: true
   # TO TEST/REFACTOR
   gha-runner-controller:
     disable: true
