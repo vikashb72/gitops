@@ -46,16 +46,16 @@ gha-runner-scale-set:
           volumeMounts:
             - name: work
               mountPath: /home/runner/_work
-        volumes:
-          - name: work
-            ephemeral:
-              volumeClaimTemplate:
-                spec:
-                  accessModes: [ "ReadWriteOnce" ]
-                  storageClassName: "local-path"
-                  resources:
-                    requests:
-                      storage: 1Gi
+      volumes:
+        - name: work
+          ephemeral:
+            volumeClaimTemplate:
+              spec:
+                accessModes: [ "ReadWriteOnce" ]
+                storageClassName: "local-path"
+                resources:
+                  requests:
+                    storage: 1Gi
   
   controllerServiceAccount:
     namespace: gha-controller
@@ -106,16 +106,16 @@ gha-runner-scale-set:
 #          volumeMounts:
 #            - name: work
 #              mountPath: /home/runner/_work
-#        volumes:
-#          - name: work
-#            ephemeral:
-#              volumeClaimTemplate:
-#                spec:
-#                  accessModes: [ "ReadWriteOnce" ]
-#                  storageClassName: "local-path"
-#                  resources:
-#                    requests:
-#                      storage: 8Gi
+#      volumes:
+#        - name: work
+#          ephemeral:
+#            volumeClaimTemplate:
+#              spec:
+#                accessModes: [ "ReadWriteOnce" ]
+#                storageClassName: "local-path"
+#                resources:
+#                  requests:
+#                    storage: 8Gi
 #
 #  
 #  controllerServiceAccount:
