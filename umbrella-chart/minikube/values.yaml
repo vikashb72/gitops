@@ -89,7 +89,6 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
-  # TO TEST
   vault:
     disable: false
     name: vault
@@ -108,8 +107,9 @@ argocdManaged:
         kind: MutatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.clientConfig.caBundle
+  # TO TEST
   cert-manager:
-    disable: true
+    disable: false
     name: cert-manager
     syncwave: "-5"
     targetNamespace: cert-manager
