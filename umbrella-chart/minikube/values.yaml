@@ -203,8 +203,19 @@ argocdManaged:
     disableAutomated: false
     automated: {}
   # TO TEST/REFACTOR
-  gloo-ee:
+  istio:
     disable: false
+    name: istio
+    targetNamespace: istio-system
+    sources:
+      - path: charts/istio
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  gloo-ee:
+    disable: true
     name: gloo-ee
     targetNamespace: gloo-ee
     sources:
@@ -220,17 +231,6 @@ argocdManaged:
     targetNamespace: gloo-core
     sources:
       - path: charts/gloo-mesh-core
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-  istio:
-    disable: true
-    name: istio
-    targetNamespace: istio-system
-    sources:
-      - path: charts/istio
         noHelmValues: false
         helm:
           envFile: true
