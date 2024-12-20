@@ -178,9 +178,8 @@ argocdManaged:
     automated: {}
     syncOptions:
       ServerSideApply: true
-  # TO TEST/REFACTOR
   gha-runner-controller:
-    disable: false
+    disable: true
     name: gha-runner-controller
     targetNamespace: gha-controller
     sources:
@@ -193,7 +192,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   gha-runner-scale-set:
-    disable: false
+    disable: true
     name: gha-runner-scale-set
     targetNamespace: gha-runners
     sources:
@@ -203,6 +202,7 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+  # TO TEST/REFACTOR
   gloo-ee:
     disable: true
     name: gloo-ee
