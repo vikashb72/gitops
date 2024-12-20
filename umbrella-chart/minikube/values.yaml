@@ -154,9 +154,8 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  # TO TEST/REFACTOR
   reloader:
-    disable: false
+    disable: true
     name: reloader
     targetNamespace: reloader
     sources:
@@ -167,7 +166,7 @@ argocdManaged:
     disableAutomated: false
     automated: {}
   keda:
-    disable: true
+    disable: false
     name: keda
     targetNamespace: keda
     sources:
@@ -177,6 +176,7 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+  # TO TEST/REFACTOR
   gha-runner-controller:
     disable: true
     name: gha-runner-controller
