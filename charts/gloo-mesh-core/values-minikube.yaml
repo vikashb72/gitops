@@ -1,4 +1,9 @@
+gloo-platform-crds:
+  installEnterpriseCrds: true
+
 gloo-platform:
+  common:
+    cluster: minikube
   glooMgmtServer:
     enabled: true
     registerCluster: true
