@@ -120,6 +120,18 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
+  prometheus:
+    disable: false
+    name: prometheus
+    targetNamespace: prometheus
+    sources:
+      - path: charts/prometheus
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
   redis:
     disable: true
     name: redis
@@ -131,7 +143,6 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-
   strimzi-kafka-operator:
     disable: true
     name: strimzi-kafka-operator
@@ -242,18 +253,7 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  prometheus:
-    disable: true
-    name: prometheus
-    targetNamespace: prometheus
-    sources:
-      - path: charts/prometheus
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: false 
+
   grafana:
     disable: true
     name: grafana
