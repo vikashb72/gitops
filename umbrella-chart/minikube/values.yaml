@@ -132,6 +132,17 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
+  grafana:
+    disable: false
+    name: grafana
+    targetNamespace: grafana
+    sources:
+      - path: charts/grafana
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   redis:
     disable: true
     name: redis
@@ -254,17 +265,6 @@ argocdManaged:
     disableAutomated: false
     automated: {}
 
-  grafana:
-    disable: true
-    name: grafana
-    targetNamespace: grafana
-    sources:
-      - path: charts/grafana
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
   promtail:
     disable: true
     name: promtail
