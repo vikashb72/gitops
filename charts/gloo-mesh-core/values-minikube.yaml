@@ -1,3 +1,6 @@
+env:
+  EVT: minikube
+
 gloo-platform-crds:
   installEnterpriseCrds: true
 
