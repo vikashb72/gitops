@@ -75,8 +75,8 @@ gloo-ee:
 
   gloo-fed:
     enabled: false
-    #create_license_secret: false
-    #license_secret_name: gloo-ee-license-key
+    create_license_secret: false
+    license_secret_name: gloo-ee-license-key
 
   global:
     extensions:
