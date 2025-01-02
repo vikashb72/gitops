@@ -242,7 +242,7 @@ argocdManaged:
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
   gloo-mesh-core:
-    disable: false
+    disable: true
     name: gloo-mesh-core
     targetNamespace: gloo-mesh
     sources:
@@ -252,9 +252,8 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  # TO TEST/REFACTOR
   gloo-ee:
-    disable: false
+    disable: true
     name: gloo-ee
     targetNamespace: gloo-system
     sources:
@@ -264,6 +263,7 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+  # TO TEST/REFACTOR
   promtail:
     disable: true
     name: promtail
