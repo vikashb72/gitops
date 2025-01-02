@@ -241,7 +241,6 @@ argocdManaged:
         kind: ValidatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
-  # TO TEST/REFACTOR
   gloo-mesh-core:
     disable: false
     name: gloo-mesh-core
@@ -253,10 +252,11 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+  # TO TEST/REFACTOR
   gloo-ee:
-    disable: true
+    disable: false
     name: gloo-ee
-    targetNamespace: gloo-ee
+    targetNamespace: gloo-system
     sources:
       - path: charts/gloo-ee
         noHelmValues: false
@@ -264,7 +264,6 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-
   promtail:
     disable: true
     name: promtail
@@ -287,9 +286,6 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  # TODO:
-  # kiali --- istio console ??
-  # 
   #documentation:
   #  disable: false
   #  name: chart-name
