@@ -133,7 +133,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   grafana:
-    disable: false
+    disable: true
     name: grafana
     targetNamespace: grafana
     sources:
