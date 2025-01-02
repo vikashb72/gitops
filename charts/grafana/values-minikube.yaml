@@ -1,7 +1,28 @@
-grafana:
-  testFramework:
-    enabled: false
-  service:
+#grafana:
+#  testFramework:
+#    enabled: false
+#  service:
+#    enabled: true
+#    type: LoadBalancer
+#    loadBalancerIP: 192.168.49.231
+
+grafana-operator:
+  operator:
     enabled: true
-    type: LoadBalancer
-    loadBalancerIP: 192.168.49.231
+    namespace: grafana
+    serviceAccount:
+      create: true
+      name: grafana-operator
+  grafana:
+    enabled: true
+    namespace: grafana
+    adminUser: admin
+    ingress:
+      enabled: false
+    service:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.231
+      port: 80
+      targetPort: 3000
+  extraVolumes: []
+  extraVolumeMounts: []
