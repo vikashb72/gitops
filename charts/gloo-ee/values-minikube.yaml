@@ -1,34 +1,68 @@
+env:
+  EVT: minikube
+
 gloo-ee:
-  glooMgmtServer:
-    enabled: true
-    serviceType: LoadBalancer
-    loadBalancerIP: 192.168.49.234
-    registerCluster: true
-    createGlobalWorkspace: true
-  prometheus:
-    enabled: true
-  redis:
-    deployment:
-      enabled: true
-  telemetryCollector:
-    enabled: true
-    config:
-      exporters:
-        otlp:
-          endpoint: gloo-telemetry-gateway.gloo-mesh:4317
-  glooUi:
-    enabled: true
-    serviceType: LoadBalancer
-    loadBalancerIP: 192.168.49.230
-  glooAgent:
-    enabled: true
-    relay:
-      serverAddress: gloo-mesh-mgmt-server:9900
+  create_license_secret: false
+
+  global:
+    glooRbac:
+      create: true
+
   gloo:
+    license_secret_name: gloo-ee-license
+
+    ## Gateway Proxies
+    gatewayProxies:
+      gatewayProxy:
+        ## Typical custom gateway settings
+        gatewaySettings:
+          ## Custom access logging config
+          accessLoggingService:
+            accessLog:
+              - fileSink:
+                  path: /dev/stdout
+                  jsonFormat:
+                    startTime: "%START_TIME%"
+                    authority: "%REQ(:AUTHORITY)%"
+                    bytesReceived: "%BYTES_RECEIVED%"
+                    bytesSent: "%BYTES_SENT%"
+                    downstreamLocalAddress: "%DOWNSTREAM_LOCAL_ADDRESS%"
+                    downstreamRemoteAddress: "%DOWNSTREAM_REMOTE_ADDRESS%"
+                    duration: "%DURATION%"
+                    method: "%REQ(:METHOD)%"
+                    path: "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%"
+                    protocol: "%PROTOCOL%"
+                    requestedServerName: "%REQUESTED_SERVER_NAME%"
+                    responseCode: "%RESPONSE_CODE%"
+                    responseCodeDetails: "%RESPONSE_CODE_DETAILS%"
+                    responseFlags: "%RESPONSE_FLAGS%"
+                    routeName: "%ROUTE_NAME%"
+                    upstreamCluster: "%UPSTREAM_CLUSTER%"
+                    upstreamHost: "%UPSTREAM_HOST%"
+                    upstreamLocalAddress: "%UPSTREAM_LOCAL_ADDRESS%"
+                    upstreamServiceTime: "%RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)%"
+                    upstreamTransportFailureReason: "%UPSTREAM_TRANSPORT_FAILURE_REASON%"
+                    userAgent: "%REQ(USER-AGENT)%"
+                    xForwardedFor: "%REQ(X-FORWARDED-FOR)%"
+          options:
+            perConnectionBufferLimitBytes: 4294967295
+          httpGateway:
+            options:
+              healthCheck:
+                path: /healthcheck
+        service:
+          type: "LoadBalancer"
+          extraAnnotations:
+            metallb.universe.tf/address-pool: default
+            #service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+            #service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "workload-subnet"
     settings:
       create: true
       watchNamespaces:
         - gloo-system
+        - keycloak
+        - my-app
+        - my-app-ui
       extAuth:
         requestTimeout: 30s
     discovery:
@@ -38,13 +72,12 @@ gloo-ee:
         graphqlEnabled: false
       udsOptions:
         enabled: true
-    gatewayProxies:
-      gatewayProxy:
-        service:
-          type: "LoadBalancer"
-          loadBalancerIP: 192.168.49.229
+
   gloo-fed:
     enabled: false
+    #create_license_secret: false
+    #license_secret_name: gloo-ee-license-key
+
   global:
     extensions:
       extAuth:
@@ -52,7 +85,22 @@ gloo-ee:
           customEnv:
             - name: LOG_LEVEL
               value: debug
+          #extraVolume:
+          #  - name: where-ever-ca
+          #    secret:
+          #      secretName: where-ever-ca
+          #extraVolumeMount:
+          #  - name: where-ever-ca
+          #    mountPath: /etc/ssl/certs/where-ever-ca.crt
+          #    subPath: where-ever-ca.crt
+          #    readOnly: true
+    # extraCustomResources: true
+  
   grafana:
     defaultInstallationEnabled: false
+
   observability:
+    enabled: false
+
+  prometheus:
     enabled: false
