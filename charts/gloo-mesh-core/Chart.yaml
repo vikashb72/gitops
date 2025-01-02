@@ -5,6 +5,6 @@ dependencies:
   - name: gloo-platform-crds
     version: 2.6.6
     repository: https://storage.googleapis.com/gloo-platform/helm-charts
-  #- name: gloo-platform
-    #version: 2.6.6
-    #repository: https://storage.googleapis.com/gloo-platform/helm-charts
+  - name: gloo-platform
+    version: 2.6.6
+    repository: https://storage.googleapis.com/gloo-platform/helm-charts

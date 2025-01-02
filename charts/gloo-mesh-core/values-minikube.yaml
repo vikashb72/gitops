@@ -5,6 +5,8 @@ gloo-platform-crds:
   installEnterpriseCrds: true
 
 gloo-platform:
+  licensing:
+    licenseSecretName: gloo-core-license
   common:
     cluster: minikube
   glooMgmtServer:
