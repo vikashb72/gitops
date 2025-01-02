@@ -143,6 +143,8 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+    syncOptions:
+      ServerSideApply: true
   redis:
     disable: true
     name: redis
