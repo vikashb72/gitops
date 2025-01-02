@@ -220,23 +220,23 @@ argocdManaged:
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
   # TO TEST/REFACTOR
+  gloo-mesh-core:
+    disable: false
+    name: gloo-mesh-core
+    targetNamespace: gloo-mesh
+    sources:
+      - path: charts/gloo-mesh-core
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   gloo-ee:
     disable: true
     name: gloo-ee
     targetNamespace: gloo-ee
     sources:
       - path: charts/gloo-ee
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-  gloo-core:
-    disable: true
-    name: gloo-platform
-    targetNamespace: gloo-core
-    sources:
-      - path: charts/gloo-mesh-core
         noHelmValues: false
         helm:
           envFile: true
