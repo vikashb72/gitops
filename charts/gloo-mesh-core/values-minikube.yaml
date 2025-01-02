@@ -20,13 +20,13 @@ gloo-platform:
     serviceType: ClusterIP
     policyApis:
       enabled: false
-   extraEnvs:
-     ## use simple self-signed TLS
-     RELAY_DISABLE_CLIENT_CERTIFICATE_AUTHENTICATION:
-       value: "true"
-     RELAY_TOKEN:
-       value: "super-secure-token"
-     LICENSE_KEY:
+    extraEnvs:
+      ## use simple self-signed TLS
+      RELAY_DISABLE_CLIENT_CERTIFICATE_AUTHENTICATION:
+        value: "true"
+      RELAY_TOKEN:
+        value: "super-secure-token"
+      LICENSE_KEY:
         valueFrom:
           secretKeyRef:
             name: gloo-core-license
@@ -101,120 +101,120 @@ gloo-platform:
     #      type: DirectoryOrCreate
     #    name: cilium-run
   telemetryCollectorCustomization:
-   pipelines:
-     ## Used for tracing with jaeger
-     traces/istio:
-       enabled: true
-     traces/jaeger:
-       enabled: true
-     logs/ui:
-       enabled: false
-     metrics/ui:
-       enabled: false
-   extraReceivers:
-     ## Configure gloo edge scraping
-     prometheus/gloo-edge:
-       config:
-         global:
-           evaluation_interval: 1m
-           scrape_interval: 15s
-           scrape_timeout: 15s
-         scrape_configs:
-           - job_name: gloo-edge-pods
-             honor_labels: true
-             kubernetes_sd_configs:
-               - role: pod
-                 namespaces:
-                   names:
-                     - $GLOO_EDGE_NS
-                 selectors:
-                   - role: pod
-                     field: "spec.nodeName=${KUBE_NODE_NAME}"
-             relabel_configs:
-               - action: keep
-                 regex: (.+)
-                 source_labels:
-                   - __meta_kubernetes_pod_label_gloo
-               - action: keep
-                 regex: true
-                 source_labels:
-                   - __meta_kubernetes_pod_annotation_prometheus_io_scrape
-               - action: replace
-                 regex: (https?)
-                 source_labels:
-                   - __meta_kubernetes_pod_annotation_prometheus_io_scheme
-                 target_label: __scheme__
-               - action: replace
-                 regex: (.+)
-                 source_labels:
-                   - __meta_kubernetes_pod_annotation_prometheus_io_path
-                 target_label: __metrics_path__
-               - source_labels: [__meta_kubernetes_pod_container_port_name]
-                 action: keep
-                 regex: http-monitoring
-               - action: replace
-                 regex: (\d+);(([A-Fa-f0-9]{1,4}::?){1,7}[A-Fa-f0-9]{1,4})
-                 replacement: '[$$2]:$$1'
-                 source_labels:
-                   - __meta_kubernetes_pod_container_port_number
-                   - __meta_kubernetes_pod_ip
-                 target_label: __address__
-               - action: replace
-                 regex: (\d+);((([0-9]+?)(\.|$)){4})
-                 replacement: $$2:$$1
-                 source_labels:
-                   - __meta_kubernetes_pod_container_port_number
-                   - __meta_kubernetes_pod_ip
-                 target_label: __address__
-               - action: labelmap
-                 regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
-                 replacement: __param_$$1
-               - action: labelmap
-                 regex: __meta_kubernetes_pod_label_(.+)
-               - action: replace
-                 source_labels:
-                   - __meta_kubernetes_namespace
-                 target_label: namespace
-               - action: drop
-                 regex: Pending|Succeeded|Failed|Completed
-                 source_labels:
-                   - __meta_kubernetes_pod_phase
-               - action: replace
-                 replacement: '${GLOO_CORE_CLUSTER_NAME}'
-                 target_label: cluster
-               - action: replace
-                 target_label: pod
-                 source_labels: [__meta_kubernetes_pod_name]
-   extraProcessors:
-     ## These labels currently have high cardinality but needed for Kiali to work
-     transform/keep_kiali_all_labels:
-       metric_statements:
-         - context: datapoint
-           statements:
-             - keep_keys(attributes, ["request_protocol","grpc_response_status","destination_canonical_revision","destination_canonical_service","destination_service_name","destination_service_namespace","source_canonical_revision","source_canonical_service","cluster","collector_pod","connection_security_policy","destination_cluster","destination_principal","destination_service","destination_workload","destination_workload_id","destination_workload_namespace","gloo_mesh","namespace","pod_name","reporter","response_code","response_flags","source_cluster","source_principal","source_workload","source_workload_namespace","version","workload_id"])
-     transform/keep_only_kiali_additional_labels:
-       metric_statements:
-         - context: datapoint
-           statements:
-             - keep_keys(attributes, ["request_protocol","destination_canonical_revision","destination_canonical_service","destination_service_name","destination_service_namespace","source_canonical_revision","source_canonical_service"]) where IsMatch(metric.name, "^istio.*")
-   extraPipelines:
-     metrics/kiali:
-       exporters:
-         - prometheus
-       processors:
-         - memory_limiter
-         - filter/min
-         - transform/keep_otelcol_labels
-         - transform/keep_kiali_all_labels
-         - gloo_metrics_processor
-         - batch
-       receivers:
-         - prometheus
-     metrics/gloo-edge:
-       exporters:
-         - prometheus
-       processors:
-         - memory_limiter
-         - batch
-       receivers:
-         - prometheus/gloo-edge
+    pipelines:
+      ## Used for tracing with jaeger
+      traces/istio:
+        enabled: true
+      traces/jaeger:
+        enabled: true
+      logs/ui:
+        enabled: false
+      metrics/ui:
+        enabled: false
+    extraReceivers:
+      ## Configure gloo edge scraping
+      prometheus/gloo-edge:
+        config:
+          global:
+            evaluation_interval: 1m
+            scrape_interval: 15s
+            scrape_timeout: 15s
+          scrape_configs:
+            - job_name: gloo-edge-pods
+              honor_labels: true
+              kubernetes_sd_configs:
+                - role: pod
+                  namespaces:
+                    names:
+                      - $GLOO_EDGE_NS
+                  selectors:
+                    - role: pod
+                      field: "spec.nodeName=${KUBE_NODE_NAME}"
+              relabel_configs:
+                - action: keep
+                  regex: (.+)
+                  source_labels:
+                    - __meta_kubernetes_pod_label_gloo
+                - action: keep
+                  regex: true
+                  source_labels:
+                    - __meta_kubernetes_pod_annotation_prometheus_io_scrape
+                - action: replace
+                  regex: (https?)
+                  source_labels:
+                    - __meta_kubernetes_pod_annotation_prometheus_io_scheme
+                  target_label: __scheme__
+                - action: replace
+                  regex: (.+)
+                  source_labels:
+                    - __meta_kubernetes_pod_annotation_prometheus_io_path
+                  target_label: __metrics_path__
+                - source_labels: [__meta_kubernetes_pod_container_port_name]
+                  action: keep
+                  regex: http-monitoring
+                - action: replace
+                  regex: (\d+);(([A-Fa-f0-9]{1,4}::?){1,7}[A-Fa-f0-9]{1,4})
+                  replacement: '[$$2]:$$1'
+                  source_labels:
+                    - __meta_kubernetes_pod_container_port_number
+                    - __meta_kubernetes_pod_ip
+                  target_label: __address__
+                - action: replace
+                  regex: (\d+);((([0-9]+?)(\.|$)){4})
+                  replacement: $$2:$$1
+                  source_labels:
+                    - __meta_kubernetes_pod_container_port_number
+                    - __meta_kubernetes_pod_ip
+                  target_label: __address__
+                - action: labelmap
+                  regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
+                  replacement: __param_$$1
+                - action: labelmap
+                  regex: __meta_kubernetes_pod_label_(.+)
+                - action: replace
+                  source_labels:
+                    - __meta_kubernetes_namespace
+                  target_label: namespace
+                - action: drop
+                  regex: Pending|Succeeded|Failed|Completed
+                  source_labels:
+                    - __meta_kubernetes_pod_phase
+                - action: replace
+                  replacement: '${GLOO_CORE_CLUSTER_NAME}'
+                  target_label: cluster
+                - action: replace
+                  target_label: pod
+                  source_labels: [__meta_kubernetes_pod_name]
+    extraProcessors:
+      ## These labels currently have high cardinality but needed for Kiali to work
+      transform/keep_kiali_all_labels:
+        metric_statements:
+          - context: datapoint
+            statements:
+              - keep_keys(attributes, ["request_protocol","grpc_response_status","destination_canonical_revision","destination_canonical_service","destination_service_name","destination_service_namespace","source_canonical_revision","source_canonical_service","cluster","collector_pod","connection_security_policy","destination_cluster","destination_principal","destination_service","destination_workload","destination_workload_id","destination_workload_namespace","gloo_mesh","namespace","pod_name","reporter","response_code","response_flags","source_cluster","source_principal","source_workload","source_workload_namespace","version","workload_id"])
+      transform/keep_only_kiali_additional_labels:
+        metric_statements:
+          - context: datapoint
+            statements:
+              - keep_keys(attributes, ["request_protocol","destination_canonical_revision","destination_canonical_service","destination_service_name","destination_service_namespace","source_canonical_revision","source_canonical_service"]) where IsMatch(metric.name, "^istio.*")
+    extraPipelines:
+      metrics/kiali:
+        exporters:
+          - prometheus
+        processors:
+          - memory_limiter
+          - filter/min
+          - transform/keep_otelcol_labels
+          - transform/keep_kiali_all_labels
+          - gloo_metrics_processor
+          - batch
+        receivers:
+          - prometheus
+      metrics/gloo-edge:
+        exporters:
+          - prometheus
+        processors:
+          - memory_limiter
+          - batch
+        receivers:
+          - prometheus/gloo-edge
