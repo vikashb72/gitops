@@ -78,7 +78,7 @@ gloo-platform:
     enabled: true
 
   prometheus:
-    enabled: true
+    enabled: false
 
   installEnterpriseCrds: false
 
