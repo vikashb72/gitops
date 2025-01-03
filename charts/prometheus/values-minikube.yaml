@@ -97,6 +97,8 @@ kube-prometheus-stack:
       initContainers: []
   grafana:
     enabled: true
+    initChownData:
+      enabled: false
     defaultDashboardsEditable: true
     #adminPassword: prom-operator
     rbac:
