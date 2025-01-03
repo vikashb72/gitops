@@ -120,6 +120,17 @@ kube-prometheus-stack:
       enabled: true
       type: LoadBalancer
       loadBalancerIP: 192.168.49.231
+    plugins:
+      - grafana-piechart-panel
+      - macropower-analytics-panel
+      - azure-monitor-app
+      - digrich-bubblechart-panel
+      - golioth-websocket-datasource
+      - snuids-trend-panel
+      - serrrios-statusoverview-panel
+      - innius-grpc-datasource
+      - novatec-sdg-panel
+      - integrationmatters-comparison-panel
   prometheusOperator:
     service:
       loadBalancerIP: ""
