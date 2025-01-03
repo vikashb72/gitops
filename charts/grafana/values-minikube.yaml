@@ -157,9 +157,16 @@ grafana:
     #     volumeAttributes:
     #       secretProviderClass: "grafana-env-spc"
   
-  plugins: []
-    # - digrich-bubblechart-panel
-    # - grafana-clock-panel
+  plugins:
+    - macropower-analytics-panel
+    - azure-monitor-app
+    - digrich-bubblechart-panel
+    - golioth-websocket-datasource
+    - snuids-trend-panel
+    - serrrios-statusoverview-panel
+    - innius-grpc-datasource
+    - novatec-sdg-panel
+    - integrationmatters-comparison-panel
     ## You can also use other plugin download URL, as long as they are valid zip files,
     ## and specify the name of the plugin after the semicolon. Like this:
     # - https://grafana.com/api/plugins/marcusolsson-json-datasource/versions/1.3.2/download;marcusolsson-json-datasource
