@@ -4,7 +4,7 @@ metadata:
   name: argocd-redis-haproxy-metrics
   namespace: argocd
   labels:
-    release: prometheus-operator
+    release: prometheus
 spec:
   selector:
     matchLabels:

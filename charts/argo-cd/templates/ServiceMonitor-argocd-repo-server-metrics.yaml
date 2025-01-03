@@ -4,7 +4,7 @@ metadata:
   name: argocd-repo-server-metrics
   namespace: argocd
   labels:
-    release: prometheus-operator
+    release: prometheus
 spec:
   selector:
     matchLabels:
