@@ -85,6 +85,13 @@ grafana:
     inMemory:
       enabled: false
     lookupVolumeName: true
+
+  initChownData:
+  ## If false, data ownership will not be reset at startup
+  ## This allows the grafana-server to be run with an arbitrary user
+  ##
+    enabled: false
+
   # Administrator credentials when not using an existing secret (see below)
   adminUser: admin
   # adminPassword: strongpassword
