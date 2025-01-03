@@ -132,6 +132,8 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
+    syncOptions:
+      ServerSideApply: true
   grafana:
     disable: true
     name: grafana
