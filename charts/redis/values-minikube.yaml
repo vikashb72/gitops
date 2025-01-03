@@ -35,7 +35,7 @@ redis:
       enabled: false
   metrics:
     enabled: true
-    #serviceMonitor:
-    #  enabled: true
-    #  #selector:
-    #  #  monitoring-platform: core-prometheus
+    serviceMonitor:
+      enabled: true
+      selector:
+        monitoring-platform: prometheus
