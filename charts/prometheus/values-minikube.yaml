@@ -44,54 +44,25 @@
 #    #       replacement: prometheus-blackbox-exporter:9115
 
 kube-prometheus-stack:
-  crds:
-    enabled: true
   global:
-    rbac:
-      create: true
       createAggregateClusterRoles: true
       pspEnabled: false
-  prometheus-windows-exporter:
-    prometheus:
-      monitor:
-        enabled: true
-        jobLabel: jobLabel
-    podLabels:
-      jobLabel: windows-exporter
-    config: |-
-      collectors:
-        enabled: '[defaults],memory,container'
-  
   alertmanager:
     enabled: true
-    serviceAccount:
-      create: true
-      automountServiceAccountToken: true
     ingress:
       enabled: false
     service:
-      ipDualStack:
-        enabled: false
-        ipFamilies: ["IPv6", "IPv4"]
-        ipFamilyPolicy: "PreferDualStack"
-      nodePort: 30903
-      externalIPs: []
       loadBalancerIP: ""
-      externalTrafficPolicy: Cluster
       type: ClusterIP
-    serviceMonitor:
-      selfMonitor: true
     alertmanagerSpec:
-      persistentVolumeClaimRetentionPolicy: {}
-      storage: {}
-      # volumeClaimTemplate:
-      #   spec:
-      #     storageClassName: gluster
-      #     accessModes: ["ReadWriteOnce"]
-      #     resources:
-      #       requests:
-      #         storage: 50Gi
-      #   selector: {}
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: nfs-client
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 10Gi
       volumes: []
       volumeMounts: []
       initContainers: []
@@ -139,132 +110,39 @@ kube-prometheus-stack:
     #   mountPath: /etc/grafana/ssl/
     #   configMap: certs-configmap
     #   readOnly: true
-  
     deleteDatasources: []
     # - name: example-datasource
     #   orgId: 1
-  
     additionalDataSources: []
     prune: true
     serviceMonitor:
       enabled: true
-  kubernetesServiceMonitors:
-    enabled: true
-  kubeApiServer:
-    enabled: true
-    tlsConfig:
-      serverName: kubernetes
-      insecureSkipVerify: false
-    serviceMonitor:
-      jobLabel: component
-      selector:
-        matchLabels:
-          component: apiserver
-          provider: kubernetes
-      additionalLabels: {}
-  
-  kubelet:
-    enabled: true
-    namespace: kube-system
-  kubeControllerManager:
-    enabled: true
-  coreDns:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-  kubeDns:
-    enabled: false
-  kubeEtcd:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-  kubeScheduler:
-    enabled: true
-    service:
-      enabled: true
-    serviceMonitor:
-      enabled: true
-  kubeProxy:
-    enabled: true
-    service:
-      enabled: true
-    serviceMonitor:
-      enabled: true
-  kubeStateMetrics:
-    enabled: true
-  kube-state-metrics:
-    rbac:
-      create: true
-    prometheus:
-      monitor:
-        enabled: true
-    selfMonitor:
-      enabled: false
-  nodeExporter:
-    enabled: true
-  prometheus-node-exporter:
-    prometheus:
-      monitor:
-        enabled: true
-    rbac:
-      pspEnabled: false
   prometheusOperator:
-    enabled: true
-    admissionWebhooks:
-      patch:
-        enabled: true
-    namespaces: {}
     service:
       loadBalancerIP: ""
       type: ClusterIP
-    serviceMonitor:
-      selfMonitor: true
-    env:
-      GOGC: "30"
-    nodeSelector: {}
-    prometheusConfigReloader:
-      enableProbe: false
-    thanosImage:
   prometheus:
     enabled: true
     agentMode: false
-    networkPolicy:
-      enabled: false
-      flavor: kubernetes
-    serviceAccount:
-      create: true
-      automountServiceAccountToken: true
-    thanosService:
-      enabled: false
-      annotations: {}
-      labels: {}
-      type: ClusterIP
     service:
-      loadBalancerIP: ""
-      type: ClusterIP
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.227
     ingress:
       enabled: false
-      hosts: []
-    serviceMonitor:
-      selfMonitor: true
     prometheusSpec:
-      persistentVolumeClaimRetentionPolicy: {}
-      #  whenDeleted: Retain
-      #  whenScaled: Retain
-      automountServiceAccountToken: true
       nodeSelector: {}
       ruleNamespaceSelector: {}
       # ruleNamespaceSelector:
       #   matchLabels:
       #     prometheus: somelabel
-      storageSpec: {}
-      #  volumeClaimTemplate:
-      #    spec:
-      #      storageClassName: gluster
-      #      accessModes: ["ReadWriteOnce"]
-      #      resources:
-      #        requests:
-      #          storage: 50Gi
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: nfs-client
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 10Gi
       volumes: []
       volumeMounts: []
       additionalScrapeConfigs: []
