@@ -317,7 +317,22 @@ grafana:
         gnetId: 2
         revision: 2
         datasource: Prometheus
-      # 
+      # https://grafana.com/grafana/dashboards/14584-argocd/
+      argocd:
+        gnetId: 14584
+        revision: 1
+        datasource: Prometheus
+      # https://grafana.com/grafana/dashboards/7645-istio-control-plane-dashboard/
+      #itio-control-plane:
+      #  gnetId: 7645
+      #  revision: 240
+      #  datasource: Prometheus
+      # https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+      #node-exporter-full:
+      #  gnetId: 1860
+      #  revision: 37
+      #  datasource: Prometheus
+        
     #   some-dashboard:
     #     json: |
     #       $RAW_JSON
