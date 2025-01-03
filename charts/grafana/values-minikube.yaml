@@ -317,11 +317,17 @@ grafana:
         gnetId: 2
         revision: 2
         datasource: Prometheus
+      # https://grafana.com/grafana/dashboards/11835-redis-dashboard-for-prometheus-redis-exporter-helm-stable-redis-ha/
+      redis-exporter:
+        gnetId: 11835
+        revision: 1
+        datasource: Prometheus
+     # TO TEST
       # https://grafana.com/grafana/dashboards/14584-argocd/
       argocd:
         gnetId: 14584
         revision: 1
-        datasnode-exporter-full:ource: Prometheus
+        datasource: Prometheus
       # https://grafana.com/grafana/dashboards/14981-coredns/
       core-dns:
         gnetId: 14981
@@ -330,11 +336,6 @@ grafana:
       # https://grafana.com/grafana/dashboards/15661-1-k8s-for-prometheus-dashboard-20211010/
       k8s-for-prometheus:
         gnetId: 15661
-        revision: 1
-        datasource: Prometheus
-      # https://grafana.com/grafana/dashboards/11835-redis-dashboard-for-prometheus-redis-exporter-helm-stable-redis-ha/
-      redis-exporter:
-        gnetId: 11835
         revision: 1
         datasource: Prometheus
       # https://grafana.com/grafana/dashboards/11454-k8s-storage-volumes-cluster/
