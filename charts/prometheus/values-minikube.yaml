@@ -107,8 +107,8 @@ kube-prometheus-stack:
       enabled: false
     persistence:
       enabled: true
-      type: sts
-      storageClassName: "nfs-client"
+      type: pvc
+      storageClassName: nfs-client
       accessModes:
         - ReadWriteOnce
       size: 10Gi
