@@ -77,6 +77,8 @@ kube-prometheus-stack:
       enabled: false
     serviceMonitor:
       enabled: true
+      targetLabels:
+        - prometheus
     defaultDashboardsEditable: true
     rbac:
       pspEnabled: false
