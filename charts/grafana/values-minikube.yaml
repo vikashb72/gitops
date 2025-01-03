@@ -310,7 +310,7 @@ grafana:
           options:
             path: /var/lib/grafana/dashboards/default
 
-  dashboards: {}
+  dashboards:
     default:
       # https://grafana.com/grafana/dashboards/2-prometheus-stats/
       prometheus-stats:
