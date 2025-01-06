@@ -199,8 +199,10 @@ kube-prometheus-stack:
     ingress:
       enabled: false
     prometheusSpec:
-      nodeSelector: {}
-      ruleNamespaceSelector: {}
+      #ruleNamespaceSelector: {}
+      #ruleSelectorNilUsesHelmValues: true 
+      #serviceMonitorSelectorNilUsesHelmValues: true
+      serviceMonitorSelectorNilUsesHelmValues: false
       # ruleNamespaceSelector:
       #   matchLabels:
       #     prometheus: somelabel
