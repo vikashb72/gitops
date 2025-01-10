@@ -148,7 +148,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   redis:
-    disable: false
+    disable: true
     name: redis
     targetNamespace: redis
     sources:
