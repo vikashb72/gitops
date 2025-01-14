@@ -90,7 +90,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   vault:
-    disable: true
+    disable: false
     name: vault
     syncwave: "-5"
     targetNamespace: vault-system
