@@ -4,9 +4,13 @@ loki-distributed:
     #  azure.workload.identity/use: 'true'
     replicas: 1 # Increase based on your cluster size
     structuredConfig:
+      index_gateway:
+        mode: ring
       limits_config:
         enforce_metric_name: false
         retention_period: 720h # 7 days
+      query_scheduler:
+        use_scheduler_ring: true
       ingester:
         lifecycler:
           ring:
