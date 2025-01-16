@@ -3,6 +3,8 @@ kind: Kafka
 metadata:
   name: "{{ .Values.cluster.name }}"
 spec:
+  clusterCa:
+    generateCertificateAuthority: false
   entityOperator:
     topicOperator: {}
     userOperator: {}
