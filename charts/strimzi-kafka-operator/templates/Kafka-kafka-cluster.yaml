@@ -5,6 +5,8 @@ metadata:
 spec:
   clusterCa:
     generateCertificateAuthority: false
+  clientsCa:
+    generateCertificateAuthority: false
   entityOperator:
     topicOperator: {}
     userOperator: {}
