@@ -6,7 +6,7 @@ spec:
   clusterCa:
     generateCertificateAuthority: false
   clientsCa:
-    generateCertificateAuthority: false
+    generateCertificateAuthority: true
   entityOperator:
     topicOperator: {}
     userOperator: {}
