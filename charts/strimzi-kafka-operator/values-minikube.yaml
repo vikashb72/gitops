@@ -48,7 +48,7 @@ cluster:
     logging:
       type: inline
       loggers:
-        kafka.root.logger.level: INFO
+        kafka.root.logger.level: DEBUG
     #resources:
     #  requests:
     #    memory: 256Mi
