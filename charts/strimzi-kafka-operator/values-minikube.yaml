@@ -1,4 +1,5 @@
-env: k3s
+env:
+  EVT: minikube
 
 strimzi-kafka-operator:
   replicas: 1
