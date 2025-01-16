@@ -47,11 +47,11 @@ spec:
       - name: plain
         port: 9092
         type: internal
-        tls: false
+        tls: true
       - name: tls
         port: 9093
         type: internal
-        tls: false
+        tls: true
 {{- if .Values.cluster.kafka.external_listener.enabled }}
       - name: external
         port: {{ default 9094 .Values.cluster.kafka.external_listener.port }}
