@@ -1,4 +1,4 @@
-env: minikube
+env: k3s
 hostname: k3s.home.where-ever.za.net
 
 argo-cd:
