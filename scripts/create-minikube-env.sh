@@ -64,6 +64,16 @@ minikube start \
 
 export MINIKUBE_IP=$(minikube ip)
 
+minikube addons enable dashboard 
+minikube addons enable metrics-server 
+minikube addons enable metallb
+
+echo "
+-- Enter Load Balancer Start IP: 192.168.49.225
+-- Enter Load Balancer End IP: 192.168.49.254
+"
+minikube addons configure metallb
+
 # Install nfs-provisioning
 helm install -n nfs-provisioning nfs-subdir-external-provisioner \
     nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
