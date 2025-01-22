@@ -1,4 +1,6 @@
+{{- if not .Values.disableServiceMonitor }}
 apiVersion: monitoring.coreos.com/v1
+
 kind: ServiceMonitor
 metadata:
   name: argocd-applicationset-controller-metrics
@@ -11,3 +13,4 @@ spec:
       app.kubernetes.io/name: argocd-applicationset-controller
   endpoints:
     - port: metrics
+{{- end }}
