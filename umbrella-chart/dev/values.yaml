@@ -25,12 +25,12 @@ global:
 argocdManaged:
   argocd:
     disable: false
-    name: argo-cd
+    name: argocd
     namespace: argocd
     disableFinalisers: false
     syncwave: "-10"
     sources:
-      - path: charts/argo-cd
+      - path: charts/argocd
         noHelmValues: false
         helm:
           envFile: true
