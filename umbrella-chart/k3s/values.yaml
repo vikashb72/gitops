@@ -47,6 +47,23 @@ argocdManaged:
     automated:
       allowEmpty: true
     ignoreDifferences: false 
+  istio:
+    disable: false
+    name: istio
+    targetNamespace: istio-system
+    sources:
+      - path: charts/istio
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: true 
+    ignoreDifferencesConfig:
+      - group: admissionregistration.k8s.io
+        kind: ValidatingWebhookConfiguration
+        jqPathExpressions:
+          - .webhooks[]?.failurePolicy
   vpa:
     disable: true
     name: vpa
@@ -226,23 +243,6 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  istio:
-    disable: true
-    name: istio
-    targetNamespace: istio-system
-    sources:
-      - path: charts/istio
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: true 
-    ignoreDifferencesConfig:
-      - group: admissionregistration.k8s.io
-        kind: ValidatingWebhookConfiguration
-        jqPathExpressions:
-          - .webhooks[]?.failurePolicy
   gloo-mesh-core:
     disable: true
     name: gloo-mesh-core
