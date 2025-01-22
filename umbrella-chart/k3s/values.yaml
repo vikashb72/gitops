@@ -40,7 +40,7 @@ argocdManaged:
     disable: false
     name: umbrella-chart
     sources:
-      - path: umbrella-chart/minikube
+      - path: umbrella-chart/k3s
         noHelmValues: true
     syncwave: "-9"
     disableAutomated: false
@@ -308,14 +308,14 @@ argocdManaged:
   #      helm:
   #        values: |
   #          global:
-  #            domain: minikube.home.where-ever.za.net
-  #          env: minikube
+  #            domain: k3s.home.where-ever.za.net
+  #          env: k3s
   #        valuesObject:
   #          global:
-  #            domain: minikube.home.where-ever.za.net
-  #          env: minikube
+  #            domain: k3s.home.where-ever.za.net
+  #          env: k3s
   #        parameters:
-  #          env: minikube
+  #          env: k3s
   #      targetNamespace: target-namespace
   #      disableAutomated: false
   #      automated:
