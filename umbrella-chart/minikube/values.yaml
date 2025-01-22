@@ -76,7 +76,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   external-secrets:
-    disable: false
+    disable: true
     name: external-secrets
     targetNamespace: external-secrets
     sources:
@@ -90,7 +90,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   vault:
-    disable: false
+    disable: true
     name: vault
     syncwave: "-5"
     targetNamespace: vault-system
@@ -121,7 +121,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   prometheus:
-    disable: false
+    disable: true
     name: prometheus
     targetNamespace: prometheus
     sources:
@@ -159,7 +159,7 @@ argocdManaged:
     disableAutomated: false
     automated: {}
   strimzi-kafka-operator:
-    disable: false
+    disable: true
     name: strimzi-kafka-operator
     targetNamespace: kafka-system
     sources:
