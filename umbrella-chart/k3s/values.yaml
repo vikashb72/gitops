@@ -64,6 +64,7 @@ argocdManaged:
         kind: ValidatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
+          # /webhooks/0/failurePolicy
   vpa:
     disable: true
     name: vpa

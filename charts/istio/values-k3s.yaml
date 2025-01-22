@@ -55,6 +55,8 @@ istiod:
   outboundTrafficPolicy:
     mode: REGISTRY_ONLY
 
+istio-cni:
+  profile: ambient
 
 kiali-server:
   replicas: 1
