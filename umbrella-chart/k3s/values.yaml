@@ -3,7 +3,7 @@ global:
   hostname: k3s.home.where-ever.za.net
   hvault:
     external:
-      addr: https://192.168.0.22:8200
+      addr: https://192.168.0.4:8443
   metadata:
     namespace: argocd
     finalisers: resources-finalizer.argocd.argoproj.io
@@ -40,7 +40,7 @@ argocdManaged:
     disable: false
     name: umbrella-chart
     sources:
-      - path: umbrella-chart/k3s
+      - path: umbrella-chart/minikube
         noHelmValues: true
     syncwave: "-9"
     disableAutomated: false
@@ -123,13 +123,15 @@ argocdManaged:
     name: prometheus
     targetNamespace: prometheus
     sources:
-      - path: charts/kube-prometheus-stack
+      - path: charts/prometheus
         noHelmValues: false
         helm:
           envFile: true
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
+    syncOptions:
+      ServerSideApply: true
   grafana:
     disable: true
     name: grafana
@@ -141,6 +143,8 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
+    syncOptions:
+      ServerSideApply: true
   redis:
     disable: true
     name: redis
@@ -174,38 +178,116 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-  #gloo-ee:
-  #  disable: true
-  #  name: gloo-ee
-  #  targetNamespace: gloo-ee
-  #  sources:
-  #  disableAutomated: false
-  #    - path: charts/gloo-ee
-  #      noHelmValues: false
-  #      helm:
-  #        envFile: true
-  #gloo-core:
-  #  disable: true
-  #  name: gloo-platform
-  #  targetNamespace: gloo-core
-  #  sources:
-  #  disableAutomated: false
-  #    - path: charts/gloo-mesh-core
-  #      noHelmValues: false
-  #      helm:
-  #        envFile: true
-  #
-  # TODO:
-  #     gha-runner-scale-set-controller
-  #     gha-runner-scale-set
-  # istio
-  # istio-base
-  # kiali --- stio console ??
-  # keda
-  # reloader
-  # loki-distributed
-  # promtail
-  # 
+  reloader:
+    disable: true
+    name: reloader
+    targetNamespace: reloader
+    sources:
+      - path: charts/reloader
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  keda:
+    disable: true
+    name: keda
+    targetNamespace: keda
+    sources:
+      - path: charts/keda
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    syncOptions:
+      ServerSideApply: true
+  gha-runner-controller:
+    disable: true
+    name: gha-runner-controller
+    targetNamespace: gha-controller
+    sources:
+      - path: charts/gha-runner-controller
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    syncOptions:
+      ServerSideApply: true
+  gha-runner-scale-set:
+    disable: true
+    name: gha-runner-scale-set
+    targetNamespace: gha-runners
+    sources:
+      - path: charts/gha-runner-scale-set
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  istio:
+    disable: true
+    name: istio
+    targetNamespace: istio-system
+    sources:
+      - path: charts/istio
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: true 
+    ignoreDifferencesConfig:
+      - group: admissionregistration.k8s.io
+        kind: ValidatingWebhookConfiguration
+        jqPathExpressions:
+          - .webhooks[]?.failurePolicy
+  gloo-mesh-core:
+    disable: true
+    name: gloo-mesh-core
+    targetNamespace: gloo-mesh
+    sources:
+      - path: charts/gloo-mesh-core
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  gloo-ee:
+    disable: true
+    name: gloo-ee
+    targetNamespace: gloo-system
+    sources:
+      - path: charts/gloo-ee
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  # TO TEST/REFACTOR
+  promtail:
+    disable: true
+    name: promtail
+    targetNamespace: grafana
+    sources:
+      - path: charts/promtail
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  loki-distributed:
+    disable: true
+    name: promtail
+    targetNamespace: grafana
+    sources:
+      - path: charts/loki-distributed
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   #documentation:
   #  disable: false
   #  name: chart-name
@@ -226,14 +308,14 @@ argocdManaged:
   #      helm:
   #        values: |
   #          global:
-  #            domain: u22-dev.home.where-ever.za.net
-  #          env: dev
+  #            domain: minikube.home.where-ever.za.net
+  #          env: minikube
   #        valuesObject:
   #          global:
-  #            domain: u22-dev.home.where-ever.za.net
-  #          env: dev
+  #            domain: minikube.home.where-ever.za.net
+  #          env: minikube
   #        parameters:
-  #          env: dev
+  #          env: minikube
   #      targetNamespace: target-namespace
   #      disableAutomated: false
   #      automated:
@@ -241,15 +323,3 @@ argocdManaged:
   #        selfHeal: true
   #        allowEmpty: true
   #  ignoreDifferences: false 
-
-# override the namings to avoid obvious conflicts between created resources
-
-#chart1:
-#  mongodb:
-#    nameOverride: "chart1-mongodb"
-#    fullnameOverride: "chart1-mongodb"
-#
-#chart2:
-#  mongodb:
-#    nameOverride: "chart2-mongodb"
-#    fullnameOverride: "chart2-mongodb
