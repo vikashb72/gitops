@@ -47,6 +47,20 @@ argocdManaged:
     automated:
       allowEmpty: true
     ignoreDifferences: false 
+  external-secrets:
+    disable: true
+    name: external-secrets
+    targetNamespace: external-secrets
+    sources:
+      - path: hooks/external-secrets
+        noHelmValues: true
+      - path: charts/external-secrets
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
   istio:
     disable: false
     name: istio
@@ -65,6 +79,28 @@ argocdManaged:
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
           # /webhooks/0/failurePolicy
+  gloo-mesh-core:
+    disable: true
+    name: gloo-mesh-core
+    targetNamespace: gloo-mesh
+    sources:
+      - path: charts/gloo-mesh-core
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  gloo-ee:
+    disable: true
+    name: gloo-ee
+    targetNamespace: gloo-system
+    sources:
+      - path: charts/gloo-ee
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
   vpa:
     disable: true
     name: vpa
@@ -85,20 +121,6 @@ argocdManaged:
     syncwave: "0"
     sources:
       - path: charts/goldilocks
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: false 
-  external-secrets:
-    disable: true
-    name: external-secrets
-    targetNamespace: external-secrets
-    sources:
-      - path: hooks/external-secrets
-        noHelmValues: true
-      - path: charts/external-secrets
         noHelmValues: false
         helm:
           envFile: true
@@ -239,28 +261,6 @@ argocdManaged:
     targetNamespace: gha-runners
     sources:
       - path: charts/gha-runner-scale-set
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-  gloo-mesh-core:
-    disable: true
-    name: gloo-mesh-core
-    targetNamespace: gloo-mesh
-    sources:
-      - path: charts/gloo-mesh-core
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-  gloo-ee:
-    disable: true
-    name: gloo-ee
-    targetNamespace: gloo-system
-    sources:
-      - path: charts/gloo-ee
         noHelmValues: false
         helm:
           envFile: true
