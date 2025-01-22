@@ -23,7 +23,7 @@ global:
 argocdManaged:
   argocd:
     disable: false
-    name: argo-cd
+    name: argocd
     namespace: argocd
     disableFinalisers: false
     syncwave: "-10"
