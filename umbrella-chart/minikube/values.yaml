@@ -49,6 +49,21 @@ argocdManaged:
     automated:
       allowEmpty: true
     ignoreDifferences: false 
+  external-secrets:
+    disable: false
+    name: external-secrets
+    targetNamespace: external-secrets
+    sources:
+      - path: hooks/external-secrets
+        noHelmValues: true
+      - path: charts/external-secrets
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
+    syncwave: "-8"
   vpa:
     disable: true
     name: vpa
@@ -69,20 +84,6 @@ argocdManaged:
     syncwave: "0"
     sources:
       - path: charts/goldilocks
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: false 
-  external-secrets:
-    disable: true
-    name: external-secrets
-    targetNamespace: external-secrets
-    sources:
-      - path: hooks/external-secrets
-        noHelmValues: true
-      - path: charts/external-secrets
         noHelmValues: false
         helm:
           envFile: true
