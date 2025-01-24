@@ -1,7 +1,7 @@
 env: k3s
 hostname: k3s.home.where-ever.za.net
 
-disableServiceMonitor: true
+bootstrapMode: true
   
 argo-cd:
   namespaceOverride: "argocd"

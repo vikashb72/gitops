@@ -1,7 +1,7 @@
 env: minikube
 hostname: minikube.home.where-ever.za.net
 
-disableServiceMonitor: true
+bootstrapMode: true
 
 argo-cd:
   namespaceOverride: "argocd"
