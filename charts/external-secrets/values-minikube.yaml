@@ -21,7 +21,7 @@ ClusterSecretStores:
   external-vault-backend:
     disable: false
     provider: vault
-    server: https://192.168.0.20:8200
+    server: https://192.168.0.4:8443
     path: kv
     version: v2
     auth:
