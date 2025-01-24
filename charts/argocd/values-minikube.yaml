@@ -1,5 +1,6 @@
-env: minikube
-hostname: minikube.home.where-ever.za.net
+env:
+  EVT: minikube
+  bootstrapMode: true
 
 bootstrapMode: true
 

@@ -1,8 +1,7 @@
-env: k3s
-hostname: k3s.home.where-ever.za.net
+env:
+  EVT: k3s
+  bootstrapMode: true
 
-bootstrapMode: true
-  
 argo-cd:
   namespaceOverride: "argocd"
   createAggregateRoles: true
