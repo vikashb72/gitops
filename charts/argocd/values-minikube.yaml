@@ -2,8 +2,6 @@ env:
   EVT: minikube
   bootstrapMode: true
 
-bootstrapMode: true
-
 argo-cd:
   namespaceOverride: "argocd"
   createAggregateRoles: true

@@ -1,4 +1,4 @@
-{{- if not .Values.disableServiceMonitor }}
+{{- if not .Values.env.bootstrapMode }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
