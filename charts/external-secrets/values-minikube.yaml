@@ -1,6 +1,7 @@
 env:
   EVT: minikube
   namespace: external-secrets
+  bootstrapMode: true
 
 ClusterSecretStores:
   azure-backend:
