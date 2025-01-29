@@ -1,0 +1,70 @@
+{{- range $key, $value := .Values.myapps -}}
+{{ if not .disabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ default $.Values.global.metadata.namespace .namespace }}
+  name: {{ $key }}
+  labels:
+    service: {{ $key }}
+{{- if $value.labels }}
+{{- range $value.labels }}
+    {{ . }}
+{{- end }}
+{{- end }}
+spec:
+  replicas: {{ default 1 .replicas }}
+  selector:
+    matchLabels:
+      app: {{ $key }}
+  template:
+    metadata:
+      annotations:
+        proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+        sidecar.istio.io/proxyCPU: 10m
+        sidecar.istio.io/proxyCPULimit: '2'
+        sidecar.istio.io/proxyMemory: 10Mi
+        sidecar.istio.io/proxyMemoryLimit: 512Mi
+      labels:
+        app: {{ $key }}
+        sidecar.istio.io/inject: 'true'
+    spec:
+      serviceAccountName: {{ $key }}
+      containers:
+        - env:
+            - name: APP_ENV
+              value: {{ $.Values.global.env }}
+            - name: VAULT_ROLE
+              value: {{ default $key .vaultRole }}
+            - name: VAULT_SERVER
+              value: https://vault.vault-system.svc.cluster.local:8200
+            - name: SERVICE_PATH
+              value: {{ .path.service }}
+            - name: VAULT_VERIFY_SSL
+              value: 'false'
+          image: {{ .image.service }}:{{ .image.buildid }}
+          imagePullPolicy: IfNotPresent
+          name: {{ $key }}
+          ports:
+            - containerPort: {{ default $.Values.global.spec.targetPort .targetPort }}
+              name: http
+          resources:
+            requests:
+              cpu: {{ .cpu }}
+              memory: {{ .memory }}
+      initContainers:
+        - env:
+            - name: APP_ENV
+              value: {{ $.Values.global.env }}
+            - name: VAULT_ROLE
+              value: {{ default $key .vaultRole }}
+            - name: VAULT_SERVER
+              value: https://vault.vault-system.svc.cluster.local:8200
+            - name: SERVICE_PATH
+              value: {{ .path.init }}
+            - name: VAULT_VERIFY_SSL
+              value: 'false'
+          image: {{ .image.init }}:{{ .image.buildid }}
+---
+{{- end }}
+{{- end }}

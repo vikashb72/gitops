@@ -1,0 +1,36 @@
+global:
+  env: minikube
+  metadata:
+    namespace: my-app
+  spec:
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+
+myapps:
+  app1:
+    # defaults to {} if not specified 
+    labels:
+      - "metallb.universe.tf/address-pool: default"
+    # defaults to global.metadata.namespace if not specified 
+    namespace: my-app
+    # defaults to 1 if not specified 
+    replicas: 3
+    # required
+    path:
+      service: path/to/service
+      init: path/to/init-service
+    image:
+      # buildid can be update via ci (using yq)
+      buildid: 123456
+      service: path/to/service
+      init: path/to/init-service
+    # defaults to global.spec.port
+    port: 8443
+    # defaults to global.spec.targetPort
+    targetPort: 8443
+    # required, the role used with hvault 
+    vaultRole: readonly
+    # required ???
+    memory: 64Mi
+    cpu: 20m
