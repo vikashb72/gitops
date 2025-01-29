@@ -9,9 +9,15 @@ dependencies:
   - name: istiod
     version: 1.22.3
     repository: https://istio-release.storage.googleapis.com/charts
-  - name: cni
+  #- name: cni
+  #  version: 1.22.3
+  #  repository: https://istio-release.storage.googleapis.com/charts
+  - name: gateway
     version: 1.22.3
     repository: https://istio-release.storage.googleapis.com/charts
+  #- name: ztunnel
+  #  version: 1.22.3
+  #  repository: https://istio-release.storage.googleapis.com/charts
   #- name: ambient
   #  version: 1.22.3
   #  repository: https://istio-release.storage.googleapis.com/charts
