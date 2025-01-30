@@ -45,7 +45,7 @@ spec:
             - name: VAULT_SERVER
               value: https://vault.vault-system.svc.cluster.local:8200
             - name: SERVICE_PATH
-              value: {{ .vault.service }}
+              value: {{ .vault.path }}
             - name: VAULT_VERIFY_SSL
               value: {{ default "false" .vault.tls }}
           image: {{ .image.repository }}:{{ .buildid }}
