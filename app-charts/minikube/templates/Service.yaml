@@ -15,7 +15,7 @@ metadata:
 spec:
   ports:
     - port: {{ default $.Values.global.spec.port .port }}
-      protocol: {{ default $.Values.global.spec.port .protocol }}
+      protocol: {{ default $.Values.global.spec.protocol .protocol }}
       targetPort: {{ default $.Values.global.spec.targetPort .targetPort }}
   selector:
     app: {{ $key }}

@@ -7,13 +7,13 @@ metadata:
   name: {{ $key }}
   labels:
     service: {{ $key }}
-{{- if $value.labels }}
-{{- range $value.labels }}
+{{- if $value.metalabels }}
+{{- range $value.metalabels }}
     {{ . }}
 {{- end }}
 {{- end }}
 spec:
-  replicas: {{ default 1 .replicas }}
+  replicas: {{ default 1 .replicaCount }}
   selector:
     matchLabels:
       app: {{ $key }}
@@ -25,46 +25,75 @@ spec:
         sidecar.istio.io/proxyCPULimit: '2'
         sidecar.istio.io/proxyMemory: 10Mi
         sidecar.istio.io/proxyMemoryLimit: 512Mi
+      {{- with .podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
         app: {{ $key }}
         sidecar.istio.io/inject: 'true'
+        {{- with .podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
-      serviceAccountName: {{ $key }}
+      serviceAccountName: {{ default $key .serviceAccountName }}
       containers:
         - env:
             - name: APP_ENV
               value: {{ $.Values.global.env }}
             - name: VAULT_ROLE
-              value: {{ default $key .vaultRole }}
+              value: {{ default $key .vault.role }}
             - name: VAULT_SERVER
               value: https://vault.vault-system.svc.cluster.local:8200
             - name: SERVICE_PATH
-              value: {{ .path.service }}
+              value: {{ .vault.service }}
             - name: VAULT_VERIFY_SSL
-              value: 'false'
-          image: {{ .image.service }}:{{ .image.buildid }}
-          imagePullPolicy: IfNotPresent
+              value: {{ default "false" .vault.tls }}
+          image: {{ .image.repository }}:{{ .buildid }}
+          imagePullPolicy: {{ default "IfNotPresent" .image.pullPolicy }}
           name: {{ $key }}
           ports:
-            - containerPort: {{ default $.Values.global.spec.targetPort .targetPort }}
+            - containerPort: {{ default $.Values.global.spec.port .port }}
               name: http
+          {{- with .resources }}
           resources:
-            requests:
-              cpu: {{ .cpu }}
-              memory: {{ .memory }}
+            {{- toYaml . | nindent 12 }} 
+          {{- end }}
+          {{- with .volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- if .initContainer }}
       initContainers:
         - env:
             - name: APP_ENV
               value: {{ $.Values.global.env }}
             - name: VAULT_ROLE
-              value: {{ default $key .vaultRole }}
+              value: {{ default $key .initContainer.vault.role }}
             - name: VAULT_SERVER
               value: https://vault.vault-system.svc.cluster.local:8200
             - name: SERVICE_PATH
-              value: {{ .path.init }}
+              value: {{ .initContainer.vault.path }}
             - name: VAULT_VERIFY_SSL
-              value: 'false'
-          image: {{ .image.init }}:{{ .image.buildid }}
+              value: {{ default "false" .initContainer.vault.tls }}
+          image: {{ .initContainer.image.repository }}:{{ .buildid }}
+          name: {{ .initContainer.name }}
+          {{- with .initContainer.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .initContainer.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .initContainer.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
 ---
 {{- end }}
 {{- end }}
