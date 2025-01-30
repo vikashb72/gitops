@@ -6,7 +6,7 @@ metadata:
   namespace: {{ default $.Values.global.metadata.namespace .namespace }}
   name: {{ $key }}
   labels:
-    service: {{ $key }}
+    name: {{ $key }}
 {{- if $value.metalabels }}
 {{- range $value.metalabels }}
     {{ . }}
