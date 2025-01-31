@@ -81,6 +81,17 @@ argocdManaged:
         kind: ValidatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
+  gloo-ee:
+    disable: false
+    name: gloo-ee
+    targetNamespace: gloo-system
+    sources:
+      - path: charts/gloo-ee
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
 
   vpa:
     disable: true
@@ -253,17 +264,6 @@ argocdManaged:
     targetNamespace: gloo-mesh
     sources:
       - path: charts/gloo-mesh-core
-        noHelmValues: false
-        helm:
-          envFile: true
-    disableAutomated: false
-    automated: {}
-  gloo-ee:
-    disable: true
-    name: gloo-ee
-    targetNamespace: gloo-system
-    sources:
-      - path: charts/gloo-ee
         noHelmValues: false
         helm:
           envFile: true
