@@ -1,20 +1,15 @@
 {{- range $key, $value := .Values.myapps -}}
-{{ if not .disabled }}
+{{- if $value.Deployment }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: {{ default $.Values.global.metadata.namespace .namespace }}
-  name: {{ $key }}
   labels:
     name: {{ $key }}
-{{- if $value.metalabels }}
-{{- range $value.metalabels }}
-    {{ . }}
-{{- end }}
-{{- end }}
+  name: {{ $key }}
+  namespace: {{ default $.Values.global.metadata.namespace $value.namespace }}
 spec:
-{{- if .replicaCount }}
-  replicas: {{ .replicaCount }}
+{{- if $value.Deployment.replicaCount }}
+  replicas: {{ $value.Deployment.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
@@ -22,80 +17,79 @@ spec:
   template:
     metadata:
       annotations:
-        proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
-        sidecar.istio.io/proxyCPU: 10m
-        sidecar.istio.io/proxyCPULimit: '2'
-        sidecar.istio.io/proxyMemory: 10Mi
-        sidecar.istio.io/proxyMemoryLimit: 512Mi
-      {{- with .podAnnotations }}
+{{- template "add_istio.annotations" . }}
+      {{- with $value.Deployment.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         app: {{ $key }}
         istio.io/rev: "stable"
-        {{- with .podLabels }}
+        {{- with $value.Deployment.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ default $key .serviceAccountName }}
+      serviceAccountName: {{ default $key }}
       containers:
         - env:
             - name: APP_ENV
               value: {{ $.Values.global.env }}
             - name: VAULT_ROLE
-              value: {{ default $key .vault.role }}
+              value: {{ default $key $value.Deployment.vault.role }}
             - name: VAULT_SERVER
-              value: https://vault.vault-system.svc.cluster.local:8200
+              value: {{ $.Values.global.vault.server }}
             - name: SERVICE_PATH
-              value: {{ .vault.path }}
+              value: {{ $value.Deployment.vault.path }}
             - name: VAULT_VERIFY_SSL
-              value: {{ default "false" .vault.tls }}
-          image: {{ .image.repository }}:{{ .buildid }}
-          imagePullPolicy: {{ default "IfNotPresent" .image.pullPolicy }}
-          name: {{ .image.name }}
+              value: {{ $.Values.global.vault.verify_ssl }}
+          image: {{ $value.Deployment.image.repository }}:{{ $value.Deployment.buildid }}
+          imagePullPolicy: {{ default "IfNotPresent" $value.Deployment.image.pullPolicy }}
+          name: {{ $value.Deployment.image.name }}
           ports:
-            - containerPort: {{ default $.Values.global.spec.port .port }}
+            - containerPort: {{ default $.Values.global.spec.port $value.Deployment.port }}
               name: http
-          {{- with .resources }}
+          {{- with $value.Deployment.resources }}
           resources:
             {{- toYaml . | nindent 12 }} 
           {{- end }}
-          {{- with .volumeMounts }}
+          {{- with $value.Deployment.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .volumes }}
+      {{- with $value.Deployment.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-{{- if .initContainer }}
+{{- if $value.Deployment.initContainer }}
       initContainers:
         - env:
             - name: APP_ENV
               value: {{ $.Values.global.env }}
             - name: VAULT_ROLE
-              value: {{ default $key .initContainer.vault.role }}
+              value: {{ default $key $value.Deployment.initContainer.vault.role }}
             - name: VAULT_SERVER
-              value: https://vault.vault-system.svc.cluster.local:8200
+              value: {{ $.Values.global.vault.server }}
             - name: SERVICE_PATH
-              value: {{ .initContainer.vault.path }}
+              value: {{ $value.Deployment.initContainer.vault.path }}
             - name: VAULT_VERIFY_SSL
-              value: {{ default "false" .initContainer.vault.tls }}
-          image: {{ .initContainer.image.repository }}:{{ .buildid }}
-          name: {{ .initContainer.name }}
-          {{- with .initContainer.resources }}
+              value: {{ $.Values.global.vault.verify_ssl }}
+            - name: SERVICE_PATH
+              value: {{ $value.Deployment.vault.path }}
+          image: {{ $value.Deployment.initContainer.image.repository }}:{{ $value.Deployment.buildid }}
+          name: {{ $value.Deployment.initContainer.name }}
+          {{- with $value.Deployment.initContainer.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .initContainer.volumeMounts }}
+          {{- with $value.Deployment.initContainer.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .initContainer.volumes }}
+      {{- with $value.Deployment.initContainer.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 {{- end }}
+
 ---
 {{- end }}
 {{- end }}

@@ -1,4 +1,6 @@
 global:
+  kafka:
+    bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
   env: minikube
   metadata:
     namespace: my-apps
@@ -6,44 +8,64 @@ global:
     port: 8080
     protocol: TCP
     targetPort: 8080
+  vault:
+    server: https://vault.vault-system.svc.cluster.local:8200
+    verify_ssl: false
 
 myapps:
-  app1:
-    buildid: 123456
-    # defaults to global.metadata.namespace if not specified 
-    namespace: my-apps
-    # defaults to {} if not specified 
-    metalabels:
-      - "metallb.universe.tf/address-pool: default"
-    # defaults to 1 if not specified 
-    replicaCount: 3
-    #podAnnotations:
-    #podLabels:
-    #serviceAccountName
-    vault:
-      tls: 'false'
-      role: readonly
-      path: path/to/service/config
-    image:
-      repository: repo/path/to/image
-      tag: 1.27.3
-    resources:
-      requests:
-        memory: 64Mi
-        cpu: 20m
-    service:
+  app-1:
+    namespace: my-apps-ns
+    ServiceAccount: true
+    Service:
+      labels:
+        - "metallb.universe.tf/address-pool: default"
       port: 8080
-    initContainer:
-      name: app1-init
+      targetPort: 8080
+    ConfigMap:
+      data:
+        APP_ENV: minikube
+        FUNCTION: function_name
+        SERVICE_PATH: vault/path/to/config
+        TENANT_ID: cfdbeafd-88f4-45a3-87dc-25af54c47b60
+        VAULT_ROLE: readonly
+        VAULT_SERVER: https://vault.vault-system.svc.cluster.local:8200
+        VAULT_VERIFY_SSL: 'false'
+    CronJob:
+      image: /path/to/image
+      tag: 123456
+      name: app-1-cronjob
+      schedule: "30 05 * * 0"
+    ScaledObject:
+      consumerGroup: readonly-group
+    Deployment:
+      buildid: 123456
+      replicaCount: 3
       vault:
+        tls: 'false'
         role: readonly
-        path: path/to/service/init-config
+        path: path/to/service/config
       image:
-        repository: repo/path/to/init-image
+        name: app-1-container
+        repository: repo/path/to/image
         tag: 1.27.3
-      service:
-        port: 8080
       resources:
+        limits: {}
         requests:
           memory: 64Mi
           cpu: 20m
+      service:
+        port: 8080
+      initContainer:
+        name: app1-init
+        vault:
+          role: readonly
+          path: path/to/service/init-config
+        image:
+          repository: repo/path/to/init-image
+          tag: 1.27.3
+        service:
+          port: 8080
+        resources:
+          requests:
+            memory: 64Mi
+            cpu: 20m

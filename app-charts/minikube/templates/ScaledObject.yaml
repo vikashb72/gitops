@@ -1,0 +1,27 @@
+{{- range $key, $value := .Values.myapps -}}
+{{- if $value.ScaledObject }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ $key }}
+  namespace: {{ default $.Values.global.metadata.namespace $value.namespace }}
+spec:
+  cooldownPeriod: 60
+  maxReplicaCount: 10
+  minReplicaCount: 1
+  pollingInterval: 10
+  scaleTargetRef:
+    name: {{ $key }}
+  triggers:
+    - metadata:
+        allowIdleConsumers: 'true'
+        bootstrapServers: {{ $.Values.global.kafka.bootstrapServers }}
+        consumerGroup: {{ $value.ScaledObject.consumerGroup }}
+        excludePersistentLag: 'false'
+        lagThreshold: '5'
+        offsetResetPolicy: latest
+        scaleToZeroOnInvalidOffset: 'true'
+      type: kafka
+---
+{{- end }}
+{{- end }}

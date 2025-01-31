@@ -1,0 +1,14 @@
+{{- range $key, $value := .Values.myapps -}}
+{{- if $value.ConfigMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $key }}
+  namespace: {{ default $.Values.global.metadata.namespace $value.namespace }}
+data:
+  {{- range $k, $v := $value.ConfigMap.data }}
+  {{ $k }}: {{ $v }}
+  {{- end }}
+---
+{{- end }}
+{{- end }}

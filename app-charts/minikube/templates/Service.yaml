@@ -1,22 +1,22 @@
 {{- range $key, $value := .Values.myapps -}}
-{{ if not .disabled }}
+{{ if $value.Service }}
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: {{ default $.Values.global.metadata.namespace .namespace }}
+  namespace: {{ default $.Values.global.metadata.namespace $value.namespace }}
   name: {{ $key }}
   labels:
     service: {{ $key }}
 {{- if $value.labels }}
-{{- range $value.labels }}
+{{- range $value.Service.labels }}
     {{ . }}
 {{- end }}
 {{- end }}
 spec:
   ports:
-    - port: {{ default $.Values.global.spec.port .port }}
-      protocol: {{ default $.Values.global.spec.protocol .protocol }}
-      targetPort: {{ default $.Values.global.spec.targetPort .targetPort }}
+    - port: {{ default $.Values.global.spec.port $value.Service.port }}
+      protocol: {{ default $.Values.global.spec.protocol $value.Service.protocol }}
+      targetPort: {{ default $.Values.global.spec.targetPort $value.Service.targetPort }}
   selector:
     app: {{ $key }}
 ---
