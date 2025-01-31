@@ -70,23 +70,34 @@ myapps:
   #          memory: 64Mi
   #          cpu: 20m
   swagger-ui:
-    Service:
-      port: 8080
-      targetPort: 8080
-    Deployment:
-      buildid: 62137
-      namespace: titan
-      replicaCount: 1
-      #vault:
-      #  role:
-      #  path:
-      image:
-        name: swagger-ui
-        repository: docker.swagger.io/swaggerapi/swagger-ui
-        tag: v5.18.3
-      resources:
-        requests:
-          cpu: 20m
-          memory: 64Mi
-      service:
-        port: 8080
+    #Service:
+    #  port: 8080
+    #  targetPort: 8080
+    #Deployment:
+    #  buildid: 62137
+    #  namespace: titan
+    #  replicaCount: 1
+    #  #vault:
+    #  #  role:
+    #  #  path:
+    #  image:
+    #    name: swagger-ui
+    #    repository: docker.swagger.io/swaggerapi/swagger-ui
+    #    tag: v5.18.3
+    #  resources:
+    #    requests:
+    #      cpu: 20m
+    #      memory: 64Mi
+    #  service:
+    #    port: 8080
+    ConfigMap:
+      data:
+        config.json: |-
+          { "ApiRoleMapping":
+            {
+              "LegacyCommand": "provider_legacy:access",
+              "LegacyQueryResponse": "provider_legacy:access"
+            }
+          }
+        key1: value1
+        key2: value2
