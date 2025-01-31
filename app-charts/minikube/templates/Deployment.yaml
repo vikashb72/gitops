@@ -33,14 +33,16 @@ spec:
         - env:
             - name: APP_ENV
               value: {{ $.Values.global.env }}
+{{- if $value.Deployment.vault }}
             - name: VAULT_ROLE
               value: {{ default $key $value.Deployment.vault.role }}
             - name: VAULT_SERVER
               value: {{ $.Values.global.vault.server }}
             - name: SERVICE_PATH
-              value: {{ $value.Deployment.vault.path }}
+              value: {{ default "na" $value.Deployment.vault.path }}
             - name: VAULT_VERIFY_SSL
               value: {{ $.Values.global.vault.verify_ssl }}
+{{- end }}
           image: {{ $value.Deployment.image.repository }}:{{ $value.Deployment.buildid }}
           imagePullPolicy: {{ default "IfNotPresent" $value.Deployment.image.pullPolicy }}
           name: {{ $value.Deployment.image.name }}
@@ -64,6 +66,7 @@ spec:
         - env:
             - name: APP_ENV
               value: {{ $.Values.global.env }}
+{{- if $value.Deployment.initContainer.vault }}
             - name: VAULT_ROLE
               value: {{ default $key $value.Deployment.initContainer.vault.role }}
             - name: VAULT_SERVER
@@ -72,8 +75,7 @@ spec:
               value: {{ $value.Deployment.initContainer.vault.path }}
             - name: VAULT_VERIFY_SSL
               value: {{ $.Values.global.vault.verify_ssl }}
-            - name: SERVICE_PATH
-              value: {{ $value.Deployment.vault.path }}
+{{- end }}
           image: {{ $value.Deployment.initContainer.image.repository }}:{{ $value.Deployment.buildid }}
           name: {{ $value.Deployment.initContainer.name }}
           {{- with $value.Deployment.initContainer.resources }}
