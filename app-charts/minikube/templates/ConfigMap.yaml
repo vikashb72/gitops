@@ -7,7 +7,11 @@ metadata:
   namespace: {{ default $.Values.global.metadata.namespace $value.namespace }}
 data:
   {{- range $k, $v := $value.ConfigMap.data }}
+  {{- if eq $k "config.json" }}
+  {{ $k }}: {{- $v | toYaml | indent 2 }}
+  {{- else }}
   {{ $k }}: {{ $v }}
+  {{- end }}
   {{- end }}
 ---
 {{- end }}
