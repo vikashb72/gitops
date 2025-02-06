@@ -13,9 +13,9 @@ argo-cd:
     ## Used for ingresses, certificates, SSO, notifications, etc.
     domain: k3s.home.where-ever.za.net
   server:
-    #service:
-    #  type: LoadBalancer
-    #  loadBalancerIP: 192.168.49.225
+    service:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.225
     metrics:
       enabled: true
       serviceMonitor:  
