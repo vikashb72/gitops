@@ -13,19 +13,19 @@ argo-cd:
     ## Used for ingresses, certificates, SSO, notifications, etc.
     domain: minikube.home.where-ever.za.net
   server:
-    #extraArgs:
-    #  - --staticassets
-    #  - /shared/app
-    #  - --redis
-    #  - argocd-redis:6379
-    #  - --insecure
-    #  - --basehref
-    #  - /argocd
-    #  - --rootpath
-    #  - /argocd
-    #env:
-    #  - name: ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT
-    #    value: "0"
+    extraArgs:
+      - --staticassets
+      - /shared/app
+      - --redis
+      - argocd-redis:6379
+      - --insecure
+      - --basehref
+      - /argocd
+      - --rootpath
+      - /argocd
+    env:
+      - name: ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT
+        value: "0"
     #service:
     #  type: LoadBalancer
     #  loadBalancerIP: 192.168.49.225
