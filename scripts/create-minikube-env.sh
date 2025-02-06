@@ -94,14 +94,14 @@ kubectl create namespace external-secrets
 kubectl -n external-secrets create secret generic external-hashicorp-vault-token \
    --from-literal=addr=${EXTERNAL_VAULT_ADDR} \
    --from-literal=token=${ESO_TOKEN} \
-   --from-file=root.ca=/usr/local/share/ca-certificates/Where_Ever_Root_CA_Root_CA_212425365443306115571426638685908456843.crt
+   --from-file=root.ca=/usr/local/share/ca-certificates/Where_Ever_Root_CA_Root_CA_2025.crt
 
-rm -rf gitops
-git clone git@github.com:vikashb72/gitops.git
-helm dep update gitops/charts/argo-cd
-helm install -n argocd argo-cd  gitops/charts/argo-cd \
+rm -rf /tmp/gitops
+git clone git@github.com:vikashb72/gitops.git /tmp/gitops
+helm dep update /tmp/gitops/charts/argocd
+helm install -n argocd argocd  gitops/charts/argocd \
     --create-namespace=true \
-    -f gitops/charts/argo-cd/values-${EVT}.yaml \
+    -f gitops/charts/argocd/values-${EVT}.yaml \
     --wait 
 
 kubectl -n argocd get secret argocd-initial-admin-secret \
