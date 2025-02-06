@@ -65,7 +65,7 @@ argocdManaged:
     ignoreDifferences: false 
     syncwave: "-8"
   istio:
-    disable: false
+    disable: true
     name: istio
     targetNamespace: istio-system
     sources:
@@ -82,7 +82,7 @@ argocdManaged:
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
   gloo-ee:
-    disable: false
+    disable: true
     name: gloo-ee
     targetNamespace: gloo-system
     sources:
