@@ -83,11 +83,10 @@ ztunnel:
   terminationGracePeriodSeconds: 29
   variant: distroless
 
-#
-#gateway:
-#  service:
-#    externalTrafficPolicy: "Local"
-#
+gateway:
+  service:
+    externalTrafficPolicy: "Local"
+
 kiali-server:
   replicas: 1
 
