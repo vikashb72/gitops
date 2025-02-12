@@ -55,9 +55,9 @@ istiod:
   outboundTrafficPolicy:
     mode: REGISTRY_ONLY
 
-gateway:
-  service:
-    externalTrafficPolicy: "Local"
+#gateway:
+#  service:
+#    externalTrafficPolicy: "Local"
 
 kiali-server:
   replicas: 1
