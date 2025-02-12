@@ -59,6 +59,6 @@ base:
 ##  service:
 ##    externalTrafficPolicy: "Local"
 #
-#kiali-server:
-#  replicas: 1
-#
+kiali-server:
+  replicas: 1
+
