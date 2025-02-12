@@ -1,10 +1,11 @@
 base:
+  defaultRevision: default
   global:
     istioNamespace: istio-system
     istiod:
       enableAnalysis: false
   base: 
-    enableCRDTemplates: false
+    enableCRDTemplates: true
     enableIstioConfigCRDs: true
 
 #istiod:
