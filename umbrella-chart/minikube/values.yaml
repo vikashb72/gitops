@@ -65,7 +65,7 @@ argocdManaged:
     ignoreDifferences: false 
     syncwave: "-8"
   istio:
-    disable: true
+    disable: false
     name: istio
     targetNamespace: istio-system
     sources:
