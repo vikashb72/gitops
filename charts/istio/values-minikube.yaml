@@ -84,6 +84,7 @@ ztunnel:
   variant: distroless
 
 gateway:
+  namespace: istio-gateway
   service:
     externalTrafficPolicy: "Local"
 
