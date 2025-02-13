@@ -15,7 +15,8 @@
 #      enabled: true
 #  meshConfig:
 #    enablePrometheusMerge: true
-#cni:
+cni:
+  profile: ambient
 #  ambient:
 #    enabled: false
 #gateway:
