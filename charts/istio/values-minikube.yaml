@@ -3,7 +3,8 @@
 #    istioNamespace: istio-system
 #  base:
 #    defaultRevision: "default"
-#istiod:
+istiod:
+  profile: ambient
 #  cni:
 #    enabled: false
 #    provider: default
