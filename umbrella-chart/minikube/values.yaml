@@ -65,7 +65,7 @@ argocdManaged:
     ignoreDifferences: false 
     syncwave: "-8"
   istio:
-    disable: true
+    disable: false
     name: istio
     targetNamespace: istio-system
     sources:
@@ -73,6 +73,8 @@ argocdManaged:
         noHelmValues: false
         helm:
           envFile: true
+          parameters:
+            profile: ambient
     disableAutomated: false
     automated: {}
     ignoreDifferences: true 
