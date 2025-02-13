@@ -1,27 +1,25 @@
-base:
-  defaultRevision: default
-  profile: ambient
-  global:
-    istioNamespace: istio-system
-
-istiod:
-  cni:
-    enabled: true
-    provider: default
-  telemetry:
-    enabled: true
-    v2:
-      enabled: true
-    prometheus:
-      enabled: true
-  meshConfig:
-    enablePrometheusMerge: true
-cni:
-  ambient:
-    enabled: true
-#ztunnel:
-gateway:
-  service:
-    type: LoadBalancer
-kiali-server:
-  replicas: 1
+#base:
+#  global:
+#    istioNamespace: istio-system
+#  base:
+#    defaultRevision: "default"
+#istiod:
+#  cni:
+#    enabled: false
+#    provider: default
+#  telemetry:
+#    enabled: true
+#    v2:
+#      enabled: true
+#    prometheus:
+#      enabled: true
+#  meshConfig:
+#    enablePrometheusMerge: true
+#cni:
+#  ambient:
+#    enabled: false
+#gateway:
+#  service:
+#    type: LoadBalancer
+#kiali-server:
+#  replicas: 1
