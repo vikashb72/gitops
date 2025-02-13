@@ -10,7 +10,6 @@ base:
     enableIstioConfigCRDs: true
 
 istiod:
-#  revision: "1-23-3"
   istio_cni:
     namespace: istio-system
     enabled: true
