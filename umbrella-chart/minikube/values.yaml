@@ -74,7 +74,8 @@ argocdManaged:
         helm:
           envFile: true
           parameters:
-            profile: ambient
+            - name: profile
+              value: ambient
     disableAutomated: false
     automated: {}
     ignoreDifferences: true 
@@ -321,7 +322,8 @@ argocdManaged:
   #            domain: minikube.home.where-ever.za.net
   #          env: minikube
   #        parameters:
-  #          env: minikube
+  #          - name: env
+  #            value: minikube
   #      targetNamespace: target-namespace
   #      disableAutomated: false
   #      automated:
