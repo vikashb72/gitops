@@ -84,20 +84,20 @@ argocdManaged:
         kind: ValidatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
-  istio-ingress:
-    disable: false
-    name: istio-ingress
-    targetNamespace: istio-ingress
-    sources:
-      - path: charts/istio-ingress
-        noHelmValues: false
-        helm:
-          envFile: true
-          parameters:
-            - name: profile
-              value: ambient
-    disableAutomated: false
-    automated: {}
+  #istio-ingress:
+  #  disable: false
+  #  name: istio-ingress
+  #  targetNamespace: istio-ingress
+  #  sources:
+  #    - path: charts/istio-ingress
+  #      noHelmValues: false
+  #      helm:
+  #        envFile: true
+  #        parameters:
+  #          - name: profile
+  #            value: ambient
+  #  disableAutomated: false
+  #  automated: {}
   gloo-ee:
     disable: true
     name: gloo-ee
