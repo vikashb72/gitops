@@ -50,7 +50,7 @@ argocdManaged:
       allowEmpty: true
     ignoreDifferences: false 
   echoserver:
-    disable: false
+    disable: true
     name: echoserver
     targetNamespace: echoserver
     sources:
