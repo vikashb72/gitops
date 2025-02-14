@@ -3,16 +3,13 @@
 #    istioNamespace: istio-system
 #  base:
 #    defaultRevision: "default"
-#istiod:
-istio-control-plane
+istiod:
   profile: ambient
-#cni:
-istio-cni-agent:
+cni:
   profile: ambient
-istio-ztunnel:
+ztunnel:
   profile: ambient
-#gateway:
-istio-ingress-gateway:
+gateway:
   service:
     type: LoadBalancer
 kiali-server:

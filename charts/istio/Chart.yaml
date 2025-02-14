@@ -5,23 +5,18 @@ dependencies:
   - name: base
     version: 1.24.3
     repository: https://istio-release.storage.googleapis.com/charts
-    alias: istio-base
-  - name: istiod
-    version: 1.24.3
-    repository: https://istio-release.storage.googleapis.com/charts
-    alias: istio-control-plane
-  - name: cni
-    version: 1.24.3
-    repository: https://istio-release.storage.googleapis.com/charts
-    alias: istio-cni-agent
-  - name: ztunnel
-    version: 1.24.3
-    repository: https://istio-release.storage.googleapis.com/charts
-    alias: istio-ztunnel
-  - name: gateway
-    version: 1.24.3
-    repository: https://istio-release.storage.googleapis.com/charts
-    alias: istio-ingress-gateway
+  #- name: istiod
+  #  version: 1.24.3
+  #  repository: https://istio-release.storage.googleapis.com/charts
+  #- name: cni
+  #  version: 1.24.3
+  #  repository: https://istio-release.storage.googleapis.com/charts
+  #- name: ztunnel
+  #  version: 1.24.3
+  #  repository: https://istio-release.storage.googleapis.com/charts
+  #- name: gateway
+  #  version: 1.24.3
+  #  repository: https://istio-release.storage.googleapis.com/charts
   #- name: ambient
   #  version: 1.22.8
   #  repository: https://istio-release.storage.googleapis.com/charts
