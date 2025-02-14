@@ -49,6 +49,17 @@ argocdManaged:
     automated:
       allowEmpty: true
     ignoreDifferences: false 
+  echoserver:
+    disable: false
+    name: umbrella-chart
+    sources:
+      - path: chart/echoserver
+        noHelmValues: true
+    syncwave: "-9"
+    disableAutomated: false
+    automated:
+      allowEmpty: true
+    ignoreDifferences: false 
   external-secrets:
     disable: false
     name: external-secrets
