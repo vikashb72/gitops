@@ -11,7 +11,7 @@ argo-cd:
   global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    domain: argocd.minikube.home.where-ever.za
+    domain: argocd.minikube.home.where-ever.za.net
   server:
     #extraArgs:
     #  - --staticassets
