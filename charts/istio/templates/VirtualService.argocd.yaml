@@ -4,7 +4,7 @@ metadata:
   name: argocd-virtualserivce
 spec:
   hosts:
-    - argocd.k8s.minikube.home.where-ever.za
+    - argocd.k8s.minikube.home.where-ever.za.net
   gateways:
     - istio-system/internal-ingress
   http:

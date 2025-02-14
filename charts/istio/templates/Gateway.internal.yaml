@@ -8,8 +8,8 @@ spec:
     istio: istio
   servers:
   - hosts:
-    - "*.k8s.minikube.home.where-ever.za"
-    - k8s.minikube.home.where-ever.za
+    - "*.k8s.minikube.home.where-ever.za.net"
+    - k8s.minikube.home.where-ever.za.net
     port:
       name: https
       number: 443
