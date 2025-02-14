@@ -5,23 +5,10 @@
 #    defaultRevision: "default"
 istiod:
   profile: ambient
-#  cni:
-#    enabled: false
-#    provider: default
-#  telemetry:
-#    enabled: true
-#    v2:
-#      enabled: true
-#    prometheus:
-#      enabled: true
-#  meshConfig:
-#    enablePrometheusMerge: true
 cni:
   profile: ambient
-#  ambient:
-#    enabled: false
-#gateway:
-#  service:
-#    type: LoadBalancer
-#kiali-server:
-#  replicas: 1
+gateway:
+  service:
+    type: LoadBalancer
+kiali-server:
+  replicas: 1
