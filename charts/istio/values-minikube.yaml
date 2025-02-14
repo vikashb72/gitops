@@ -12,5 +12,8 @@ ztunnel:
 gateway:
   service:
     type: LoadBalancer
+istio-ingress:
+  service:
+    type: LoadBalancer
 kiali-server:
   replicas: 1
