@@ -9,13 +9,9 @@ cni:
   profile: ambient
 ztunnel:
   profile: ambient
-internal-ingress:
+gateway:
   service:
     type: LoadBalancer
     loadBalancerIP: 192.168.49.225
-external-ingress:
-  service:
-    type: LoadBalancer
-    loadBalancerIP: 192.168.49.224
 kiali-server:
   replicas: 1
