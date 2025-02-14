@@ -54,8 +54,9 @@ argocdManaged:
     name: echoserver
     sources:
       - path: charts/echoserver
-        noHelmValues: true
-    syncwave: "-9"
+        noHelmValues: false
+        helm:
+          envFile: false
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
