@@ -14,4 +14,3 @@ spec:
       name: https
       number: 443
       protocol: HTTPS
-EOF
