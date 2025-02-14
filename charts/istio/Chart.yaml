@@ -15,9 +15,13 @@ dependencies:
     version: 1.24.3
     repository: https://istio-release.storage.googleapis.com/charts
   - name: gateway
+    alias: internal-ingress
     version: 1.24.3
     repository: https://istio-release.storage.googleapis.com/charts
-    alias: istio-ingress
+  - name: gateway
+    alias: external-ingress
+    version: 1.24.3
+    repository: https://istio-release.storage.googleapis.com/charts
   #- name: ambient
   #  version: 1.24.3
   #  repository: https://istio-release.storage.googleapis.com/charts

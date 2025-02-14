@@ -9,10 +9,10 @@ cni:
   profile: ambient
 ztunnel:
   profile: ambient
-gateway:
+internal-ingress:
   service:
     type: LoadBalancer
-istio-ingress:
+external-ingress:
   service:
     type: LoadBalancer
 kiali-server:
