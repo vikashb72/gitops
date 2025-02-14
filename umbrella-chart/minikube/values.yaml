@@ -57,8 +57,7 @@ argocdManaged:
         noHelmValues: true
     syncwave: "-9"
     disableAutomated: false
-    automated:
-      allowEmpty: true
+    automated: {}
     ignoreDifferences: false 
   external-secrets:
     disable: false
