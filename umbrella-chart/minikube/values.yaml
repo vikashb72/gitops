@@ -52,11 +52,10 @@ argocdManaged:
   echoserver:
     disable: false
     name: echoserver
+    targetNamespace: echoserver
     sources:
       - path: charts/echoserver
-        noHelmValues: false
-        helm:
-          envFile: false
+        noHelmValues: true
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
