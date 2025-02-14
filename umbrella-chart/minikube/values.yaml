@@ -51,7 +51,7 @@ argocdManaged:
     ignoreDifferences: false 
   echoserver:
     disable: false
-    name: umbrella-chart
+    name: echoserver
     sources:
       - path: chart/echoserver
         noHelmValues: true
