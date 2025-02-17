@@ -1,0 +1,4 @@
+apiVersion: v2
+name: httpbin
+description: Httpbin service
+version: 1.0.0
