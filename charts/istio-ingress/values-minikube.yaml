@@ -1,3 +1,20 @@
-gateway:
-  service:
-    type: LoadBalancer
+gateways:
+  echoserver-gateway:
+    namespace: echoserver
+    gateway: istio
+    listeners: 
+      - name: http
+        port: 8080
+        proto: HTTP
+        allowedRoutes:
+          namespaces:
+            from: Same
+    httproutes:
+      - name: echoserver
+        rules:
+          - matches:
+              - path: Exact
+                value: /
+            backendRefs:
+              - name: echoserver
+                port: 8080
