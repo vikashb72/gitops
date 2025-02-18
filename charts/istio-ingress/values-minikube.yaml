@@ -56,51 +56,52 @@ gateways:
                 port: 80
 
   argocd-gateway:
-    api: "networking.istio.io/v1"
-    namespace: argocd
-    selector: istio
-    servers:
-      - port:
-          number: 443
-          name: https
-          protocol: HTTPS
-        tls:
-          mode: SIMPLE
-          credentialName: argocd-tls
-        hosts:
-          - argocd.minikube.where-ever.net
-    virtualservices: 
-      - name: argocd-tls
-        hosts:
-          - argocd.minikube.where-ever.net
-        http:
-          - match:
-            - uri:
-              prefix: /
-            route:
-              - destination:
-                  host: argocd-server
-                  port:
-                    number: 443
-    #listeners:
-    #  - name: argocd-http
-    #    hostname: "argocd.minikube.where-ever.net"
-    #    #port: 80
-    #    port: 443
-    #    protocol: HTTPS
-    #    allowedRoutes:
-    #      namespaces:
-    #        from: All
-    #httproutes:
-    #  - name: argocd
-    #    namespace: argocd
-    #    hostnames: '["argocd.minikube.where-ever.net"]'
-    #    rules:
-    #      - matches:
-    #          - path:
-    #            type: PathPrefix
-    #            value: /
-    #        backendRefs:
-    #          - name: argocd-server
-    #            #port: 80
-    #            port: 443
+    namespace: istio-ingress
+    gateway: istio
+    listeners:
+      - name: argocd-http
+        hostname: "argocd.minikube.where-ever.net"
+        port: 80
+        protocol: HTTP
+        allowedRoutes:
+          namespaces:
+            from: All
+    httproutes:
+      - name: argocd
+        namespace: argocd
+        hostnames: '["argocd.minikube.where-ever.net"]'
+        rules:
+          - matches:
+              - path:
+                type: PathPrefix
+                value: /
+            backendRefs:
+              - name: argocd-server
+                port: 80
+#  argocd-gateway-tls:
+#    api: "networking.istio.io/v1"
+#    namespace: argocd
+#    selector: istio
+#    servers:
+#      - port:
+#          number: 443
+#          name: https
+#          protocol: HTTPS
+#        tls:
+#          mode: SIMPLE
+#          credentialName: argocd-tls
+#        hosts:
+#          - argocd.minikube.where-ever.net
+#    virtualservices: 
+#      - name: argocd-tls
+#        hosts:
+#          - argocd.minikube.where-ever.net
+#        http:
+#          - match:
+#            - uri:
+#              prefix: /
+#            route:
+#              - destination:
+#                  host: argocd-server
+#                  port:
+#                    number: 443
