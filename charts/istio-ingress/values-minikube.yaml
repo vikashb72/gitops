@@ -53,4 +53,4 @@ gateways:
                 value: /
             backendRefs:
               - name: echoserver
-                port: 8080
+                port: 80
