@@ -38,7 +38,7 @@ gateways:
       - name: echoserver-http
         hostname: "echoserver.minikube.where-ever.net"
         port: 80
-        proto: HTTP
+        protocol: HTTP
         allowedRoutes:
           namespaces:
             from: Same
