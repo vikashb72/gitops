@@ -48,7 +48,8 @@ gateways:
         hostnames: '["echoserver.minikube.where-ever.net"]'
         rules:
           - matches:
-              - path: PathPrefix
+              - path:
+                type: PathPrefix
                 value: /
             backendRefs:
               - name: echoserver
