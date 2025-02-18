@@ -31,3 +31,25 @@ gateways:
             backendRefs:
             - name: httpbin
               port: 8000
+  echoserver-gateway:
+    namespace: echoserver
+    gateway: istio
+    listeners:
+      - name: echoserver-http
+        hostname: "echoserver.minikube.where-ever.net"
+        port: 80
+        proto: HTTP
+        allowedRoutes:
+          namespaces:
+            from: Same
+    httproutes:
+      - name: echoserver
+        namespace: echoserver
+        hostnames: '["echoserver.minikube.where-ever.net"]'
+        rules:
+          - matches:
+              - path: Exact
+                value: /
+            backendRefs:
+              - name: echoserver
+                port: 8080
