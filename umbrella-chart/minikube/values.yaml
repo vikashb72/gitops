@@ -115,12 +115,12 @@ argocdManaged:
           envFile: true
     disableAutomated: false
     automated: {}
-    ignoreDifferences: true 
-    ignoreDifferencesConfig:
-      - group: "apps"
-        kind: "HTTPRoute"
-        jsonPointers:
-          - /spec/rules
+    #ignoreDifferences: true 
+    #ignoreDifferencesConfig:
+    #  - group: "apps"
+    #    kind: "HTTPRoute"
+    #    jsonPointers:
+    #      - /spec/rules
   gloo-ee:
     disable: true
     name: gloo-ee
