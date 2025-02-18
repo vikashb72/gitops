@@ -41,7 +41,7 @@ gateways:
         protocol: HTTP
         allowedRoutes:
           namespaces:
-            from: Same
+            from: All
     httproutes:
       - name: echoserver
         namespace: echoserver
