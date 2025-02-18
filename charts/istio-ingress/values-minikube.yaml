@@ -5,7 +5,7 @@ gateways:
     listeners: 
       - name: http
         port: 80
-        proto: HTTP
+        protocol: HTTP
         allowedRoutes:
           namespaces:
             from: Same
