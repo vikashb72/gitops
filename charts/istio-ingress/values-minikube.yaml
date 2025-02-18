@@ -79,9 +79,9 @@ gateways:
               prefix: /
             route:
               - destination:
-                port:
-                  number: 443
-                host: argocd-server
+                  host: argocd-server
+                  port:
+                    number: 443
     #listeners:
     #  - name: argocd-http
     #    hostname: "argocd.minikube.where-ever.net"
