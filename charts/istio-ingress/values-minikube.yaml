@@ -15,10 +15,19 @@ gateways:
         namespace: httpbin
         hostnames: '["httpbin.minikube.where-ever.net"]'
         rules:
-        - matches:
-          - path:
-              type: PathPrefix
-              value: /get
-          backendRefs:
-          - name: httpbin
-            port: 8000
+          - matches:
+              - path:
+                type: PathPrefix
+                value: /get
+              - path:
+                type: PathPrefix
+                value: /headers
+            filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  add:
+                  - name: Added-Header
+                    value: added-value
+            backendRefs:
+            - name: httpbin
+              port: 8000
