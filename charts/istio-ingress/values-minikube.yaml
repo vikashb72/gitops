@@ -56,6 +56,7 @@ gateways:
                 port: 80
 
   argocd-gateway:
+    api: "networking.istio.io/v1"
     namespace: argocd
     selector: istio
     servers:
