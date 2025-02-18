@@ -54,3 +54,27 @@ gateways:
             backendRefs:
               - name: echoserver
                 port: 80
+
+  argocd-gateway:
+    namespace: istio-ingress
+    gateway: istio
+    listeners:
+      - name: argocd-http
+        hostname: "argocd.minikube.where-ever.net"
+        port: 80
+        protocol: HTTP
+        allowedRoutes:
+          namespaces:
+            from: All
+    httproutes:
+      - name: argocd
+        namespace: argocd
+        hostnames: '["argocd.minikube.where-ever.net"]'
+        rules:
+          - matches:
+              - path:
+                type: PathPrefix
+                value: /
+            backendRefs:
+              - name: argocd-server
+                port: 80
