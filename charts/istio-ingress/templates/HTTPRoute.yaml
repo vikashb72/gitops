@@ -11,6 +11,9 @@ spec:
   parentRefs:
     - name: {{ $key }}
       namespace: {{ $value.namespace }}
+{{- if .sectionName }}
+      sectionName: {{ .sectionName }}
+{{- end }}
 {{- if .hostnames }}
   hostnames: {{ .hostnames }}
 {{- end }}
