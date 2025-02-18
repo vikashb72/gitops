@@ -81,8 +81,8 @@ gateways:
         rules:
           - matches:
               - path:
-                type: PathPrefix
-                value: /
+                  type: PathPrefix
+                  value: /
             backendRefs:
               - name: argocd-server
                 port: 80
