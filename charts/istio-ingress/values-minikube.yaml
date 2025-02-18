@@ -74,15 +74,15 @@ gateways:
         allowedRoutes:
           namespaces:
             from: All
-    #httproutes:
-    #  - name: argocd
-    #    namespace: argocd
-    #    hostnames: '["argocd.minikube.where-ever.net"]'
-    #    rules:
-    #      - matches:
-    #          - path:
-    #            type: PathPrefix
-    #            value: /
-    #        backendRefs:
-    #          - name: argocd-server
-    #            port: 443
+    httproutes:
+      - name: argocd
+        namespace: argocd
+        hostnames: '["argocd.minikube.where-ever.net"]'
+        rules:
+          - matches:
+              - path:
+                type: PathPrefix
+                value: /
+            backendRefs:
+              - name: argocd-server
+                port: 80
