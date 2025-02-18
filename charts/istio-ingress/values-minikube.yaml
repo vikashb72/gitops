@@ -17,11 +17,11 @@ gateways:
         rules:
           - matches:
               - path:
-                type: PathPrefix
-                value: /get
+                  type: PathPrefix
+                  value: /get
               - path:
-                type: PathPrefix
-                value: /headers
+                  type: PathPrefix
+                  value: /headers
             filters:
               - type: RequestHeaderModifier
                 requestHeaderModifier:
@@ -29,8 +29,8 @@ gateways:
                   - name: Added-Header
                     value: added-value
             backendRefs:
-            - name: httpbin
-              port: 8000
+              - name: httpbin
+                port: 8000
   echoserver-gateway:
     namespace: istio-ingress
     gateway: istio
@@ -49,8 +49,8 @@ gateways:
         rules:
           - matches:
               - path:
-                type: PathPrefix
-                value: /
+                  type: PathPrefix
+                  value: /
             backendRefs:
               - name: echoserver
                 port: 80
