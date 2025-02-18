@@ -32,7 +32,7 @@ gateways:
             - name: httpbin
               port: 8000
   echoserver-gateway:
-    namespace: echoserver
+    namespace: istio-ingress
     gateway: istio
     listeners:
       - name: echoserver-http
