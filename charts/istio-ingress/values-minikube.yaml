@@ -61,8 +61,14 @@ gateways:
     listeners:
       - name: argocd-http
         hostname: "argocd.minikube.where-ever.net"
-        port: 80
-        protocol: HTTP
+        protocol: HTTPS
+        port: 443
+        tls:
+          mode: Terminate
+          certificateRefs:
+            - kind: Secret
+              group: ""
+              name: argocd-tls
         allowedRoutes:
           namespaces:
             from: All
