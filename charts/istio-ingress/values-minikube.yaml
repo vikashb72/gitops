@@ -1,20 +1,24 @@
 gateways:
-  echoserver-gateway:
-    namespace: echoserver
+  httpbin-gateway:
+    namespace: istio-ingress
     gateway: istio
-    listeners: 
-      - name: http
+    listeners:
+      - name: httpbin-http
+        hostname: "httpbin.k8s.minikube.home.where-ever.za.net"
         port: 80
         protocol: HTTP
         allowedRoutes:
           namespaces:
-            from: Same
+            from: All
     httproutes:
-      - name: echoserver
+      - name: httpbin
+        namespace: httpbin
+        hostnames: '["httpbin.k8s.minikube.home.where-ever.za.net"]'
         rules:
-          - matches:
-              - path: Exact
-                value: /
-            backendRefs:
-              - name: echoserver
-                port: 80
+        - matches:
+          - path:
+              type: PathPrefix
+              value: /get
+          backendRefs:
+          - name: httpbin
+            port: 8000
