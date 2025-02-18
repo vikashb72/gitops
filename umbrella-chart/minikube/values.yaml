@@ -59,6 +59,16 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
+  httpbin:
+    disable: false
+    name: httpbin
+    targetNamespace: httpbin
+    sources:
+      - path: charts/httpbin
+        noHelmValues: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
   external-secrets:
     disable: false
     name: external-secrets
