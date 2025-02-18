@@ -8,8 +8,8 @@
 #    istio: istio
 #  servers:
 #  - hosts:
-#    - "*.k8s.minikube.home.where-ever.za.net"
-#    - k8s.minikube.home.where-ever.za.net
+#    - "*.minikube.where-ever.net"
+#    - minikube.where-ever.net
 #    port:
 #      name: http
 #      number: 8080

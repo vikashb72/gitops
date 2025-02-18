@@ -1,6 +1,6 @@
 global:
   env: minikube
-  hostname: minikube.home.where-ever.za.net
+  hostname: minikube.where-ever.net
   hvault:
     external:
       addr: https://192.168.0.20:8200

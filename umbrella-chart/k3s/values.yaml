@@ -1,6 +1,6 @@
 global:
   env: k3s
-  hostname: k3s.home.where-ever.za.net
+  hostname: k3s.where-ever.net
   hvault:
     external:
       addr: https://192.168.0.4:8443

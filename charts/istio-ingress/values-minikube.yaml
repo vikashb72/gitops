@@ -4,7 +4,7 @@ gateways:
     gateway: istio
     listeners:
       - name: httpbin-http
-        hostname: "httpbin.k8s.minikube.home.where-ever.za.net"
+        hostname: "httpbin.minikube.where-ever.net"
         port: 80
         protocol: HTTP
         allowedRoutes:
@@ -13,7 +13,7 @@ gateways:
     httproutes:
       - name: httpbin
         namespace: httpbin
-        hostnames: '["httpbin.k8s.minikube.home.where-ever.za.net"]'
+        hostnames: '["httpbin.minikube.where-ever.net"]'
         rules:
         - matches:
           - path:

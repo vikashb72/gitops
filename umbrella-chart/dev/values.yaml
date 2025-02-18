@@ -1,6 +1,6 @@
 global:
   env: dev
-  hostname: u22-dev.home.where-ever.za.net
+  hostname: dev.where-ever.net
   hvault:
     external:
       addr: https://192.168.0.22:8200

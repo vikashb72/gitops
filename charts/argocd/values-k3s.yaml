@@ -11,7 +11,7 @@ argo-cd:
   global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    domain: k3s.home.where-ever.za.net
+    domain: k3s.where-ever.net
   server:
     service:
       type: LoadBalancer
