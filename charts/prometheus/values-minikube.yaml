@@ -37,6 +37,16 @@ kube-prometheus-stack:
         host: desktop.home.where-ever.za.net:587
         startTLS_policy: "MandatoryStartTLS"
         from_address: monitor@minikube.where-ever.net
+    notifiers:
+      notifiers.yaml:
+        notifiers:
+          - name: email-notifier
+            type: email
+            uid: email1
+            org_id: 1
+            is_default: true
+            settings:
+              addresses: vikashb@home.where-ever.za.net
     #admin:
     #  ## Name of the secret. Can be templated.
     #  existingSecret: "grafana-admin-credentials"
