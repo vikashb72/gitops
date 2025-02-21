@@ -104,11 +104,30 @@ grafana:
   #  passwordKey: admin-password
 
   env: {}
-  envValueFrom: {}
+  #envValueFrom: {}
     #  ENV_NAME:
     #    configMapKeyRef:
     #      name: configmap-name
     #      key: value_key
+  envValueFrom:
+    GF_SMTP_ENABLED:
+      name: grafana-smtp
+      key: GF_SMTP_ENABLED
+    #GF_SMTP_HOST:
+    #  name: grafana-smtp
+    #  key: GF_SMTP_HOST
+    #GF_SMTP_USER:
+    #  name: grafana-smtp
+    #  key: GF_SMTP_USER
+    #GF_SMTP_PASSWORD:
+    #  name: grafana-smtp
+    #  key: GF_SMTP_PASSWORD
+    #GF_SMTP_FROM_ADDRESS:
+    #  name: grafana-smtp
+    #  key: GF_SMTP_FROM_ADDRESS
+    #GF_SMTP_STARTTLS_POLICY:
+    #  name: grafana-smtp
+    #  key: GF_SMTP_STARTTLS_POLICY
 
   envFromSecret: ""
   envRenderSecret: {}
@@ -471,6 +490,8 @@ grafana:
       url: https://grafana.net
     server:
       domain: "{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ tpl (.Values.ingress.hosts | first) . }}{{ else }}''{{ end }}"
+    smtp:
+     enabled: true
 
   ## Grafana's SMTP configuration
   ## NOTE: To enable, grafana.ini must be configured with smtp.enabled
