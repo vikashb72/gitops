@@ -55,7 +55,7 @@ kube-prometheus-stack:
               - orgId: 1
                 name: email receiver
                 receivers:
-                  - uid: ""
+                  - uid: first_uid
                     type: email
                     settings:
                       addresses: vikashb@home.where-ever.za.net
