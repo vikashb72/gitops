@@ -26,11 +26,22 @@ kube-prometheus-stack:
       initContainers: []
   grafana:
     enabled: true
+    smtp:
+      enabled: true
+      existingSecret: "smtp-config"
+      passwordKey: "GF_SMTP_PASSWORD"
+      userKey: "GF_SMTP_USER"
+    grafana.ini:
+      smtp:
+        enabled: true
+        host: desktop.home.where-ever.za.net:587
+        startTLS: "MandatoryStartTLS"
+        from_address: monitor@minikube.where-ever.net
     #admin:
     #  ## Name of the secret. Can be templated.
-    #  existingSecret: ""
-    #  userKey: admin-user
-    #  passwordKey: admin-password
+    #  existingSecret: "grafana-admin-credentials"
+    #  userKey: GF_SECURITY_ADMIN_USER
+    #  passwordKey: GF_SECURITY_ADMIN_PASSWORD
     initChownData:
       enabled: false
     serviceMonitor:
@@ -144,6 +155,7 @@ kube-prometheus-stack:
     #    ##  revision: 240
     #    ##  datasource: Prometheus
     #    ## https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+    # I have no idea why this breaks
     #envValueFrom:
     #  GF_SMTP_ENABLED:
     #    name: grafana-smtp-config
@@ -163,9 +175,6 @@ kube-prometheus-stack:
     #  GF_SMTP_STARTTLS_POLICY:
     #    name: grafana-smtp-config
     #    key: GF_SMTP_STARTTLS_POLICY
-    grafana.ini:
-      smtp:
-       enabled: true
   prometheusOperator:
     service:
       loadBalancerIP: ""
