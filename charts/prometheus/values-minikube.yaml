@@ -47,6 +47,19 @@ kube-prometheus-stack:
             is_default: true
             settings:
               addresses: vikashb@home.where-ever.za.net
+    alerting:
+      contactpoints.yaml:
+        secret:
+          apiVersion: 1
+          contactPoints:
+              - orgId: 1
+                name: email receiver
+                receivers:
+                  - uid: ""
+                    type: email
+                    settings:
+                      addresses: vikashb@home.where-ever.za.net
+                    disableResolveMessage: false
     #admin:
     #  ## Name of the secret. Can be templated.
     #  existingSecret: "grafana-admin-credentials"
