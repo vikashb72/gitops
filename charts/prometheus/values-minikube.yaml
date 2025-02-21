@@ -1,48 +1,3 @@
-#prometheus:
-#  rbac:
-#    create: true
-#  serviceAccounts:
-#    server:
-#      create: true
-#  server:
-#    name: server
-#    enableServiceLinks: true
-#    extraFlags:
-#      - web.enable-lifecycle
-#    global:
-#      scrape_interval: 1m
-#      scrape_timeout: 10s
-#      evaluation_interval: 1m
-#    persistentVolume:
-#      enabled: true
-#      accessModes:
-#        - ReadWriteOnce
-#      mountPath: /data
-#      size: 5Gi
-#      storageClass: nfs-client
-#    service:
-#      enabled: true
-#      type: LoadBalancer
-#      loadBalancerIP: 192.168.49.227
-#  prometheus-pushgateway:
-#    enable: true
-#
-#  extraScrapeConfigs: ""
-#    # - job_name: 'prometheus-blackbox-exporter'
-#    #   metrics_path: /probe
-#    #   params:
-#    #     module: [http_2xx]
-#    #   static_configs:
-#    #     - targets:
-#    #       - https://example.com
-#    #   relabel_configs:
-#    #     - source_labels: [__address__]
-#    #       target_label: __param_target
-#    #     - source_labels: [__param_target]
-#    #       target_label: instance
-#    #     - target_label: __address__
-#    #       replacement: prometheus-blackbox-exporter:9115
-
 kube-prometheus-stack:
   global:
       createAggregateClusterRoles: true
@@ -186,6 +141,28 @@ kube-prometheus-stack:
     #    ##  revision: 240
     #    ##  datasource: Prometheus
     #    ## https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+    envValueFrom: {}
+      #GF_SMTP_ENABLED:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_ENABLED
+      #GF_SMTP_HOST:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_HOST
+      #GF_SMTP_USER:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_USER
+      #GF_SMTP_PASSWORD:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_PASSWORD
+      #GF_SMTP_FROM_ADDRESS:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_FROM_ADDRESS
+      #GF_SMTP_STARTTLS_POLICY:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_STARTTLS_POLICY
+    grafana.ini:
+      smtp:
+       enabled: true
   prometheusOperator:
     service:
       loadBalancerIP: ""
@@ -276,3 +253,49 @@ kube-prometheus-stack:
     #     name: prometheus-extra
     #   data:
     #     extra-data: "value"
+
+#20250220#prometheus:
+#20250220#  rbac:
+#20250220#    create: true
+#20250220#  serviceAccounts:
+#20250220#    server:
+#20250220#      create: true
+#20250220#  server:
+#20250220#    name: server
+#20250220#    enableServiceLinks: true
+#20250220#    extraFlags:
+#20250220#      - web.enable-lifecycle
+#20250220#    global:
+#20250220#      scrape_interval: 1m
+#20250220#      scrape_timeout: 10s
+#20250220#      evaluation_interval: 1m
+#20250220#    persistentVolume:
+#20250220#      enabled: true
+#20250220#      accessModes:
+#20250220#        - ReadWriteOnce
+#20250220#      mountPath: /data
+#20250220#      size: 5Gi
+#20250220#      storageClass: nfs-client
+#20250220#    service:
+#20250220#      enabled: true
+#20250220#      type: LoadBalancer
+#20250220#      loadBalancerIP: 192.168.49.227
+#20250220#  prometheus-pushgateway:
+#20250220#    enable: true
+#20250220#
+#20250220#  extraScrapeConfigs: ""
+#20250220#    # - job_name: 'prometheus-blackbox-exporter'
+#20250220#    #   metrics_path: /probe
+#20250220#    #   params:
+#20250220#    #     module: [http_2xx]
+#20250220#    #   static_configs:
+#20250220#    #     - targets:
+#20250220#    #       - https://example.com
+#20250220#    #   relabel_configs:
+#20250220#    #     - source_labels: [__address__]
+#20250220#    #       target_label: __param_target
+#20250220#    #     - source_labels: [__param_target]
+#20250220#    #       target_label: instance
+#20250220#    #     - target_label: __address__
+#20250220#    #       replacement: prometheus-blackbox-exporter:9115
+#20250220
