@@ -64,6 +64,20 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
     syncwave: "-8"
+  prometheus:
+    disable: false
+    name: prometheus
+    targetNamespace: prometheus
+    sources:
+      - path: charts/prometheus
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
+    syncOptions:
+      ServerSideApply: true
 
 #-20250220  echoserver:
 #-20250220    disable: false
@@ -185,20 +199,6 @@ argocdManaged:
 #-20250220    disableAutomated: false
 #-20250220    automated: {}
 #-20250220    ignoreDifferences: false 
-#-20250220  prometheus:
-#-20250220    disable: true
-#-20250220    name: prometheus
-#-20250220    targetNamespace: prometheus
-#-20250220    sources:
-#-20250220      - path: charts/prometheus
-#-20250220        noHelmValues: false
-#-20250220        helm:
-#-20250220          envFile: true
-#-20250220    disableAutomated: false
-#-20250220    automated: {}
-#-20250220    ignoreDifferences: false 
-#-20250220    syncOptions:
-#-20250220      ServerSideApply: true
 #-20250220  grafana:
 #-20250220    disable: true
 #-20250220    name: grafana
