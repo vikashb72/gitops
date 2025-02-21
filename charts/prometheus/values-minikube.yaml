@@ -144,25 +144,25 @@ kube-prometheus-stack:
     #    ##  revision: 240
     #    ##  datasource: Prometheus
     #    ## https://grafana.com/grafana/dashboards/1860-node-exporter-full/
-    envValueFrom:
-      GF_SMTP_ENABLED:
-        name: grafana-smtp-config
-        key: GF_SMTP_ENABLED
-      GF_SMTP_HOST:
-        name: grafana-smtp-config
-        key: GF_SMTP_HOST
-      GF_SMTP_USER:
-        name: grafana-smtp-config
-        key: GF_SMTP_USER
-      GF_SMTP_PASSWORD:
-        name: grafana-smtp-config
-        key: GF_SMTP_PASSWORD
-      GF_SMTP_FROM_ADDRESS:
-        name: grafana-smtp-config
-        key: GF_SMTP_FROM_ADDRESS
-      GF_SMTP_STARTTLS_POLICY:
-        name: grafana-smtp-config
-        key: GF_SMTP_STARTTLS_POLICY
+    envValueFrom: {}
+      #GF_SMTP_ENABLED:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_ENABLED
+      #GF_SMTP_HOST:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_HOST
+      #GF_SMTP_USER:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_USER
+      #GF_SMTP_PASSWORD:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_PASSWORD
+      #GF_SMTP_FROM_ADDRESS:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_FROM_ADDRESS
+      #GF_SMTP_STARTTLS_POLICY:
+      #  name: grafana-smtp-config
+      #  key: GF_SMTP_STARTTLS_POLICY
     grafana.ini:
       smtp:
        enabled: true
