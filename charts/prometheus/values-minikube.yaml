@@ -35,7 +35,7 @@ kube-prometheus-stack:
       smtp:
         enabled: true
         host: desktop.home.where-ever.za.net:587
-        startTLS: "MandatoryStartTLS"
+        startTLS_policy: "MandatoryStartTLS"
         from_address: monitor@minikube.where-ever.net
     #admin:
     #  ## Name of the secret. Can be templated.
