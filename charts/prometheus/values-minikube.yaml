@@ -49,26 +49,38 @@ kube-prometheus-stack:
             settings:
               addresses: vikashb@home.where-ever.za.net
     alerting:
+      policies.yaml:
+        apiVersion: 1
+        policies:
+            - orgId: 1
+              receiver: default-notification-email
+              group_by:
+                - grafana_folder
+                - alertname
       contactpoints.yaml:
         secret:
           apiVersion: 1
           contactPoints:
-              - orgId: 1
-                name: grafana-default-email
-                receivers:
-                  - uid: first_uid
-                    type: email
-                    settings:
-                      addresses: vikashb@home.where-ever.za.net
-                    disableResolveMessage: false
-              #- orgId: 1
-              #  name: ms-teams-channel
-              #  receivers:
-              #    - uid: first_uid
-              #      type: teams
-              #      settings:
-              #        url: https://localhost/
-              #      disableResolveMessage: false
+            - orgId: 1
+              name: default-notification-email
+              receivers:
+                - uid: default-notification-email
+                  type: email
+                  settings:
+                    addresses: vikashb@home.where-ever.za.net
+                    singleEmail: false
+                  disableResolveMessage: false
+            #- orgId: 1
+            #  name: ms-teams-channel
+            #  receivers:
+            #    - uid: ms-teams-channel
+            #      type: teams
+            #      settings:
+            #        url: https://localhost/
+            #      disableResolveMessage: false
+          deleteContactPoints:
+            - orgId: 1
+              uid: ""
     #admin:
     #  ## Name of the secret. Can be templated.
     #  existingSecret: "grafana-admin-credentials"
