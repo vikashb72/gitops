@@ -22,7 +22,7 @@ kube-prometheus-stack:
     create: true
     rules:
       alertmanager: true
-      etcd: true
+      etcd: false   # looking for kube-etcd 
       configReloaders: true
       general: true
       k8sContainerCpuUsageSecondsTotal: true
