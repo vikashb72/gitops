@@ -129,9 +129,9 @@ kube-prometheus-stack:
         - name: "null"
         - name: "email-alert"
           email_configs:
-            - to: vikashb@home.where-ever.za.net
-              from: monitor@minikube.where-ever.net
-              smarthost: desktop.home.where-ever.za.net:587
+            - to: "vikashb@home.where-ever.za.net"
+              from: "monitor@minikube.where-ever.net"
+              smarthost: "desktop.home.where-ever.za.net:587"
               #auth_username:
               #auth_identity:
               #auth_password:
