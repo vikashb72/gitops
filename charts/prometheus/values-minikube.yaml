@@ -151,7 +151,7 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 10Gi
-      alertmanagerConfiguration:
+      alertmanagerConfigSelector:
         name: alertmanager-prometheus-kube-prometheus-alertmanager
     service:
       type: LoadBalancer
