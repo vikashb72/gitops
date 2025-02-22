@@ -2,17 +2,147 @@ env:
   EVT: minikube
 
 kube-prometheus-stack:
+  # https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/heads/main/charts/kube-prometheus-stack/values.yaml
+  crds:
+    enabled: true
+    upgradeJob:
+      enabled: false
+      forceConflicts: false
+      serviceAccount:
+        create: true
+  ## custom Rules to override "for" and "severity" in defaultRules
+  customRules: {}
+    # AlertmanagerFailedReload:
+    #   for: 3m
+    # AlertmanagerMembersInconsistent:
+    #   for: 5m
+    #   severity: "warning"
+  ## Create default rules for monitoring the cluster
+  defaultRules:
+    create: true
+    rules:
+      alertmanager: true
+      etcd: true
+      configReloaders: true
+      general: true
+      k8sContainerCpuUsageSecondsTotal: true
+      k8sContainerMemoryCache: true
+      k8sContainerMemoryRss: true
+      k8sContainerMemorySwap: true
+      k8sContainerResource: true
+      k8sContainerMemoryWorkingSetBytes: true
+      k8sPodOwner: true
+      kubeApiserverAvailability: true
+      kubeApiserverBurnrate: true
+      kubeApiserverHistogram: true
+      kubeApiserverSlos: true
+      kubeControllerManager: true
+      kubelet: true
+      kubeProxy: true
+      kubePrometheusGeneral: true
+      kubePrometheusNodeRecording: true
+      kubernetesApps: true
+      kubernetesResources: true
+      kubernetesStorage: true
+      kubernetesSystem: true
+      kubeSchedulerAlerting: true
+      kubeSchedulerRecording: true
+      kubeStateMetrics: true
+      network: true
+      node: true
+      nodeExporterAlerting: true
+      nodeExporterRecording: true
+      prometheus: true
+      prometheusOperator: true
+      windows: false
+    ## Labels for default rules
+    labels: {}
+    ## Annotations for default rules
+    annotations: {}
+    ## Disabled PrometheusRule alerts
+    disabled: {}
+    # KubeAPIDown: true
+    # NodeRAIDDegraded: true
+  ## Provide custom recording or alerting rules to be deployed into the cluster.
+  ##
+  additionalPrometheusRulesMap: {}
+  #  rule-name:
+  #    groups:
+  #    - name: my_group
+  #      rules:
+  #      - record: my_record
+  #        expr: 100 * my_record
   global:
+    rbac:
+      create: true
       createAggregateClusterRoles: true
-      pspEnabled: false
+  windowsMonitoring:
+    ## Deploys the windows-exporter and Windows-specific dashboards and rules (job name must be 'windows-exporter')
+    enabled: false
+  prometheus-windows-exporter:
+    prometheus:
+      monitor:
+        enabled: false
   alertmanager:
     enabled: true
-    ingress:
-      enabled: false
-    service:
-      loadBalancerIP: ""
-      type: ClusterIP
+    annotations: {}
+    apiVersion: v2
+    config:
+      global:
+        resolve_timeout: 5m
+      inhibit_rules:
+        - source_matchers:
+            - 'severity = critical'
+          target_matchers:
+            - 'severity =~ warning|info'
+          equal:
+            - 'namespace'
+            - 'alertname'
+        - source_matchers:
+            - 'severity = warning'
+          target_matchers:
+            - 'severity = info'
+          equal:
+            - 'namespace'
+            - 'alertname'
+        - source_matchers:
+            - 'alertname = InfoInhibitor'
+          target_matchers:
+            - 'severity = info'
+          equal:
+            - 'namespace'
+        - target_matchers:
+            - 'alertname = InfoInhibitor'
+      route:
+        group_by: ['namespace']
+        group_wait: 30s
+        group_interval: 5m
+        repeat_interval: 12h
+        receiver: 'null'
+        routes:
+          - receiver: 'email-alert'
+            matchers:
+              - alertname = "Watchdog"
+      receivers:
+        - name: email-alert
+          email_configs:
+            - to: vikashb@home.where-ever.za.net
+              from: monitor@minikube.where-ever.net
+              smarthost: desktop.home.where-ever.za.net:587
+              #auth_username:
+              #auth_identity:
+              #auth_password:
+      templates:
+        - '/etc/alertmanager/config/*.tmpl'
+    secret:
+      annotations: {}
+    ## Configuration for Alertmanager service
+    serviceMonitor:
+      selfMonitor: true
     alertmanagerSpec:
+      persistentVolumeClaimRetentionPolicy:
+        whenDeleted: Retain
+        whenScaled: Retain
       storage:
         volumeClaimTemplate:
           spec:
@@ -21,17 +151,19 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 10Gi
-      volumes: []
-      volumeMounts: []
-      initContainers: []
   grafana:
     enabled: true
+    defaultDashboardsEditable: true
     smtp:
       enabled: true
       existingSecret: "smtp-config"
       passwordKey: "GF_SMTP_PASSWORD"
       userKey: "GF_SMTP_USER"
     grafana.ini:
+      #log:
+      #  level: debug
+      unified_alerting:
+        enabled: true
       smtp:
         enabled: true
         host: desktop.home.where-ever.za.net:587
@@ -81,22 +213,17 @@ kube-prometheus-stack:
           deleteContactPoints:
             - orgId: 1
               uid: ""
-    #admin:
-    #  ## Name of the secret. Can be templated.
-    #  existingSecret: "grafana-admin-credentials"
-    #  userKey: GF_SECURITY_ADMIN_USER
-    #  passwordKey: GF_SECURITY_ADMIN_PASSWORD
     initChownData:
       enabled: false
     serviceMonitor:
       enabled: true
       targetLabels:
         - prometheus
-    defaultDashboardsEditable: true
-    rbac:
-      pspEnabled: false
-    ingress:
-      enabled: false
+    #admin:
+    #  ## Name of the secret. Can be templated.
+    #  existingSecret: "grafana-admin-credentials"
+    #  userKey: GF_SECURITY_ADMIN_USER
+    #  passwordKey: GF_SECURITY_ADMIN_PASSWORD
     persistence:
       enabled: true
       type: pvc
@@ -109,42 +236,39 @@ kube-prometheus-stack:
       inMemory:
         enabled: false
       lookupVolumeName: true
-    serviceAccount:
-      create: true
-      autoMount: true
     sidecar:
       dashboards:
         enabled: true
         label: grafana_dashboard
         labelValue: "1"
+        # Allow discovery in all namespaces for dashboards
+        searchNamespace: ALL
+  
+        # Support for new table panels, when enabled grafana auto migrates the old table panels to newer table panels
+        enableNewTablePanelSyntax: false
       datasources:
         enabled: true
         defaultDatasourceEnabled: true
         isDefaultDatasource: true
+  
         name: Prometheus
         uid: prometheus
-        ## URL of prometheus datasource
-        # url: http://prometheus-stack-prometheus:9090/
+        exemplarTraceIdDestinations: {}
+          # datasourceUid: Jaeger
+          # traceIdLabelName: trace_id
+          # urlDisplayLabel: View traces
         alertmanager:
           enabled: true
           name: Alertmanager
           uid: alertmanager
-    extraConfigmapMounts: []
-    # - name: certs-configmap
-    #   mountPath: /etc/grafana/ssl/
-    #   configMap: certs-configmap
-    #   readOnly: true
-    deleteDatasources: []
-    # - name: example-datasource
-    #   orgId: 1
-    additionalDataSources: []
-    prune: true
-    serviceMonitor:
-      enabled: true
+          handleGrafanaManagedAlerts: false
+          implementation: prometheus
     service:
       enabled: true
       type: LoadBalancer
       loadBalancerIP: 192.168.49.231
+    serviceMonitor:
+      enabled: true
     plugins:
       - grafana-piechart-panel
       - macropower-analytics-panel
@@ -219,26 +343,133 @@ kube-prometheus-stack:
     #  GF_SMTP_STARTTLS_POLICY:
     #    name: grafana-smtp-config
     #    key: GF_SMTP_STARTTLS_POLICY
-  prometheusOperator:
+  kubernetesServiceMonitors:
+    enabled: true
+  kubeApiServer:
+    enabled: true
+    tlsConfig:
+      serverName: kubernetes
+      insecureSkipVerify: false
+  kubelet:
+    enabled: true
+    namespace: kube-system
+    serviceMonitor:
+      kubelet: true
+  kubeControllerManager:
+    enabled: true
     service:
-      loadBalancerIP: ""
+      enabled: true
+    serviceMonitor:
+      enabled: true
+  coreDns:
+    enabled: true
+    service:
+      enabled: true
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: true
+  kubeDns:
+    enabled: false
+    service:
+      ipDualStack:
+        enabled: false
+  kubeEtcd:
+    enabled: true
+    service:
+      enabled: true
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: true
+  kubeScheduler:
+    enabled: true
+    service:
+      enabled: true
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: true
+  kubeProxy:
+    enabled: true
+    service:
+      enabled: true
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: true
+  kubeStateMetrics:
+    enabled: true
+  kube-state-metrics:
+    namespaceOverride: ""
+    rbac:
+      create: true
+    prometheusScrape: false
+    prometheus:
+      monitor:
+        enabled: true
+    selfMonitor:
+      enabled: false
+  nodeExporter:
+    enabled: true
+    operatingSystems:
+      linux:
+        enabled: true
+      aix:
+        enabled: false
+      darwin:
+        enabled: false
+  prometheus-node-exporter:
+    prometheus:
+      monitor:
+        enabled: true
+  prometheusOperator:
+    enabled: true
+    tls:
+      enabled: true
+    admissionWebhooks:
+      certManager:
+        enabled: false
+    networkPolicy:
+      enabled: false
+    serviceAccount:
+      create: true
+    ##
+    service:
+      ipDualStack:
+        enabled: false
       type: ClusterIP
+    kubeletService:
+      enabled: true
+      namespace: kube-system
+    serviceMonitor:
+      selfMonitor: true
+    dnsConfig: {}
+      # nameservers:
+      #   - 1.2.3.4
+      # searches:
+      #   - ns1.svc.cluster-domain.example
+      #   - my.dns.search.suffix
+    # Enable vertical pod autoscaler support for prometheus-operator
+    verticalPodAutoscaler:
+      enabled: false
+    prometheusConfigReloader:
+      enableProbe: false
   prometheus:
     enabled: true
-    agentMode: false
+    networkPolicy:
+      enabled: false
+    serviceAccount:
+      create: true
     service:
       type: LoadBalancer
       loadBalancerIP: 192.168.49.227
-    ingress:
-      enabled: false
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      selfMonitor: true
     prometheusSpec:
-      #ruleNamespaceSelector: {}
-      #ruleSelectorNilUsesHelmValues: true 
-      #serviceMonitorSelectorNilUsesHelmValues: true
-      serviceMonitorSelectorNilUsesHelmValues: false
-      # ruleNamespaceSelector:
-      #   matchLabels:
-      #     prometheus: somelabel
+      persistentVolumeClaimRetentionPolicy: {}
       storageSpec:
         volumeClaimTemplate:
           spec:
@@ -247,68 +478,9 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 10Gi
-      volumes: []
-      volumeMounts: []
-      additionalScrapeConfigs: []
-      # - job_name: kube-etcd
-      #   kubernetes_sd_configs:
-      #     - role: node
-      #   scheme: https
-      #   tls_config:
-      #     ca_file:   /etc/prometheus/secrets/etcd-client-cert/etcd-ca
-      #     cert_file: /etc/prometheus/secrets/etcd-client-cert/etcd-client
-      #     key_file:  /etc/prometheus/secrets/etcd-client-cert/etcd-client-key
-      #   relabel_configs:
-      #   - action: labelmap
-      #     regex: __meta_kubernetes_node_label_(.+)
-      #   - source_labels: [__address__]
-      #     action: replace
-      #     targetLabel: __address__
-      #     regex: ([^:;]+):(\d+)
-      #     replacement: ${1}:2379
-      #   - source_labels: [__meta_kubernetes_node_name]
-      #     action: keep
-      #     regex: .*mst.*
-      #   - source_labels: [__meta_kubernetes_node_name]
-      #     action: replace
-      #     targetLabel: node
-      #     regex: (.*)
-      #     replacement: ${1}
-      #   metric_relabel_configs:
-      #   - regex: (kubernetes_io_hostname|failure_domain_beta_kubernetes_io_region|beta_kubernetes_io_os|beta_kubernetes_io_arch|beta_kubernetes_io_instance_type|failure_domain_beta_kubernetes_io_zone)
-      #     action: labeldrop
-      #
-      ## If scrape config contains a repetitive section, you may want to use a template.
-      ## In the following example, you can see how to define `gce_sd_configs` for multiple zones
-      # additionalScrapeConfigs: |
-      #  - job_name: "node-exporter"
-      #    gce_sd_configs:
-      #    {{range $zone := .Values.gcp_zones}}
-      #    - project: "project1"
-      #      zone: "{{$zone}}"
-      #      port: 9100
-      #    {{end}}
-      #    relabel_configs:
-      #    ...
-      additionalAlertManagerConfigs: []
-      # - consul_sd_configs:
-      #   - server: consul.dev.test:8500
-      #     scheme: http
-      #     datacenter: dev
-      #     tag_separator: ','
-      #     services:
-      #       - metrics-prometheus-alertmanager
-    additionalServiceMonitors: []
-    additionalPodMonitors: []
-  cleanPrometheusOperatorObjectNames: false
-  extraManifests: []
-    # - apiVersion: v1
-    #   kind: ConfigMap
-    #   metadata:
-    #   labels:
-    #     name: prometheus-extra
-    #   data:
-    #     extra-data: "value"
+    serviceMonitor:
+      selfMonitor: true
+##
 
 #20250220#prometheus:
 #20250220#  rbac:
