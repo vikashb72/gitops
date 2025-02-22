@@ -118,13 +118,16 @@ kube-prometheus-stack:
         group_wait: 30s
         group_interval: 5m
         repeat_interval: 12h
-        receiver: 'null'
+        receiver: "email-alert"
         routes:
-          - receiver: 'email-alert'
-            matchers:
+          - receiver: "null"
+            match:
               - alertname = "Watchdog"
+          - receiver: "email-alert"
+            continue: true
       receivers:
-        - name: email-alert
+        - name: "null"
+        - name: "email-alert"
           email_configs:
             - to: vikashb@home.where-ever.za.net
               from: monitor@minikube.where-ever.net
@@ -132,6 +135,7 @@ kube-prometheus-stack:
               #auth_username:
               #auth_identity:
               #auth_password:
+              send_resolved: true
       templates:
         - '/etc/alertmanager/config/*.tmpl'
     secret:
