@@ -2,6 +2,14 @@ env:
   EVT: minikube
   bootstrapMode: true
 
+Projects:
+  minikube:
+    description: Minikube Infrastructure
+  shared:
+    description: Shared Infrastructure
+  apps:
+    description: Apps Infrastructure
+
 argo-cd:
   namespaceOverride: "argocd"
   createAggregateRoles: true
