@@ -245,11 +245,10 @@ kube-prometheus-stack:
       enabled: true
       targetLabels:
         - prometheus
-    admin:
-      ## Name of the secret. Can be templated.
-      existingSecret: "grafana-admin-credentials"
-      userKey: GF_SECURITY_ADMIN_USER
-      passwordKey: GF_SECURITY_ADMIN_PASSWORD
+    #admin:
+    #  existingSecret: "grafana-admin-credentials"
+    #  userKey: GF_SECURITY_ADMIN_USER
+    #  passwordKey: GF_SECURITY_ADMIN_PASSWORD
     persistence:
       enabled: true
       type: pvc
