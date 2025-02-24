@@ -2,7 +2,7 @@
 #kind: GrafanaContactPoint
 #metadata:
 #  name: grafana-ois-email
-#  namespace: monitoring
+#  namespace: {{ .Release.Namespace }}
 #  labels:
 #    app.kubernetes.io/component: operator
 #    app.kubernetes.io/instance: grafana
