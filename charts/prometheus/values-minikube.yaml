@@ -2,6 +2,7 @@ env:
   EVT: minikube
 
 kube-prometheus-stack:
+  namespaceOverride: "monitoring"
   # https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/heads/main/charts/kube-prometheus-stack/values.yaml
   crds:
     enabled: true
@@ -178,6 +179,7 @@ kube-prometheus-stack:
       type: LoadBalancer
       loadBalancerIP: 192.168.49.232
   grafana:
+    namespaceOverride: "monitoring"
     enabled: true
     defaultDashboardsEditable: true
     smtp:
@@ -429,7 +431,7 @@ kube-prometheus-stack:
   kubeStateMetrics:
     enabled: true
   kube-state-metrics:
-    namespaceOverride: ""
+    #namespaceOverride: "monitoring"
     rbac:
       create: true
     prometheusScrape: false
@@ -448,6 +450,7 @@ kube-prometheus-stack:
       darwin:
         enabled: false
   prometheus-node-exporter:
+    #namespaceOverride: "monitoring"
     prometheus:
       monitor:
         enabled: true

@@ -67,7 +67,7 @@ argocdManaged:
   prometheus:
     disable: true
     name: prometheus
-    targetNamespace: prometheus
+    targetNamespace: monitoring
     sources:
       - path: charts/prometheus
         noHelmValues: false
