@@ -201,19 +201,29 @@ kube-prometheus-stack:
     notifiers:
       notifiers.yaml:
         notifiers:
-          - name: email-notifier
-            type: email
-            uid: email1
+          - name: alertmanager-operated
+            type: prometheus-alertmanager
+            uid: alertmanager-operated
             org_id: 1
             is_default: true
             settings:
-              addresses: vikashb@home.where-ever.za.net
+              url: http://alertmanager-operated:9093/
+              #basicAuthPassword: 
+              #basicAuthUser: admin
+          #- name: email-notifier
+          #  type: email
+          #  uid: email-notifier
+          #  org_id: 1
+          #  is_default: false
+          #  settings:
+          #    addresses: vikashb@home.where-ever.za.net
     alerting:
       policies.yaml:
         apiVersion: 1
         policies:
             - orgId: 1
-              receiver: default-notification-email
+              receiver: alertmanager-operated
+              #receiver: default-notification-email
               group_by:
                 - grafana_folder
                 - alertname
@@ -222,14 +232,24 @@ kube-prometheus-stack:
           apiVersion: 1
           contactPoints:
             - orgId: 1
-              name: default-notification-email
+              name: alertmanager-operated
               receivers:
-                - uid: default-notification-email
-                  type: email
+                - uid: alertmanager-operated
+                  type: prometheus-alertmanager
                   settings:
-                    addresses: vikashb@home.where-ever.za.net
-                    singleEmail: false
+                    #basicAuthPassword: 
+                    #basicAuthUser: admin
+                    url: http://alertmanager-operated:9093/
                   disableResolveMessage: false
+            #- orgId: 1
+            #  name: default-notification-email
+            #  receivers:
+            #    - uid: default-notification-email
+            #      type: email
+            #      settings:
+            #        addresses: vikashb@home.where-ever.za.net
+            #        singleEmail: false
+            #      disableResolveMessage: false
             #- orgId: 1
             #  name: ms-teams-channel
             #  receivers:
@@ -238,9 +258,6 @@ kube-prometheus-stack:
             #      settings:
             #        url: https://localhost/
             #      disableResolveMessage: false
-          deleteContactPoints:
-            - orgId: 1
-              uid: ""
     initChownData:
       enabled: false
     serviceMonitor:
