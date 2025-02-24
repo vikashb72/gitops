@@ -589,12 +589,6 @@ loki-distributed:
       {{- end}}
       {{- if .Values.loki.storageConfig}}
       storage_config:
-        #azure:
-        #  account_name: env-storage-account
-        #  use_federated_token: true
-        #  container_name: loki-log
-        #  user_assigned_id: "00000000-0000-0000-0000-000000000000"
-        #  request_timeout: 0
       {{- if .Values.indexGateway.enabled}}
       {{- $indexGatewayClient := dict "server_address" (printf "dns:///%s:9095" (include "loki.indexGatewayFullname" .)) }}
       {{- $_ := set .Values.loki.storageConfig.boltdb_shipper "index_gateway_client" $indexGatewayClient }}
@@ -677,8 +671,8 @@ loki-distributed:
           kvstore:
             store: memberlist
         rule_path: /tmp/loki/scratch
-        alertmanager_url: https://alertmanager.xx
-        external_url: https://alertmanager.xx
+        alertmanager_url: http://alertmanager-operated.monitoring
+        external_url: http://alertmanager-operated.monitoring
 
     # -- Check https://grafana.com/docs/loki/latest/configuration/#schema_config for more info on how to configure schemas
     schemaConfig:
@@ -712,52 +706,49 @@ loki-distributed:
 
     # -- Structured loki configuration, takes precedence over `loki.config`, `loki.schemaConfig`, `loki.storageConfig`
     structuredConfig: {}
-##
-
-  structuredConfig:
-    limits_config:
-      enforce_metric_name: false
-      retention_period: 720h # 7 days
-    ingester:
-      lifecycler:
-        ring:
-          kvstore:
-            store: memberlist # Use a distributed store
-      chunk_idle_period: 30m # Adjust based on your log volume
-      chunk_retain_period: 10m # Adjust based on your log volume
-      chunk_target_size: 3072000 # Adjust based on your log volume
-      concurrent_flushes: 100 # Increase if you have high log volume
-    storage_config:
-      azure:
-        account_name: env-storage-account
-        use_federated_token: true
-        container_name: loki-log
-        user_assigned_id: "00000000-0000-0000-0000-000000000000"
-        request_timeout: 0
-      boltdb_shipper:
-        active_index_directory: /var/loki/boltdb-shipper-active
-        cache_location: /var/loki/boltdb-shipper-cache
-        shared_store: azure
-      filesystem:
-        directory: /var/loki/chunks
-      index_queries_cache_config:
-        enable_fifocache: true
-        fifocache:
-          size: 1024
-          validity: 24h
-    schema_config:
-      configs:
-        - from: 2022-06-21
-          store: boltdb-shipper
-          object_store: azure
-          schema: v11
-          index:
-            prefix: loki_index_
-            period: 24h
-    compactor:
-      working_directory: /var/loki/compactor
-      shared_store: azure
-##
+    #structuredConfig:
+    #  limits_config:
+    #    enforce_metric_name: false
+    #    retention_period: 720h # 7 days
+    #  ingester:
+    #    lifecycler:
+    #      ring:
+    #        kvstore:
+    #          store: memberlist # Use a distributed store
+    #    chunk_idle_period: 30m # Adjust based on your log volume
+    #    chunk_retain_period: 10m # Adjust based on your log volume
+    #    chunk_target_size: 3072000 # Adjust based on your log volume
+    #    concurrent_flushes: 100 # Increase if you have high log volume
+    #  storage_config:
+    #    azure:
+    #      account_name: env-storage-account
+    #      use_federated_token: true
+    #      container_name: loki-log
+    #      user_assigned_id: "00000000-0000-0000-0000-000000000000"
+    #      request_timeout: 0
+    #    boltdb_shipper:
+    #      active_index_directory: /var/loki/boltdb-shipper-active
+    #      cache_location: /var/loki/boltdb-shipper-cache
+    #      shared_store: azure
+    #    filesystem:
+    #      directory: /var/loki/chunks
+    #    index_queries_cache_config:
+    #      enable_fifocache: true
+    #      fifocache:
+    #        size: 1024
+    #        validity: 24h
+    #  schema_config:
+    #    configs:
+    #      - from: 2022-06-21
+    #        store: boltdb-shipper
+    #        object_store: azure
+    #        schema: v11
+    #        index:
+    #          prefix: loki_index_
+    #          period: 24h
+    #  compactor:
+    #    working_directory: /var/loki/compactor
+    #    shared_store: azure
 
   # -- Provides a reloadable runtime configuration file for some specific configuration
   runtimeConfig: {}
@@ -792,23 +783,16 @@ loki-distributed:
     maxUnavailable: null
     persistence:
       # -- Enable creating PVCs which is required when using boltdb-shipper
-      enabled: false
+      enabled: true
       # -- Use emptyDir with ramdisk for storage. **Please note that all data in ingester will be lost on pod restart**
       inMemory: false
       # -- List of the ingester PVCs
       # @notationType -- list
       claims:
         - name: data
-          size: 10Gi
-          #   -- Storage class to be used.
-          #   If defined, storageClassName: <storageClass>.
-          #   If set to "-", storageClassName: "", which disables dynamic provisioning.
-          #   If empty or set to null, no storageClassName spec is
-          #   set, choosing the default provisioner (gp2 on AWS, standard on GKE, AWS, and OpenStack).
-          storageClass: null
-        # - name: wal
-        #   size: 150Gi
-      # -- Enable StatefulSetAutoDeletePVC feature
+          size: 4Gi
+          storageClassName: nfs-client
+          #storageClass: null
       enableStatefulSetAutoDeletePVC: false
       whenDeleted: Retain
       whenScaled: Retain
@@ -859,6 +843,14 @@ loki-distributed:
   tableManager:
     # -- Specifies whether the table-manager should be enabled
     enabled: false
+    # ref: https://github.com/grafana/loki/issues/4466
+    resources: {}
+    extraVolumes:
+      - name: data
+        emptyDir: {}
+    extraVolumeMounts:
+      - name: data
+        mountPath: /var/loki
 
   # Use either this ingress or the gateway, but not both at once.
   # If you enable this, make sure to disable the gateway.
