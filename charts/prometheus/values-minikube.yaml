@@ -310,7 +310,7 @@ kube-prometheus-stack:
           enabled: true
           name: Alertmanager
           uid: alertmanager
-          handleGrafanaManagedAlerts: false
+          handleGrafanaManagedAlerts: true
           implementation: prometheus
     service:
       enabled: true
@@ -318,6 +318,14 @@ kube-prometheus-stack:
       loadBalancerIP: 192.168.49.231
     serviceMonitor:
       enabled: true
+    additionalDataSources:
+      - name: Loki
+        type: loki
+        url: http://prometheus-loki-distributed-gateway.monitoring/
+        access: proxy
+        database: loki
+        jsonData:
+          tlsSkipVerify: tru
     plugins:
       - grafana-piechart-panel
       - macropower-analytics-panel
@@ -333,13 +341,6 @@ kube-prometheus-stack:
       ## and specify the name of the plugin after the semicolon. Like this:
       # - https://grafana.com/api/plugins/marcusolsson-json-datasource/versions/1.3.2/download;marcusolsson-json-datasource
     #dashboards:
-    #  default:
-    #    # https://grafana.com/grafana/dashboards/2-prometheus-stats/
-    #    prometheus-stats:
-    #      gnetId: 2
-    #      revision: 2
-    #      datasource: Prometheus
-    #    # https://grafana.com/grafana/dashboards/11835-redis-dashboard-for-prometheus-redis-exporter-helm-stable-redis-ha/
     #    redis-exporter:
     #      gnetId: 11835
     #      revision: 1
