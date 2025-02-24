@@ -325,7 +325,7 @@ kube-prometheus-stack:
         access: proxy
         database: loki
         jsonData:
-          tlsSkipVerify: tru
+          tlsSkipVerify: true
     plugins:
       - grafana-piechart-panel
       - macropower-analytics-panel
