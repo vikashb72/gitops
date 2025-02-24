@@ -323,7 +323,7 @@ kube-prometheus-stack:
         type: loki
         url: http://prometheus-loki-distributed-gateway.monitoring/
         access: proxy
-        database: loki
+        isDefault: true
         jsonData:
           tlsSkipVerify: true
     plugins:
@@ -947,3 +947,86 @@ loki-distributed:
   networkPolicy:
     # -- Specifies whether Network Policies should be created
     enabled: false
+
+promtail:
+  daemonset:
+    enabled: true
+    autoscaling:
+      enabled: false
+      # updatePolicy:
+        # minReplicas: 1
+        # updateMode: Auto
+  
+  deployment:
+    # -- Deploys Promtail as a Deployment
+    enabled: false
+    replicaCount: 1
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 10
+  
+  service:
+    enabled: true
+  
+  configmap:
+    enabled: true
+  
+  resources: {}
+  
+  rbac:
+    create: true
+  
+  serviceAccount:
+    create: true
+    automountServiceAccountToken: true
+  
+  automountServiceAccountToken: true
+  
+  # ServiceMonitor configuration
+  serviceMonitor:
+    enabled: false
+    prometheusRule:
+      enabled: false
+      additionalLabels: {}
+      rules: []
+      #  - alert: PromtailRequestErrors
+      #    expr: 100 * sum(rate(promtail_request_duration_seconds_count{status_code=~"5..|failed"}[1m])) by (namespace, job, route, instance) / sum(rate(promtail_request_duration_seconds_count[1m])) by (namespace, job, route, instance) > 10
+      #    for: 5m
+      #    labels:
+      #      severity: critical
+      #    annotations:
+      #      description: |
+      #        The {{ $labels.job }} {{ $labels.route }} is experiencing
+      #        {{ printf \"%.2f\" $value }} errors.
+      #        VALUE = {{ $value }}
+      #        LABELS = {{ $labels }}
+      #      summary: Promtail request errors (instance {{ $labels.instance }})
+      #  - alert: PromtailRequestLatency
+      #    expr: histogram_quantile(0.99, sum(rate(promtail_request_duration_seconds_bucket[5m])) by (le)) > 1
+      #    for: 5m
+      #    labels:
+      #      severity: critical
+      #    annotations:
+      #      summary: Promtail request latency (instance {{ $labels.instance }})
+      #      description: |
+      #        The {{ $labels.job }} {{ $labels.route }} is experiencing
+      #        {{ printf \"%.2f\" $value }}s 99th percentile latency.
+      #        VALUE = {{ $value }}
+      #        LABELS = {{ $labels }}
+  
+  config:
+    enabled: true
+    serverPort: 3101
+    clients:
+      - url: http://prometheus-loki-distributed-gateway.monitoring/
+    positions:
+      filename: /run/promtail/positions.yaml
+  
+  networkPolicy:
+    # -- Specifies whether Network Policies should be created
+    enabled: false
+  
+  sidecar:
+    configReloader:
+      enabled: false
