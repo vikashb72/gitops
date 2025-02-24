@@ -323,7 +323,7 @@ kube-prometheus-stack:
         type: loki
         url: http://prometheus-loki-distributed-gateway.monitoring/
         access: proxy
-        isDefault: true
+        isDefault: false
         jsonData:
           tlsSkipVerify: true
     plugins:
