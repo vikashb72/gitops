@@ -212,14 +212,13 @@ kube-prometheus-stack:
     #    secretKeyRef:
     #      name: prometheus-alerting-config
     #      key: GF_SMTP_STARTTLS_POLICY
-    envFromSecret: "grafana-admin-credentials"
-    # this does not work
+    #envFromSecret: "grafana-admin-credentials"
     #adminUser: admin
     #adminPassword: ""
-    #admin:
-    #  existingSecret: "grafana-admin-credentials"
-    #  userKey: GF_SECURITY_ADMIN_USER
-    #  passwordKey: GF_SECURITY_ADMIN_PASSWORD
+    admin:
+      existingSecret: "grafana-admin-credentials"
+      userKey: GF_SECURITY_ADMIN_USER
+      passwordKey: GF_SECURITY_ADMIN_PASSWORD
     namespaceOverride: "monitoring"
     enabled: true
     defaultDashboardsEditable: true
