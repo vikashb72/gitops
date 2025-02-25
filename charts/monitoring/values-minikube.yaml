@@ -218,8 +218,8 @@ kube-prometheus-stack:
     #adminPassword: ""
     #admin:
     #  existingSecret: "grafana-admin-credentials"
-    #  userKey: user
-    #  passwordKey: password
+    #  userKey: GF_SECURITY_ADMIN_USER
+    #  passwordKey: GF_SECURITY_ADMIN_PASSWORD
     namespaceOverride: "monitoring"
     enabled: true
     defaultDashboardsEditable: true
@@ -308,7 +308,7 @@ kube-prometheus-stack:
       targetLabels:
         - prometheus
     persistence:
-      enabled: true
+      enabled: false
       type: pvc
       storageClassName: nfs-client
       accessModes:
