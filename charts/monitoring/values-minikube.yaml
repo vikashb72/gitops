@@ -307,7 +307,7 @@ kube-prometheus-stack:
       targetLabels:
         - prometheus
     persistence:
-      enabled: false
+      enabled: true
       type: pvc
       storageClassName: nfs-client
       accessModes:
