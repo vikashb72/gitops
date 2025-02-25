@@ -177,17 +177,49 @@ kube-prometheus-stack:
       type: LoadBalancer
       loadBalancerIP: 192.168.49.232
   grafana:
-    env:
-      GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
-    envValueFrom:
-      GF_SECURITY_ADMIN_USER:
-        secretKeyRef:
-          name: grafana-admin-credentials
-          key: user
-      GF_SECURITY_ADMIN_PASSWORD:
-        secretKeyRef:
-          name: grafana-admin-credentials
-          key: password
+    #env:
+    #  GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
+    #envValueFrom:
+    #  GF_SECURITY_ADMIN_USER:
+    #    secretKeyRef:
+    #      name: grafana-admin-credentials
+    #      key: GF_SECURITY_ADMIN_USER
+    #  GF_SECURITY_ADMIN_PASSWORD:
+    #    secretKeyRef:
+    #      name: grafana-admin-credentials
+    #      key: GF_SECURITY_ADMIN_PASSWORD
+    #  GF_SMTP_ENABLED:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_ENABLED
+    #  GF_SMTP_HOST:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_HOST
+    #  GF_SMTP_USER:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_USER
+    #  GF_SMTP_PASSWORD:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_PASSWORD
+    #  GF_SMTP_FROM_ADDRESS:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_FROM_ADDRESS
+    #  GF_SMTP_STARTTLS_POLICY:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_STARTTLS_POLICY
+    envFromSecret: "grafana-admin-credentials"
+    # this does not work
+    #adminUser: admin
+    #adminPassword: ""
+    #admin:
+    #  existingSecret: "grafana-admin-credentials"
+    #  userKey: user
+    #  passwordKey: password
     namespaceOverride: "monitoring"
     enabled: true
     defaultDashboardsEditable: true
@@ -275,14 +307,6 @@ kube-prometheus-stack:
       enabled: true
       targetLabels:
         - prometheus
-
-    # this does not work
-    #adminUser: admin
-    #adminPassword: ""
-    admin:
-      existingSecret: "grafana-admin-credentials"
-      userKey: user
-      passwordKey: password
     persistence:
       enabled: true
       type: pvc
@@ -384,25 +408,6 @@ kube-prometheus-stack:
     #    ##  datasource: Prometheus
     #    ## https://grafana.com/grafana/dashboards/1860-node-exporter-full/
     # I have no idea why this breaks
-    #envValueFrom:
-    #  GF_SMTP_ENABLED:
-    #    name: prometheus-alerting-config
-    #    key: GF_SMTP_ENABLED
-    #  GF_SMTP_HOST:
-    #    name: prometheus-alerting-config
-    #    key: GF_SMTP_HOST
-    #  GF_SMTP_USER:
-    #    name: prometheus-alerting-config
-    #    key: GF_SMTP_USER
-    #  GF_SMTP_PASSWORD:
-    #    name: prometheus-alerting-config
-    #    key: GF_SMTP_PASSWORD
-    #  GF_SMTP_FROM_ADDRESS:
-    #    name: prometheus-alerting-config
-    #    key: GF_SMTP_FROM_ADDRESS
-    #  GF_SMTP_STARTTLS_POLICY:
-    #    name: prometheus-alerting-config
-    #    key: GF_SMTP_STARTTLS_POLICY
   kubernetesServiceMonitors:
     enabled: true
   kubeApiServer:
