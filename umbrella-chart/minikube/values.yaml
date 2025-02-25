@@ -64,12 +64,12 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
     syncwave: "-8"
-  prometheus:
-    disable: true
-    name: prometheus
+  monitoring:
+    disable: false
+    name: monitoring
     targetNamespace: monitoring
     sources:
-      - path: charts/prometheus
+      - path: charts/monitoring
         noHelmValues: false
         helm:
           envFile: true
