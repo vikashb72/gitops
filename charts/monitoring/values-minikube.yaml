@@ -264,7 +264,7 @@ kube-prometheus-stack:
         - prometheus
 
     adminUser: admin
-    adminPassword: ""
+    #adminPassword: ""
     #admin:
     #  existingSecret: "grafana-admin-credentials"
     #  userKey: GF_SECURITY_ADMIN_USER
