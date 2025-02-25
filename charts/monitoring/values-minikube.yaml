@@ -263,12 +263,13 @@ kube-prometheus-stack:
       targetLabels:
         - prometheus
 
+    # this does not work
     #adminUser: admin
     #adminPassword: ""
-    admin:
-      existingSecret: "grafana-admin-credentials"
-      userKey: user
-      passwordKey: password
+    #admin:
+    #  existingSecret: "grafana-admin-credentials"
+    #  userKey: user
+    #  passwordKey: password
     persistence:
       enabled: true
       type: pvc
