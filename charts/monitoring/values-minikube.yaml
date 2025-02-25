@@ -182,7 +182,7 @@ kube-prometheus-stack:
     defaultDashboardsEditable: true
     smtp:
       enabled: true
-      existingSecret: "smtp-config"
+      existingSecret: "prometheus-alerting-config"
       passwordKey: "GF_SMTP_PASSWORD"
       userKey: "GF_SMTP_USER"
     grafana.ini:
@@ -372,22 +372,22 @@ kube-prometheus-stack:
     # I have no idea why this breaks
     #envValueFrom:
     #  GF_SMTP_ENABLED:
-    #    name: grafana-smtp-config
+    #    name: prometheus-alerting-config
     #    key: GF_SMTP_ENABLED
     #  GF_SMTP_HOST:
-    #    name: grafana-smtp-config
+    #    name: prometheus-alerting-config
     #    key: GF_SMTP_HOST
     #  GF_SMTP_USER:
-    #    name: grafana-smtp-config
+    #    name: prometheus-alerting-config
     #    key: GF_SMTP_USER
     #  GF_SMTP_PASSWORD:
-    #    name: grafana-smtp-config
+    #    name: prometheus-alerting-config
     #    key: GF_SMTP_PASSWORD
     #  GF_SMTP_FROM_ADDRESS:
-    #    name: grafana-smtp-config
+    #    name: prometheus-alerting-config
     #    key: GF_SMTP_FROM_ADDRESS
     #  GF_SMTP_STARTTLS_POLICY:
-    #    name: grafana-smtp-config
+    #    name: prometheus-alerting-config
     #    key: GF_SMTP_STARTTLS_POLICY
   kubernetesServiceMonitors:
     enabled: true
