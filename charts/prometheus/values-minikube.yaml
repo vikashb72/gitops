@@ -520,6 +520,7 @@ kube-prometheus-stack:
     serviceMonitor:
       selfMonitor: true
     prometheusSpec:
+      enableRemoteWriteReceiver: true
       persistentVolumeClaimRetentionPolicy: {}
       storageSpec:
         volumeClaimTemplate:
@@ -671,13 +672,14 @@ loki-distributed:
           kvstore:
             store: memberlist
         rule_path: /tmp/loki/scratch
-        alertmanager_url: http://alertmanager-operated.monitoring
-        external_url: http://alertmanager-operated.monitoring
+        alertmanager_url: http://alertmanager-operated.monitoring:9093
+        external_url: http://alertmanager-operated.monitoring:9093
+        enable_alertmanager_v2: true
+        enable_api: true
 
     # -- Check https://grafana.com/docs/loki/latest/configuration/#schema_config for more info on how to configure schemas
     schemaConfig:
       configs:
-      #- from: "2020-09-07"
         - from: "2022-06-21"
           store: boltdb-shipper
           object_store: filesystem
@@ -792,7 +794,6 @@ loki-distributed:
         - name: data
           size: 4Gi
           storageClassName: nfs-client
-          #storageClass: null
       enableStatefulSetAutoDeletePVC: false
       whenDeleted: Retain
       whenScaled: Retain
@@ -809,16 +810,9 @@ loki-distributed:
     replicas: 1
     maxUnavailable: null
     persistence:
-      enabled: false
-      size: 10Gi
-      # -- Storage class to be used.
-      # If defined, storageClassName: <storageClass>.
-      # If set to "-", storageClassName: "", which disables dynamic provisioning.
-      # If empty or set to null, no storageClassName spec is
-      # set, choosing the default provisioner (gp2 on AWS, standard on GKE, AWS, and OpenStack).
-      storageClass: null
-      # -- Annotations for querier PVCs
-      annotations: {}
+      enabled: true
+      size: 4Gi
+      storageClassName: nfs-client
 
   # Configuration for the query-frontend
   queryFrontend:
