@@ -5,12 +5,6 @@ dependencies:
   - name: kube-prometheus-stack
     version: 69.4.1
     repository: https://prometheus-community.github.io/helm-charts
-    valuesContent: |-
-      grafana:
-        admin:
-          existingSecret: "grafana-admin-credentials"
-          userKey: user
-          passwordKey: password
 #  - name: loki-distributed
 #    version: 0.80.1
 #    repository: https://grafana.github.io/helm-charts

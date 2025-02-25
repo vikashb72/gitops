@@ -177,6 +177,17 @@ kube-prometheus-stack:
       type: LoadBalancer
       loadBalancerIP: 192.168.49.232
   grafana:
+    env:
+      GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
+    envValueFrom:
+      GF_SECURITY_ADMIN_USER:
+        secretKeyRef:
+          name: grafana-admin-credentials
+          key: user
+      GF_SECURITY_ADMIN_PASSWORD:
+        secretKeyRef:
+          name: grafana-admin-credentials
+          key: password
     namespaceOverride: "monitoring"
     enabled: true
     defaultDashboardsEditable: true
@@ -196,6 +207,8 @@ kube-prometheus-stack:
         startTLS_policy: "MandatoryStartTLS"
         from_address: monitor@minikube.where-ever.net
         skip_verify: true # for minikube
+      security:
+        disable_initial_admin_creation: true
     notifiers:
       notifiers.yaml:
         notifiers:
@@ -266,10 +279,10 @@ kube-prometheus-stack:
     # this does not work
     #adminUser: admin
     #adminPassword: ""
-    #admin:
-    #  existingSecret: "grafana-admin-credentials"
-    #  userKey: user
-    #  passwordKey: password
+    admin:
+      existingSecret: "grafana-admin-credentials"
+      userKey: user
+      passwordKey: password
     persistence:
       enabled: true
       type: pvc
