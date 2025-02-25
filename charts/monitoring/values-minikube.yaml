@@ -145,7 +145,6 @@ kube-prometheus-stack:
         - name: "msteams"
           msteamsv2_configs:
             - send_resolved: true
-              webhook_url: "http://localhost"
               webhook_url_file: /etc/alertmanager/secrets/GF_MS_TEAMS_URL
       templates:
         - '/etc/alertmanager/config/*.tmpl'
