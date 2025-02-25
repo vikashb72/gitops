@@ -142,14 +142,10 @@ kube-prometheus-stack:
               require_tls: false
               send_resolved: true
         # https://prometheus.io/docs/alerting/latest/configuration/#email_config
-        #- name: "msteams"
-        #  msteamsv2_configs:
-        #    - send_resolved: true
-        #      webhook_url_file: /etc/alertmanager/secrets/GF_MS_TEAMS_URL
-        #- name: "ms-teamsv2"
-        #  msteamsv2_config:
-        #    send_resolved: true
-        #    webhook_url_file: /etc/alertmanager/secrets/GF_MS_TEAMS_URL
+        - name: "msteams"
+          msteamsv2_configs:
+            - send_resolved: true
+              webhook_url_file: /etc/alertmanager/secrets/GF_MS_TEAMS_URL
       templates:
         - '/etc/alertmanager/config/*.tmpl'
     ## Configuration for Alertmanager service
