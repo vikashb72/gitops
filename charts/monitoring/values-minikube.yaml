@@ -1093,7 +1093,8 @@ promtail:
     enabled: true
     serverPort: 3101
     clients:
-      - url: http://prometheus-loki-distributed-gateway.monitoring/loki/api/v1/push
+      - url: http://monitoring-loki-gateway/loki/api/v1/push
+      #- url: http://monitoring-loki-distributed-gateway/loki/api/v1/push
     positions:
       filename: /run/promtail/positions.yaml
   
