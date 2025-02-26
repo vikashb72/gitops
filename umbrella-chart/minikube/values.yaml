@@ -65,7 +65,7 @@ argocdManaged:
     ignoreDifferences: false 
     syncwave: "-8"
   monitoring:
-    disable: false
+    disable: true
     name: monitoring
     targetNamespace: monitoring
     sources:
