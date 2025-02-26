@@ -633,7 +633,7 @@ loki:
   deploymentMode: SimpleScalable
 
   backend:
-    replicas: 1
+    replicas: 3
   read:
     replicas: 1
   write:
