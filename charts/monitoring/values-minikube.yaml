@@ -634,10 +634,13 @@ loki:
 
   backend:
     replicas: 3
+    affinity: {}
   read:
     replicas: 1
+    affinity: {}
   write:
     replicas: 1 # To ensure data durability with replication
+    affinity: {}
 
   # Enable minio for storage
   minio:
