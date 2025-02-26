@@ -50,9 +50,9 @@ argo-cd:
     env:
       - name: ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT
         value: "0"
-    #service:
-    #  type: LoadBalancer
-    #  loadBalancerIP: 192.168.49.225
+    service:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.225
     metrics:
       enabled: true
       serviceMonitor:  
