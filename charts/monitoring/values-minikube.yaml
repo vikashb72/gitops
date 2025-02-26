@@ -216,10 +216,10 @@ kube-prometheus-stack:
     #envFromSecret: "grafana-admin-credentials"
     #adminUser: admin
     #adminPassword: ""
-    admin:
-      existingSecret: "grafana-admin-credentials"
-      userKey: GF_SECURITY_ADMIN_USER
-      passwordKey: GF_SECURITY_ADMIN_PASSWORD
+    #admin:
+    #  existingSecret: "grafana-admin-credentials"
+    #  userKey: GF_SECURITY_ADMIN_USER
+    #  passwordKey: GF_SECURITY_ADMIN_PASSWORD
     namespaceOverride: "monitoring"
     defaultDashboardsEditable: true
     smtp:
