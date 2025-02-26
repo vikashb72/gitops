@@ -359,6 +359,7 @@ kube-prometheus-stack:
         isDefault: false
         jsonData:
           tlsSkipVerify: true
+          httpHeaderName1: 'X-Scope-OrgID'
     plugins:
       - grafana-piechart-panel
       - macropower-analytics-panel
@@ -550,6 +551,7 @@ kube-prometheus-stack:
 #  Single binary
 loki:
   loki:
+    auth_enabled: false
     commonConfig:
       replication_factor: 1
     schemaConfig:
@@ -603,7 +605,6 @@ loki:
     replicas: 0
   bloomGateway:
     replicas: 0
-  
 #
 
 loki-distributed:
@@ -1032,13 +1033,7 @@ promtail:
         # updateMode: Auto
   
   deployment:
-    # -- Deploys Promtail as a Deployment
     enabled: false
-    replicaCount: 1
-    autoscaling:
-      enabled: false
-      minReplicas: 1
-      maxReplicas: 10
   
   service:
     enabled: true
@@ -1093,8 +1088,9 @@ promtail:
     enabled: true
     serverPort: 3101
     clients:
-      - url: http://monitoring-loki-gateway/loki/api/v1/push
       #- url: http://monitoring-loki-distributed-gateway/loki/api/v1/push
+      - url: http://monitoring-loki-gateway/loki/api/v1/push
+        tenant_id: 1
     positions:
       filename: /run/promtail/positions.yaml
   
