@@ -354,7 +354,7 @@ kube-prometheus-stack:
     additionalDataSources:
       - name: Loki
         type: loki
-        url: http://prometheus-loki-distributed-gateway.monitoring/
+        url: http://monitoring-loki-gateway/
         access: proxy
         isDefault: false
         jsonData:
