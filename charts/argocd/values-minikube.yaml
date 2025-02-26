@@ -11,6 +11,8 @@ Projects:
     description: Apps Infrastructure
 
 argo-cd:
+  crds:
+    install: true
   namespaceOverride: "argocd"
   createAggregateRoles: true
   openshift:
