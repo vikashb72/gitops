@@ -180,15 +180,15 @@ kube-prometheus-stack:
     enabled: true
     #env:
     #  GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
-    envValueFrom:
-      GF_SECURITY_ADMIN_USER:
-        secretKeyRef:
-          name: grafana-admin-credentials
-          key: GF_SECURITY_ADMIN_USER
-      GF_SECURITY_ADMIN_PASSWORD:
-        secretKeyRef:
-          name: grafana-admin-credentials
-          key: GF_SECURITY_ADMIN_PASSWORD
+    #envValueFrom:
+    #  GF_SECURITY_ADMIN_USER:
+    #    secretKeyRef:
+    #      name: grafana-admin-credentials
+    #      key: GF_SECURITY_ADMIN_USER
+    #  GF_SECURITY_ADMIN_PASSWORD:
+    #    secretKeyRef:
+    #      name: grafana-admin-credentials
+    #      key: GF_SECURITY_ADMIN_PASSWORD
     #  GF_SMTP_ENABLED:
     #    secretKeyRef:
     #      name: prometheus-alerting-config
@@ -216,10 +216,10 @@ kube-prometheus-stack:
     #envFromSecret: "grafana-admin-credentials"
     #adminUser: admin
     #adminPassword: ""
-    #admin:
-    #  existingSecret: "grafana-admin-credentials"
-    #  userKey: GF_SECURITY_ADMIN_USER
-    #  passwordKey: GF_SECURITY_ADMIN_PASSWORD
+    admin:
+      existingSecret: "grafana-admin-credentials"
+      userKey: GF_SECURITY_ADMIN_USER
+      passwordKey: GF_SECURITY_ADMIN_PASSWORD
     namespaceOverride: "monitoring"
     defaultDashboardsEditable: true
     smtp:
