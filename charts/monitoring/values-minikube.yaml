@@ -177,6 +177,7 @@ kube-prometheus-stack:
       type: LoadBalancer
       loadBalancerIP: 192.168.49.232
   grafana:
+    enabled: true
     #env:
     #  GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
     #envValueFrom:
@@ -220,7 +221,6 @@ kube-prometheus-stack:
     #  userKey: GF_SECURITY_ADMIN_USER
     #  passwordKey: GF_SECURITY_ADMIN_PASSWORD
     namespaceOverride: "monitoring"
-    enabled: true
     defaultDashboardsEditable: true
     smtp:
       enabled: true
