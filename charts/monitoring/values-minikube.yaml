@@ -620,20 +620,24 @@ loki:
           index:
             prefix: loki_index_
             period: 24h
-    storage_config:
-      boltdb_shipper:
-        active_index_directory: /loki/index
-        cache_location: /loki/cache
-        shared_store: s3
-      #aws:
-      #  region: null
-      #  bucketnames: loki-chunk
-      #  s3forcepathstyle: true
-      #  endpoint: ""
-      #  secretAccessKey: ""
-      #  accessKeyId: ""
-      #  s3ForcePathStyle: true
-      #  insecure: true
+    #storage_config:
+    #  endpoint: ${endpoint}
+    #  access_key_id: ${accessKeyId}
+    #  secret_access_key: ${secretAccessKey}
+
+    #  #boltdb_shipper:
+    #  #  active_index_directory: /loki/index
+    #  #  cache_location: /loki/cache
+    #  #  shared_store: s3
+    #  #aws:
+    #  #  region: null
+    #  #  bucketnames: loki-chunk
+    #  #  s3forcepathstyle: true
+    #  #  endpoint: ""
+    #  #  secretAccessKey: ""
+    #  #  accessKeyId: ""
+    #  #  s3ForcePathStyle: true
+    #  #  insecure: true
 
     #ingester:
     #  chunk_encoding: snappy
@@ -647,11 +651,11 @@ loki:
       retention_period: 96h
 
     storage:
-      type: s3
       bucketNames:
         chunks: loki-chunk
         ruler: loki-ruler
         admin: loki-admin
+      type: s3
       s3:
         endpoint: "${MINIO_ENDPOINT}"
         region: null
