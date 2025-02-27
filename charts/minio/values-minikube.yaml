@@ -1,0 +1,255 @@
+env:
+  EVT: minikube
+
+minio:
+  mode: distributed ## other supported values are "standalone"
+  
+  existingSecret: "minio-admin-credentials"
+  
+  ## Path where PV would be mounted on the MinIO Pod
+  mountPath: "/export"
+  drivesPerNode: 1
+  replicas: 3
+  pools: 1
+
+  tls:
+    enabled: false
+    ## Create a secret with private.key and public.crt files and pass that here. Ref: https://github.com/minio/minio/tree/master/docs/tls/kubernetes#2-create-kubernetes-secret
+    certSecret: ""
+    publicCrt: public.crt
+    privateKey: private.key
+  
+  ## Trusted Certificates Settings for MinIO. Ref: https://min.io/docs/minio/linux/operations/network-encryption.html#third-party-certificate-authorities
+  ## Bundle multiple trusted certificates into one secret and pass that here. Ref: https://github.com/minio/minio/tree/master/docs/tls/kubernetes#2-create-kubernetes-secret
+  ## When using self-signed certificates, remember to include MinIO's own certificate in the bundle with key public.crt.
+  ## If certSecret is left empty and tls is enabled, this chart installs the public certificate from .Values.tls.certSecret.
+  trustedCertsSecret: ""
+  
+  ## Enable persistence using Persistent Volume Claims
+  ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+  ##
+  persistence:
+    enabled: true
+    annotations: {}
+  
+    ## A manually managed Persistent Volume and Claim
+    ## Requires persistence.enabled: true
+    ## If defined, PVC must be created manually before volume will be bound
+    existingClaim: ""
+  
+    ## minio data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    ## Storage class of PV to bind. By default it looks for standard storage class.
+    ## If the PV uses a different storage class, specify that here.
+    storageClass: ""
+    volumeName: ""
+    accessMode: ReadWriteOnce
+    size: 50Gi
+  
+    ## If subPath is set mount a sub folder of a volume instead of the root of the volume.
+    ## This is especially handy for volume plugins that don't natively support sub mounting (like glusterfs).
+    ##
+    subPath: ""
+  
+  ## Expose the MinIO service to be accessed from outside the cluster (LoadBalancer service).
+  ## or access it from within the cluster (ClusterIP service). Set the service type and the port to serve it.
+  ## ref: http://kubernetes.io/docs/user-guide/services/
+  ##
+  service:
+    type: ClusterIP
+    clusterIP: ~
+    port: "9000"
+    nodePort: 32000
+    #loadBalancerIP: ~
+    #externalIPs: []
+    #annotations: {}
+  
+    externalTrafficPolicy: Cluster
+  
+  ## Configure Ingress based on the documentation here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+  ##
+  
+  ingress:
+    enabled: false
+  
+  consoleService:
+    type: ClusterIP
+    clusterIP: ~
+    port: "9001"
+    nodePort: 32001
+  
+  consoleIngress:
+    enabled: false
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints: []
+  
+  containerSecurityContext:
+    readOnlyRootFilesystem: false
+  
+  policies: []
+  ## writeexamplepolicy policy grants creation or deletion of buckets with name
+  ## starting with example. In addition, grants objects write permissions on buckets starting with
+  ## example.
+  # - name: writeexamplepolicy
+  #   statements:
+  #     - effect: Allow  # this is the default
+  #       resources:
+  #         - 'arn:aws:s3:::example*/*'
+  #       actions:
+  #         - "s3:AbortMultipartUpload"
+  #         - "s3:GetObject"
+  #         - "s3:DeleteObject"
+  #         - "s3:PutObject"
+  #         - "s3:ListMultipartUploadParts"
+  #     - resources:
+  #         - 'arn:aws:s3:::example*'
+  #       actions:
+  #         - "s3:CreateBucket"
+  #         - "s3:DeleteBucket"
+  #         - "s3:GetBucketLocation"
+  #         - "s3:ListBucket"
+  #         - "s3:ListBucketMultipartUploads"
+  ## readonlyexamplepolicy policy grants access to buckets with name starting with example.
+  ## In addition, grants objects read permissions on buckets starting with example.
+  # - name: readonlyexamplepolicy
+  #   statements:
+  #     - resources:
+  #         - 'arn:aws:s3:::example*/*'
+  #       actions:
+  #         - "s3:GetObject"
+  #     - resources:
+  #         - 'arn:aws:s3:::example*'
+  #       actions:
+  #         - "s3:GetBucketLocation"
+  #         - "s3:ListBucket"
+  #         - "s3:ListBucketMultipartUploads"
+  ## conditionsexample policy creates all access to example bucket with aws:username="johndoe" and source ip range 10.0.0.0/8 and 192.168.0.0/24 only
+  # - name: conditionsexample
+  #   statements:
+  #     - resources:
+  #       - 'arn:aws:s3:::example/*'
+  #       actions:
+  #       - 's3:*'
+  #       conditions:
+  #         - StringEquals: '"aws:username": "johndoe"'
+  #         - IpAddress: |
+  #             "aws:SourceIp": [
+  #               "10.0.0.0/8",
+  #               "192.168.0.0/24"
+  #             ]
+  #
+  ## Additional Annotations for the Kubernetes Job makePolicyJob
+  makePolicyJob:
+    securityContext:
+      enabled: false
+      runAsUser: 1000
+      runAsGroup: 1000
+    resources:
+      requests:
+        memory: 128Mi
+    # Command to run after the main command on exit
+    exitCommand: ""
+  
+  ## List of users to be created after minio install
+  ##
+  users:
+    ## Username, password and policy to be assigned to the user
+    ## Default policies are [readonly|readwrite|writeonly|consoleAdmin|diagnostics]
+    ## Add new policies as explained here https://min.io/docs/minio/kubernetes/upstream/administration/identity-access-management.html#access-management
+    ## NOTE: this will fail if LDAP is enabled in your MinIO deployment
+    ## make sure to disable this if you are using LDAP.
+    #- accessKey: console
+    #  secretKey: console123
+    #  policy: consoleAdmin
+    # Or you can refer to specific secret
+    - accessKey: loki
+      existingSecret: "minio-user-credentials"
+      existingSecretKey: secretKey
+      policy: readwrite
+  
+  ## List of service accounts to be created after minio install
+  ##
+  svcaccts: []
+    ## accessKey, secretKey and parent user to be assigned to the service accounts
+    ## Add new service accounts as explained here https://min.io/docs/minio/kubernetes/upstream/administration/identity-access-management/minio-user-management.html#service-accounts
+    # - accessKey: console-svcacct
+    #   secretKey: console123
+    #   user: console
+    ## Or you can refer to specific secret
+    # - accessKey: externalSecret
+    #   existingSecret: my-secret
+    #   existingSecretKey: password
+    #   user: console
+    ## You also can pass custom policy
+    # - accessKey: console-svcacct
+    #   secretKey: console123
+    #   user: console
+    #   policy:
+    #     statements:
+    #       - resources:
+    #           - 'arn:aws:s3:::example*/*'
+    #         actions:
+    #           - "s3:AbortMultipartUpload"
+    #           - "s3:GetObject"
+    #           - "s3:DeleteObject"
+    #           - "s3:PutObject"
+    #           - "s3:ListMultipartUploadParts"
+  
+  ## List of buckets to be created after minio install
+  ##
+  buckets: 
+    - name: loki-chunks
+      policy: none
+      purge: false
+      versioning: false
+      objectlocking: false
+    - name: loki-admin
+      policy: none
+      purge: false
+      versioning: false
+      objectlocking: false
+    - name: loki-rules
+      policy: none
+      purge: false
+      versioning: false
+      objectlocking: false
+  
+  ## Use this field to add environment variables relevant to MinIO server. These fields will be passed on to MinIO container(s)
+  ## when Chart is deployed
+  environment:
+    ## Please refer for comprehensive list https://min.io/docs/minio/linux/reference/minio-server/minio-server.html
+    ## MINIO_SUBNET_LICENSE: "License key obtained from https://subnet.min.io"
+    ## MINIO_BROWSER: "off"
+  
+  oidc:
+    enabled: false
+    configUrl: "https://identity-provider-url/.well-known/openid-configuration"
+    clientId: "minio"
+    clientSecret: ""
+    # Provide existing client secret from the Kubernetes Secret resource, existing secret will have priority over `clientId` and/or `clientSecret``
+    existingClientSecretName: ""
+    existingClientIdKey: ""
+    existingClientSecretKey: ""
+    claimName: "policy"
+    scopes: "openid,profile,email"
+    redirectUri: "https://console-endpoint-url/oauth_callback"
+    # Can leave empty
+    claimPrefix: ""
+    comment: ""
+    displayName: ""
+  
+  serviceAccount:
+    create: true
+    name: "minio-sa"
+  
+  metrics:
+    serviceMonitor:
+      enabled: false
