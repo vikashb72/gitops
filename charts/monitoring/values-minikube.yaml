@@ -662,17 +662,17 @@ loki:
         valueFrom:
           secretKeyRef:
             name: minio-credentials
-            key: endpoint
+            key: minio-endpoint
       - name: MINIO-ACCESSKEY
         valueFrom:
           secretKeyRef:
             name: minio-credentials
-            key: accessKey
+            key: minio-accessKey
       - name: MINIO-SECRETKEY
         valueFrom:
           secretKeyRef:
             name: minio-credentials
-            key: secretKey
+            key: minio-secretKey
    
   read:
     replicas: 2
