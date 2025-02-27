@@ -570,15 +570,15 @@ kube-prometheus-stack:
 #      volume_enabled: true
 #    ruler:
 #      enable_api: true
-#  
+# 
 #  minio:
 #    enabled: true
-#        
+#       
 #  deploymentMode: SingleBinary
-#  
+# 
 #  singleBinary:
 #    replicas: 1
-#  
+# 
 #  # Zero out replica counts of other deployment modes
 #  backend:
 #    replicas: 0
@@ -586,7 +586,7 @@ kube-prometheus-stack:
 #    replicas: 0
 #  write:
 #    replicas: 0
-#  
+# 
 #  ingester:
 #    replicas: 0
 #  querier:
@@ -619,8 +619,14 @@ loki:
           index:
             prefix: loki_index_
             period: 24h
-    ingester:
-      chunk_encoding: snappy
+    storage_config:
+      aws:
+        region: null
+        bucketnames: loki-chunk
+        s3forcepathstyle: true
+
+    #ingester:
+    #  chunk_encoding: snappy
     querier:
       max_concurrent: 4
     pattern_ingester:
@@ -628,11 +634,46 @@ loki:
     limits_config:
       allow_structured_metadata: true
       volume_enabled: true
+      retention_period: 96h
+
+    storage:
+      type: s3
+      bucketNames:
+        chunks: loki-chunk
+        ruler: loki-ruler
+        admin: loki-admin
+      s3:
+        endpoint: "${S3-ENDPOINT}"
+        region: null
+        secretAccessKey: "${S3-ACCESKEY}"
+        accessKeyId: "${S3-SECRETKEY}"
+        s3ForcePathStyle: true
+        insecure: true
+        http_config: {}
 
   deploymentMode: SimpleScalable
 
   backend:
     replicas: 2
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnv:
+      - name: S3-ENDPOINT
+        valueFrom:
+          secretKeyRef:
+            name: minio-credentials
+            key: endpoint
+      - name: S3-ACCESSKEY
+        valueFrom:
+          secretKeyRef:
+            name: minio-credentials
+            key: accessKey
+      - name: S3-SECRETKEY
+        valueFrom:
+          secretKeyRef:
+            name: minio-credentials
+            key: secretKey
+   
   read:
     replicas: 2
   write:
@@ -640,7 +681,7 @@ loki:
 
   # Enable minio for storage
   minio:
-    enabled: true
+    enabled: false
 
   gateway:
     service:
@@ -1071,27 +1112,27 @@ promtail:
       # updatePolicy:
         # minReplicas: 1
         # updateMode: Auto
-  
+ 
   deployment:
     enabled: false
-  
+ 
   service:
     enabled: true
-  
+ 
   configmap:
     enabled: true
-  
+ 
   resources: {}
-  
+ 
   rbac:
     create: true
-  
+ 
   serviceAccount:
     create: true
     automountServiceAccountToken: true
-  
+ 
   automountServiceAccountToken: true
-  
+ 
   # ServiceMonitor configuration
   serviceMonitor:
     enabled: false
@@ -1123,7 +1164,7 @@ promtail:
       #        {{ printf \"%.2f\" $value }}s 99th percentile latency.
       #        VALUE = {{ $value }}
       #        LABELS = {{ $labels }}
-  
+ 
   config:
     enabled: true
     serverPort: 3101
@@ -1133,11 +1174,11 @@ promtail:
         tenant_id: 1
     positions:
       filename: /run/promtail/positions.yaml
-  
+ 
   networkPolicy:
     # -- Specifies whether Network Policies should be created
     enabled: false
-  
+ 
   sidecar:
     configReloader:
       enabled: false
