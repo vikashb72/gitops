@@ -10,7 +10,7 @@ data:
     groups:
       - name: test_alert
         rules:
-          - alert: TestAlert
+          - alert: Vix-TestAlert
             expr: sum(rate({app="loki"} | logfmt | level="info"[1m])) by (container) > 0
             for: 1m
             labels:
