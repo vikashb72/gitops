@@ -643,10 +643,10 @@ loki:
         ruler: loki-ruler
         admin: loki-admin
       s3:
-        endpoint: "${S3-ENDPOINT}"
+        endpoint: "${MINIO-ENDPOINT}"
         region: null
-        secretAccessKey: "${S3-ACCESKEY}"
-        accessKeyId: "${S3-SECRETKEY}"
+        secretAccessKey: "${MINIO-ACCESKEY}"
+        accessKeyId: "${MINIO-SECRETKEY}"
         s3ForcePathStyle: true
         insecure: true
         http_config: {}
@@ -658,17 +658,17 @@ loki:
     extraArgs:
       - '-config.expand-env=true'
     extraEnv:
-      - name: S3-ENDPOINT
+      - name: MINIO-ENDPOINT
         valueFrom:
           secretKeyRef:
             name: minio-credentials
             key: endpoint
-      - name: S3-ACCESSKEY
+      - name: MINIO-ACCESSKEY
         valueFrom:
           secretKeyRef:
             name: minio-credentials
             key: accessKey
-      - name: S3-SECRETKEY
+      - name: MINIO-SECRETKEY
         valueFrom:
           secretKeyRef:
             name: minio-credentials
