@@ -671,6 +671,9 @@ loki:
     replicas: 2
     extraArgs:
       - '-config.expand-env=true'
+      - '-log.level=debug'
+      - '-print-config-stderr'
+
     extraEnv:
       - name: MINIO_ENDPOINT
         valueFrom:
@@ -690,8 +693,51 @@ loki:
    
   read:
     replicas: 2
+    extraArgs:
+      - '-config.expand-env=true'
+      - '-log.level=debug'
+      - '-print-config-stderr'
+
+    extraEnv:
+      - name: MINIO_ENDPOINT
+        valueFrom:
+          secretKeyRef:
+            name: minio-credentials
+            key: minio-endpoint
+      - name: MINIO_ACCESSKEY
+        valueFrom:
+          secretKeyRef:
+            name: minio-credentials
+            key: minio-accessKey
+      - name: MINIO_SECRETKEY
+        valueFrom:
+          secretKeyRef:
+            name: minio-credentials
+            key: minio-secretKey
+
   write:
     replicas: 3
+    extraArgs:
+      - '-config.expand-env=true'
+      - '-log.level=debug'
+      - '-print-config-stderr'
+
+    extraEnv:
+      - name: MINIO_ENDPOINT
+        valueFrom:
+          secretKeyRef:
+            name: minio-credentials
+            key: minio-endpoint
+      - name: MINIO_ACCESSKEY
+        valueFrom:
+          secretKeyRef:
+            name: minio-credentials
+            key: minio-accessKey
+      - name: MINIO_SECRETKEY
+        valueFrom:
+          secretKeyRef:
+            name: minio-credentials
+            key: minio-secretKey
 
   # Enable minio for storage
   minio:
