@@ -59,6 +59,13 @@ spec:
       - ServerSideApply=true
 {{- end }}
 {{- end }}
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
   {{- if .ignoreDifferences }}
   ignoreDifferences:
     {{- range .ignoreDifferencesConfig }}
