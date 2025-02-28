@@ -65,7 +65,7 @@ argocdManaged:
     ignoreDifferences: false 
     syncwave: "-8"
   minio:
-    disable: true
+    disable: false
     name: minio
     targetNamespace: minio-system
     sources:
