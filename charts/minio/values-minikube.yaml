@@ -2,7 +2,7 @@ env:
   EVT: minikube
 
 minio:
-  mode: distributed ## other supported values are "standalone"
+  mode: distributed
   
   existingSecret: "minio-admin-credentials"
   
@@ -37,17 +37,8 @@ minio:
     ## If defined, PVC must be created manually before volume will be bound
     existingClaim: ""
   
-    ## minio data Persistent Volume Storage Class
-    ## If defined, storageClassName: <storageClass>
-    ## If set to "-", storageClassName: "", which disables dynamic provisioning
-    ## If undefined (the default) or set to null, no storageClassName spec is
-    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-    ##   GKE, AWS & OpenStack)
-    ##
-    ## Storage class of PV to bind. By default it looks for standard storage class.
-    ## If the PV uses a different storage class, specify that here.
-    storageClass: ""
-    volumeName: ""
+    storageClassName: "nfs-client"
+    volumeName: "minio"
     accessMode: ReadWriteOnce
     size: 50Gi
   
@@ -95,10 +86,7 @@ minio:
     readOnlyRootFilesystem: false
   
   policies: []
-  ## writeexamplepolicy policy grants creation or deletion of buckets with name
-  ## starting with example. In addition, grants objects write permissions on buckets starting with
-  ## example.
-  # - name: writeexamplepolicy
+  # - name: writepolicy
   #   statements:
   #     - effect: Allow  # this is the default
   #       resources:
@@ -117,9 +105,7 @@ minio:
   #         - "s3:GetBucketLocation"
   #         - "s3:ListBucket"
   #         - "s3:ListBucketMultipartUploads"
-  ## readonlyexamplepolicy policy grants access to buckets with name starting with example.
-  ## In addition, grants objects read permissions on buckets starting with example.
-  # - name: readonlyexamplepolicy
+  # - name: readonlypolicy
   #   statements:
   #     - resources:
   #         - 'arn:aws:s3:::example*/*'
@@ -131,35 +117,8 @@ minio:
   #         - "s3:GetBucketLocation"
   #         - "s3:ListBucket"
   #         - "s3:ListBucketMultipartUploads"
-  ## conditionsexample policy creates all access to example bucket with aws:username="johndoe" and source ip range 10.0.0.0/8 and 192.168.0.0/24 only
-  # - name: conditionsexample
-  #   statements:
-  #     - resources:
-  #       - 'arn:aws:s3:::example/*'
-  #       actions:
-  #       - 's3:*'
-  #       conditions:
-  #         - StringEquals: '"aws:username": "johndoe"'
-  #         - IpAddress: |
-  #             "aws:SourceIp": [
-  #               "10.0.0.0/8",
-  #               "192.168.0.0/24"
-  #             ]
-  #
-  ## Additional Annotations for the Kubernetes Job makePolicyJob
-  makePolicyJob:
-    securityContext:
-      enabled: false
-      runAsUser: 1000
-      runAsGroup: 1000
-    resources:
-      requests:
-        memory: 128Mi
-    # Command to run after the main command on exit
-    exitCommand: ""
   
   ## List of users to be created after minio install
-  ##
   users:
     ## Username, password and policy to be assigned to the user
     ## Default policies are [readonly|readwrite|writeonly|consoleAdmin|diagnostics]
