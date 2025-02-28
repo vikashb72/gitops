@@ -1,176 +1,124 @@
 env:
   EVT: minikube
 
-  # Root key for Operator Helm Chart
-operator:
-  operator:
-    env:
-      - name: OPERATOR_STS_ENABLED
-        value: "off"
-    replicaCount: 3
-    ###
-    # An array of `Volumes <https://kubernetes.io/docs/concepts/storage/volumes/>`__ which the Operator can mount to pods.
-    #
-    # The volumes must exist *and* be accessible to the Operator pods.
-    volumes: [ ]
-    ###
-    # An array of volume mount points associated to each Operator container.
-    #
-    # Specify each item in the array as follows:
-    #
-    # .. code-block:: yaml
-    #
-    #    volumeMounts:
-    #    - name: volumename
-    #      mountPath: /path/to/mount
-    #
-    # The ``name`` field must correspond to an entry in the ``volumes`` array.
-    volumeMounts: [ ]
-    resources:
-      requests:
-        cpu: 200m
-        memory: 256Mi
-        ephemeral-storage: 500Mi
-  
-  # Root key for MinIO Tenant Chart
-tenant:
-  tenant:
-    name: minikube-minio
-    imagePullSecret: { }
-    ###
-    #
-    # Specify `initContainers <https://kubernetes.io/docs/concepts/workloads/pods/init-containers/>`__ to perform setup or configuration tasks before the main Tenant pods starts.
-    #
-    # Example of init container which waits for idenity provider to be reachable before starting MinIO Tenant:
-    # 
-    # .. code-block:: yaml
-    #
-    # initContainers:
-    #  - name: wait-for-idp
-    #    image: busybox
-    #    command:
-    #      - sh
-    #      - -c
-    #      - |
-    #        URL="https://idp-url"
-    #        echo "Checking IdP reachability (${URL})"
-    #        until $(wget -q -O "/dev/null" ${URL}) ; do
-    #          echo "IdP (${URL}) not reachable. Waiting to be reachable..."
-    #          sleep 5
-    #        done
-    #        echo "IdP (${URL}) reachable. Starting MinIO..."
-    #
-    initContainers: [ ]
-    ###
-    # The Kubernetes secret name that contains MinIO environment variable configurations.
-    # The secret is expected to have a key named config.env containing environment variables exports.
-    #configuration:
-    #  name: myminio-env-configuration
-    ###
-    # Root key for dynamically creating a secret for use with configuring root MinIO User
-    # Specify the ``name`` and then a list of environment variables.
-    #
-    # .. important::
-    #
-    #    Do not use this in production environments.
-    #    This field is intended for use with rapid development or testing only.
-    #
-    # For example:
-    #
-    # .. code-block:: yaml
-    #
-    #    name: myminio-env-configuration
-    #    accessKey: minio
-    #    secretKey: minio123
-    #
-    configSecret:
-      name: minio-admin-credentials
-      #accessKey: minio
-      #secretKey: minio123
-      existingSecret: true
-  
-    ###
-    # Metadata that will be added to the statefulset and pods of all pools
-    poolsMetadata:
-    ###
-    # If this variable is set to true, then enable the usage of an existing Kubernetes secret to set environment variables for the Tenant.
-    # The existing Kubernetes secret name must be placed under .tenant.configuration.name e.g. existing-minio-env-configuration
-    # The secret must contain a key ``config.env``.
-    # The values should be a series of export statements to set environment variables for the Tenant.
-    # For example:
-    #
-    # .. code-block:: shell
-    #
-    #    stringData:
-    #       config.env: |-
-    #         export MINIO_ROOT_USER=ROOTUSERNAME
-    #         export MINIO_ROOT_PASSWORD=ROOTUSERPASSWORD
-    #
-    #   existingSecret: false
-    ###
-    # Top level key for configuring MinIO Pool(s) in this Tenant.
-    #
-    # See `Operator CRD: Pools <https://min.io/docs/minio/kubernetes/upstream/reference/operator-crd.html#pool>`__ for more information on all subfields.
-    pools:
-      ###
-      # The number of MinIO Tenant Pods / Servers in this pool.
-      # For standalone mode, supply 1. For distributed mode, supply 4 or more.
-      # Note that the operator does not support upgrading from standalone to distributed mode.
-      - servers: 4
-        ###
-        # Custom name for the pool
-        name: pool-0
-        ###
-        # The number of volumes attached per MinIO Tenant Pod / Server.
-        volumesPerServer: 4
-        ###
-        # The capacity per volume requested per MinIO Tenant Pod.
-        size: 10Gi
-        storageClassName: nfs-client
-    mountPath: /export
-    subPath: /data
-    ###
-    # Configures a Prometheus-compatible scraping endpoint at the specified port.
-    metrics:
-      enabled: false
-      port: 9000
-      protocol: http
-    ###
-    # Configures external certificate settings for the Tenant.
-    certificate:
-      externalCaCertSecret: [ ]
-      externalCertSecret: [ ]
-      requestAutoCert: true
-      certConfig: { }
-    features:
-      bucketDNS: false
-      domains: { }
-      enableSFTP: false
-    ###
-    # Array of objects describing one or more buckets to create during tenant provisioning.
-    # Example:
-    # 
-    # .. code-block:: yaml
-    #
-    #    - name: my-minio-bucket
-    #         objectLock: false        # optional
-    #         region: us-east-1        # optional
-    #buckets: [ ]
-    buckets:
-      - name: loki-admin
-        objectLock: false
-      - name: loki-chunk
-        objectLock: false
-      - name: loki-ruler
-        objectLock: false
-    ###
-    # Array of Kubernetes secrets from which the Operator generates MinIO users during tenant provisioning.
-    #
-    # Each secret should specify the ``CONSOLE_ACCESS_KEY`` and ``CONSOLE_SECRET_KEY`` as the access key and secret key for that user.
-    users: [ ]
-    prometheusOperator: false
+minio:
+  #mode: distributed
+  mode: standalone
+
+  #rootUser: ""
+  #rootPassword: ""
+
+  existingSecret: "minio-admin-credentials"
+
+  ## Path where PV would be mounted on the MinIO Pod
+  mountPath: "/export"
+  drivesPerNode: 1
+  replicas: 1
+  pools: 1
+
+  tls:
+    enabled: false
+    certSecret: ""
+    publicCrt: public.crt
+    privateKey: private.key
+
+  trustedCertsSecret: ""
+
+  persistence:
+    enabled: true
+    annotations: {}
+    existingClaim: ""
+    storageClassName: "nfs-client"
+    volumeName: "minio"
+    accessMode: ReadWriteOnce
+    size: 50Gi
+    subPath: ""
+
+  service:
+    type: ClusterIP
+
   ingress:
-    api:
+    enabled: false
+
+  consoleIngress:
+    enabled: false
+
+  policies: []
+  # - name: writepolicy
+  #   statements:
+  #     - effect: Allow  # this is the default
+  #       resources:
+  #         - 'arn:aws:s3:::example*/*'
+  #       actions:
+  #         - "s3:AbortMultipartUpload"
+  #         - "s3:GetObject"
+  #         - "s3:DeleteObject"
+  #         - "s3:PutObject"
+  #         - "s3:ListMultipartUploadParts"
+  #     - resources:
+  #         - 'arn:aws:s3:::example*'
+  #       actions:
+  #         - "s3:CreateBucket"
+  #         - "s3:DeleteBucket"
+  #         - "s3:GetBucketLocation"
+  #         - "s3:ListBucket"
+  #         - "s3:ListBucketMultipartUploads"
+  # - name: readonlypolicy
+  #   statements:
+  #     - resources:
+  #         - 'arn:aws:s3:::example*/*'
+  #       actions:
+  #         - "s3:GetObject"
+  #     - resources:
+  #         - 'arn:aws:s3:::example*'
+  #       actions:
+  #         - "s3:GetBucketLocation"
+  #         - "s3:ListBucket"
+  #         - "s3:ListBucketMultipartUploads"
+
+  users:
+    - accessKey: loki
+      existingSecret: "minio-user-credentials"
+      existingSecretKey: secretKey
+      policy: readwrite
+
+  svcaccts: []
+
+  buckets:
+    - name: loki-chunks
+      policy: none
+      purge: false
+      versioning: false
+      objectlocking: false
+    - name: loki-admin
+      policy: none
+      purge: false
+      versioning: false
+      objectlocking: false
+    - name: loki-rules
+      policy: none
+      purge: false
+      versioning: false
+      objectlocking: false
+
+  oidc:
+    enabled: false
+    configUrl: "https://identity-provider-url/.well-known/openid-configuration"
+    clientId: "minio"
+    clientSecret: ""
+    # Provide existing client secret from the Kubernetes Secret resource, existing secret will have priority over `clientId` and/or `clientSecret``
+    existingClientSecretName: ""
+    existingClientIdKey: ""
+    existingClientSecretKey: ""
+    claimName: "policy"
+    scopes: "openid,profile,email"
+    redirectUri: "https://console-endpoint-url/oauth_callback"
+
+  serviceAccount:
+    create: true
+    name: "minio-sa"
+
+  metrics:
+    serviceMonitor:
       enabled: false
-    console:
-      enabled: false
+
