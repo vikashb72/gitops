@@ -218,3 +218,33 @@ minio:
   metrics:
     serviceMonitor:
       enabled: false
+
+operator:
+  env:
+    - name: OPERATOR_STS_ENABLED
+      value: "on"
+  replicaCount: 3
+  ###
+  # An array of `Volumes <https://kubernetes.io/docs/concepts/storage/volumes/>`__ which the Operator can mount to pods.
+  #
+  # The volumes must exist *and* be accessible to the Operator pods.
+  volumes: [ ]
+  ###
+  # An array of volume mount points associated to each Operator container.
+  #
+  # Specify each item in the array as follows:
+  #
+  # .. code-block:: yaml
+  #
+  #    volumeMounts:
+  #    - name: volumename
+  #      mountPath: /path/to/mount
+  #
+  # The ``name`` field must correspond to an entry in the ``volumes`` array.
+  volumeMounts: [ ]
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+      ephemeral-storage: 500Mi
+
