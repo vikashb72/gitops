@@ -3,9 +3,12 @@ env:
 
 minio:
   mode: distributed
-  
-  existingSecret: "minio-admin-credentials"
-  
+
+  rootUser: ""
+  rootPassword: ""
+
+  #existingSecret: "minio-admin-credentials"
+
   ## Path where PV would be mounted on the MinIO Pod
   mountPath: "/export"
   drivesPerNode: 1
@@ -18,35 +21,35 @@ minio:
     certSecret: ""
     publicCrt: public.crt
     privateKey: private.key
-  
+
   ## Trusted Certificates Settings for MinIO. Ref: https://min.io/docs/minio/linux/operations/network-encryption.html#third-party-certificate-authorities
   ## Bundle multiple trusted certificates into one secret and pass that here. Ref: https://github.com/minio/minio/tree/master/docs/tls/kubernetes#2-create-kubernetes-secret
   ## When using self-signed certificates, remember to include MinIO's own certificate in the bundle with key public.crt.
   ## If certSecret is left empty and tls is enabled, this chart installs the public certificate from .Values.tls.certSecret.
   trustedCertsSecret: ""
-  
+
   ## Enable persistence using Persistent Volume Claims
   ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
   ##
   persistence:
     enabled: false
     annotations: {}
-  
+
     ## A manually managed Persistent Volume and Claim
     ## Requires persistence.enabled: true
     ## If defined, PVC must be created manually before volume will be bound
     existingClaim: ""
-  
+
     storageClassName: "nfs-client"
     volumeName: "minio"
     accessMode: ReadWriteOnce
     size: 50Gi
-  
+
     ## If subPath is set mount a sub folder of a volume instead of the root of the volume.
     ## This is especially handy for volume plugins that don't natively support sub mounting (like glusterfs).
     ##
     subPath: ""
-  
+
   ## Expose the MinIO service to be accessed from outside the cluster (LoadBalancer service).
   ## or access it from within the cluster (ClusterIP service). Set the service type and the port to serve it.
   ## ref: http://kubernetes.io/docs/user-guide/services/
@@ -59,21 +62,21 @@ minio:
     #loadBalancerIP: ~
     #externalIPs: []
     #annotations: {}
-  
+
     externalTrafficPolicy: Cluster
-  
+
   ## Configure Ingress based on the documentation here: https://kubernetes.io/docs/concepts/services-networking/ingress/
   ##
-  
+
   ingress:
     enabled: false
-  
+
   consoleService:
     type: ClusterIP
     clusterIP: ~
     port: "9001"
     nodePort: 32001
-  
+
   consoleIngress:
     enabled: false
 
@@ -81,10 +84,10 @@ minio:
   tolerations: []
   affinity: {}
   topologySpreadConstraints: []
-  
+
   containerSecurityContext:
     readOnlyRootFilesystem: false
-  
+
   policies: []
   # - name: writepolicy
   #   statements:
@@ -117,7 +120,7 @@ minio:
   #         - "s3:GetBucketLocation"
   #         - "s3:ListBucket"
   #         - "s3:ListBucketMultipartUploads"
-  
+
   ## List of users to be created after minio install
   users:
     ## Username, password and policy to be assigned to the user
@@ -133,7 +136,7 @@ minio:
       existingSecret: "minio-user-credentials"
       existingSecretKey: secretKey
       policy: readwrite
-  
+
   ## List of service accounts to be created after minio install
   ##
   svcaccts: []
@@ -161,10 +164,10 @@ minio:
     #           - "s3:DeleteObject"
     #           - "s3:PutObject"
     #           - "s3:ListMultipartUploadParts"
-  
+
   ## List of buckets to be created after minio install
   ##
-  buckets: 
+  buckets:
     - name: loki-chunks
       policy: none
       purge: false
@@ -180,14 +183,14 @@ minio:
       purge: false
       versioning: false
       objectlocking: false
-  
+
   ## Use this field to add environment variables relevant to MinIO server. These fields will be passed on to MinIO container(s)
   ## when Chart is deployed
   environment:
     ## Please refer for comprehensive list https://min.io/docs/minio/linux/reference/minio-server/minio-server.html
     ## MINIO_SUBNET_LICENSE: "License key obtained from https://subnet.min.io"
     ## MINIO_BROWSER: "off"
-  
+
   oidc:
     enabled: false
     configUrl: "https://identity-provider-url/.well-known/openid-configuration"
@@ -204,11 +207,11 @@ minio:
     claimPrefix: ""
     comment: ""
     displayName: ""
-  
+
   serviceAccount:
     create: true
     name: "minio-sa"
-  
+
   metrics:
     serviceMonitor:
       enabled: false
