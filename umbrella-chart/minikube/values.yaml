@@ -64,6 +64,20 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
     syncwave: "-8"
+  minio:
+    disable: false
+    name: minio
+    targetNamespace: minio-system
+    sources:
+      - path: charts/minio
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
+    syncOptions:
+      ServerSideApply: true
   monitoring:
     disable: false
     name: monitoring
