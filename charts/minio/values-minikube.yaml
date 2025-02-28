@@ -2,7 +2,8 @@ env:
   EVT: minikube
 
 minio:
-  mode: distributed
+  #mode: distributed
+  mode: standalone
 
   rootUser: ""
   rootPassword: ""
@@ -87,6 +88,8 @@ minio:
 
   containerSecurityContext:
     readOnlyRootFilesystem: false
+
+  resources: {}
 
   policies: []
   # - name: writepolicy
