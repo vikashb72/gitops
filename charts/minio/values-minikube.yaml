@@ -2,7 +2,6 @@ env:
   EVT: minikube
 
 minio:
-  #mode: distributed
   mode: standalone
 
   #rootUser: ""
@@ -26,10 +25,10 @@ minio:
 
   persistence:
     enabled: true
-    annotations: {}
-    existingClaim: ""
-    storageClassName: "nfs-client"
-    volumeName: "minio"
+    #annotations: {}
+    #existingClaim: ""
+    #storageClassName: "nfs-client"
+    #volumeName: "minio"
     accessMode: ReadWriteOnce
     size: 50Gi
     subPath: ""
