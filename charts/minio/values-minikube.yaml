@@ -26,11 +26,11 @@ minio:
   persistence:
     enabled: true
     #annotations: {}
-    #existingClaim: ""
-    #storageClassName: "nfs-client"
-    #volumeName: "minio"
+    existingClaim: "minio-pvc"
+    storageClassName: "nfs-client"
+    volumeName: "minio"
     accessMode: ReadWriteOnce
-    size: 50Gi
+    size: 8Gi
     subPath: ""
 
   service:
