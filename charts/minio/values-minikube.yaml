@@ -29,7 +29,7 @@ minio:
   ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
   ##
   persistence:
-    enabled: true
+    enabled: false
     annotations: {}
   
     ## A manually managed Persistent Volume and Claim
