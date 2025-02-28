@@ -1,229 +1,12 @@
 env:
   EVT: minikube
 
-minio:
-  #mode: distributed
-  mode: standalone
-
-  rootUser: ""
-  rootPassword: ""
-
-  #existingSecret: "minio-admin-credentials"
-
-  ## Path where PV would be mounted on the MinIO Pod
-  mountPath: "/export"
-  drivesPerNode: 1
-  replicas: 3
-  pools: 1
-
-  tls:
-    enabled: false
-    ## Create a secret with private.key and public.crt files and pass that here. Ref: https://github.com/minio/minio/tree/master/docs/tls/kubernetes#2-create-kubernetes-secret
-    certSecret: ""
-    publicCrt: public.crt
-    privateKey: private.key
-
-  ## Trusted Certificates Settings for MinIO. Ref: https://min.io/docs/minio/linux/operations/network-encryption.html#third-party-certificate-authorities
-  ## Bundle multiple trusted certificates into one secret and pass that here. Ref: https://github.com/minio/minio/tree/master/docs/tls/kubernetes#2-create-kubernetes-secret
-  ## When using self-signed certificates, remember to include MinIO's own certificate in the bundle with key public.crt.
-  ## If certSecret is left empty and tls is enabled, this chart installs the public certificate from .Values.tls.certSecret.
-  trustedCertsSecret: ""
-
-  ## Enable persistence using Persistent Volume Claims
-  ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
-  ##
-  persistence:
-    enabled: false
-    annotations: {}
-
-    ## A manually managed Persistent Volume and Claim
-    ## Requires persistence.enabled: true
-    ## If defined, PVC must be created manually before volume will be bound
-    existingClaim: ""
-
-    storageClassName: "nfs-client"
-    volumeName: "minio"
-    accessMode: ReadWriteOnce
-    size: 50Gi
-
-    ## If subPath is set mount a sub folder of a volume instead of the root of the volume.
-    ## This is especially handy for volume plugins that don't natively support sub mounting (like glusterfs).
-    ##
-    subPath: ""
-
-  ## Expose the MinIO service to be accessed from outside the cluster (LoadBalancer service).
-  ## or access it from within the cluster (ClusterIP service). Set the service type and the port to serve it.
-  ## ref: http://kubernetes.io/docs/user-guide/services/
-  ##
-  service:
-    type: ClusterIP
-    clusterIP: ~
-    port: "9000"
-    nodePort: 32000
-    #loadBalancerIP: ~
-    #externalIPs: []
-    #annotations: {}
-
-    externalTrafficPolicy: Cluster
-
-  ## Configure Ingress based on the documentation here: https://kubernetes.io/docs/concepts/services-networking/ingress/
-  ##
-
-  ingress:
-    enabled: false
-
-  consoleService:
-    type: ClusterIP
-    clusterIP: ~
-    port: "9001"
-    nodePort: 32001
-
-  consoleIngress:
-    enabled: false
-
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-  topologySpreadConstraints: []
-
-  containerSecurityContext:
-    readOnlyRootFilesystem: false
-
-  resources: {}
-
-  policies: []
-  # - name: writepolicy
-  #   statements:
-  #     - effect: Allow  # this is the default
-  #       resources:
-  #         - 'arn:aws:s3:::example*/*'
-  #       actions:
-  #         - "s3:AbortMultipartUpload"
-  #         - "s3:GetObject"
-  #         - "s3:DeleteObject"
-  #         - "s3:PutObject"
-  #         - "s3:ListMultipartUploadParts"
-  #     - resources:
-  #         - 'arn:aws:s3:::example*'
-  #       actions:
-  #         - "s3:CreateBucket"
-  #         - "s3:DeleteBucket"
-  #         - "s3:GetBucketLocation"
-  #         - "s3:ListBucket"
-  #         - "s3:ListBucketMultipartUploads"
-  # - name: readonlypolicy
-  #   statements:
-  #     - resources:
-  #         - 'arn:aws:s3:::example*/*'
-  #       actions:
-  #         - "s3:GetObject"
-  #     - resources:
-  #         - 'arn:aws:s3:::example*'
-  #       actions:
-  #         - "s3:GetBucketLocation"
-  #         - "s3:ListBucket"
-  #         - "s3:ListBucketMultipartUploads"
-
-  ## List of users to be created after minio install
-  users:
-    ## Username, password and policy to be assigned to the user
-    ## Default policies are [readonly|readwrite|writeonly|consoleAdmin|diagnostics]
-    ## Add new policies as explained here https://min.io/docs/minio/kubernetes/upstream/administration/identity-access-management.html#access-management
-    ## NOTE: this will fail if LDAP is enabled in your MinIO deployment
-    ## make sure to disable this if you are using LDAP.
-    #- accessKey: console
-    #  secretKey: console123
-    #  policy: consoleAdmin
-    # Or you can refer to specific secret
-    - accessKey: loki
-      existingSecret: "minio-user-credentials"
-      existingSecretKey: secretKey
-      policy: readwrite
-
-  ## List of service accounts to be created after minio install
-  ##
-  svcaccts: []
-    ## accessKey, secretKey and parent user to be assigned to the service accounts
-    ## Add new service accounts as explained here https://min.io/docs/minio/kubernetes/upstream/administration/identity-access-management/minio-user-management.html#service-accounts
-    # - accessKey: console-svcacct
-    #   secretKey: console123
-    #   user: console
-    ## Or you can refer to specific secret
-    # - accessKey: externalSecret
-    #   existingSecret: my-secret
-    #   existingSecretKey: password
-    #   user: console
-    ## You also can pass custom policy
-    # - accessKey: console-svcacct
-    #   secretKey: console123
-    #   user: console
-    #   policy:
-    #     statements:
-    #       - resources:
-    #           - 'arn:aws:s3:::example*/*'
-    #         actions:
-    #           - "s3:AbortMultipartUpload"
-    #           - "s3:GetObject"
-    #           - "s3:DeleteObject"
-    #           - "s3:PutObject"
-    #           - "s3:ListMultipartUploadParts"
-
-  ## List of buckets to be created after minio install
-  ##
-  buckets:
-    - name: loki-chunks
-      policy: none
-      purge: false
-      versioning: false
-      objectlocking: false
-    - name: loki-admin
-      policy: none
-      purge: false
-      versioning: false
-      objectlocking: false
-    - name: loki-rules
-      policy: none
-      purge: false
-      versioning: false
-      objectlocking: false
-
-  ## Use this field to add environment variables relevant to MinIO server. These fields will be passed on to MinIO container(s)
-  ## when Chart is deployed
-  environment:
-    ## Please refer for comprehensive list https://min.io/docs/minio/linux/reference/minio-server/minio-server.html
-    ## MINIO_SUBNET_LICENSE: "License key obtained from https://subnet.min.io"
-    ## MINIO_BROWSER: "off"
-
-  oidc:
-    enabled: false
-    configUrl: "https://identity-provider-url/.well-known/openid-configuration"
-    clientId: "minio"
-    clientSecret: ""
-    # Provide existing client secret from the Kubernetes Secret resource, existing secret will have priority over `clientId` and/or `clientSecret``
-    existingClientSecretName: ""
-    existingClientIdKey: ""
-    existingClientSecretKey: ""
-    claimName: "policy"
-    scopes: "openid,profile,email"
-    redirectUri: "https://console-endpoint-url/oauth_callback"
-    # Can leave empty
-    claimPrefix: ""
-    comment: ""
-    displayName: ""
-
-  serviceAccount:
-    create: true
-    name: "minio-sa"
-
-  metrics:
-    serviceMonitor:
-      enabled: false
-
+  # Root key for Operator Helm Chart
 operator:
   operator:
     env:
       - name: OPERATOR_STS_ENABLED
-        value: "on"
+        value: "off"
     replicaCount: 3
     ###
     # An array of `Volumes <https://kubernetes.io/docs/concepts/storage/volumes/>`__ which the Operator can mount to pods.
@@ -248,3 +31,146 @@ operator:
         cpu: 200m
         memory: 256Mi
         ephemeral-storage: 500Mi
+  
+  # Root key for MinIO Tenant Chart
+tenant:
+  tenant:
+    name: minikube-minio
+    imagePullSecret: { }
+    ###
+    #
+    # Specify `initContainers <https://kubernetes.io/docs/concepts/workloads/pods/init-containers/>`__ to perform setup or configuration tasks before the main Tenant pods starts.
+    #
+    # Example of init container which waits for idenity provider to be reachable before starting MinIO Tenant:
+    # 
+    # .. code-block:: yaml
+    #
+    # initContainers:
+    #  - name: wait-for-idp
+    #    image: busybox
+    #    command:
+    #      - sh
+    #      - -c
+    #      - |
+    #        URL="https://idp-url"
+    #        echo "Checking IdP reachability (${URL})"
+    #        until $(wget -q -O "/dev/null" ${URL}) ; do
+    #          echo "IdP (${URL}) not reachable. Waiting to be reachable..."
+    #          sleep 5
+    #        done
+    #        echo "IdP (${URL}) reachable. Starting MinIO..."
+    #
+    initContainers: [ ]
+    ###
+    # The Kubernetes secret name that contains MinIO environment variable configurations.
+    # The secret is expected to have a key named config.env containing environment variables exports.
+    #configuration:
+    #  name: myminio-env-configuration
+    ###
+    # Root key for dynamically creating a secret for use with configuring root MinIO User
+    # Specify the ``name`` and then a list of environment variables.
+    #
+    # .. important::
+    #
+    #    Do not use this in production environments.
+    #    This field is intended for use with rapid development or testing only.
+    #
+    # For example:
+    #
+    # .. code-block:: yaml
+    #
+    #    name: myminio-env-configuration
+    #    accessKey: minio
+    #    secretKey: minio123
+    #
+    configSecret:
+      name: minio-admin-credentials
+      #accessKey: minio
+      #secretKey: minio123
+      existingSecret: true
+  
+    ###
+    # Metadata that will be added to the statefulset and pods of all pools
+    poolsMetadata:
+    ###
+    # If this variable is set to true, then enable the usage of an existing Kubernetes secret to set environment variables for the Tenant.
+    # The existing Kubernetes secret name must be placed under .tenant.configuration.name e.g. existing-minio-env-configuration
+    # The secret must contain a key ``config.env``.
+    # The values should be a series of export statements to set environment variables for the Tenant.
+    # For example:
+    #
+    # .. code-block:: shell
+    #
+    #    stringData:
+    #       config.env: |-
+    #         export MINIO_ROOT_USER=ROOTUSERNAME
+    #         export MINIO_ROOT_PASSWORD=ROOTUSERPASSWORD
+    #
+    #   existingSecret: false
+    ###
+    # Top level key for configuring MinIO Pool(s) in this Tenant.
+    #
+    # See `Operator CRD: Pools <https://min.io/docs/minio/kubernetes/upstream/reference/operator-crd.html#pool>`__ for more information on all subfields.
+    pools:
+      ###
+      # The number of MinIO Tenant Pods / Servers in this pool.
+      # For standalone mode, supply 1. For distributed mode, supply 4 or more.
+      # Note that the operator does not support upgrading from standalone to distributed mode.
+      - servers: 4
+        ###
+        # Custom name for the pool
+        name: pool-0
+        ###
+        # The number of volumes attached per MinIO Tenant Pod / Server.
+        volumesPerServer: 4
+        ###
+        # The capacity per volume requested per MinIO Tenant Pod.
+        size: 10Gi
+        storageClassName: nfs-client
+    mountPath: /export
+    subPath: /data
+    ###
+    # Configures a Prometheus-compatible scraping endpoint at the specified port.
+    metrics:
+      enabled: false
+      port: 9000
+      protocol: http
+    ###
+    # Configures external certificate settings for the Tenant.
+    certificate:
+      externalCaCertSecret: [ ]
+      externalCertSecret: [ ]
+      requestAutoCert: true
+      certConfig: { }
+    features:
+      bucketDNS: false
+      domains: { }
+      enableSFTP: false
+    ###
+    # Array of objects describing one or more buckets to create during tenant provisioning.
+    # Example:
+    # 
+    # .. code-block:: yaml
+    #
+    #    - name: my-minio-bucket
+    #         objectLock: false        # optional
+    #         region: us-east-1        # optional
+    #buckets: [ ]
+    buckets:
+      - name: loki-admin
+        objectLock: false
+      - name: loki-chunk
+        objectLock: false
+      - name: loki-ruler
+        objectLock: false
+    ###
+    # Array of Kubernetes secrets from which the Operator generates MinIO users during tenant provisioning.
+    #
+    # Each secret should specify the ``CONSOLE_ACCESS_KEY`` and ``CONSOLE_SECRET_KEY`` as the access key and secret key for that user.
+    users: [ ]
+    prometheusOperator: false
+  ingress:
+    api:
+      enabled: false
+    console:
+      enabled: false
