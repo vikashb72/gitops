@@ -6,6 +6,8 @@ operator:
     env:
       - name: OPERATOR_STS_ENABLED
         value: "off"
+      - name: WATCHED_NAMESPACE
+        value: "minio-tenant"
     replicaCount: 3
     # The volumes must exist *and* be accessible to the Operator pods.
     volumes: [ ]
