@@ -64,12 +64,12 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
     syncwave: "-8"
-  minio:
-    disable: true
-    name: minio
-    targetNamespace: minio-system
+  minio-operator:
+    disable: false
+    name: minio-operator
+    targetNamespace: minio-operator
     sources:
-      - path: charts/minio
+      - path: charts/minio-operator
         noHelmValues: false
         helm:
           envFile: true
