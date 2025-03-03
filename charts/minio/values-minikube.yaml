@@ -134,7 +134,7 @@ operator:
     # to start up before the Operator pods.
     # Pass an empty array to start the Operator normally.
     initContainers: [ ]
-    replicaCount: 3
+    replicaCount: 1
     # The volumes must exist *and* be accessible to the Operator pods.
     volumes: [ ]
     ###
@@ -241,7 +241,7 @@ tenant:
       # The number of MinIO Tenant Pods / Servers in this pool.
       # For standalone mode, supply 1. For distributed mode, supply 4 or more.
       # Note that the operator does not support upgrading from standalone to distributed mode.
-      - servers: 4
+      - servers: 1
         ###
         # Custom name for the pool
         name: pool-0
