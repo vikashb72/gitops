@@ -106,27 +106,26 @@ argocdManaged:
     ignoreDifferences: false 
     syncOptions:
       ServerSideApply: true
-
-#-20250220  echoserver:
-#-20250220    disable: false
-#-20250220    name: echoserver
-#-20250220    targetNamespace: echoserver
-#-20250220    sources:
-#-20250220      - path: charts/echoserver
-#-20250220        noHelmValues: true
-#-20250220    disableAutomated: false
-#-20250220    automated: {}
-#-20250220    ignoreDifferences: false 
-#-20250220  httpbin:
-#-20250220    disable: false
-#-20250220    name: httpbin
-#-20250220    targetNamespace: httpbin
-#-20250220    sources:
-#-20250220      - path: charts/httpbin
-#-20250220        noHelmValues: true
-#-20250220    disableAutomated: false
-#-20250220    automated: {}
-#-20250220    ignoreDifferences: false 
+  echoserver:
+    disable: false
+    name: echoserver
+    targetNamespace: echoserver
+    sources:
+      - path: charts/echoserver
+        noHelmValues: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
+  httpbin:
+    disable: false
+    name: httpbin
+    targetNamespace: httpbin
+    sources:
+      - path: charts/httpbin
+        noHelmValues: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
 #-20250220  istio:
 #-20250220    disable: true
 #-20250220    name: istio
