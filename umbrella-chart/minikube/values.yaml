@@ -65,7 +65,7 @@ argocdManaged:
     ignoreDifferences: false 
     syncwave: "-8"
   minio-operator:
-    disable: disable
+    disable: false
     name: minio-operator
     targetNamespace: minio-operator
     sources:
