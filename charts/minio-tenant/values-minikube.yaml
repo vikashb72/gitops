@@ -4,6 +4,8 @@ env:
 tenant:
   tenant:
     name: minikube
+    certificate:
+      requestAutoCert: false
     configuration:
       name: minio-admin-credentials
     configSecret:
@@ -41,8 +43,8 @@ tenant:
       - name: minio-loki-credentials
     podManagementPolicy: Parallel
     exposeServices:
-      minio: true
-      console: true
+      minio: false
+      console: false
     # Directs the Operator to add the Tenant's metric scrape configuration to an existing Kubernetes Prometheus deployment managed by the Prometheus Operator.
     prometheusOperator: true
     logging: { }
