@@ -21,7 +21,7 @@ tenant:
         volumesPerServer: 3
         size: 8Gi
         #storageClassName: nfs-client
-        #storageClassName: standard
+        storageClassName: csi-hostpath-sc
     mountPath: /export
     subPath: /data
     metrics:
