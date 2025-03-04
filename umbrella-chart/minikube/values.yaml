@@ -78,6 +78,20 @@ argocdManaged:
     ignoreDifferences: false 
     syncOptions:
       ServerSideApply: true
+  minio-tenant:
+    disable: false
+    name: minio-tenant
+    targetNamespace: minio-tenant
+    sources:
+      - path: charts/minio-tenant
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
+    syncOptions:
+      ServerSideApply: true
   monitoring:
     disable: false
     name: monitoring
