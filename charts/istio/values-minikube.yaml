@@ -1,17 +1,64 @@
-#base:
-#  global:
-#    istioNamespace: istio-system
-#  base:
-#    defaultRevision: "default"
 istiod:
-  profile: ambient
-cni:
-  profile: ambient
-ztunnel:
-  profile: ambient
-gateway:
-  service:
-    type: LoadBalancer
-    loadBalancerIP: 192.168.49.235
+  cni:
+    enabled: false
+    provider: default
+
+  env: {}
+
+  taint:
+    enabled: false
+
+  sidecarInjectorWebhook:
+    neverInjectSelector: []
+    alwaysInjectSelector: []
+    injectedAnnotations: {}
+    templates: {}
+    defaultTemplates: []
+
+  istiodRemote:
+    enabled: false
+
+  telemetry:
+    enabled: true
+    v2:
+      enabled: true
+      prometheus:
+        enabled: true
+      stackdriver:
+        enabled: false
+  revision: ""
+
+  global:
+    istioNamespace: istio-system
+    certSigners: []
+    defaultPodDisruptionBudget:
+      enabled: true
+    defaultResources:
+      requests:
+        cpu: 10m
+    istiod:
+      enableAnalysis: false
+
+    logAsJson: false
+
+    omitSidecarInjectorConfigMap: false
+
 kiali-server:
-  replicas: 1
+  external_services:
+    custom_dashboards:
+      enabled: true
+  identity: {}
+    #cert_file:
+    #private_key_file:
+  
+  login_token:
+    signing_key: ""
+  
+  server:
+    port: 20001
+    #node_port:
+    observability:
+      metrics:
+        enabled: true
+        port: 9090
+    web_root: ""
