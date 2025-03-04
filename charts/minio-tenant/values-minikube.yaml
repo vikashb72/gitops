@@ -4,12 +4,12 @@ env:
 tenant:
   tenant:
     name: minikube
-    configuration:
-      name: minio-admin-credentials
+    #configuration:
+    #  name: minio-admin-credentials
     configSecret:
       name: minio-admin-credentials
-      #accessKey: minio
-      #secretKey: minio123
+      accessKey: ""
+      secretKey: ""
       existingSecret: true
     pools:
       ###
