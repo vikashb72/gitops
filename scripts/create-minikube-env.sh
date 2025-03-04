@@ -64,6 +64,8 @@ minikube start \
 
 export MINIKUBE_IP=$(minikube ip)
 
+minikube addons enable volumesnapshots
+minikube addons enable csi-hostpath-driver
 minikube addons enable dashboard 
 minikube addons enable metrics-server 
 minikube addons enable metallb
@@ -89,6 +91,8 @@ kubectl wait -n nfs-provisioning pods \
     -l app=nfs-subdir-external-provisioner \
     --for condition=Ready \
     --timeout=30s
+
+kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
 
 kubectl create namespace external-secrets
 kubectl -n external-secrets create secret generic external-hashicorp-vault-token \
