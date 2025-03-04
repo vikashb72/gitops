@@ -4,8 +4,8 @@ env:
 tenant:
   tenant:
     name: minikube
-    #configuration:
-    #  name: minio-admin-credentials
+    configuration:
+      name: minio-admin-credentials
     configSecret:
       name: minio-admin-credentials
       accessKey: ""
