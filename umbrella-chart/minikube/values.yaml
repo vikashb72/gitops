@@ -126,26 +126,26 @@ argocdManaged:
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
-#-20250220  istio:
-#-20250220    disable: true
-#-20250220    name: istio
-#-20250220    targetNamespace: istio-system
-#-20250220    sources:
-#-20250220      - path: charts/istio
-#-20250220        noHelmValues: false
-#-20250220        helm:
-#-20250220          envFile: true
-#-20250220          parameters:
-#-20250220            - name: profile
-#-20250220              value: ambient
-#-20250220    disableAutomated: false
-#-20250220    automated: {}
-#-20250220    ignoreDifferences: true 
-#-20250220    ignoreDifferencesConfig:
-#-20250220      - group: admissionregistration.k8s.io
-#-20250220        kind: ValidatingWebhookConfiguration
-#-20250220        jqPathExpressions:
-#-20250220          - .webhooks[]?.failurePolicy
+  istio:
+    disable: false
+    name: istio
+    targetNamespace: istio-system
+    sources:
+      - path: charts/istio
+        noHelmValues: false
+        helm:
+          envFile: true
+          #parameters:
+          #  - name: profile
+          #    value: ambient
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: true 
+    ignoreDifferencesConfig:
+      - group: admissionregistration.k8s.io
+        kind: ValidatingWebhookConfiguration
+        jqPathExpressions:
+          - .webhooks[]?.failurePolicy
 #-20250220  istio-ingress:
 #-20250220    disable: true
 #-20250220    name: istio-ingress
