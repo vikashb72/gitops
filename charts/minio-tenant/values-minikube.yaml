@@ -99,7 +99,7 @@ tenant:
     # Each secret should specify the ``CONSOLE_ACCESS_KEY`` and ``CONSOLE_SECRET_KEY`` as the access key and secret key for that user.
     #users: [ ]
     users:
-      - minio-loki-credentials
+      - name: minio-loki-credentials
     podManagementPolicy: Parallel
     liveness: { }
     readiness: { }
