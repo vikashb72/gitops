@@ -79,7 +79,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   minio-tenant:
-    disable: true
+    disable: false
     name: minio-tenant
     targetNamespace: minio-tenant
     sources:
