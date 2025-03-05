@@ -506,18 +506,18 @@ kube-prometheus-stack:
       enabled: true
       failurePolicy: Ignore
       annotations:
-        argocd.argoproj.io/hook: PreSync
+        argocd.argoproj.io/hook: Sync
         argocd.argoproj.io/hook-delete-policy: HookSucceeded
       mutatingWebhookConfiguration:
         annotations:
-          argocd.argoproj.io/hook: PreSync
+          argocd.argoproj.io/hook: Sync
       validatingWebhookConfiguration:
         annotations:
-          argocd.argoproj.io/hook: PreSync
+          argocd.argoproj.io/hook: Sync
       patch:
         enabled: true
         annotations:
-          argocd.argoproj.io/hook: PreSync
+          argocd.argoproj.io/hook: Sync
           argocd.argoproj.io/hook-delete-policy: HookSucceeded
         podAnnotations:
           sidecar.istio.io/inject: "false"
