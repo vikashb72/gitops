@@ -503,10 +503,22 @@ kube-prometheus-stack:
     tls:
       enabled: true
     admissionWebhooks:
-      failurePolicy: Ignore
-      patch:
+      enabled: true
+      failurePolicy: IgnoreOnInstallOnly
+      annotations:
+        argocd.argoproj.io/hook: PreSync
+        argocd.argoproj.io/hook-delete-policy: HookSucceeded
+      mutatingWebhookConfiguration:
         annotations:
-          argocd.argoproj.io/hook: Sync
+          argocd.argoproj.io/hook: PreSync
+      validatingWebhookConfiguration:
+        annotations:
+          argocd.argoproj.io/hook: PreSync
+      patch:
+        enabled: true
+        annotations:
+          argocd.argoproj.io/hook: PreSync
+          argocd.argoproj.io/hook-delete-policy: HookSucceeded
         podAnnotations:
           sidecar.istio.io/inject: "false"
       certManager:
