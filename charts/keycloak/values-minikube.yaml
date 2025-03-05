@@ -42,7 +42,6 @@ keycloak:
     hostnameStrict: false
     tls: false
     selfSigned: false
-
   adminIngress:
     enabled: false
     hostname: keycloak.local
@@ -73,12 +72,13 @@ keycloak:
       username: bn_keycloak
       password: ""
       database: bitnami_keycloak
-      existingSecret: "postgresql-credentials"
-      secretKeys:
-        adminPasswordKey: adminPasswordKey
-        postgres-password: adminPasswordKey
-        userPasswordKey: userPasswordKey
-        password: userPasswordKey
+      existingSecret: ""
+      #existingSecret: "postgresql-credentials"
+      #secretKeys:
+      #  adminPasswordKey: adminPasswordKey
+      #  postgres-password: adminPasswordKey
+      #  userPasswordKey: userPasswordKey
+      #  password: userPasswordKey
   externalDatabase:
     host: ""
     port: ""
