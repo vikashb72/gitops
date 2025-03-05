@@ -5,7 +5,7 @@ operator:
   operator:
     env:
       - name: OPERATOR_STS_ENABLED
-        value: "off"
+        value: "on"
       - name: WATCHED_NAMESPACE
         value: "minio-tenant"
     replicaCount: 3
