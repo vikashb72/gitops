@@ -60,6 +60,7 @@ argocdManaged:
         noHelmValues: false
         helm:
           envFile: true
+    syncwave: "-8"
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
@@ -93,7 +94,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   monitoring:
-    disable: false
+    disable: true
     name: monitoring
     targetNamespace: monitoring
     sources:
@@ -101,6 +102,7 @@ argocdManaged:
         noHelmValues: false
         helm:
           envFile: true
+    syncwave: "-5"
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
