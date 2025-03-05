@@ -78,6 +78,7 @@ keycloak:
         adminPasswordKey: adminPasswordKey
         postgres-password: adminPasswordKey
         userPasswordKey: userPasswordKey
+        password: userPasswordKey
   externalDatabase:
     host: ""
     port: ""
