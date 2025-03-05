@@ -93,7 +93,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   monitoring:
-    disable: false
+    disable: true
     name: monitoring
     targetNamespace: monitoring
     sources:
