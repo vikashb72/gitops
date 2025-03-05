@@ -1,3 +1,9 @@
+base:
+  global:
+    istioNamespace: istio-system
+  base:
+    defaultRevision: "default"
+
 istiod:
   cni:
     enabled: false
@@ -26,7 +32,7 @@ istiod:
         enabled: true
       stackdriver:
         enabled: false
-  revision: ""
+  revision: "default"
 
   global:
     istioNamespace: istio-system
