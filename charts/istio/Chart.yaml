@@ -24,6 +24,6 @@ dependencies:
   #- name: ambient
   #  version: 1.25.0
   #  repository: https://istio-release.storage.googleapis.com/charts
-  - name: kiali-server
-    version: 2.6.0
-    repository: https://kiali.org/helm-charts
+  #- name: kiali-server
+  #  version: 2.6.0
+  #  repository: https://kiali.org/helm-charts
