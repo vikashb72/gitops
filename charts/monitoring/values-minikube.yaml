@@ -547,6 +547,17 @@ kube-prometheus-stack:
     serviceMonitor:
       selfMonitor: true
     prometheusSpec:
+      terminationGracePeriodSeconds: 90
+      maximumStartupDurationSeconds: 600
+      minReadySeconds: 90
+      containers:
+        - name: prometheus
+          readinessProbe:
+            periodSeconds: 30
+            initialDelaySeconds: 30
+          livenessProbe:
+            periodSeconds: 30
+            initialDelaySeconds: 60
       enableRemoteWriteReceiver: true
       persistentVolumeClaimRetentionPolicy: {}
       storageSpec:
@@ -756,7 +767,7 @@ promtail:
   serviceMonitor:
     enabled: true
     prometheusRule:
-      enabled: true
+      enabled: false
       additionalLabels: {}
       rules: 
         - alert: PromtailRequestErrors
