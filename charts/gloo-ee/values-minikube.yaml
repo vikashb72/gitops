@@ -54,15 +54,13 @@ gloo-ee:
           type: "LoadBalancer"
           extraAnnotations:
             metallb.universe.tf/address-pool: default
-            #service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-            #service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "workload-subnet"
     settings:
       create: true
       watchNamespaces:
         - gloo-system
         - keycloak
-        - my-app
-        - my-app-ui
+        - echoserver
+        - httpbin
       extAuth:
         requestTimeout: 30s
     discovery:
