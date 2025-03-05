@@ -66,6 +66,8 @@ keycloak:
     resourcesPreset: "small"
     #resources: {}
   postgresql:
+    image:
+      debug: true
     enabled: true
     #auth:
     #  postgresPassword: ""
