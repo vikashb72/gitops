@@ -107,7 +107,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   echoserver:
-    disable: false
+    disable: true
     name: echoserver
     targetNamespace: echoserver
     sources:
@@ -117,7 +117,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   httpbin:
-    disable: false
+    disable: true
     name: httpbin
     targetNamespace: httpbin
     sources:
@@ -127,7 +127,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   istio:
-    disable: false
+    disable: true
     name: istio
     targetNamespace: istio-system
     sources:
