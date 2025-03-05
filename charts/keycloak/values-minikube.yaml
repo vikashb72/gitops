@@ -66,6 +66,8 @@ keycloak:
     resourcesPreset: "small"
     #resources: {}
   postgresql:
+    persistence:
+      storageClass: standard
     image:
       debug: true
     enabled: true
