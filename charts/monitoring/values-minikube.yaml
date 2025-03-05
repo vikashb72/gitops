@@ -483,7 +483,7 @@ kube-prometheus-stack:
       monitor:
         enabled: true
     selfMonitor:
-      enabled: false
+      enabled: true
   nodeExporter:
     enabled: true
     operatingSystems:
@@ -751,9 +751,9 @@ promtail:
 
   # ServiceMonitor configuration
   serviceMonitor:
-    enabled: false
+    enabled: true
     prometheusRule:
-      enabled: false
+      enabled: true
       additionalLabels: {}
       rules: 
         - alert: PromtailRequestErrors
