@@ -109,7 +109,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   echoserver:
-    disable: true
+    disable: false
     name: echoserver
     targetNamespace: echoserver
     sources:
@@ -119,7 +119,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   httpbin:
-    disable: true
+    disable: false
     name: httpbin
     targetNamespace: httpbin
     sources:
@@ -129,7 +129,7 @@ argocdManaged:
     automated: {}
     ignoreDifferences: false 
   istio:
-    disable: true
+    disable: false
     name: istio
     targetNamespace: istio-system
     sources:
@@ -148,23 +148,35 @@ argocdManaged:
         kind: ValidatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
+  keycloak:
+    disable: false
+    name: keycloak
+    targetNamespace: keycloak
+    sources:
+      - path: charts/keycloak
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+  gloo-ee:
+    disable: true
+    name: gloo-ee
+    targetNamespace: gloo-system
+    sources:
+      - path: charts/gloo-ee
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
+
 #-20250220  istio-ingress:
 #-20250220    disable: true
 #-20250220    name: istio-ingress
 #-20250220    targetNamespace: istio-ingress
 #-20250220    sources:
 #-20250220      - path: charts/istio-ingress
-#-20250220        noHelmValues: false
-#-20250220        helm:
-#-20250220          envFile: true
-#-20250220    disableAutomated: false
-#-20250220    automated: {}
-#-20250220  gloo-ee:
-#-20250220    disable: true
-#-20250220    name: gloo-ee
-#-20250220    targetNamespace: gloo-system
-#-20250220    sources:
-#-20250220      - path: charts/gloo-ee
 #-20250220        noHelmValues: false
 #-20250220        helm:
 #-20250220          envFile: true
@@ -258,17 +270,6 @@ argocdManaged:
 #-20250220    targetNamespace: kafka-system
 #-20250220    sources:
 #-20250220      - path: charts/strimzi-kafka-operator
-#-20250220        noHelmValues: false
-#-20250220        helm:
-#-20250220          envFile: true
-#-20250220    disableAutomated: false
-#-20250220    automated: {}
-#-20250220  keycloak:
-#-20250220    disable: true
-#-20250220    name: keycloak
-#-20250220    targetNamespace: keycloak
-#-20250220    sources:
-#-20250220      - path: charts/keycloak
 #-20250220        noHelmValues: false
 #-20250220        helm:
 #-20250220          envFile: true
