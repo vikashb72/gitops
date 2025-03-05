@@ -749,6 +749,11 @@ loki:
     service:
       type: LoadBalancer
 
+  monitoring:
+    dashboards: false
+    rules: false
+    alerting: true
+
 promtail:
   daemonset:
     enabled: true
