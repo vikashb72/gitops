@@ -503,6 +503,7 @@ kube-prometheus-stack:
     tls:
       enabled: true
     admissionWebhooks:
+      failurePolicy: Ignore
       patch:
         podAnnotations:
           sidecar.istio.io/inject: "false"
