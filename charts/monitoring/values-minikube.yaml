@@ -49,7 +49,7 @@ kube-prometheus-stack:
       kubeApiserverBurnrate: true
       kubeApiserverHistogram: true
       kubeApiserverSlos: true
-      kubeControllerManager: true
+      kubeControllerManager: false
       kubelet: true
       kubeProxy: true
       kubePrometheusGeneral: true
@@ -58,8 +58,8 @@ kube-prometheus-stack:
       kubernetesResources: true
       kubernetesStorage: true
       kubernetesSystem: true
-      kubeSchedulerAlerting: true
-      kubeSchedulerRecording: true
+      kubeSchedulerAlerting: false
+      kubeSchedulerRecording: false
       kubeStateMetrics: true
       network: true
       node: true
@@ -430,11 +430,11 @@ kube-prometheus-stack:
     serviceMonitor:
       kubelet: true
   kubeControllerManager:
-    enabled: true
+    enabled: false
     service:
-      enabled: true
+      enabled: false
     serviceMonitor:
-      enabled: true
+      enabled: false
   coreDns:
     enabled: true
     service:
@@ -457,9 +457,9 @@ kube-prometheus-stack:
     serviceMonitor:
       enabled: true
   kubeScheduler:
-    enabled: true
+    enabled: false
     service:
-      enabled: true
+      enabled: false
       ipDualStack:
         enabled: false
     serviceMonitor:
