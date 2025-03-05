@@ -17,7 +17,7 @@ tenant:
       # For standalone mode, supply 1. For distributed mode, supply 4 or more.
       - servers: 1
         name: pool-0
-        volumesPerServer: 3
+        volumesPerServer: 1
         size: 8Gi
         #storageClassName: csi-hostpath-sc
         storageClassName: nfs-client
