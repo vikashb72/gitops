@@ -67,18 +67,18 @@ keycloak:
     #resources: {}
   postgresql:
     enabled: true
-    auth:
-      postgresPassword: ""
-      username: bn_keycloak
-      password: ""
-      database: bitnami_keycloak
-      existingSecret: ""
-      #existingSecret: "postgresql-credentials"
-      #secretKeys:
-      #  adminPasswordKey: adminPasswordKey
-      #  postgres-password: adminPasswordKey
-      #  userPasswordKey: userPasswordKey
-      #  password: userPasswordKey
+    #auth:
+    #  postgresPassword: ""
+    #  username: bn_keycloak
+    #  password: ""
+    #  database: bitnami_keycloak
+    #  existingSecret: ""
+    #  #existingSecret: "postgresql-credentials"
+    #  #secretKeys:
+    #  #  adminPasswordKey: adminPasswordKey
+    #  #  postgres-password: adminPasswordKey
+    #  #  userPasswordKey: userPasswordKey
+    #  #  password: userPasswordKey
   externalDatabase:
     host: ""
     port: ""
