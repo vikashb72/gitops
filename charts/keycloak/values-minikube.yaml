@@ -3,7 +3,7 @@ env:
 
 keycloak:
   diagnosticMode:
-    enabled: false
+    enabled: true
   image:
     debug: false
   auth:
