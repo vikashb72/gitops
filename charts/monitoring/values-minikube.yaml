@@ -463,7 +463,7 @@ kube-prometheus-stack:
       ipDualStack:
         enabled: false
     serviceMonitor:
-      enabled: true
+      enabled: false
   kubeProxy:
     enabled: true
     service:
