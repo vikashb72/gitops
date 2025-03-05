@@ -1,3 +1,6 @@
+env:
+  EVT: minikube
+
 keycloak:
   diagnosticMode:
     enabled: false
@@ -65,15 +68,16 @@ keycloak:
     #resources: {}
   postgresql:
     enabled: true
-  auth:
-    postgresPassword: ""
-    username: bn_keycloak
-    password: ""
-    database: bitnami_keycloak
-    existingSecret: ""
-    secretKeys:
-      userPasswordKey: password
-      userPasswordKey: postgres-password
+    auth:
+      postgresPassword: ""
+      username: bn_keycloak
+      password: ""
+      database: bitnami_keycloak
+      existingSecret: "postgresql-credentials"
+      secretKeys:
+        adminPasswordKey: adminPasswordKey
+        postgres-password: adminPasswordKey
+        userPasswordKey: userPasswordKey
   externalDatabase:
     host: ""
     port: ""
