@@ -67,7 +67,7 @@ keycloak:
     #resources: {}
   postgresql:
     persistence:
-      storageClass: standard
+      storageClassName: standard
     image:
       debug: true
     enabled: true
