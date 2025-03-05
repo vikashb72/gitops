@@ -65,7 +65,7 @@ argocdManaged:
     ignoreDifferences: false 
     syncwave: "-8"
   minio-operator:
-    disable: false
+    disable: true
     name: minio-operator
     targetNamespace: minio-operator
     sources:
@@ -79,7 +79,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   minio-tenant:
-    disable: false
+    disable: true
     name: minio-tenant
     targetNamespace: minio-tenant
     sources:
