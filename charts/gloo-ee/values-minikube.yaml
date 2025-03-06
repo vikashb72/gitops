@@ -52,6 +52,14 @@ gloo-ee:
       gatewayProxy:
         ## Typical custom gateway settings
         gatewaySettings:
+          customHttpGateway:
+            options:
+              healthCheck:
+                path: /healthcheck
+          customHttpsGateway:
+            options:
+              healthCheck:
+                path: /healthcheck
           ## Custom access logging config
           accessLoggingService:
             accessLog:
@@ -82,10 +90,6 @@ gloo-ee:
                     xForwardedFor: "%REQ(X-FORWARDED-FOR)%"
           options:
             perConnectionBufferLimitBytes: 4294967295
-          httpGateway:
-            options:
-              healthCheck:
-                path: /healthcheck
         service:
           type: "LoadBalancer"
           extraAnnotations:
