@@ -4,12 +4,45 @@ env:
 gloo-ee:
   create_license_secret: false
 
+  gateway-portal-web-server:
+    enabled: false
+
   global:
+    extensions:
+      caching:
+        enabled: false
+
+      extAuth:
+        deployment:
+          customEnv:
+            - name: LOG_LEVEL
+              value: debug
+          #extraVolume:
+          #  - name: where-ever-ca
+          #    secret:
+          #      secretName: where-ever-ca
+          #extraVolumeMount:
+          #  - name: where-ever-ca
+          #    mountPath: /etc/ssl/certs/where-ever-ca.crt
+          #    subPath: where-ever-ca.crt
+          #    readOnly: true
+
+    glooMtls:
+      enabled: false
+
     glooRbac:
       create: true
 
   gloo:
     license_secret_name: gloo-ee-license
+
+    discovery:
+      enabled: true
+      fdsMode: WHITELIST
+      fdsOptions:
+        graphqlEnabled: false
+      udsOptions:
+        enabled: true
 
     ## Gateway Proxies
     gatewayProxies:
@@ -54,6 +87,7 @@ gloo-ee:
           type: "LoadBalancer"
           extraAnnotations:
             metallb.universe.tf/address-pool: default
+
     settings:
       create: true
       watchNamespaces:
@@ -63,42 +97,21 @@ gloo-ee:
         - httpbin
       extAuth:
         requestTimeout: 30s
-    discovery:
-      enabled: true
-      fdsMode: WHITELIST
-      fdsOptions:
-        graphqlEnabled: false
-      udsOptions:
-        enabled: true
 
   gloo-fed:
     enabled: false
     create_license_secret: false
     license_secret_name: gloo-ee-license
 
-  global:
-    extensions:
-      extAuth:
-        deployment:
-          customEnv:
-            - name: LOG_LEVEL
-              value: debug
-          #extraVolume:
-          #  - name: where-ever-ca
-          #    secret:
-          #      secretName: where-ever-ca
-          #extraVolumeMount:
-          #  - name: where-ever-ca
-          #    mountPath: /etc/ssl/certs/where-ever-ca.crt
-          #    subPath: where-ever-ca.crt
-          #    readOnly: true
-    # extraCustomResources: true
-  
   grafana:
     defaultInstallationEnabled: false
+    dashboardsConfigMaps:
+      gloo: glooe-grafana-custom-dashboards-v2
 
   observability:
     enabled: false
 
   prometheus:
     enabled: false
+    alertmanager:
+      enabled: false
