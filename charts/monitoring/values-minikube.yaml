@@ -310,7 +310,7 @@ kube-prometheus-stack:
             #        url: https://localhost/
             #      disableResolveMessage: false
     initChownData:
-      enabled: false
+      enabled: true
     serviceMonitor:
       enabled: true
       targetLabels:
