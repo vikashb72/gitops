@@ -11,32 +11,102 @@ Projects:
     description: Apps Infrastructure
 
 argo-cd:
+  namespaceOverride: "argocd"
   crds:
     install: true
-  namespaceOverride: "argocd"
-  createAggregateRoles: true
   openshift:
     enabled: false
-  ## Globally shared configuration
   global:
     # -- Default domain used by all components
-    ## Used for ingresses, certificates, SSO, notifications, etc.
+    # Used for ingresses, certificates, SSO, notifications, etc.
     domain: argocd.minikube.where-ever.net
+    # an alternative to the ServiceMonitors
+    addPrometheusAnnotations: false
   configs:
     cm:
       accounts.argo-admin: apiKey, login
       accounts.argo-readonly: apiKey, login
-  rbac:
-    policy.default: ''
-    policy.csv: |
-      p, role:org-admin, applications, *, */*, allow
-      p, role:org-admin, clusters, get, *, allow
-      p, role:org-admin, repositories, *, *, allow
-      p, role:org-admin, logs, get, *, allow
-      p, role:org-admin, exec, create, */*, allow
-      p, role:readonly, applications, get, *, allow
-      g, argo-admin, role:org-admin
-      g, argo-readonly, role:readonly
+    params:
+      #server.insecure: false
+      #server.basehref: /
+      #server.rootpath: ''
+      #server.staticassets: /shared/app
+      #server.disable.auth: false
+      #server.enable.gzip: true
+      #server.enable.proxy.extension: false
+      #server.x.frame.options: sameorigin
+      # Limit on number of concurrent manifests generate requests.
+      # Any value less the 1 means no limit.
+      reposerver.parallelism.limit: 0
+    rbac:
+      policy.default: ''
+      policy.csv: |
+        p, role:org-admin, applications, *, */*, allow
+        p, role:org-admin, clusters, get, *, allow
+        p, role:org-admin, repositories, *, *, allow
+        p, role:org-admin, logs, get, *, allow
+        p, role:org-admin, exec, create, */*, allow
+        p, role:readonly, applications, get, *, allow
+        g, argo-admin, role:org-admin
+        g, argo-readonly, role:readonly
+
+  controller:
+    metrics:
+      enabled: false
+      serviceMonitor:
+        enabled: false
+      rules:
+        enabled: false
+        namespace: "" # "monitoring"
+        selector: {}
+          # prometheus: kube-prometheus
+        spec:
+          - alert: ArgoAppMissing
+            expr: |
+              absent(argocd_app_info) == 1
+            for: 15m
+            labels:
+              severity: critical
+            annotations:
+              summary: "[Argo CD] No reported applications"
+              description: >
+                Argo CD has not reported any applications data for the past 15 minutes which
+                means that it must be down or not functioning properly.  This needs to be
+                resolved for this cloud to continue to maintain state.
+          - alert: ArgoAppNotSynced
+            expr: |
+              argocd_app_info{sync_status!="Synced"} == 1
+            for: 12h
+            labels:
+              severity: warning
+            annotations:
+              summary: "[{{`{{$labels.name}}`}}] Application not synchronized"
+              description: >
+                The application [{{`{{$labels.name}}`}} has not been synchronized for over
+                12 hours which means that the state of this cloud has drifted away from the
+                state inside Git.
+
+
+  dex:
+    enabled: true
+    metrics:
+      enabled: false
+      serviceMonitor:
+        # -- Enable a prometheus ServiceMonitor
+        enabled: false
+
+  redis:
+    enabled: true
+    ## Prometheus redis-exporter sidecar
+    exporter:
+      enabled: false
+    metrics:
+      enabled: false
+      # Redis metrics service configuration
+      serviceMonitor:
+        # -- Enable a prometheus ServiceMonitor
+        enabled: false
+
 
   server:
     #extraArgs:
@@ -52,6 +122,17 @@ argo-cd:
     env:
       - name: ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT
         value: "0"
+    extensions:
+      enabled: false
+      ## Ref: https://github.com/argoproj-labs/argocd-extension-metrics#install-ui-extension
+      extensionList: []
+      #  - name: extension-metrics
+      #    env:
+      #      - name: EXTENSION_URL
+      #        value: https://github.com/argoproj-labs/argocd-extension-metrics/releases/download/v1.0.0/extension.tar.gz
+      #      - name: EXTENSION_CHECKSUM_URL
+      #        value: https://github.com/argoproj-labs/argocd-extension-metrics/releases/download/v1.0.0/extension_checksums.txt
+
     service:
       type: LoadBalancer
       loadBalancerIP: 192.168.49.225
@@ -59,17 +140,21 @@ argo-cd:
       enabled: true
       serviceMonitor:  
         enabled: true
+
   repoServer:
     metrics:
       enabled: true
       serviceMonitor:  
         enabled: true
+
   applicationSet:
     metrics:
       enabled: true
       serviceMonitor:  
         enabled: true
+
   notifications:
+    enabled: true
     metrics:
       enabled: true
       serviceMonitor:  
