@@ -10,7 +10,7 @@ spec:
     routes:
       - matchers:
           - prefix: /
-        redirectAction:
+        routeAction:
           single:
             kube:
               ref:
