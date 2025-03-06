@@ -6,6 +6,16 @@ gloo-platform-crds:
 
 gloo-platform:
   licensing:
+    ## Gloo Gateway license key.
+    #glooGatewayLicenseKey: ""
+    ## Gloo Mesh Core license key.
+    #glooMeshCoreLicenseKey: ""
+    ## Gloo Mesh Enterprise license key.
+    #glooMeshLicenseKey: ""
+    ## Gloo Network license key.
+    #glooNetworkLicenseKey: ""
+    ## Gloo trial license key, for a trial installation of all products.
+    #glooTrialLicenseKey: ""
     licenseSecretName: gloo-core-license
 
   common:
