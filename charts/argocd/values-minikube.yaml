@@ -24,8 +24,10 @@ argo-cd:
     addPrometheusAnnotations: false
   configs:
     cm:
+      accounts.argo-admin.enabled: "false"
       accounts.argo-admin: apiKey, login
       accounts.argo-readonly: apiKey, login
+      accounts.argo-readonly.enabled: "true"
     params:
       #server.insecure: false
       #server.basehref: /
