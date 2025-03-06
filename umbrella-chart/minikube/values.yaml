@@ -160,7 +160,7 @@ argocdManaged:
     disableAutomated: false
     automated: {}
   gloo-ee:
-    disable: true
+    disable: false
     name: gloo-ee
     targetNamespace: gloo-system
     sources:
