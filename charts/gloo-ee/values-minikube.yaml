@@ -17,15 +17,18 @@ gloo-ee:
           customEnv:
             - name: LOG_LEVEL
               value: debug
-          #extraVolume:
-          #  - name: where-ever-ca
-          #    secret:
-          #      secretName: where-ever-ca
-          #extraVolumeMount:
-          #  - name: where-ever-ca
-          #    mountPath: /etc/ssl/certs/where-ever-ca.crt
-          #    subPath: where-ever-ca.crt
-          #    readOnly: true
+          extraVolume:
+            - name: where-ever-ca
+              secret:
+                secretName: where-ever-ca
+          extraVolumeMount:
+            - name: where-ever-ca
+              mountPath: /etc/ssl/certs/where-ever-ca.crt
+              subPath: where-ever-ca.crt
+              readOnly: true
+    istioIntegration:
+      enabled: true
+      disableAutoinjection: true
 
     glooMtls:
       enabled: false
