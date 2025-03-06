@@ -176,6 +176,17 @@ argocdManaged:
     syncwave: "10"
     disableAutomated: false
     automated: {}
+  gloo-mesh-core:
+    disable: false
+    name: gloo-mesh-core
+    targetNamespace: gloo-mesh
+    sources:
+      - path: charts/gloo-mesh-core
+        noHelmValues: false
+        helm:
+          envFile: true
+    disableAutomated: false
+    automated: {}
 
 #-20250220  istio-ingress:
 #-20250220    disable: true
@@ -325,17 +336,6 @@ argocdManaged:
 #-20250220    targetNamespace: gha-runners
 #-20250220    sources:
 #-20250220      - path: charts/gha-runner-scale-set
-#-20250220        noHelmValues: false
-#-20250220        helm:
-#-20250220          envFile: true
-#-20250220    disableAutomated: false
-#-20250220    automated: {}
-#-20250220  gloo-mesh-core:
-#-20250220    disable: true
-#-20250220    name: gloo-mesh-core
-#-20250220    targetNamespace: gloo-mesh
-#-20250220    sources:
-#-20250220      - path: charts/gloo-mesh-core
 #-20250220        noHelmValues: false
 #-20250220        helm:
 #-20250220          envFile: true
