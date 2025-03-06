@@ -11,7 +11,8 @@ gloo-platform:
   common:
     cluster: "cluster.local"
 
-  prometheusUrl: http://prometheus-server.prometheus.svc.cluster.local
+  #prometheusUrl: http://monitoring-kube-prometheus-prometheus.monitoring:9090
+  prometheusUrl: http://monitoring-kube-prometheus-prometheus.monitoring
   targetRevision: "2.6.6"
 
   glooMgmtServer:
