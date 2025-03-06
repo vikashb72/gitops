@@ -10,7 +10,7 @@ global:
     namespace: argocd
     finalisers: resources-finalizer.argocd.argoproj.io
   annotations:
-    syncwave: "0"
+    syncwave: "100"
   spec:
     project: minikube
     repoURL: https://github.com/vikashb72/gitops.git
@@ -23,12 +23,27 @@ global:
       allowEmpty: false
 
 argocdManaged:
+  external-secrets:
+    disable: false
+    name: external-secrets
+    targetNamespace: external-secrets
+    sources:
+      - path: hooks/external-secrets
+        noHelmValues: true
+      - path: charts/external-secrets
+        noHelmValues: false
+        helm:
+          envFile: true
+    syncwave: "1"
+    disableAutomated: false
+    automated: {}
+    ignoreDifferences: false 
   argocd:
     disable: false
     name: argocd
     namespace: argocd
     disableFinalisers: false
-    syncwave: "-10"
+    syncwave: "2"
     sources:
       - path: charts/argocd
         noHelmValues: false
@@ -44,27 +59,11 @@ argocdManaged:
     sources:
       - path: umbrella-chart/minikube
         noHelmValues: true
-    syncwave: "-9"
+    syncwave: "3"
     disableAutomated: false
     automated:
       allowEmpty: true
     ignoreDifferences: false 
-  external-secrets:
-    disable: false
-    name: external-secrets
-    targetNamespace: external-secrets
-    sources:
-      - path: hooks/external-secrets
-        noHelmValues: true
-      - path: charts/external-secrets
-        noHelmValues: false
-        helm:
-          envFile: true
-    syncwave: "-8"
-    disableAutomated: false
-    automated: {}
-    ignoreDifferences: false 
-    syncwave: "-8"
   minio-operator:
     disable: true
     name: minio-operator
@@ -74,6 +73,7 @@ argocdManaged:
         noHelmValues: false
         helm:
           envFile: true
+    syncwave: "4"
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
@@ -88,6 +88,7 @@ argocdManaged:
         noHelmValues: false
         helm:
           envFile: true
+    syncwave: "5"
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
@@ -102,7 +103,7 @@ argocdManaged:
         noHelmValues: false
         helm:
           envFile: true
-    syncwave: "-5"
+    syncwave: "6"
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
@@ -115,6 +116,7 @@ argocdManaged:
     sources:
       - path: charts/echoserver
         noHelmValues: true
+    syncwave: "7"
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
@@ -125,6 +127,7 @@ argocdManaged:
     sources:
       - path: charts/httpbin
         noHelmValues: true
+    syncwave: "7"
     disableAutomated: false
     automated: {}
     ignoreDifferences: false 
@@ -140,6 +143,7 @@ argocdManaged:
           #parameters:
           #  - name: profile
           #    value: ambient
+    syncwave: "8"
     disableAutomated: false
     automated: {}
     ignoreDifferences: true 
@@ -157,6 +161,7 @@ argocdManaged:
         noHelmValues: false
         helm:
           envFile: true
+    syncwave: "9"
     disableAutomated: false
     automated: {}
   gloo-ee:
@@ -168,6 +173,7 @@ argocdManaged:
         noHelmValues: false
         helm:
           envFile: true
+    syncwave: "10"
     disableAutomated: false
     automated: {}
 
@@ -180,6 +186,7 @@ argocdManaged:
 #-20250220        noHelmValues: false
 #-20250220        helm:
 #-20250220          envFile: true
+#-20250220    syncwave: "11"
 #-20250220    disableAutomated: false
 #-20250220    automated: {}
 #-20250220
@@ -187,7 +194,7 @@ argocdManaged:
 #-20250220    disable: true
 #-20250220    name: vpa
 #-20250220    targetNamespace: vpa
-#-20250220    syncwave: "-1"
+#-20250220    syncwave: "12"
 #-20250220    sources:
 #-20250220      - path: charts/vpa
 #-20250220        noHelmValues: false
@@ -200,7 +207,7 @@ argocdManaged:
 #-20250220    disable: true
 #-20250220    name: goldilocks
 #-20250220    targetNamespace: goldilocks
-#-20250220    syncwave: "0"
+#-20250220    syncwave: "13"
 #-20250220    sources:
 #-20250220      - path: charts/goldilocks
 #-20250220        noHelmValues: false
@@ -335,28 +342,6 @@ argocdManaged:
 #-20250220    disableAutomated: false
 #-20250220    automated: {}
 #-20250220  # TO TEST/REFACTOR
-#-20250220  promtail:
-#-20250220    disable: true
-#-20250220    name: promtail
-#-20250220    targetNamespace: grafana
-#-20250220    sources:
-#-20250220      - path: charts/promtail
-#-20250220        noHelmValues: false
-#-20250220        helm:
-#-20250220          envFile: true
-#-20250220    disableAutomated: false
-#-20250220    automated: {}
-#-20250220  loki-distributed:
-#-20250220    disable: true
-#-20250220    name: promtail
-#-20250220    targetNamespace: grafana
-#-20250220    sources:
-#-20250220      - path: charts/loki-distributed
-#-20250220        noHelmValues: false
-#-20250220        helm:
-#-20250220          envFile: true
-#-20250220    disableAutomated: false
-#-20250220    automated: {}
 #-20250220  #documentation:
 #-20250220  #  disable: false
 #-20250220  #  name: chart-name
