@@ -29,7 +29,7 @@ keycloak:
       enabled: true
     ports:
       http: 80
-      https: 443
+      #https: 443
     #nodePorts:
     #  http: ""
     #  https: ""
@@ -69,7 +69,7 @@ keycloak:
     persistence:
       storageClassName: standard
     image:
-      debug: true
+      debug: false
     enabled: true
     auth:
       postgresPassword: ""
