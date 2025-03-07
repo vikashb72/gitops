@@ -28,6 +28,11 @@ argo-cd:
       accounts.argo-admin: apiKey, login
       accounts.argo-readonly: apiKey, login
       accounts.argo-readonly.enabled: "true"
+      #resource.customizations.health.gloo.solo.io_Settings: |
+      #  hs = {}
+      #  hs.status = "Healthy"
+      #  hs.message = "we are good"
+      #  return hs
     params:
       #server.insecure: false
       #server.basehref: /
