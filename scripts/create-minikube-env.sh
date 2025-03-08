@@ -56,12 +56,6 @@ export NFS_PATH
 export EXTERNAL_VAULT
 export EVT
 
-# Add Helm repos
-#helm repo add argo-cd https://argoproj.github.io/argo-helm
-#helm repo add external-secrets https://charts.external-secrets.io
-#helm repo add nfs-subdir-external-provisioner \
-#    https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
-
 # set up env
 minikube stop --profile="${PROFILE}"
 minikube delete --profile="${PROFILE}"
@@ -89,6 +83,9 @@ echo "
 "
 minikube addons configure metallb
 
+helm repo add nfs-subdir-external-provisioner \
+    https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+
 # Install nfs-provisioning
 helm install -n nfs-provisioning nfs-subdir-external-provisioner \
     nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
@@ -109,7 +106,35 @@ kubectl patch storageclass standard \
     -p '{"metadata": 
     {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
 
+# log in to external vault and renew token
+vault login -address $EXTERNAL_VAULT_ADDR $ESO_TOKEN  
+vault token renew -address $EXTERNAL_VAULT_ADDR $ESO_TOKEN 
+ARGOPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/minikube/argocd/admin-password \
+    | jq -r '.data.data.bcrypt')
+
+helm repo add argocd https://argoproj.github.io/argo-helm
+helm repo update
+VERSION=$(helm search repo argocd/argo-cd -o json | jq -r '.[].version')
+
+helm install -n argocd argocd argocd/argo-cd \
+    --version ${VERSION} \
+    --set configs.secret.argocdServerAdminPassword=${ARGOPASS} \
+    --set server.service.type=LoadBalancer \
+    --create-namespace=true
+
+
+#git clone git@github.com:vikashb72/gitops.git /tmp/gitops
+
+#helm dep update /tmp/gitops/k8s/helm/charts/core/argocd
+#helm install -n argocd argocd  \
+#    /tmp/gitops/k8s/helm/charts/core/argocd \
+#    --create-namespace=true \
+#    -f /tmp/gitops/k8s/helm/charts/core/argocd/values-bootstrap.yaml \
+#    --wait
+
 exit
+#helm repo add external-secrets https://charts.external-secrets.io
 # vix #
 # vix #kubectl create namespace external-secrets
 # vix #kubectl -n external-secrets create secret generic external-hashicorp-vault-token \
@@ -117,12 +142,6 @@ exit
 # vix #   --from-literal=token=${ESO_TOKEN} \
 # vix #   --from-file=root.ca=/usr/local/share/ca-certificates/Where_Ever_Root_CA_Root_CA_2025.crt
 # vix #
-# vix #rm -rf /tmp/gitops
-# vix #git clone git@github.com:vikashb72/gitops.git /tmp/gitops
-# vix #helm dep update /tmp/gitops/charts/argocd
-# vix #helm install -n argocd argocd  gitops/charts/argocd \
-# vix #    --create-namespace=true \
-# vix #    -f gitops/charts/argocd/values-${EVT}.yaml \
 # vix #    --wait 
 # vix #
 # vix #kubectl -n argocd get secret argocd-initial-admin-secret \
