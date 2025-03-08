@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-source ~/.external_hvault
-
-#
-# Functions
-#
+# ---------------------------------------------------------------------------- #
+#                             Functions
+# ---------------------------------------------------------------------------- #
 Usage() {
    cat <<EOT
 Usage:
@@ -12,26 +10,40 @@ Usage:
     -n NFS Server
     -N NFS Path
     -v Vault Url
+    -c cpus (default 2)
+    -m memory (default 2200MB)
+    -w Node (default 1)
+    -p Profile
     -h Help
 EOT
    exit 2
 }
 
-#
-# Defaults
-#
-NFS_SERVER="192.168.0.5"
+[ -f ~/.external_hvault ] && source ~/.external_hvault
+
+# ---------------------------------------------------------------------------- #
+#                             Defaults
+# ---------------------------------------------------------------------------- #
+NFS_SERVER="192.168.0.3"
 NFS_PATH="/data/nfs"
-VAULT_URL="https://192.168.0.22:8200"
+VAULT_URL="https://192.168.0.4:8443"
+PROFILE="minikube"
+CPU=2
+MEM="2200MB"
+NODES=1
 EVT=""
 
-while getopts e:n:N:v:h opt
+while getopts c:e:m:n:N:p:v:w:h opt
 do
     case $opt in
+        c) CPU="${OPTARG}";;
         e) EVT="${OPTARG}";;
+        m) MEM="${OPTARG}";;
         n) NFS_SERVER="${OPTARG}";;
         N) NFS_PATH="${OPTARG}";;
+        p) PROFILE="${OPTARG}";;
         v) VAULT_URL="${OPTARG}";;
+        w) NODES="${OPTARG}";;
         h) Usage;;
         *) Usage;;
     esac
@@ -45,34 +57,35 @@ export EXTERNAL_VAULT
 export EVT
 
 # Add Helm repos
-helm repo add argo-cd https://argoproj.github.io/argo-helm
-helm repo add external-secrets https://charts.external-secrets.io
-helm repo add hashicorp https://helm.releases.hashicorp.com
-helm repo add jetstack https://charts.jetstack.io
-helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
-helm repo add vault-raft-snapshot-agent https://argelbargel.github.io/vault-raft-snapshot-agent-helm/
+#helm repo add argo-cd https://argoproj.github.io/argo-helm
+#helm repo add external-secrets https://charts.external-secrets.io
+#helm repo add nfs-subdir-external-provisioner \
+#    https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
 
 # set up env
-minikube stop
-minikube delete
+minikube stop --profile="${PROFILE}"
+minikube delete --profile="${PROFILE}"
 minikube start \
+    --profile="${PROFILE}" \
+    --memory="${MEM}" \
+    --cpus="${CPU}" \
     --cni=flannel \
     --driver=docker \
     --container-runtime=containerd \
     --insecure-registry "192.168.0.0/24" \
+    --nodes=${NODES} \
     --wait=all
 
 export MINIKUBE_IP=$(minikube ip)
 
-minikube addons enable volumesnapshots
-minikube addons enable csi-hostpath-driver
+#minikube addons enable volumesnapshots
 minikube addons enable dashboard 
 minikube addons enable metrics-server 
 minikube addons enable metallb
 
 echo "
--- Enter Load Balancer Start IP: 192.168.49.225
--- Enter Load Balancer End IP: 192.168.49.254
+-- Enter Load Balancer Start IP: ${MINIKUBE_IP}24
+-- Enter Load Balancer End IP: ${MINIKUBE_IP}54
 "
 minikube addons configure metallb
 
@@ -92,47 +105,51 @@ kubectl wait -n nfs-provisioning pods \
     --for condition=Ready \
     --timeout=30s
 
-kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+kubectl patch storageclass standard \
+    -p '{"metadata": 
+    {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
 
-kubectl create namespace external-secrets
-kubectl -n external-secrets create secret generic external-hashicorp-vault-token \
-   --from-literal=addr=${EXTERNAL_VAULT_ADDR} \
-   --from-literal=token=${ESO_TOKEN} \
-   --from-file=root.ca=/usr/local/share/ca-certificates/Where_Ever_Root_CA_Root_CA_2025.crt
-
-rm -rf /tmp/gitops
-git clone git@github.com:vikashb72/gitops.git /tmp/gitops
-helm dep update /tmp/gitops/charts/argocd
-helm install -n argocd argocd  gitops/charts/argocd \
-    --create-namespace=true \
-    -f gitops/charts/argocd/values-${EVT}.yaml \
-    --wait 
-
-kubectl -n argocd get secret argocd-initial-admin-secret \
-    -o jsonpath="{.data.password}" | base64 -d > argocd.adm.pw
-echo ""
-echo "$(cat argocd.adm.pw)"
-echo ""
-argocd login 192.168.49.2:30080 --insecure
-argocd cluster list
-
-cat > ${EVT}.yaml <<EOF
-metadata:
-  name: ${EVT}
-  namespace: argocd
-spec:
-  clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
-  destinations:
-    - namespace: '*'
-      server: '*'
-  sourceRepos:
-    - '*'
-EOF
-
-argocd proj create $EVT -f ${EVT}.yaml
-    
-helm template gitops/umbrella-chart/${EVT} | kubectl -n argocd apply -f -
-argocd cluster list
-argocd app list
+exit
+# vix #
+# vix #kubectl create namespace external-secrets
+# vix #kubectl -n external-secrets create secret generic external-hashicorp-vault-token \
+# vix #   --from-literal=addr=${EXTERNAL_VAULT_ADDR} \
+# vix #   --from-literal=token=${ESO_TOKEN} \
+# vix #   --from-file=root.ca=/usr/local/share/ca-certificates/Where_Ever_Root_CA_Root_CA_2025.crt
+# vix #
+# vix #rm -rf /tmp/gitops
+# vix #git clone git@github.com:vikashb72/gitops.git /tmp/gitops
+# vix #helm dep update /tmp/gitops/charts/argocd
+# vix #helm install -n argocd argocd  gitops/charts/argocd \
+# vix #    --create-namespace=true \
+# vix #    -f gitops/charts/argocd/values-${EVT}.yaml \
+# vix #    --wait 
+# vix #
+# vix #kubectl -n argocd get secret argocd-initial-admin-secret \
+# vix #    -o jsonpath="{.data.password}" | base64 -d > argocd.adm.pw
+# vix #echo ""
+# vix #echo "$(cat argocd.adm.pw)"
+# vix #echo ""
+# vix #argocd login 192.168.49.2:30080 --insecure
+# vix #argocd cluster list
+# vix #
+# vix #cat > ${EVT}.yaml <<EOF
+# vix #metadata:
+# vix #  name: ${EVT}
+# vix #  namespace: argocd
+# vix #spec:
+# vix #  clusterResourceWhitelist:
+# vix #    - group: '*'
+# vix #      kind: '*'
+# vix #  destinations:
+# vix #    - namespace: '*'
+# vix #      server: '*'
+# vix #  sourceRepos:
+# vix #    - '*'
+# vix #EOF
+# vix #
+# vix #argocd proj create $EVT -f ${EVT}.yaml
+# vix #    
+# vix #helm template gitops/umbrella-chart/${EVT} | kubectl -n argocd apply -f -
+# vix #argocd cluster list
+# vix #argocd app list
