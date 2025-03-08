@@ -1,0 +1,22 @@
+env:
+  EVT: bootstrap
+  bootstrapMode: true
+
+Projects: {}
+#  minikube:
+#    description: Minikube Infrastructure
+#  shared:
+#    description: Shared Infrastructure
+#  apps:
+#    description: Apps Infrastructure
+
+argo-cd:
+  namespaceOverride: "argocd"
+  crds:
+    install: true
+  openshift:
+    enabled: false
+
+  server:
+    service:
+      type: LoadBalancer
