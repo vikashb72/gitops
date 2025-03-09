@@ -10,7 +10,7 @@ Projects:
   apps:
     description: Apps Infrastructure
 
-argo-cd:
+argocd:
   namespaceOverride: "argocd"
   crds:
     install: true
