@@ -109,10 +109,52 @@ kubectl patch storageclass standard \
 # log in to external vault and renew token
 vault login -address $EXTERNAL_VAULT_ADDR $ESO_TOKEN  
 vault token renew -address $EXTERNAL_VAULT_ADDR $ESO_TOKEN 
+
+# get azure cred
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/azure/akv-credentials > /tmp/az.creds.json
+
+AZURE_CLIENT_ID=$(jq -r '.data.data.AZURE_CLIENT_ID' /tmp/az.creds.json)
+AZURE_CLIENT_SECRET=$(jq -r '.data.data.AZURE_CLIENT_SECRET' /tmp/az.creds.json)
+AZURE_TENANT_ID=$(jq -r '.data.data.AZURE_TENANT_ID' /tmp/az.creds.json)
+SUBSCRIPTION_ID=$(jq -r '.data.data.SUBSCRIPTION_ID' /tmp/az.creds.json)
+VAULT_AZUREKEYVAULT_KEY_NAME=$(jq -r '.data.data.VAULT_AZUREKEYVAULT_KEY_NAME' /tmp/az.creds.json)
+VAULT_AZUREKEYVAULT_VAULT_NAME=$(jq -r '.data.data.VAULT_AZUREKEYVAULT_VAULT_NAME' /tmp/az.creds.json)
+rm /tmp/az.creds.json
+
+rm -rf /tmp/gitops
+git clone git@github.com:vikashb72/gitops.git /tmp/gitops
+
+kubectl create ns external-secrets
+kubectl -n external-secrets delete secret azure-eso-config
+kubectl -n external-secrets create secret generic \
+    azure-eso-config \
+    --from-literal=clientId="${AZURE_CLIENT_ID}" \
+    --from-literal=clientSecret="${AZURE_CLIENT_SECRET}" \
+    --from-literal=tenantId="${AZURE_TENANT_ID}" \
+    --from-literal=vaultUrl="${VAULT_AZUREKEYVAULT_VAULT_NAME}"
+
+helm install -n external-secrets external-secrets \
+    /tmp/gitops/helm/charts/external-secrets
+
+kubectl -n external-secrets wait pods \
+    -l app.kubernetes.io/instance=external-secrets \
+    --for condition=Ready \
+    --timeout=90s
+
+helm upgrade -n external-secrets external-secrets \
+    /tmp/gitops/helm/charts/external-secrets \
+    -f /tmp/gitops/helm/charts/external-secrets/values-${EVT}.yaml
+exit
+
+
+# get argocd admin password
 ARGOPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
     kv/minikube/argocd/admin-password \
     | jq -r '.data.data.bcrypt')
 
+
+exit
 helm repo add argocd https://argoproj.github.io/argo-helm
 helm repo update
 VERSION=$(helm search repo argocd/argo-cd -o json | jq -r '.[].version')
@@ -122,9 +164,6 @@ helm install -n argocd argocd argocd/argo-cd \
     --set configs.secret.argocdServerAdminPassword=${ARGOPASS} \
     --set server.service.type=LoadBalancer \
     --create-namespace=true
-
-
-#git clone git@github.com:vikashb72/gitops.git /tmp/gitops
 
 #helm dep update /tmp/gitops/k8s/helm/charts/core/argocd
 #helm install -n argocd argocd  \
