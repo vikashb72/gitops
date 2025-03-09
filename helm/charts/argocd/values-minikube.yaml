@@ -3,11 +3,9 @@ env:
   bootstrapMode: true
 
 Projects:
-  minikube:
+  minikube-core:
     description: Minikube Infrastructure
-  shared:
-    description: Shared Infrastructure
-  apps:
+  minikube-apps:
     description: Apps Infrastructure
 
 argocd:
