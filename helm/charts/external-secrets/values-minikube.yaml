@@ -1,84 +1,76 @@
-env:
-  EVT: minikube
-  namespace: external-secrets
-  bootstrapMode: true
-
-ClusterSecretStores:
-  azure-backend:
-    disable: false
-    namespace: external-secrets
-    provider: azurekv
-    tenantId: e74a56d2-dbd3-4687-b57a-bed57155dbb6
-    authType: ServicePrincipal
-    vaultUrl: "https://kv-home-where-ever.vault.azure.net"
-    authSecretRef:
-      clientId:
-        name: azure-eso-config
-        key: clientId
-      clientSecret:
-        name: azure-eso-config
-        key: clientSecret
-  external-vault-backend:
-    disable: false
-    provider: vault
-    server: https://192.168.0.4:8443
-    path: kv
-    version: v2
-    auth:
-      tokenSecretRef:
+schema:
+  env: minikube
+  bootstrap: false
+  namespace: &schema-namespace "external-secrets"
+  SecretStores:
+    azure-backend:
+      disable: false
+      namespace: *schema-namespace
+      provider: azurekv
+      tenantId: "e74a56d2-dbd3-4687-b57a-bed57155dbb6"
+      authType: ServicePrincipal
+      vaultUrl: "https://kv-home-where-ever.vault.azure.net"
+      authSecretRef:
+        clientId:
+          name: azure-eso-config
+          key: clientId
+        clientSecret:
+          name: azure-eso-config
+          key: clientSecret
+    external-vault-backend:
+      disable: false
+      provider: vault
+      server: "https://192.168.0.4:8443"
+      path: kv
+      version: v2
+      auth:
+        tokenSecretRef:
+          name: external-hashicorp-vault-token
+          namespace: *schema-namespace
+          key: token
+      caProvider:
+        type: Secret
         name: external-hashicorp-vault-token
-        namespace: external-secrets
-        key: token
-    caProvider:
-      type: Secret
-      name: external-hashicorp-vault-token
-      key: ca.crt
-      namespace: external-secrets
-
-ClusterStoreSecrets:
-  external-hashicorp-vault-token:
-    namespace: external-secrets
-    refresh: 8h
-    store: azure-backend
-    properties:
-      - localkey: token
-        remotekey: "k8s-minikube-eso-external-vault"
-        remoteproperty: token
-      - localkey: ext-vault-addr
-        remotekey: "k8s-minikube-eso-external-vault"
-        remoteproperty: ext-vault-addr
-      - localkey: ca.crt
-        remotekey: "k8s-minikube-eso-external-vault"
-        remoteproperty: ca.crt
-  vault-tls:
-    namespace: external-secrets
-    refresh: 1h
-    store: external-vault-backend
-    properties:
-      - localkey: ca.crt
-        remotekey: kv/minikube/vault/tls
-        remoteproperty: ca.crt
-      - localkey: tls.crt
-        remotekey: kv/minikube/vault/tls
-        remoteproperty: tls.crt
-      - localkey: tls.key
-        remotekey: kv/minikube/vault/tls
-        remoteproperty: tls.key
+        key: ca.crt
+        namespace: *schema-namespace
+  Secrets:
+    external-hashicorp-vault-token:
+      namespace: *schema-namespace
+      refresh: 8h
+      store: azure-backend
+      properties:
+        - localkey: token
+          remotekey: "k8s-minikube-eso-external-vault"
+          remoteproperty: token
+        - localkey: ext-vault-addr
+          remotekey: "k8s-minikube-eso-external-vault"
+          remoteproperty: ext-vault-addr
+        - localkey: ca.crt
+          remotekey: "k8s-minikube-eso-external-vault"
+          remoteproperty: ca.crt
+    vault-tls:
+      #namespace: *schema-namespace
+      refresh: 1h
+      store: external-vault-backend
+      properties:
+        - localkey: ca.crt
+          remotekey: "kv/minikube/vault/tls"
+          remoteproperty: ca.crt
+        - localkey: tls.crt
+          remotekey: "kv/minikube/vault/tls"
+          remoteproperty: tls.crt
+        - localkey: tls.key
+          remotekey: "kv/minikube/vault/tls"
+          remoteproperty: tls.key
 
 external-secrets:
+  namespaceOverride: *schema-namespace
   global:
     compatibility:
       openshift:
         adaptSecurityContext: disabled
 
   installCRDs: true
-
-  crds:
-    createClusterExternalSecret: true
-    createClusterSecretStore: true
-    createPushSecret: true
-    conversion:
-      enabled: true
 
   serviceMonitor:
     enabled: false
