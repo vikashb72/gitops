@@ -158,11 +158,12 @@ kubectl -n external-secrets create secret generic \
     --from-literal=vaultUrl="${VAULT_AZUREKEYVAULT_VAULT_NAME}"
 
 # bootstrap installation
+# the point of this is really to install the CRDs
+helm dependency build /tmp/gitops/helm/charts/external-secrets
 helm install -n external-secrets external-secrets \
     /tmp/gitops/helm/charts/external-secrets \
     --set schema.bootstrap=true \
-    -f /tmp/gitops/helm/charts/external-secrets-${EVT}.yaml
-    
+    -f /tmp/gitops/helm/charts/external-secrets/values-${EVT}.yaml
 
 # wait for pods 
 # we are really waiting for the CRD installation
@@ -176,8 +177,6 @@ helm upgrade -n external-secrets external-secrets \
     /tmp/gitops/helm/charts/external-secrets \
     -f /tmp/gitops/helm/charts/external-secrets/values-${EVT}.yaml
 
-exit
-
 # ---------------------------------------------------------------------------- #
 #                             argocd
 # ---------------------------------------------------------------------------- #
@@ -186,67 +185,28 @@ ARGOPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
     kv/minikube/argocd/admin-password \
     | jq -r '.data.data.bcrypt')
 
-
 helm repo add argocd https://argoproj.github.io/argo-helm
 helm repo update
-VERSION=$(helm search repo argocd/argo-cd -o json | jq -r '.[].version')
-LOADBALANCERIP=$(grep loadBalancerIP \
-    /tmp/gitops/helm/charts/argocd/values-${EVT}.yaml \
-    | awk '{ print $2 }')
+helm dep update /tmp/gitops/helm/charts/argocd
 
-helm install -n argocd argocd argocd/argo-cd \
-    --version ${VERSION} \
-    --set configs.secret.argocdServerAdminPassword=${ARGOPASS} \
-    --set server.service.type=LoadBalancer \
-    --set server.service.loadBalancerIP=${LOADBALANCERIP} \
-    --create-namespace=true
+helm install -n argocd argocd \
+    /tmp/gitops/helm/charts/argocd \
+    --set argo-cd.configs.secret.argocdServerAdminPassword=${ARGOPASS} \
+    --set schema.bootstrap=true  \
+    --create-namespace=true \
+    -f /tmp/gitops/helm/charts/argocd/values-${EVT}.yaml \
+    --wait
 
 kubectl -n argocd wait pods -l app.kubernetes.io/instance=argocd \
-   --for condition=Ready --timeout=90s
+   --for condition=Ready --timeout=60s
 
+helm upgrade -n argocd argocd \
+    /tmp/gitops/helm/charts/argocd \
+    --set argo-cd.configs.secret.argocdServerAdminPassword=${ARGOPASS} \
+    --create-namespace=true \
+    -f /tmp/gitops/helm/charts/argocd/values-${EVT}.yaml \
+    --wait
 
-#helm dep update /tmp/gitops/k8s/helm/charts/core/argocd
-#helm install -n argocd argocd  \
-#    /tmp/gitops/k8s/helm/charts/argocd \
-#    -f /tmp/gitops/k8s/helm/charts/argocd/values-bootstrap.yaml \
-#    --wait
-
-exit
-#helm repo add external-secrets https://charts.external-secrets.io
-# vix #
-# vix #kubectl create namespace external-secrets
-# vix #kubectl -n external-secrets create secret generic external-hashicorp-vault-token \
-# vix #   --from-literal=addr=${EXTERNAL_VAULT_ADDR} \
-# vix #   --from-literal=token=${ESO_TOKEN} \
-# vix #   --from-file=root.ca=/usr/local/share/ca-certificates/Where_Ever_Root_CA_Root_CA_2025.crt
-# vix #
-# vix #    --wait 
-# vix #
-# vix #kubectl -n argocd get secret argocd-initial-admin-secret \
-# vix #    -o jsonpath="{.data.password}" | base64 -d > argocd.adm.pw
-# vix #echo ""
-# vix #echo "$(cat argocd.adm.pw)"
-# vix #echo ""
-# vix #argocd login 192.168.49.2:30080 --insecure
-# vix #argocd cluster list
-# vix #
-# vix #cat > ${EVT}.yaml <<EOF
-# vix #metadata:
-# vix #  name: ${EVT}
-# vix #  namespace: argocd
-# vix #spec:
-# vix #  clusterResourceWhitelist:
-# vix #    - group: '*'
-# vix #      kind: '*'
-# vix #  destinations:
-# vix #    - namespace: '*'
-# vix #      server: '*'
-# vix #  sourceRepos:
-# vix #    - '*'
-# vix #EOF
-# vix #
-# vix #argocd proj create $EVT -f ${EVT}.yaml
-# vix #    
-# vix #helm template gitops/umbrella-chart/${EVT} | kubectl -n argocd apply -f -
-# vix #argocd cluster list
-# vix #argocd app list
+helm template /tmp/gitops/helm/charts/umbrella/minikube \
+    -f /tmp/gitops/helm/charts/umbrella/minikube/values-core.yaml \
+    kubectl -n argocd apply -f -
