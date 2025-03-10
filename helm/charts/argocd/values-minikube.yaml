@@ -1,14 +1,15 @@
-env:
-  EVT: minikube
-  bootstrapMode: true
+schema:
+  env: minikube
+  bootstrap: false
+  projects:
+    minikube-core: Minikube Infrastructure
+    minikube-apps: Minikube Apps Infrastructure
+  loadBalancerIP: &server-loadBalancerIP "192.168.49.225"
+  serviceMonitor:
+    enabled: &enable-serviceMonitor "false"
+    templates: false
 
-Projects:
-  minikube-core:
-    description: Minikube Infrastructure
-  minikube-apps:
-    description: Apps Infrastructure
-
-argocd:
+argo-cd:
   namespaceOverride: "argocd"
   crds:
     install: true
@@ -59,38 +60,37 @@ argocd:
     metrics:
       enabled: false
       serviceMonitor:
-        enabled: false
+        enabled: *enable-serviceMonitor
       rules:
         enabled: false
         namespace: "" # "monitoring"
         selector: {}
           # prometheus: kube-prometheus
-        spec:
-          - alert: ArgoAppMissing
-            expr: |
-              absent(argocd_app_info) == 1
-            for: 15m
-            labels:
-              severity: critical
-            annotations:
-              summary: "[Argo CD] No reported applications"
-              description: >
-                Argo CD has not reported any applications data for the past 15 minutes which
-                means that it must be down or not functioning properly.  This needs to be
-                resolved for this cloud to continue to maintain state.
-          - alert: ArgoAppNotSynced
-            expr: |
-              argocd_app_info{sync_status!="Synced"} == 1
-            for: 12h
-            labels:
-              severity: warning
-            annotations:
-              summary: "[{{`{{$labels.name}}`}}] Application not synchronized"
-              description: >
-                The application [{{`{{$labels.name}}`}} has not been synchronized for over
-                12 hours which means that the state of this cloud has drifted away from the
-                state inside Git.
-
+        #spec:
+        #  - alert: ArgoAppMissing
+        #    expr: |
+        #      absent(argocd_app_info) == 1
+        #    for: 15m
+        #    labels:
+        #      severity: critical
+        #    annotations:
+        #      summary: "[Argo CD] No reported applications"
+        #      description: >
+        #        Argo CD has not reported any applications data for the past 15 minutes which
+        #        means that it must be down or not functioning properly.  This needs to be
+        #        resolved for this cloud to continue to maintain state.
+        #  - alert: ArgoAppNotSynced
+        #    expr: |
+        #      argocd_app_info{sync_status!="Synced"} == 1
+        #    for: 12h
+        #    labels:
+        #      severity: warning
+        #    annotations:
+        #      summary: "[{{`{{$labels.name}}`}}] Application not synchronized"
+        #      description: >
+        #        The application [{{`{{$labels.name}}`}} has not been synchronized for over
+        #        12 hours which means that the state of this cloud has drifted away from the
+        #        state inside Git.
 
   dex:
     enabled: true
@@ -98,7 +98,7 @@ argocd:
       enabled: false
       serviceMonitor:
         # -- Enable a prometheus ServiceMonitor
-        enabled: false
+        enabled: *enable-serviceMonitor
 
   redis:
     enabled: true
@@ -110,8 +110,7 @@ argocd:
       # Redis metrics service configuration
       serviceMonitor:
         # -- Enable a prometheus ServiceMonitor
-        enabled: false
-
+        enabled: *enable-serviceMonitor
 
   server:
     #extraArgs:
@@ -140,30 +139,30 @@ argocd:
 
     service:
       type: LoadBalancer
-      loadBalancerIP: 192.168.49.225
+      loadBalancerIP: *server-loadBalancerIP
     metrics:
       enabled: true
       serviceMonitor:  
-        enabled: true
+        enabled: *enable-serviceMonitor
 
   repoServer:
     metrics:
       enabled: true
       serviceMonitor:  
-        enabled: true
+        enabled: *enable-serviceMonitor
 
   applicationSet:
     metrics:
       enabled: true
       serviceMonitor:  
-        enabled: true
+        enabled: *enable-serviceMonitor
 
   notifications:
     enabled: true
     metrics:
       enabled: true
       serviceMonitor:  
-        enabled: true
+        enabled: *enable-serviceMonitor
 
 argo-workflows:
   namespaceOverride: "argocd"

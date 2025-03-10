@@ -1,4 +1,5 @@
-{{- if not .Values.env.bootstrapMode }}
+{{- if not .Values.schema.bootstrap }}
+{{- if .Values.schema.serviceMonitor.templates }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -12,4 +13,5 @@ spec:
       app.kubernetes.io/name: argocd-notifications-controller-metrics
   endpoints:
     - port: metrics
+{{- end }}
 {{- end }}
