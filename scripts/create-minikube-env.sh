@@ -13,7 +13,6 @@ Usage:
     -c cpus (default 2)
     -m memory (default 2200MB)
     -w Node (default 1)
-    -p Profile
     -h Help
 EOT
    exit 2
@@ -27,13 +26,15 @@ EOT
 NFS_SERVER="192.168.0.3"
 NFS_PATH="/data/nfs"
 VAULT_URL="https://192.168.0.4:8443"
-PROFILE="minikube"
 CPU=2
 MEM="2200MB"
 NODES=1
 EVT=""
 
-while getopts c:e:m:n:N:p:v:w:h opt
+# ---------------------------------------------------------------------------- #
+#                             Process Args
+# ---------------------------------------------------------------------------- #
+while getopts c:e:m:n:N:v:w:h opt
 do
     case $opt in
         c) CPU="${OPTARG}";;
@@ -41,7 +42,6 @@ do
         m) MEM="${OPTARG}";;
         n) NFS_SERVER="${OPTARG}";;
         N) NFS_PATH="${OPTARG}";;
-        p) PROFILE="${OPTARG}";;
         v) VAULT_URL="${OPTARG}";;
         w) NODES="${OPTARG}";;
         h) Usage;;
@@ -56,11 +56,13 @@ export NFS_PATH
 export EXTERNAL_VAULT
 export EVT
 
-# set up env
-minikube stop --profile="${PROFILE}"
-minikube delete --profile="${PROFILE}"
+# ---------------------------------------------------------------------------- #
+#                             Set up minikube
+# ---------------------------------------------------------------------------- #
+minikube stop --profile="${EVT}"
+minikube delete --profile="${EVT}"
 minikube start \
-    --profile="${PROFILE}" \
+    --profile="${EVT}" \
     --memory="${MEM}" \
     --cpus="${CPU}" \
     --cni=flannel \
@@ -72,6 +74,9 @@ minikube start \
 
 export MINIKUBE_IP=$(minikube ip)
 
+# ---------------------------------------------------------------------------- #
+#                             Minikube Addons
+# ---------------------------------------------------------------------------- #
 #minikube addons enable volumesnapshots
 minikube addons enable dashboard 
 minikube addons enable metrics-server 
@@ -83,6 +88,9 @@ echo "
 "
 minikube addons configure metallb
 
+# ---------------------------------------------------------------------------- #
+#                             Storage
+# ---------------------------------------------------------------------------- #
 helm repo add nfs-subdir-external-provisioner \
     https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
 
@@ -102,14 +110,23 @@ kubectl wait -n nfs-provisioning pods \
     --for condition=Ready \
     --timeout=30s
 
+# ---------------------------------------------------------------------------- #
+#                             Disable host path storage
+# ---------------------------------------------------------------------------- #
 kubectl patch storageclass standard \
     -p '{"metadata": 
     {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
 
+# ---------------------------------------------------------------------------- #
+#                             Login to External Vault
+# ---------------------------------------------------------------------------- #
 # log in to external vault and renew token
 vault login -address $EXTERNAL_VAULT_ADDR $ESO_TOKEN  
 vault token renew -address $EXTERNAL_VAULT_ADDR $ESO_TOKEN 
 
+# ---------------------------------------------------------------------------- #
+#                             Get Azure Credentials
+# ---------------------------------------------------------------------------- #
 # get azure cred
 vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
     kv/azure/akv-credentials > /tmp/az.creds.json
@@ -122,9 +139,15 @@ VAULT_AZUREKEYVAULT_KEY_NAME=$(jq -r '.data.data.VAULT_AZUREKEYVAULT_KEY_NAME' /
 VAULT_AZUREKEYVAULT_VAULT_NAME=$(jq -r '.data.data.VAULT_AZUREKEYVAULT_VAULT_NAME' /tmp/az.creds.json)
 rm /tmp/az.creds.json
 
+# ---------------------------------------------------------------------------- #
+#                             Pull repo
+# ---------------------------------------------------------------------------- #
 rm -rf /tmp/gitops
 git clone git@github.com:vikashb72/gitops.git /tmp/gitops
 
+# ---------------------------------------------------------------------------- #
+#                             External Secrets
+# ---------------------------------------------------------------------------- #
 kubectl create ns external-secrets
 kubectl -n external-secrets delete secret azure-eso-config
 kubectl -n external-secrets create secret generic \
@@ -134,42 +157,58 @@ kubectl -n external-secrets create secret generic \
     --from-literal=tenantId="${AZURE_TENANT_ID}" \
     --from-literal=vaultUrl="${VAULT_AZUREKEYVAULT_VAULT_NAME}"
 
+# bootstrap installation
 helm install -n external-secrets external-secrets \
-    /tmp/gitops/helm/charts/external-secrets
+    /tmp/gitops/helm/charts/external-secrets \
+    --set schema.bootstrap=true \
+    -f /tmp/gitops/helm/charts/external-secrets-${EVT}.yaml
+    
 
+# wait for pods 
+# we are really waiting for the CRD installation
 kubectl -n external-secrets wait pods \
     -l app.kubernetes.io/instance=external-secrets \
     --for condition=Ready \
     --timeout=90s
 
+# upgrade so that we install the secretstores
 helm upgrade -n external-secrets external-secrets \
     /tmp/gitops/helm/charts/external-secrets \
     -f /tmp/gitops/helm/charts/external-secrets/values-${EVT}.yaml
+
 exit
 
-
+# ---------------------------------------------------------------------------- #
+#                             argocd
+# ---------------------------------------------------------------------------- #
 # get argocd admin password
 ARGOPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
     kv/minikube/argocd/admin-password \
     | jq -r '.data.data.bcrypt')
 
 
-exit
 helm repo add argocd https://argoproj.github.io/argo-helm
 helm repo update
 VERSION=$(helm search repo argocd/argo-cd -o json | jq -r '.[].version')
+LOADBALANCERIP=$(grep loadBalancerIP \
+    /tmp/gitops/helm/charts/argocd/values-${EVT}.yaml \
+    | awk '{ print $2 }')
 
 helm install -n argocd argocd argocd/argo-cd \
     --version ${VERSION} \
     --set configs.secret.argocdServerAdminPassword=${ARGOPASS} \
     --set server.service.type=LoadBalancer \
+    --set server.service.loadBalancerIP=${LOADBALANCERIP} \
     --create-namespace=true
+
+kubectl -n argocd wait pods -l app.kubernetes.io/instance=argocd \
+   --for condition=Ready --timeout=90s
+
 
 #helm dep update /tmp/gitops/k8s/helm/charts/core/argocd
 #helm install -n argocd argocd  \
-#    /tmp/gitops/k8s/helm/charts/core/argocd \
-#    --create-namespace=true \
-#    -f /tmp/gitops/k8s/helm/charts/core/argocd/values-bootstrap.yaml \
+#    /tmp/gitops/k8s/helm/charts/argocd \
+#    -f /tmp/gitops/k8s/helm/charts/argocd/values-bootstrap.yaml \
 #    --wait
 
 exit
