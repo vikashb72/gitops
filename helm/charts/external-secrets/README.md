@@ -107,6 +107,7 @@ kubectl -n external-secrets create secret generic \
 helm install -n external-secrets external-secrets \
     /path/to/helm/charts/external-secrets \
     --set schema.bootstrap=true \
+    --set external-secrets.webhook.certManager.enabled=false \
     -f /path/to/helm/charts/external-secrets-${EVT}.yaml
 ```
 
@@ -122,5 +123,6 @@ kubectl -n external-secrets wait pods \
 ```
 helm install -n external-secrets external-secrets \
     /path/to/helm/charts/external-secrets \
+    --set external-secrets.webhook.certManager.enabled=false \
     -f /path/to/helm/charts/external-secrets-${EVT}.yaml
 ```
