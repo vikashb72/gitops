@@ -41,47 +41,33 @@ argocdManaged:
   external-secrets:
     name: external-secrets
     targetNamespace: external-secrets
-    syncwave: "3"
+    syncwave: "2"
     sources:
       - path: helm/charts/external-secrets
       #- path: hooks/external-secrets
       #  noHelmValues: true
-#  minio-operator:
-#    disable: true
-#    name: minio-operator
-#    targetNamespace: minio-operator
-#    sources:
-#      - path: charts/minio-operator
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    syncwave: "4"
-#    disableAutomated: false
-#    automated: {}
-#    ignoreDifferences: false 
-#    syncOptions:
-#      ServerSideApply: true
-#  minio-tenant:
-#    disable: true
-#    name: minio-tenant
-#    targetNamespace: minio-tenant
-#    sources:
-#      - path: charts/minio-tenant
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    syncwave: "5"
-#    disableAutomated: false
-#    automated: {}
-#    ignoreDifferences: false 
-#    syncOptions:
-#      ServerSideApply: true
+  minio-operator:
+    name: minio-operator
+    targetNamespace: minio-operator
+    syncwave: "3"
+    sources:
+      - path: helm/charts/minio-operator
+    syncOptions:
+      ServerSideApply: true
+  minio-tenant:
+    name: minio-tenant
+    targetNamespace: minio-tenant
+    syncwave: "4"
+    sources:
+      - path: helm/charts/minio-tenant
+    syncOptions:
+      ServerSideApply: true
 #  monitoring:
 #    disable: false
 #    name: monitoring
 #    targetNamespace: monitoring
 #    sources:
-#      - path: charts/monitoring
+#      - path: helm/charts/monitoring
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -96,7 +82,7 @@ argocdManaged:
 #    name: echoserver
 #    targetNamespace: echoserver
 #    sources:
-#      - path: charts/echoserver
+#      - path: helm/charts/echoserver
 #        noHelmValues: true
 #    syncwave: "7"
 #    disableAutomated: false
@@ -107,7 +93,7 @@ argocdManaged:
 #    name: httpbin
 #    targetNamespace: httpbin
 #    sources:
-#      - path: charts/httpbin
+#      - path: helm/charts/httpbin
 #        noHelmValues: true
 #    syncwave: "7"
 #    disableAutomated: false
@@ -118,7 +104,7 @@ argocdManaged:
 #    name: istio
 #    targetNamespace: istio-system
 #    sources:
-#      - path: charts/istio
+#      - path: helm/charts/istio
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -139,7 +125,7 @@ argocdManaged:
 #    name: keycloak
 #    targetNamespace: keycloak
 #    sources:
-#      - path: charts/keycloak
+#      - path: helm/charts/keycloak
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -151,7 +137,7 @@ argocdManaged:
 #    name: gloo-ee
 #    targetNamespace: gloo-system
 #    sources:
-#      - path: charts/gloo-ee
+#      - path: helm/charts/gloo-ee
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -163,7 +149,7 @@ argocdManaged:
 #    name: gloo-mesh-core
 #    targetNamespace: gloo-mesh
 #    sources:
-#      - path: charts/gloo-mesh-core
+#      - path: helm/charts/gloo-mesh-core
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -175,7 +161,7 @@ argocdManaged:
 #    name: istio-ingress
 #    targetNamespace: istio-ingress
 #    sources:
-#      - path: charts/istio-ingress
+#      - path: helm/charts/istio-ingress
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -189,7 +175,7 @@ argocdManaged:
 #    targetNamespace: vpa
 #    syncwave: "12"
 #    sources:
-#      - path: charts/vpa
+#      - path: helm/charts/vpa
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -202,7 +188,7 @@ argocdManaged:
 #    targetNamespace: goldilocks
 #    syncwave: "13"
 #    sources:
-#      - path: charts/goldilocks
+#      - path: helm/charts/goldilocks
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -215,7 +201,7 @@ argocdManaged:
 #    syncwave: "-5"
 #    targetNamespace: vault-system
 #    sources:
-#      - path: charts/hashicorp-vault
+#      - path: helm/charts/hashicorp-vault
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -233,7 +219,7 @@ argocdManaged:
 #    syncwave: "-5"
 #    targetNamespace: cert-manager
 #    sources:
-#      - path: charts/cert-manager
+#      - path: helm/charts/cert-manager
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -245,7 +231,7 @@ argocdManaged:
 #    name: grafana
 #    targetNamespace: grafana
 #    sources:
-#      - path: charts/grafana
+#      - path: helm/charts/grafana
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -258,7 +244,7 @@ argocdManaged:
 #    name: redis
 #    targetNamespace: redis
 #    sources:
-#      - path: charts/redis
+#      - path: helm/charts/redis
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -269,7 +255,7 @@ argocdManaged:
 #    name: strimzi-kafka-operator
 #    targetNamespace: kafka-system
 #    sources:
-#      - path: charts/strimzi-kafka-operator
+#      - path: helm/charts/strimzi-kafka-operator
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -280,7 +266,7 @@ argocdManaged:
 #    name: reloader
 #    targetNamespace: reloader
 #    sources:
-#      - path: charts/reloader
+#      - path: helm/charts/reloader
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -291,7 +277,7 @@ argocdManaged:
 #    name: keda
 #    targetNamespace: keda
 #    sources:
-#      - path: charts/keda
+#      - path: helm/charts/keda
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -304,7 +290,7 @@ argocdManaged:
 #    name: gha-runner-controller
 #    targetNamespace: gha-controller
 #    sources:
-#      - path: charts/gha-runner-controller
+#      - path: helm/charts/gha-runner-controller
 #        noHelmValues: false
 #        helm:
 #          envFile: true
@@ -317,7 +303,7 @@ argocdManaged:
 #    name: gha-runner-scale-set
 #    targetNamespace: gha-runners
 #    sources:
-#      - path: charts/gha-runner-scale-set
+#      - path: helm/charts/gha-runner-scale-set
 #        noHelmValues: false
 #        helm:
 #          envFile: true

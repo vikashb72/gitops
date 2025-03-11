@@ -1,0 +1,20 @@
+schema:
+  env: minikube
+
+operator:
+  operator:
+    env:
+      - name: OPERATOR_STS_ENABLED
+        value: "on"
+      - name: WATCHED_NAMESPACE
+        value: "minio-tenant"
+    replicaCount: 3
+    # The volumes must exist *and* be accessible to the Operator pods.
+    volumes: [ ]
+    volumeMounts: [ ]
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+        ephemeral-storage: 500Mi
+  
