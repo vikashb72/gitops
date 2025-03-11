@@ -1,5 +1,6 @@
-global:
+schema:
   env: minikube
+  bootstrap: true
   hvault:
     external:
       addr: https://192.168.0.4:8443
@@ -9,7 +10,7 @@ global:
   annotations:
     syncwave: "100"
   spec:
-    project: minikube
+    project: minikube-core
     repoURL: https://github.com/vikashb72/gitops.git
     targetRevision: HEAD
     destination:
@@ -20,21 +21,15 @@ global:
       allowEmpty: false
 
 argocdManaged:
-#  external-secrets:
-#    disable: false
-#    name: external-secrets
-#    targetNamespace: external-secrets
-#    sources:
-#      - path: hooks/external-secrets
-#        noHelmValues: true
-#      - path: charts/external-secrets
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    syncwave: "1"
-#    disableAutomated: false
-#    automated: {}
-#    ignoreDifferences: false 
+  external-secrets:
+    disable: false
+    name: external-secrets
+    targetNamespace: external-secrets
+    sources:
+      #- path: hooks/external-secrets
+      #  noHelmValues: true
+      - path: helm/charts/external-secrets
+        #noHelmValues: false
 #  argocd:
 #    disable: false
 #    name: argocd
@@ -357,6 +352,9 @@ argocdManaged:
 #  #      noHelmValues: false
 #  #      envFile: true
 #  #      helm:
+#  #        valueFiles:
+#  #          - file1
+#  #          - file2
 #  #        values: |
 #  #          global:
 #  #            domain: minikube.home.where-ever.za.net
