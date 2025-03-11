@@ -1,6 +1,6 @@
 schema:
   env: minikube
-  bootstrap: true
+  bootstrap: false
   hvault:
     external:
       addr: https://192.168.0.4:8443
@@ -10,7 +10,7 @@ schema:
   annotations:
     syncwave: "100"
   spec:
-    project: minikube-core
+    project: minikube-infrastructure
     repoURL: https://github.com/vikashb72/gitops.git
     targetRevision: HEAD
     destination:
