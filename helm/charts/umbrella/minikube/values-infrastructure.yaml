@@ -27,40 +27,25 @@ argocdManaged:
     syncwave: "1"
     sources:
       - path: helm/charts/argocd
+  umbrella-chart:
+    name: umbrella-chart
+    namespace: argocd
+    syncwave: "1"
+    sources:
+      - path: helm/charts/umbrella/minikube
+        helm:
+          valueFiles:
+            - values-infrastructure.yaml
+    automated:
+      allowEmpty: true
   external-secrets:
     name: external-secrets
     targetNamespace: external-secrets
-    syncwave: "2"
+    syncwave: "3"
     sources:
       - path: helm/charts/external-secrets
       #- path: hooks/external-secrets
       #  noHelmValues: true
-#  argocd:
-#    disable: false
-#    name: argocd
-#    namespace: argocd
-#    disableFinalisers: false
-#    syncwave: "2"
-#    sources:
-#      - path: charts/argocd
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    disableAutomated: false
-#    automated:
-#      allowEmpty: false
-#    ignoreDifferences: false 
-#  umbrella-chart:
-#    disable: false
-#    name: umbrella-chart
-#    sources:
-#      - path: umbrella-chart/minikube
-#        noHelmValues: true
-#    syncwave: "3"
-#    disableAutomated: false
-#    automated:
-#      allowEmpty: true
-#    ignoreDifferences: false 
 #  minio-operator:
 #    disable: true
 #    name: minio-operator
