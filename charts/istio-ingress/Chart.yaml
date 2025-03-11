@@ -1,4 +1,0 @@
-apiVersion: v2
-name: istio-ingress
-description: istio ingress gateway(s)
-version: 1.0.0
