@@ -1,0 +1,10 @@
+apiVersion: v2
+name: gloo-mesh-core
+version: 1.0.0
+dependencies:
+  - name: gloo-platform-crds
+    version: 2.6.6
+    repository: https://storage.googleapis.com/gloo-platform/helm-charts
+  - name: gloo-platform
+    version: 2.6.6
+    repository: https://storage.googleapis.com/gloo-platform/helm-charts

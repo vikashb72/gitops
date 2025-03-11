@@ -1,0 +1,115 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: "{{ .Values.cluster.name }}"
+spec:
+  clusterCa:
+    generateCertificateAuthority: false
+  clientsCa:
+    generateCertificateAuthority: false
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+  kafka:
+    config:
+      default.replication.factor: 3
+      min.insync.replicas: 2
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      unclean.leader.election.enable: false
+    jvmOptions:
+      -Xms: {{ .Values.cluster.kafka.jvmOptions.xms }}
+      -Xmx: {{ .Values.cluster.kafka.jvmOptions.xmx }}
+    replicas: {{ .Values.cluster.kafka.replicas }}
+    version: {{ .Values.cluster.kafka.version }}
+    metadataVersion: "{{ .Values.cluster.kafka.metadataVersion }}"
+    logging:
+      type: inline
+      loggers:
+        kafka.root.logger.level: INFO
+{{- if .Values.cluster.kafka.resources }}
+    resources:
+      requests:
+        memory: {{ .Values.cluster.kafka.resources.requests.memory }}
+        cpu: {{ .Values.cluster.kafka.resources.requests.cpu }}
+      limits:
+        memory: {{ .Values.cluster.kafka.resources.limits.memory }}
+        cpu: {{ .Values.cluster.kafka.resources.limits.cpu }}
+{{- end }}
+    readinessProbe:
+      initialDelaySeconds: 30
+      timeoutSeconds: 10
+    livenessProbe:
+      initialDelaySeconds: 30
+      timeoutSeconds: 10
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+{{- if .Values.cluster.kafka.external_listener.enabled }}
+      - name: external
+        port: {{ default 9094 .Values.cluster.kafka.external_listener.port }}
+        type: {{ default "loadbalancer" .Values.cluster.kafka.external_listener.type }}
+        tls: {{ default false .Values.cluster.kafka.external_listener.tls }}
+        configuration:
+          bootstrap:
+{{- if .Values.cluster.kafka.external_listener.annotations }}
+            annotations:
+{{- range .Values.cluster.kafka.external_listener.annotations }}
+              {{ . }}
+{{- end }}
+{{- end }}
+          brokers:
+{{- $count := (.Values.cluster.kafka.replicas | int) }}
+{{- range until $count }}
+            - broker: {{.}}
+{{- if $.Values.cluster.kafka.external_listener.annotations }}
+              annotations:
+{{- range $annotation := $.Values.cluster.kafka.external_listener.annotations }}
+                {{.}}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+    storage:
+      type: {{ .Values.cluster.kafka.storage.type }}
+      volumes:
+{{- range $volume := $.Values.cluster.kafka.storage.volumes }}
+        - id: {{ .id }}
+          type: {{ .type }}
+          class: {{ .class }}
+          size: {{ .size }}
+          deleteClaim: {{ .deleteClaim }}
+{{- end }}
+  zookeeper:
+    livenessProbe:
+      initialDelaySeconds: 30
+      timeoutSeconds: 10
+    logging:
+      type: inline
+      loggers:
+        kafka.root.logger.level: INFO
+    readinessProbe:
+      initialDelaySeconds: 30
+      timeoutSeconds: 10
+    replicas: {{ .Values.cluster.zookeeper.replicas }}
+{{- if .Values.cluster.zookeeper.resources }}
+    resources:
+      requests:
+        memory: {{ .Values.cluster.zookeeper.resources.requests.memory }}
+        cpu: {{ .Values.cluster.zookeeper.resources.requests.cpu }}
+      limits:
+        memory: {{ .Values.cluster.zookeeper.resources.limits.memory }}
+        cpu: {{ .Values.cluster.zookeeper.resources.limits.cpu }}
+{{- end }}
+    storage:
+      type: {{ .Values.cluster.zookeeper.storage.type }}
+      class: {{ .Values.cluster.zookeeper.storage.class }}
+      size: {{ .Values.cluster.zookeeper.storage.size }}
+      deleteClaim: {{ .Values.cluster.zookeeper.storage.deleteClaim }}

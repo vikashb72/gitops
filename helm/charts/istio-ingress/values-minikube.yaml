@@ -1,0 +1,99 @@
+gateways:
+  httpbin-gateway:
+    namespace: istio-ingress
+    gateway: istio
+    listeners:
+      - name: httpbin-http
+        hostname: "httpbin.minikube.where-ever.net"
+        port: 80
+        protocol: HTTP
+        allowedRoutes:
+          namespaces:
+            from: All
+    httproutes:
+      - name: httpbin
+        namespace: httpbin
+        hostnames: '["httpbin.minikube.where-ever.net"]'
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /get
+              - path:
+                  type: PathPrefix
+                  value: /headers
+            filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  add:
+                  - name: Added-Header
+                    value: added-value
+            backendRefs:
+              - name: httpbin
+                port: 8000
+  echoserver-gateway:
+    namespace: istio-ingress
+    gateway: istio
+    listeners:
+      - name: echoserver-http
+        hostname: "echoserver.minikube.where-ever.net"
+        port: 80
+        protocol: HTTP
+        allowedRoutes:
+          namespaces:
+            from: All
+    httproutes:
+      - name: echoserver
+        namespace: echoserver
+        hostnames: '["echoserver.minikube.where-ever.net"]'
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            backendRefs:
+              - name: echoserver
+                port: 80
+
+  argocd-gateway:
+    namespace: istio-ingress
+    gateway: istio
+    listeners:
+      - name: argocd-http
+        hostname: "argocd.minikube.where-ever.net"
+        protocol: HTTP
+        port: 80
+        allowedRoutes:
+          namespaces:
+            from: All
+      - name: argocd-https
+        hostname: "argocd.minikube.where-ever.net"
+        protocol: HTTPS
+        port: 443
+        tls:
+          mode: Terminate
+          certificateRefs:
+            - kind: Secret
+              name: argocd-tls
+        allowedRoutes:
+          namespaces:
+            from: All
+    httproutes:
+      - name: argocd-http
+        namespace: argocd
+        sectionName: argocd-http
+        hostnames: '["argocd.minikube.where-ever.net"]'
+        rules:
+          - filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  scheme: https
+                  statusCode: 301
+      - name: argocd
+        namespace: argocd-https
+        sectionName: argocd-https
+        hostnames: '["argocd.minikube.where-ever.net"]'
+        rules:
+          - backendRefs:
+              - name: argocd-server
+                port: 80

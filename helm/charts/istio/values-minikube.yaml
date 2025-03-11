@@ -1,0 +1,70 @@
+base:
+  global:
+    istioNamespace: istio-system
+  base:
+    defaultRevision: ""
+
+istiod:
+  cni:
+    enabled: false
+    provider: default
+
+  env: {}
+
+  taint:
+    enabled: false
+
+  sidecarInjectorWebhook:
+    neverInjectSelector: []
+    alwaysInjectSelector: []
+    injectedAnnotations: {}
+    templates: {}
+    defaultTemplates: []
+
+  istiodRemote:
+    enabled: false
+
+  telemetry:
+    enabled: true
+    v2:
+      enabled: true
+      prometheus:
+        enabled: true
+      stackdriver:
+        enabled: false
+  revision: ""
+
+  global:
+    istioNamespace: istio-system
+    certSigners: []
+    defaultPodDisruptionBudget:
+      enabled: true
+    defaultResources:
+      requests:
+        cpu: 10m
+    istiod:
+      enableAnalysis: false
+
+    logAsJson: false
+
+    omitSidecarInjectorConfigMap: false
+
+kiali-server:
+  external_services:
+    custom_dashboards:
+      enabled: true
+  identity: {}
+    #cert_file:
+    #private_key_file:
+  
+  login_token:
+    signing_key: ""
+  
+  server:
+    port: 20001
+    #node_port:
+    observability:
+      metrics:
+        enabled: true
+        port: 9090
+    web_root: ""

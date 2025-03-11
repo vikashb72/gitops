@@ -1,0 +1,20 @@
+goldilocks:
+  dashboard:
+    service:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.226
+#    resources:
+#      requests:
+#        cpu: 15m
+#        memory: 105M
+#      limits:
+#        cpu: 256m
+#        memory: 404M
+#  controller:
+#    resources:
+#      requests:
+#        cpu: 15m
+#        memory: 105Mi
+#      limits:
+#        cpu: 119m
+#        memory: 395Mi

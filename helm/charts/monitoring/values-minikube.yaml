@@ -1,0 +1,1391 @@
+env:
+  EVT: minikube
+  loki:
+    logfmt:
+      namespace:
+        - argocd
+        - external-secrets
+        - kube-system
+        - monitoring
+    json:
+      namespace:
+        - gloo-mesh
+
+namespaceOverride: "monitoring"
+
+kube-prometheus-stack:
+  namespaceOverride: "monitoring"
+  # https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/heads/main/charts/kube-prometheus-stack/values.yaml
+  crds:
+    enabled: true
+    upgradeJob:
+      enabled: false
+      forceConflicts: false
+      serviceAccount:
+        create: true
+  ## custom Rules to override "for" and "severity" in defaultRules
+  customRules: {}
+    # AlertmanagerFailedReload:
+    #   for: 3m
+    # AlertmanagerMembersInconsistent:
+    #   for: 5m
+    #   severity: "warning"
+  ## Create default rules for monitoring the cluster
+  defaultRules:
+    create: true
+    rules:
+      alertmanager: true
+      etcd: true   # looking for kube-etcd
+      configReloaders: true
+      general: true
+      k8sContainerCpuUsageSecondsTotal: true
+      k8sContainerMemoryCache: true
+      k8sContainerMemoryRss: true
+      k8sContainerMemorySwap: true
+      k8sContainerResource: true
+      k8sContainerMemoryWorkingSetBytes: true
+      k8sPodOwner: true
+      kubeApiserverAvailability: true
+      kubeApiserverBurnrate: true
+      kubeApiserverHistogram: true
+      kubeApiserverSlos: true
+      kubeControllerManager: false
+      kubelet: true
+      kubeProxy: true
+      kubePrometheusGeneral: true
+      kubePrometheusNodeRecording: true
+      kubernetesApps: true
+      kubernetesResources: true
+      kubernetesStorage: true
+      kubernetesSystem: true
+      kubeSchedulerAlerting: false
+      kubeSchedulerRecording: false
+      kubeStateMetrics: true
+      network: true
+      node: true
+      nodeExporterAlerting: true
+      nodeExporterRecording: true
+      prometheus: true
+      prometheusOperator: true
+      windows: false
+    ## Labels for default rules
+    labels: {}
+    ## Annotations for default rules
+    annotations: {}
+    ## Disabled PrometheusRule alerts
+    disabled: {}
+    # KubeAPIDown: true
+    # NodeRAIDDegraded: true
+  ## Provide custom recording or alerting rules to be deployed into the cluster.
+  additionalPrometheusRulesMap: {}
+  #  rule-name:
+  #    groups:
+  #    - name: my_group
+  #      rules:
+  #      - record: my_record
+  #        expr: 100 * my_record
+  global:
+    rbac:
+      create: true
+      createAggregateClusterRoles: true
+  windowsMonitoring:
+    ## Deploys the windows-exporter and Windows-specific dashboards and rules (job name must be 'windows-exporter')
+    enabled: false
+  prometheus-windows-exporter:
+    prometheus:
+      monitor:
+        enabled: false
+  alertmanager:
+    enabled: true
+    annotations: {}
+    apiVersion: v2
+    config:
+      global:
+        resolve_timeout: 5m
+      inhibit_rules:
+        - source_matchers:
+            - 'severity = critical'
+          target_matchers:
+            - 'severity =~ warning|info'
+          equal:
+            - 'namespace'
+            - 'alertname'
+        - source_matchers:
+            - 'severity = warning'
+          target_matchers:
+            - 'severity = info'
+          equal:
+            - 'namespace'
+            - 'alertname'
+        - source_matchers:
+            - 'alertname = InfoInhibitor'
+          target_matchers:
+            - 'severity = info'
+          equal:
+            - 'namespace'
+        - target_matchers:
+            - 'alertname = InfoInhibitor'
+      route:
+        group_by: ['namespace']
+        group_wait: 30s
+        group_interval: 5m
+        repeat_interval: 12h
+        receiver: "email-alert"
+        routes:
+          - receiver: "null"
+            match:
+              alertname: "Watchdog"
+          - receiver: "email-alert"
+            continue: true
+      receivers:
+        - name: "null"
+        - name: "email-alert"
+          email_configs:
+            - to: "vikashb@home.where-ever.za.net"
+              from: "monitor@minikube.where-ever.net"
+              #smarthost: "desktop.home.where-ever.za.net:587"
+              smarthost: "odroid-dlna.home.where-ever.za.net:25"
+              #auth_username: "vmail"
+              #auth_password_file: /etc/alertmanager/secrets/GF_SMTP_PASSWORD
+              #auth_password:
+              require_tls: false
+              send_resolved: true
+        # https://prometheus.io/docs/alerting/latest/configuration/#email_config
+        #- name: "msteams"
+        #  msteamsv2_configs:
+        #    - send_resolved: true
+        #      webhook_url_file: /etc/alertmanager/secrets/GF_MS_TEAMS_URL
+      templates:
+        - '/etc/alertmanager/config/*.tmpl'
+    ## Configuration for Alertmanager service
+    serviceMonitor:
+      selfMonitor: true
+    alertmanagerSpec:
+      persistentVolumeClaimRetentionPolicy:
+        whenDeleted: Delete
+        whenScaled: Retain
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: nfs-client
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 10Gi
+      volumes:
+        - name: prometheus-alerting-config
+          secret:
+            secretName: prometheus-alerting-config
+      volumeMounts:
+        - name: prometheus-alerting-config
+          mountPath: /etc/alertmanager/secrets
+          readOnly: true
+    secret:
+      annotations: {}
+    service:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.232
+  grafana:
+    enabled: true
+    #env:
+    #  GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
+    #envValueFrom:
+    #  GF_SECURITY_ADMIN_USER:
+    #    secretKeyRef:
+    #      name: grafana-admin-credentials
+    #      key: GF_SECURITY_ADMIN_USER
+    #  GF_SECURITY_ADMIN_PASSWORD:
+    #    secretKeyRef:
+    #      name: grafana-admin-credentials
+    #      key: GF_SECURITY_ADMIN_PASSWORD
+    #  GF_SMTP_ENABLED:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_ENABLED
+    #  GF_SMTP_HOST:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_HOST
+    #  GF_SMTP_USER:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_USER
+    #  GF_SMTP_PASSWORD:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_PASSWORD
+    #  GF_SMTP_FROM_ADDRESS:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_FROM_ADDRESS
+    #  GF_SMTP_STARTTLS_POLICY:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_STARTTLS_POLICY
+    #envFromSecret: "grafana-admin-credentials"
+    #adminUser: admin
+    #adminPassword: ""
+    #admin:
+    #  existingSecret: "grafana-admin-credentials"
+    #  userKey: GF_SECURITY_ADMIN_USER
+    #  passwordKey: GF_SECURITY_ADMIN_PASSWORD
+    namespaceOverride: "monitoring"
+    defaultDashboardsEditable: true
+    smtp:
+      enabled: true
+      existingSecret: "prometheus-alerting-config"
+      passwordKey: "GF_SMTP_PASSWORD"
+      userKey: "GF_SMTP_USER"
+    grafana.ini:
+      #log:
+      #  level: debug
+      unified_alerting:
+        enabled: true
+      smtp:
+        enabled: true
+        host: desktop.home.where-ever.za.net:587
+        startTLS_policy: "MandatoryStartTLS"
+        from_address: monitor@minikube.where-ever.net
+        skip_verify: true # for minikube
+      security:
+        disable_initial_admin_creation: true
+    notifiers:
+      notifiers.yaml:
+        notifiers:
+          - name: alertmanager-operated
+            type: prometheus-alertmanager
+            uid: alertmanager-operated
+            org_id: 1
+            is_default: true
+            settings:
+              url: http://alertmanager-operated:9093/
+              #basicAuthPassword:
+              #basicAuthUser: admin
+          #- name: email-notifier
+          #  type: email
+          #  uid: email-notifier
+          #  org_id: 1
+          #  is_default: false
+          #  settings:
+          #    addresses: vikashb@home.where-ever.za.net
+    alerting:
+      policies.yaml:
+        apiVersion: 1
+        policies:
+            - orgId: 1
+              receiver: alertmanager-operated
+              #receiver: default-notification-email
+              group_by:
+                - grafana_folder
+                - alertname
+      contactpoints.yaml:
+        secret:
+          apiVersion: 1
+          contactPoints:
+            - orgId: 1
+              name: alertmanager-operated
+              receivers:
+                - uid: alertmanager-operated
+                  type: prometheus-alertmanager
+                  settings:
+                    #basicAuthPassword:
+                    #basicAuthUser: admin
+                    url: http://alertmanager-operated:9093/
+                  disableResolveMessage: false
+            #- orgId: 1
+            #  name: default-notification-email
+            #  receivers:
+            #    - uid: default-notification-email
+            #      type: email
+            #      settings:
+            #        addresses: vikashb@home.where-ever.za.net
+            #        singleEmail: false
+            #      disableResolveMessage: false
+            #- orgId: 1
+            #  name: ms-teams-channel
+            #  receivers:
+            #    - uid: ms-teams-channel
+            #      type: teams
+            #      settings:
+            #        url: https://localhost/
+            #      disableResolveMessage: false
+    initChownData:
+      enabled: true
+    serviceMonitor:
+      enabled: true
+      targetLabels:
+        - prometheus
+    persistence:
+      enabled: true
+      type: pvc
+      storageClassName: nfs-client
+      accessModes:
+        - ReadWriteOnce
+      size: 10Gi
+      finalizers:
+        - kubernetes.io/pvc-protection
+      inMemory:
+        enabled: false
+      lookupVolumeName: true
+    sidecar:
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+        labelValue: "1"
+        # Allow discovery in all namespaces for dashboards
+        searchNamespace: ALL
+
+        # Support for new table panels, when enabled grafana auto migrates the old table panels to newer table panels
+        enableNewTablePanelSyntax: false
+      datasources:
+        enabled: true
+        defaultDatasourceEnabled: true
+        isDefaultDatasource: true
+
+        name: Prometheus
+        uid: prometheus
+        exemplarTraceIdDestinations: {}
+          # datasourceUid: Jaeger
+          # traceIdLabelName: trace_id
+          # urlDisplayLabel: View traces
+        alertmanager:
+          enabled: true
+          name: Alertmanager
+          uid: alertmanager
+          handleGrafanaManagedAlerts: true
+          implementation: prometheus
+    service:
+      enabled: true
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.231
+    serviceMonitor:
+      enabled: true
+    additionalDataSources:
+      - name: Loki
+        type: loki
+        url: http://monitoring-loki-gateway/
+        access: proxy
+        isDefault: false
+        jsonData:
+          tlsSkipVerify: true
+          httpHeaderName1: 'X-Scope-OrgID'
+    plugins:
+      - grafana-piechart-panel
+      - macropower-analytics-panel
+      - azure-monitor-app
+      - digrich-bubblechart-panel
+      - golioth-websocket-datasource
+      - snuids-trend-panel
+      - serrrios-statusoverview-panel
+      - innius-grpc-datasource
+      - novatec-sdg-panel
+      - integrationmatters-comparison-panel
+      ## You can also use other plugin download URL, as long as they are valid zip files,
+      ## and specify the name of the plugin after the semicolon. Like this:
+      # - https://grafana.com/api/plugins/marcusolsson-json-datasource/versions/1.3.2/download;marcusolsson-json-datasource
+    #dashboards:
+    #    redis-exporter:
+    #      gnetId: 11835
+    #      revision: 1
+    #      datasource: Prometheus
+    #    # https://grafana.com/grafana/dashboards/14699-kubernetes-status/
+    #    kubernetes-status:
+    #      gnetId: 14699
+    #      revision: 2
+    #      datasource: Prometheus
+    #    #
+    #    # TO TEST
+    #    #
+    #    # https://grafana.com/grafana/dashboards/14584-argocd/
+    #    argocd:
+    #      gnetId: 14584
+    #      revision: 1
+    #      datasource: Prometheus
+    #    ## https://grafana.com/grafana/dashboards/11001-cert-manager/
+    #    #cert-manager:
+    #    #  gnetId: 11001
+    #    #  revision: 1
+    #    #  datasource: Prometheus
+    #    ##keycloak-metrics:
+    #    ##  gnetId: 10441
+    #    ##  revision: 2
+    #    ##  datasource: Prometheus
+    #    ## https://grafana.com/grafana/dashboards/7645-istio-control-plane-dashboard/
+    #    ##itio-control-plane:
+    #    ##  gnetId: 7645
+    #    ##  revision: 240
+    #    ##  datasource: Prometheus
+    #    ## https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+    # I have no idea why this breaks
+  kubernetesServiceMonitors:
+    enabled: true
+  kubeApiServer:
+    enabled: true
+    tlsConfig:
+      serverName: kubernetes
+      insecureSkipVerify: false
+  kubelet:
+    enabled: true
+    namespace: kube-system
+    serviceMonitor:
+      kubelet: true
+  kubeControllerManager:
+    enabled: false
+    service:
+      enabled: false
+    serviceMonitor:
+      enabled: false
+  coreDns:
+    enabled: true
+    service:
+      enabled: true
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: true
+  kubeDns:
+    enabled: false
+    service:
+      ipDualStack:
+        enabled: false
+  kubeEtcd:
+    enabled: true
+    service:
+      enabled: true
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: true
+  kubeScheduler:
+    enabled: false
+    service:
+      enabled: false
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: false
+  kubeProxy:
+    enabled: true
+    service:
+      enabled: true
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: true
+  kubeStateMetrics:
+    enabled: true
+  kube-state-metrics:
+    #namespaceOverride: "monitoring"
+    rbac:
+      create: true
+    prometheusScrape: false
+    prometheus:
+      monitor:
+        enabled: true
+    selfMonitor:
+      enabled: true
+  nodeExporter:
+    enabled: true
+    operatingSystems:
+      linux:
+        enabled: true
+      aix:
+        enabled: false
+      darwin:
+        enabled: false
+  prometheus-node-exporter:
+    #namespaceOverride: "monitoring"
+    prometheus:
+      monitor:
+        enabled: true
+  prometheusOperator:
+    enabled: true
+    tls:
+      enabled: true
+    admissionWebhooks:
+      enabled: true
+      failurePolicy: Ignore
+      annotations:
+        argocd.argoproj.io/hook: PreSync
+        argocd.argoproj.io/hook-delete-policy: HookSucceeded
+      mutatingWebhookConfiguration:
+        annotations:
+          argocd.argoproj.io/hook: PreSync
+      validatingWebhookConfiguration:
+        annotations:
+          argocd.argoproj.io/hook: PreSync
+      patch:
+        enabled: true
+        annotations:
+          argocd.argoproj.io/hook: PreSync
+          argocd.argoproj.io/hook-delete-policy: HookSucceeded
+        podAnnotations:
+          sidecar.istio.io/inject: "false"
+      certManager:
+        enabled: false
+    networkPolicy:
+      enabled: false
+    serviceAccount:
+      create: true
+    ##
+    service:
+      ipDualStack:
+        enabled: false
+      type: ClusterIP
+    kubeletService:
+      enabled: true
+      namespace: kube-system
+    serviceMonitor:
+      selfMonitor: true
+    dnsConfig: {}
+      # nameservers:
+      #   - 1.2.3.4
+      # searches:
+      #   - ns1.svc.cluster-domain.example
+      #   - my.dns.search.suffix
+    # Enable vertical pod autoscaler support for prometheus-operator
+    verticalPodAutoscaler:
+      enabled: false
+    prometheusConfigReloader:
+      enableProbe: false
+  prometheus:
+    enabled: true
+    networkPolicy:
+      enabled: false
+    serviceAccount:
+      create: true
+    service:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.227
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      selfMonitor: true
+    prometheusSpec:
+      terminationGracePeriodSeconds: 90
+      maximumStartupDurationSeconds: 600
+      minReadySeconds: 90
+      containers:
+        - name: prometheus
+          readinessProbe:
+            periodSeconds: 30
+            initialDelaySeconds: 30
+          livenessProbe:
+            periodSeconds: 30
+            initialDelaySeconds: 60
+      enableRemoteWriteReceiver: true
+      persistentVolumeClaimRetentionPolicy: {}
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: nfs-client
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 10Gi
+    serviceMonitor:
+      selfMonitor: true
+
+# working distributed config
+loki:
+  auth_enabled: false
+  loki:
+    auth_enabled: false
+    server:
+      http_server_read_timeout: 300s  # default 600s (too long ?)
+      http_server_write_timeout: 300s  # default 600s (too long ?)
+    schemaConfig:
+      configs:
+        - from: "2024-04-01"
+          store: tsdb
+          object_store: s3
+          schema: v13
+          index:
+            prefix: loki_index_
+            period: 24h
+    ingester:
+      chunk_encoding: snappy
+    querier:
+      max_concurrent: 4
+    pattern_ingester:
+      enabled: true
+    limits_config:
+      allow_structured_metadata: true
+      volume_enabled: true
+      retention_period: 96h
+      ingestion_rate_mb: 16
+      ingestion_burst_size_mb: 24
+      max_line_size_truncate: true
+    storage:
+      bucketNames:
+        chunks: loki-chunk
+        ruler: loki-ruler
+        admin: loki-admin
+      type: s3
+      s3:
+        endpoint: "${endpoint}"
+        region: null
+        secretAccessKey: "${secretKey}"
+        accessKeyId: "${accessKey}"
+        s3ForcePathStyle: true
+        insecure: true
+        http_config: {}
+    rulerConfig:
+      storage:
+        type: local
+        local:
+          directory: /var/loki/rulestorage
+      rule_path: "/var/loki/rules-temp"
+      ring:
+        kvstore:
+          store: inmemory
+      alertmanager_url: http://monitoring-kube-prometheus-alertmanager:9093
+      enable_alertmanager_v2: true
+
+  deploymentMode: Distributed
+
+  ruler:
+    enabled: true
+    maxUnavailable: 2
+    replicas: 3
+    alertmanager_url: http://monitoring-kube-prometheus-alertmanager:9093
+    enable_alertmanager_v2: true
+    enable_api: true
+    extraVolumeMounts:
+      - name: rules
+        mountPath: "/var/loki/rulestorage/test"
+    extraVolumes:
+      - name: rules
+        configMap:
+          name: loki-alerting-rules
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: minio-credentials
+
+  ingester:
+    replicas: 3 # To ensure data durability with replication
+    zoneAwareReplication:
+       enabled: false
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: minio-credentials
+  querier:
+    replicas: 3 # Improve query performance via parallelism
+    maxUnavailable: 2
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: minio-credentials
+
+  queryFrontend:
+    replicas: 2
+    maxUnavailable: 1
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: minio-credentials
+
+  queryScheduler:
+    replicas: 2
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: minio-credentials
+
+  distributor:
+    replicas: 3
+    maxUnavailable: 2
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: minio-credentials
+
+  compactor:
+    replicas: 1
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: minio-credentials
+
+  indexGateway:
+    replicas: 2
+    maxUnavailable: 1
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: minio-credentials
+
+  bloomPlanner:
+    replicas: 0
+  bloomBuilder:
+    replicas: 0
+  bloomGateway:
+    replicas: 0
+
+  backend:
+     replicas: 0
+  read:
+     replicas: 0
+  write:
+     replicas: 0
+
+  singleBinary:
+     replicas: 0
+
+  minio:
+    enabled: false
+
+  gateway:
+    service:
+      type: LoadBalancer
+
+  monitoring:
+    dashboards: false
+    rules: false
+    alerting: true
+    selfMonitoring:
+      enabled: false
+    grafanaAgent:
+      installOperator: false
+
+promtail:
+  daemonset:
+    enabled: true
+    autoscaling:
+      enabled: false
+      # updatePolicy:
+        # minReplicas: 1
+        # updateMode: Auto
+
+  deployment:
+    enabled: false
+
+  service:
+    enabled: true
+
+  configmap:
+    enabled: true
+
+  resources: {}
+
+  rbac:
+    create: true
+
+  serviceAccount:
+    create: true
+    automountServiceAccountToken: true
+
+  automountServiceAccountToken: true
+
+  # ServiceMonitor configuration
+  serviceMonitor:
+    enabled: true
+    prometheusRule:
+      enabled: false
+      additionalLabels: {}
+      rules:
+        - alert: PromtailRequestErrors
+          expr: 100 * sum(rate(promtail_request_duration_seconds_count{status_code=~"5..|failed"}[1m])) by (namespace, job, route, instance) / sum(rate(promtail_request_duration_seconds_count[1m])) by (namespace, job, route, instance) > 10
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            description: |
+              The {{ $labels.job }} {{ $labels.route }} is experiencing
+              {{ printf \"%.2f\" $value }} errors.
+              VALUE = {{ $value }}
+              LABELS = {{ $labels }}
+            summary: Promtail request errors (instance {{ $labels.instance }})
+        - alert: PromtailRequestLatency
+          expr: histogram_quantile(0.99, sum(rate(promtail_request_duration_seconds_bucket[5m])) by (le)) > 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Promtail request latency (instance {{ $labels.instance }})
+            description: |
+              The {{ $labels.job }} {{ $labels.route }} is experiencing
+              {{ printf \"%.2f\" $value }}s 99th percentile latency.
+              VALUE = {{ $value }}
+              LABELS = {{ $labels }}
+
+  config:
+    enabled: true
+    serverPort: 3101
+    clients:
+      - url: http://monitoring-loki-gateway/loki/api/v1/push
+        tenant_id: 1
+    positions:
+      filename: /run/promtail/positions.yaml
+
+  networkPolicy:
+    # -- Specifies whether Network Policies should be created
+    enabled: false
+
+  sidecar:
+    configReloader:
+      enabled: false
+
+# proably won't need, but keep for now
+# --------------------------------------------------------------------------- #
+#  Working config for SingleBinary deployment
+# --------------------------------------------------------------------------- #
+#loki:
+#  loki:
+#    auth_enabled: false
+#    commonConfig:
+#      replication_factor: 1
+#    schemaConfig:
+#      configs:
+#        - from: "2024-04-01"
+#          store: tsdb
+#          object_store: s3
+#          schema: v13
+#          index:
+#            prefix: loki_index_
+#            period: 24h
+#    pattern_ingester:
+#        enabled: true
+#    limits_config:
+#      allow_structured_metadata: true
+#      volume_enabled: true
+#
+#  minio:
+#    enabled: true
+#
+#  deploymentMode: SingleBinary
+#
+#  singleBinary:
+#    replicas: 1
+#
+#  # Zero out replica counts of other deployment modes
+#  backend:
+#    replicas: 0
+#  read:
+#    replicas: 0
+#  write:
+#    replicas: 0
+#
+#  ingester:
+#    replicas: 0
+#  querier:
+#    replicas: 0
+#  queryFrontend:
+#    replicas: 0
+#  queryScheduler:
+#    replicas: 0
+#  distributor:
+#    replicas: 0
+#  compactor:
+#    replicas: 0
+#  indexGateway:
+#    replicas: 0
+#  bloomCompactor:
+#    replicas: 0
+#  bloomGateway:
+#    replicas: 0
+#
+# --------------------------------------------------------------------------- #
+# Working loki SimpleScalable
+# --------------------------------------------------------------------------- #
+#loki:
+#  auth_enabled: false
+#  loki:
+#    auth_enabled: false
+#    schemaConfig:
+#      configs:
+#        - from: "2024-04-01"
+#          store: tsdb
+#          object_store: s3
+#          schema: v13
+#          index:
+#            prefix: loki_index_
+#            period: 24h
+#
+#    querier:
+#      max_concurrent: 4
+#    pattern_ingester:
+#      enabled: true
+#    limits_config:
+#      allow_structured_metadata: true
+#      volume_enabled: true
+#      retention_period: 96h
+#
+#    storage:
+#      bucketNames:
+#        chunks: loki-chunk
+#        ruler: loki-ruler
+#        admin: loki-admin
+#      type: s3
+#      s3:
+#        endpoint: "${endpoint}"
+#        region: null
+#        secretAccessKey: "${secretKey}"
+#        accessKeyId: "${accessKey}"
+#        s3ForcePathStyle: true
+#        insecure: true
+#        http_config: {}
+#
+#  deploymentMode: SimpleScalable
+#
+#  backend:
+#    replicas: 2
+#    extraArgs:
+#      - '-config.expand-env=true'
+#    extraEnvFrom:
+#      - secretRef:
+#          name: minio-credentials
+#
+#  read:
+#    replicas: 2
+#    extraArgs:
+#      - '-config.expand-env=true'
+#    extraEnvFrom:
+#      - secretRef:
+#          name: minio-credentials
+#
+#  write:
+#    replicas: 3
+#    extraArgs:
+#      - '-config.expand-env=true'
+#    extraEnvFrom:
+#      - secretRef:
+#          name: minio-credentials
+#
+#  # Enable minio for storage
+#  minio:
+#    enabled: false
+#
+#  gateway:
+#    service:
+#      type: LoadBalancer
+#
+# --------------------------------------------------------------------------- #
+# untested
+# --------------------------------------------------------------------------- #
+#loki-distributed:
+#  loki:
+#    config: |
+#      auth_enabled: false
+#
+#      server:
+#        http_listen_port: 3100
+#
+#      common:
+#        ring:
+#          instance_addr: 127.0.0.1
+#          kvstore:
+#            store: inmemory
+#        replication_factor: 1
+#        path_prefix: /tmp/loki
+#        compactor_address: http://{{ include "loki.compactorFullname" . }}:3100
+#
+#      schema_config:
+#        configs:
+#        - from: 2020-05-15
+#          store: tsdb
+#          object_store: filesystem
+#          schema: v13
+#          index:
+#            prefix: index_
+#            period: 24h
+#
+#      storage_config:
+#        filesystem:
+#          directory: /tmp/loki/chunks
+#
+#      runtime_config:
+#        file: /var/{{ include "loki.name" . }}-runtime/runtime.yaml
+#
+#    #config: |
+#
+#    #  distributor:
+#    #    ring:
+#    #      kvstore:
+#    #        store: memberlist
+#
+#    #  memberlist:
+#    #    cluster_label: "{{ .Release.Name }}.{{ .Release.Namespace }}"
+#    #    join_members:
+#    #      - {{ include "loki.fullname" . }}-memberlist
+#
+#    #  ingester_client:
+#    #    grpc_client_config:
+#    #      grpc_compression: gzip
+#
+#    #  ingester:
+#    #    lifecycler:
+#    #      ring:
+#    #        kvstore:
+#    #          store: memberlist
+#    #        replication_factor: 1
+#    #    chunk_idle_period: 30m
+#    #    chunk_block_size: 3072000
+#    #    chunk_encoding: snappy
+#    #    chunk_retain_period: 1m
+#    #    concurrent_flushes: 100
+#    #    max_transfer_retries: 0
+#    #    wal:
+#    #      dir: /var/loki/wal
+#
+#    #  limits_config:
+#    #    enforce_metric_name: false
+#    #    reject_old_samples: true
+#    #    reject_old_samples_max_age: 720h
+#    #    max_cache_freshness_per_query: 10m
+#    #    split_queries_by_interval: 15m
+#
+#    #  {{- if .Values.loki.schemaConfig}}
+#    #  schema_config:
+#    #  {{- toYaml .Values.loki.schemaConfig | nindent 2}}
+#    #  {{- end}}
+#    #  {{- if .Values.loki.storageConfig}}
+#    #  storage_config:
+#    #  {{- if .Values.indexGateway.enabled}}
+#    #  {{- $indexGatewayClient := dict "server_address" (printf "dns:///%s:9095" (include "loki.indexGatewayFullname" .)) }}
+#    #  {{- $_ := set .Values.loki.storageConfig.boltdb_shipper "index_gateway_client" $indexGatewayClient }}
+#    #  {{- end}}
+#    #  {{- toYaml .Values.loki.storageConfig | nindent 2}}
+#    #  {{- if .Values.memcachedIndexQueries.enabled }}
+#    #    index_queries_cache_config:
+#    #      memcached_client:
+#    #        addresses: dnssrv+_memcached-client._tcp.{{ include "loki.memcachedIndexQueriesFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}
+#    #        consistent_hash: true
+#    #  {{- end}}
+#    #  {{- end}}
+#
+#
+#    #  chunk_store_config:
+#    #    max_look_back_period: 0s
+#    #    {{- if .Values.memcachedChunks.enabled }}
+#    #    chunk_cache_config:
+#    #      embedded_cache:
+#    #        enabled: false
+#    #      memcached_client:
+#    #        consistent_hash: true
+#    #        addresses: dnssrv+_memcached-client._tcp.{{ include "loki.memcachedChunksFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}
+#    #    {{- end }}
+#    #    {{- if .Values.memcachedIndexWrites.enabled }}
+#    #    write_dedupe_cache_config:
+#    #      memcached_client:
+#    #        consistent_hash: true
+#    #        addresses: dnssrv+_memcached-client._tcp.{{ include "loki.memcachedIndexWritesFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}
+#    #    {{- end }}
+#
+#    #  table_manager:
+#    #    retention_deletes_enabled: false
+#    #    retention_period: 0s
+#
+#    #  query_range:
+#    #    align_queries_with_step: true
+#    #    max_retries: 5
+#    #    cache_results: true
+#    #    results_cache:
+#    #      cache:
+#    #        {{- if .Values.memcachedFrontend.enabled }}
+#    #        memcached_client:
+#    #          addresses: dnssrv+_memcached-client._tcp.{{ include "loki.memcachedFrontendFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}
+#    #          consistent_hash: true
+#    #        {{- else }}
+#    #        embedded_cache:
+#    #          enabled: true
+#    #          ttl: 24h
+#    #        {{- end }}
+#
+#    #  frontend_worker:
+#    #    {{- if .Values.queryScheduler.enabled }}
+#    #    scheduler_address: {{ include "loki.querySchedulerFullname" . }}:9095
+#    #    {{- else }}
+#    #    frontend_address: {{ include "loki.queryFrontendFullname" . }}-headless:9095
+#    #    {{- end }}
+#
+#    #  frontend:
+#    #    log_queries_longer_than: 5s
+#    #    compress_responses: true
+#    #    {{- if .Values.queryScheduler.enabled }}
+#    #    scheduler_address: {{ include "loki.querySchedulerFullname" . }}:9095
+#    #    {{- end }}
+#    #    tail_proxy_url: http://{{ include "loki.querierFullname" . }}:3100
+#
+#    #  compactor:
+#    #    shared_store: filesystem
+#    #    #shared_store: azure
+#    #    working_directory: /var/loki/compactor
+#
+#    #  ruler:
+#    #    storage:
+#    #      type: local
+#    #      local:
+#    #        directory: /etc/loki/rules
+#    #    ring:
+#    #      kvstore:
+#    #        store: memberlist
+#    #    rule_path: /tmp/loki/scratch
+#    #    alertmanager_url: http://alertmanager-operated.monitoring:9093
+#    #    external_url: http://alertmanager-operated.monitoring:9093
+#    #    enable_alertmanager_v2: true
+#    #    enable_api: true
+#
+#    ## -- Check https://grafana.com/docs/loki/latest/configuration/#schema_config for more info on how to configure schemas
+#    #schemaConfig:
+#    #  configs:
+#    #    - from: "2022-06-21"
+#    #      store: boltdb-shipper
+#    #      object_store: filesystem
+#    #      schema: v11
+#    #      index:
+#    #        prefix: loki_index_
+#    #        period: 24h
+#
+#    ## -- Check https://grafana.com/docs/loki/latest/configuration/#storage_config for more info on how to configure storages
+#    #storageConfig:
+#    #  boltdb_shipper:
+#    #    shared_store: filesystem
+#    #    active_index_directory: /var/loki/index
+#    #    #shared_store: azure
+#    #    #active_index_directory: /var/loki/boltdb-shipper-active
+#    #    #cache_location: /var/loki/boltdb-shipper-cache
+#    #    cache_location: /var/loki/cache
+#    #    cache_ttl: 168h
+#    #  filesystem:
+#    #    directory: /var/loki/chunks
+#    #  aws:
+#    #    s3: http://192.168.0.3/loki
+#  # -- Uncomment to configure each storage individually
+#  #   azure: {}
+#  #   gcs: {}
+#  #   s3: {}
+#  #   boltdb: {}
+#
+#    # -- Structured loki configuration, takes precedence over `loki.config`, `loki.schemaConfig`, `loki.storageConfig`
+#    structuredConfig: {}
+#    #structuredConfig:
+#    #  limits_config:
+#    #    enforce_metric_name: false
+#    #    retention_period: 720h # 7 days
+#    #  ingester:
+#    #    lifecycler:
+#    #      ring:
+#    #        kvstore:
+#    #          store: memberlist # Use a distributed store
+#    #    chunk_idle_period: 30m # Adjust based on your log volume
+#    #    chunk_retain_period: 10m # Adjust based on your log volume
+#    #    chunk_target_size: 3072000 # Adjust based on your log volume
+#    #    concurrent_flushes: 100 # Increase if you have high log volume
+#    #  storage_config:
+#    #    azure:
+#    #      account_name: env-storage-account
+#    #      use_federated_token: true
+#    #      container_name: loki-log
+#    #      user_assigned_id: "00000000-0000-0000-0000-000000000000"
+#    #      request_timeout: 0
+#    #    boltdb_shipper:
+#    #      active_index_directory: /var/loki/boltdb-shipper-active
+#    #      cache_location: /var/loki/boltdb-shipper-cache
+#    #      shared_store: azure
+#    #    filesystem:
+#    #      directory: /var/loki/chunks
+#    #    index_queries_cache_config:
+#    #      enable_fifocache: true
+#    #      fifocache:
+#    #        size: 1024
+#    #        validity: 24h
+#    #  schema_config:
+#    #    configs:
+#    #      - from: 2022-06-21
+#    #        store: boltdb-shipper
+#    #        object_store: azure
+#    #        schema: v11
+#    #        index:
+#    #          prefix: loki_index_
+#    #          period: 24h
+#    #  compactor:
+#    #    working_directory: /var/loki/compactor
+#    #    shared_store: azure
+#
+#  # -- Provides a reloadable runtime configuration file for some specific configuration
+#  runtimeConfig: {}
+#
+#  serviceAccount:
+#    # -- Specifies whether a ServiceAccount should be created
+#    create: true
+#    # -- Labels for the service account
+#    labels: {}
+#    # -- Annotations for the service account
+#    annotations: {}
+#    # -- Set this toggle to false to opt out of automounting API credentials for the service account
+#    automountServiceAccountToken: true
+#
+#  # ServiceMonitor configuration
+#  serviceMonitor:
+#    # -- If enabled, ServiceMonitor resources for Prometheus Operator are created
+#    enabled: false
+#
+#  # Rules for the Prometheus Operator
+#  prometheusRule:
+#    # -- If enabled, a PrometheusRule resource for Prometheus Operator is created
+#    enabled: false
+#
+#  # Configuration for the ingester
+#  ingester:
+#    # -- Kind of deployment [StatefulSet/Deployment]
+#    kind: StatefulSet
+#    # -- Number of replicas for the ingester
+#    replicas: 1
+#    # -- Pod Disruption Budget maxUnavailable
+#    maxUnavailable: null
+#    persistence:
+#      # -- Enable creating PVCs which is required when using boltdb-shipper
+#      enabled: true
+#      # -- Use emptyDir with ramdisk for storage. **Please note that all data in ingester will be lost on pod restart**
+#      inMemory: false
+#      # -- List of the ingester PVCs
+#      # @notationType -- list
+#      claims:
+#        - name: data
+#          size: 4Gi
+#          storageClassName: nfs-client
+#      enableStatefulSetAutoDeletePVC: false
+#      whenDeleted: Delete
+#      whenScaled: Retain
+#
+#  # Configuration for the distributor
+#  distributor:
+#    # -- Number of replicas for the distributor
+#    replicas: 1
+#    # -- Pod Disruption Budget maxUnavailable
+#    maxUnavailable: null
+#
+#  # Configuration for the querier
+#  querier:
+#    replicas: 1
+#    maxUnavailable: null
+#    persistence:
+#      enabled: true
+#      size: 4Gi
+#      storageClassName: nfs-client
+#
+#  # Configuration for the query-frontend
+#  queryFrontend:
+#    # -- Number of replicas for the query-frontend
+#    replicas: 1
+#    # -- Pod Disruption Budget maxUnavailable
+#    maxUnavailable: null
+#    # To Confirm if required
+#    #config:
+#    #  query_range:
+#    #    results_cache:
+#    #      cache:
+#    #        config:
+#    #          max_size: "2gb" # Increase based on your query patterns
+#
+#  # Configuration for the query-scheduler
+#  queryScheduler:
+#    # -- Specifies whether the query-scheduler should be decoupled from the query-frontend
+#    enabled: false
+#
+#  # Configuration for the table-manager
+#  tableManager:
+#    # -- Specifies whether the table-manager should be enabled
+#    enabled: false
+#    # ref: https://github.com/grafana/loki/issues/4466
+#    resources: {}
+#    extraVolumes:
+#      - name: data
+#        emptyDir: {}
+#    extraVolumeMounts:
+#      - name: data
+#        mountPath: /var/loki
+#
+#  # Use either this ingress or the gateway, but not both at once.
+#  # If you enable this, make sure to disable the gateway.
+#  # You'll need to supply authn configuration for your ingress controller.
+#  ingress:
+#    enabled: false
+#
+#  # Configuration for the gateway
+#  gateway:
+#    # -- Specifies whether the gateway should be enabled
+#    enabled: true
+#    # Basic auth configuration
+#    basicAuth:
+#      # -- Enables basic authentication for the gateway
+#      enabled: false
+#      # -- The basic auth username for the gateway
+#      username: null
+#      # -- The basic auth password for the gateway
+#      password: null
+#      htpasswd: >-
+#        {{ htpasswd (required "'gateway.basicAuth.username' is required" .Values.gateway.basicAuth.username) (required "'gateway.basicAuth.password' is required" .Values.gateway.basicAuth.password) }}
+#      # -- Existing basic auth secret to use. Must contain '.htpasswd'
+#      existingSecret: null
+#
+#  # Configuration for the compactor
+#  compactor:
+#    # -- Specifies whether compactor should be enabled
+#    enabled: true
+#    replicas: 1
+#    persistence:
+#      enabled: false
+#      size: 10Gi
+#      storageClassName: ""
+#      storageClass: null
+#      claims:
+#        - name: data
+#          size: 10Gi
+#          storageClass: null
+#    serviceAccount:
+#      create: true
+#      # -- Annotations for the compactor service account
+#      annotations: {}
+#      #annotations:
+#      #  azure.workload.identity/client-id: "00000000-0000-0000-0000-000000000"
+#      #labels:
+#      #  azure.workload.identity/use: "true"
+#      automountServiceAccountToken: true
+#
+#  # Configuration for the ruler
+#  ruler:
+#    enabled: false
+#
+#  # Configuration for the index-gateway
+#  indexGateway:
+#    # -- Specifies whether the index-gateway should be enabled
+#    enabled: false
+#
+#  memcached:
+#    serviceAnnotations: {}
+#
+#  memcachedExporter:
+#    # -- Specifies whether the Memcached Exporter should be enabled
+#    enabled: false
+#
+#  memcachedChunks:
+#    # -- Specifies whether the Memcached chunks cache should be enabled
+#    enabled: false
+#
+#  memcachedFrontend:
+#    # -- Specifies whether the Memcached frontend cache should be enabled
+#    enabled: false
+#
+#  memcachedIndexQueries:
+#    # -- Specifies whether the Memcached index queries cache should be enabled
+#    enabled: false
+#
+#  memcachedIndexWrites:
+#    enabled: false
+#
+#  networkPolicy:
+#    # -- Specifies whether Network Policies should be created
+#    enabled: false
+#

@@ -1,0 +1,25 @@
+{{- range $key, $value := .Values.gateways }}
+{{- if not .disabled }}
+apiVersion: {{ default "gateway.networking.k8s.io/v1" $value.api }}
+kind: Gateway
+metadata:
+  name: {{ $key }}
+  namespace: {{ $value.namespace }}
+spec:
+{{- if $value.selector }}
+  selector:
+    istio: {{ default "istio" $value.selector }}
+{{- else }}
+  gatewayClassName: {{ default "istio" $value.gateway }}
+{{- end }}
+{{- with $value.servers }}
+  servers:
+    {{- toYaml . | nindent 4 }}
+{{- end }}
+{{- with $value.listeners }}
+  listeners:
+    {{- toYaml . | nindent 4 }}
+{{- end }}
+---
+{{- end }}
+{{- end }}

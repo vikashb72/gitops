@@ -1,0 +1,21 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: httpbin-http
+  namespace: gloo-system
+spec:
+  virtualHost:
+    domains:
+      - httpbin.minikube.where-ever.net
+    routes:
+      - matchers:
+          - prefix: /
+        routeAction:
+          single:
+            kube:
+              ref:
+                name: httpbin
+                namespace: httpbin
+              port: 8000
+        #  hostRedirect: httpbin.minikube.where-ever.net
+        #  httpsRedirect: true

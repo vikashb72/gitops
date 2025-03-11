@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver
+  namespace: echoserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoserver
+  template:
+    metadata:
+      labels:
+        app: echoserver
+    spec:
+      serviceAccountName: echoserver
+      containers:
+        - image: k8s.gcr.io/echoserver:1.10
+          imagePullPolicy: IfNotPresent
+          name: echoserver
+          ports:
+            - containerPort: 8080

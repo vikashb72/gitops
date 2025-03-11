@@ -1,0 +1,5 @@
+reloader:
+  reloader:
+    isOpenshift: false
+    reloadStrategy: default
+    watchGlobally: true

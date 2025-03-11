@@ -1,0 +1,41 @@
+redis:
+  architecture: replication
+  auth:
+    enabled: false
+    sentinel: true
+  commonConfiguration: |
+    maxmemory-policy allkeys-lru
+    maxmemory 32mb
+    repl-backlog-size 2mb
+    appendonly yes
+    save ""
+  master:
+    count: 1
+    resourcesPreset: "nano" 			# nano, micro, small, medium
+    kind: StatefulSet
+    persistence: 
+      enabled: false
+  replica:
+    resourcesPreset: "nano"
+    kind: StatefulSet
+    replicaCount: 1
+    persistence:
+      enabled: false
+    externalMaster:
+      enabled: false
+    autoscaling:
+      enabled: false
+  sentinel:
+    enabled: true
+    resourcesPreset: "nano"
+    kind: StatefulSet
+    persistence:
+      enabled: false
+    externalMaster:
+      enabled: false
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      selector:
+        monitoring-platform: prometheus
