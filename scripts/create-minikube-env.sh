@@ -189,6 +189,8 @@ helm repo add argocd https://argoproj.github.io/argo-helm
 helm repo update
 helm dep update /tmp/gitops/helm/charts/argocd
 
+# bootstrap installation
+# the point of this is really to install the CRDs
 helm install -n argocd argocd \
     /tmp/gitops/helm/charts/argocd \
     --set argo-cd.configs.secret.argocdServerAdminPassword=${ARGOPASS} \
@@ -197,9 +199,11 @@ helm install -n argocd argocd \
     -f /tmp/gitops/helm/charts/argocd/values-${EVT}.yaml \
     --wait
 
+# wait
 kubectl -n argocd wait pods -l app.kubernetes.io/instance=argocd \
    --for condition=Ready --timeout=60s
 
+# upgrade so that we install the Projects
 helm upgrade -n argocd argocd \
     /tmp/gitops/helm/charts/argocd \
     --set argo-cd.configs.secret.argocdServerAdminPassword=${ARGOPASS} \
@@ -209,4 +213,4 @@ helm upgrade -n argocd argocd \
 
 helm template /tmp/gitops/helm/charts/umbrella/minikube \
     -f /tmp/gitops/helm/charts/umbrella/minikube/values-core.yaml \
-    kubectl -n argocd apply -f -
+    | kubectl -n argocd apply -f -
