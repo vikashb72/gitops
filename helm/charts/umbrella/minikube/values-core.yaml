@@ -21,15 +21,20 @@ schema:
       allowEmpty: false
 
 argocdManaged:
+  argocd:
+    name: argocd
+    namespace: argocd
+    syncwave: "1"
+    sources:
+      - path: helm/charts/argocd
   external-secrets:
-    disable: false
     name: external-secrets
     targetNamespace: external-secrets
+    syncwave: "2"
     sources:
+      - path: helm/charts/external-secrets
       #- path: hooks/external-secrets
       #  noHelmValues: true
-      - path: helm/charts/external-secrets
-        #noHelmValues: false
 #  argocd:
 #    disable: false
 #    name: argocd
