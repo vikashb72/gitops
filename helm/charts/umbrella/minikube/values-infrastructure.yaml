@@ -28,7 +28,7 @@ argocdManaged:
     sources:
       - path: helm/charts/argocd
   umbrella-chart:
-    name: umbrella-chart
+    name: infrastructure-umbrella-chart
     namespace: argocd
     syncwave: "1"
     sources:
