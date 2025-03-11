@@ -62,21 +62,14 @@ argocdManaged:
       - path: helm/charts/minio-tenant
     syncOptions:
       ServerSideApply: true
-#  monitoring:
-#    disable: false
-#    name: monitoring
-#    targetNamespace: monitoring
-#    sources:
-#      - path: helm/charts/monitoring
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    syncwave: "6"
-#    disableAutomated: false
-#    automated: {}
-#    ignoreDifferences: false 
-#    syncOptions:
-#      ServerSideApply: true
+  monitoring:
+    name: monitoring
+    targetNamespace: monitoring
+    syncwave: "5"
+    sources:
+      - path: helm/charts/monitoring
+    syncOptions:
+      ServerSideApply: true
 #  echoserver:
 #    disable: false
 #    name: echoserver
