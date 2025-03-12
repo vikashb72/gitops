@@ -1,19 +1,23 @@
 schema:
   env: minikube
+  namespace: vault-system
 
 vault:
   global:
     enabled: true
+    namespace: "vault-system"
     tlsDisable: false
-  csi:
-    enabled: false
+    serverTelemetry:
+      prometheusOperator: false
+
   injector:
     enabled: true
-  ui:
-    enabled: true
-    serviceType: LoadBalancer
-    loadBalancerIP: 192.168.49.242
+    metrics:
+      enabled: false
+
   server:
+    enabled: true
+
     dataStorage:
       storageClass: nfs-client
     extraSecretEnvironmentVars:
@@ -35,9 +39,6 @@ vault:
       - envName: VAULT_AZUREKEYVAULT_VAULT_NAME
         secretName: hvault-config
         secretKey: VAULT_AZUREKEYVAULT_VAULT_NAME
-      #- envName: VAULT_TOKEN
-      #  secretName: hvault-config
-      #  secretKey: vault_token
     extraEnvironmentVars:
       VAULT_CACERT: /vault/userconfig/hvault-config/ca.crt
       VAULT_TLSCERT: /vault/userconfig/hvault-config/tls.crt
@@ -51,6 +52,10 @@ vault:
       - mountPath: /vault/userconfig/hvault-config
         name: userconfig-hvault-config
         readOnly: true
+    auditStorage:
+      enabled: false
+    dev:
+      enabled: false
     standalone:
       enabled: false
     affinity: ""
@@ -70,9 +75,15 @@ vault:
              tls_cert_file = "/vault/userconfig/hvault-config/tls.crt"
              tls_key_file  = "/vault/userconfig/hvault-config/tls.key"
              tls_client_ca_file = "/vault/userconfig/hvault-config/ca.crt"
+             #telemetry {
+             #    unauthenticated_metrics_access = "true"
+             #}
           }
           storage "raft" {
              path = "/vault/data"
+             retry_join {
+                 leader_api_addr = "https://vault-cluster.vault-system.svc.cluster.local:8200"
+             }
           }
 
           seal "azurekeyvault" {
@@ -85,3 +96,34 @@ vault:
 
           disable_mlock = true
           service_registration "kubernetes" {}
+
+  ui:
+    enabled: true
+    serviceType: LoadBalancer
+    loadBalancerIP: 192.168.49.242
+
+  csi:
+    # https://github.com/kubernetes-sigs/secrets-store-csi-driver#install-the-secrets-store-csi-driver
+    enabled: false
+
+  serverTelemetry:
+    serviceMonitor:
+      enabled: false
+    prometheusRules:
+      # The Prometheus operator *must* be installed before enabling this
+      enabled: false
+      rules: []
+        #  - alert: vault-HighResponseTime
+        #    annotations:
+        #      message: The response time of Vault is over 500ms on average over the last 5 minutes.
+        #    expr: vault_core_handle_request{quantile="0.5", namespace="mynamespace"} > 500
+        #    for: 5m
+        #    labels:
+        #      severity: warning
+        #  - alert: vault-HighResponseTime
+        #    annotations:
+        #      message: The response time of Vault is over 1s on average over the last 5 minutes.
+        #    expr: vault_core_handle_request{quantile="0.5", namespace="mynamespace"} > 1000
+        #    for: 5m
+        #    labels:
+        #      severity: critical
