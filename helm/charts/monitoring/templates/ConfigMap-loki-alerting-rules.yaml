@@ -33,16 +33,16 @@ data:
             annotations:
               summary: Loki info warning per minute rate > 100
               message: 'Loki warning per minute rate > 100 container:"{{`{{`}} $labels.container {{`}}`}}"'
-{{- if hasKey .Values.env "loki" }}
-{{- if or (hasKey .Values.env.loki "logfmt") (hasKey .Values.env.loki "json") }}
-{{- if or (and (hasKey .Values.env.loki "logfmt") (hasKey .Values.env.loki.logfmt "namespace"))
-          (and (hasKey .Values.env.loki "json") (hasKey .Values.env.loki.json "namespace")) }}
-{{- if or (and (hasKey .Values.env.loki "logfmt") (hasKey .Values.env.loki.logfmt "namespace") (.Values.env.loki.logfmt.namespace))
-          (and (hasKey .Values.env.loki "json") (hasKey .Values.env.loki.json "namespace") (.Values.env.loki.json.namespace)) }}
+{{- if hasKey .Values.schema "loki" }}
+{{- if or (hasKey .Values.schema.loki "logfmt") (hasKey .Values.schema.loki "json") }}
+{{- if or (and (hasKey .Values.schema.loki "logfmt") (hasKey .Values.schema.loki.logfmt "namespace"))
+          (and (hasKey .Values.schema.loki "json") (hasKey .Values.schema.loki.json "namespace")) }}
+{{- if or (and (hasKey .Values.schema.loki "logfmt") (hasKey .Values.schema.loki.logfmt "namespace") (.Values.schema.loki.logfmt.namespace))
+          (and (hasKey .Values.schema.loki "json") (hasKey .Values.schema.loki.json "namespace") (.Values.schema.loki.json.namespace)) }}
       - name: ErrorsInNamespace
         rules:
-{{- if and (hasKey .Values.env.loki "logfmt") (hasKey .Values.env.loki.logfmt "namespace") (.Values.env.loki.logfmt.namespace) }}
-{{- range .Values.env.loki.logfmt.namespace }}
+{{- if and (hasKey .Values.schema.loki "logfmt") (hasKey .Values.schema.loki.logfmt "namespace") (.Values.schema.loki.logfmt.namespace) }}
+{{- range .Values.schema.loki.logfmt.namespace }}
           - alert: HighErrorsRateInNamespace-{{ . }}
             expr: |
               sum(rate({namespace="{{ . }}"} | logfmt |~ "(?i)error"[1m]))
@@ -55,8 +55,8 @@ data:
               message: "Loki error per minute rate in namespace {{ . }} > 0 "
 {{- end }}
 {{- end }}
-{{- if and (hasKey .Values.env.loki "json") (hasKey .Values.env.loki.json "namespace") (.Values.env.loki.json.namespace) }}
-{{- range .Values.env.loki.json.namespace }}
+{{- if and (hasKey .Values.schema.loki "json") (hasKey .Values.schema.loki.json "namespace") (.Values.schema.loki.json.namespace) }}
+{{- range .Values.schema.loki.json.namespace }}
           - alert: HighErrorsRateInNamespace-{{ . }}
             expr: |
               sum(rate({namespace="{{ . }}"} | json |~ level="error"[1m])) by (container) > 0
