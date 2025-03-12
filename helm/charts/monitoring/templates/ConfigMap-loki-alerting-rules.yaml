@@ -57,9 +57,9 @@ data:
 {{- end }}
 {{- if and (hasKey .Values.schema.loki "json") (hasKey .Values.schema.loki.json "namespace") (.Values.schema.loki.json.namespace) }}
 {{- range .Values.schema.loki.json.namespace }}
-          - alert: HighErrorsRateInNamespace-{{ . }}
+          - alert: HighErrorsRateInNamespace-{{ . }}-json
             expr: |
-              sum(rate({namespace="{{ . }}"} | json |~ level="error"[1m])) by (container) > 0
+              sum(rate({namespace="{{ . }}"} | json | level="error"[1m])) by (container) > 0
             for: 1m
             labels:
               severity: warning
