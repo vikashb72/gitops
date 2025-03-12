@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vault-init
+  namespace: argocd
+spec:
+  serviceAccountName: argocd-application-controller
+  template:
+    spec:
+      containers:
+      - name: vault-init
+        image: alpine:latest
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            apk add --no-cache --update curl jq kubectl
+            export VAULT_ADDR="https://vault-active.vault-system.svc.cluster.local:8200"
+        #env:
+        #  - name: VAULT_TOKEN
+        #    valueFrom:
+        #      secretKeyRef:
+        #        name: raft-snapshot-token
+        #        key: token
+      restartPolicy: Never
+  backoffLimit: 4
