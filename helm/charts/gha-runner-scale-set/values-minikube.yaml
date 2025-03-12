@@ -1,5 +1,5 @@
-env:
-  EVT: minikube
+schema:
+  env: minikube
 
 gha-runner-scale-set:
   githubConfigUrl: "https://github.com/where-ever"

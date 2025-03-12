@@ -1,5 +1,5 @@
-env:
-  EVT: minikube
+schema:
+  env: minikube
   loki:
     logfmt:
       namespace:

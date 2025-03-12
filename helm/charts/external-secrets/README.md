@@ -119,7 +119,7 @@ kubectl -n external-secrets wait pods \
     --timeout=90s
 ```
 
-# upgrade to install our secretstores
+#### upgrade to install our secretstores
 ```
 helm install -n external-secrets external-secrets \
     /path/to/helm/charts/external-secrets \
