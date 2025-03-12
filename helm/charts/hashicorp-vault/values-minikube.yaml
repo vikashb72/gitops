@@ -1,6 +1,5 @@
 schema:
   env: minikube
-  namespace: vault-system
 
 vault:
   global:

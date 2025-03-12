@@ -3,6 +3,9 @@ kind: Job
 metadata:
   name: vault-init
   namespace: argocd
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   serviceAccountName: argocd-application-controller
   template:
@@ -14,7 +17,23 @@ spec:
         args:
           - |
             apk add --no-cache --update curl jq kubectl
-            export VAULT_ADDR="https://vault-active.vault-system.svc.cluster.local:8200"
+            export VAULT_K8S_NAMESPACE={{ .Values.vault.global.namespace }}
+            export VAULT_ADDR="https://vault-active.${VAULT_K8S_NAMESPACE}.svc.cluster.local:8200"
+            kubectl -n ${VAULT_K8S_NAMESPACE} \
+              wait --for=condition=Initialized pod/vault-0 --timeout=120s || \
+            kubectl -n ${VAULT_K8S_NAMESPACE} \
+              wait --for=condition=Initialized pod/vault-0 --timeout=120s
+            VAULT_STATUS=$(kubectl -n ${VAULT_K8S_NAMESPACE} \
+                exec vault-0 -- vault status -format=json \
+                | jq -r '.initialized')
+            if [[ ""$VAULT_STATUS" == "false" ]]; then
+                echo "Clean Vault Install - starting initialization."
+                INIT_RESULT=$(kubectl exec -n $VAULT_K8S_NAMESPACE vault-0 -- \
+                    vault operator init -format=json)
+                kubectl -n $VAULT_K8S_NAMESPACE create secret generic \
+                    vault-operator-init \
+                    --from-literal=init=${INIT_RESULT}
+            fi
         #env:
         #  - name: VAULT_TOKEN
         #    valueFrom:
