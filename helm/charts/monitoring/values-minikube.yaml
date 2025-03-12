@@ -184,7 +184,7 @@ kube-prometheus-stack:
       annotations: {}
     service:
       type: LoadBalancer
-      loadBalancerIP: 192.168.49.232
+      loadBalancerIP: 192.168.49.245
   grafana:
     enabled: true
     #env:
@@ -357,7 +357,7 @@ kube-prometheus-stack:
     service:
       enabled: true
       type: LoadBalancer
-      loadBalancerIP: 192.168.49.231
+      loadBalancerIP: 192.168.49.246
     serviceMonitor:
       enabled: true
     additionalDataSources:
@@ -556,7 +556,7 @@ kube-prometheus-stack:
       create: true
     service:
       type: LoadBalancer
-      loadBalancerIP: 192.168.49.227
+      loadBalancerIP: 192.168.49.244
       ipDualStack:
         enabled: false
     serviceMonitor:
