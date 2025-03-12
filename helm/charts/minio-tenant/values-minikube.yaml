@@ -19,7 +19,6 @@ tenant:
         name: pool-0
         volumesPerServer: 1
         size: 16Gi
-        #storageClassName: csi-hostpath-sc
         storageClassName: nfs-client
     mountPath: /export
     subPath: /data
