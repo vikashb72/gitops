@@ -45,14 +45,14 @@ data:
 {{- range .Values.schema.loki.logfmt.namespace }}
           - alert: HighErrorsRateInNamespace-{{ . }}
             expr: |
-              sum(rate({namespace="{{ . }}"} | logfmt |~ "(?i)error"[1m]))
+              sum(rate({namespace="{{ . }}"} | logfmt | level="error"[1m]))
               by (container) > 0
             for: 1m
             labels:
               severity: warning
             annotations:
               summary: {{ . }} error per minute rate > 0
-              message: "Loki error per minute rate in namespace {{ . }} > 0 "
+              message: "High error rate per minute in namespace {{ . }} > 0 "
 {{- end }}
 {{- end }}
 {{- if and (hasKey .Values.schema.loki "json") (hasKey .Values.schema.loki.json "namespace") (.Values.schema.loki.json.namespace) }}
@@ -65,7 +65,7 @@ data:
               severity: warning
             annotations:
               summary: {{ . }} error per minute rate > 0
-              message: "Loki error per minute rate in namespace {{ . }} > 0 "
+              message: "High error rate per minute in namespace {{ . }} > 0 "
 {{- end }}
 {{- end }}
 {{- end }}
