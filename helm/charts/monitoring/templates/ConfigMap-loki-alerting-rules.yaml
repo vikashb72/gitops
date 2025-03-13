@@ -25,8 +25,8 @@ data:
         rules:
           - alert: LokiHighErrorRate
             expr: |
-              sum(rate({app="loki"} | logfmt | level="info"[1m])) 
-              by (container) > 100
+              sum(rate({app="loki"} | logfmt | level="error"[1m])) 
+              by (container) > 10
             for: 1m
             labels:
               severity: warning
