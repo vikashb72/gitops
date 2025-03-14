@@ -435,7 +435,7 @@ kube-prometheus-stack:
       enabled: true
     admissionWebhooks:
       enabled: true
-      failurePolicy: Ignore
+      failurePolicy: Fail
       annotations:
         argocd.argoproj.io/hook: PreSync
         argocd.argoproj.io/hook-delete-policy: HookSucceeded
@@ -448,7 +448,8 @@ kube-prometheus-stack:
       patch:
         enabled: true
         annotations:
-          argocd.argoproj.io/hook: PreSync
+          #argocd.argoproj.io/hook: PreSync
+          argocd.argoproj.io/hook: Sync
           argocd.argoproj.io/hook-delete-policy: HookSucceeded
         podAnnotations:
           sidecar.istio.io/inject: "false"
