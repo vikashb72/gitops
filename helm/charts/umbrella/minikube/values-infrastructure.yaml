@@ -81,7 +81,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   monitoring:
-    disabled: true
+    disable: true
     name: monitoring
     targetNamespace: monitoring
     syncwave: "7"
