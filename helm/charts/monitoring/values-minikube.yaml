@@ -24,7 +24,7 @@ kube-prometheus-stack:
   
       patch:
         annotations:
-          argocd.argoproj.io/hook: PreSync
+          argocd.argoproj.io/hook: Sync
           argocd.argoproj.io/hook-delete-policy: HookSucceeded
   
       mutatingWebhookConfiguration:
