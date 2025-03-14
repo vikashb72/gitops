@@ -19,6 +19,7 @@ vault:
 
     dataStorage:
       storageClass: nfs-client
+
     extraSecretEnvironmentVars:
       - envName: AZURE_CLIENT_ID
         secretName: hvault-config
@@ -38,26 +39,34 @@ vault:
       - envName: VAULT_AZUREKEYVAULT_VAULT_NAME
         secretName: hvault-config
         secretKey: VAULT_AZUREKEYVAULT_VAULT_NAME
+
     extraEnvironmentVars:
       VAULT_CACERT: /vault/userconfig/hvault-config/ca.crt
       VAULT_TLSCERT: /vault/userconfig/hvault-config/tls.crt
       VAULT_TLSKEY: /vault/userconfig/hvault-config/tls.key
+
     volumes:
       - name: userconfig-hvault-config
         secret:
          defaultMode: 420
          secretName: hvault-config
+
     volumeMounts:
       - mountPath: /vault/userconfig/hvault-config
         name: userconfig-hvault-config
         readOnly: true
+
     auditStorage:
       enabled: false
+
     dev:
       enabled: false
+
     standalone:
       enabled: false
+
     affinity: ""
+
     ha:
       enabled: true
       replicas: 3
@@ -84,7 +93,6 @@ vault:
                  leader_api_addr = "https://vault-cluster.vault-system.svc.cluster.local:8200"
              }
           }
-
           seal "azurekeyvault" {
             #tenant_id      = ""       # env:AZURE_TENANT_ID
             #client_id      = ""       # env:AZURE_CLIENT_ID
@@ -92,7 +100,6 @@ vault:
             #vault_name     = ""       # env:VAULT_AZUREKEYVAULT_VAULT_NAME
             #key_name       = ""       # env:VAULT_AZUREKEYVAULT_KEY_NAME
           }
-
           disable_mlock = true
           service_registration "kubernetes" {}
 
@@ -108,6 +115,7 @@ vault:
   serverTelemetry:
     serviceMonitor:
       enabled: false
+
     prometheusRules:
       # The Prometheus operator *must* be installed before enabling this
       enabled: false
