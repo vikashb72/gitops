@@ -46,10 +46,22 @@ argocdManaged:
       - path: helm/charts/external-secrets
       #- path: hooks/external-secrets
       #  noHelmValues: true
+  vault:
+    name: vault
+    targetNamespace: vault-system
+    syncwave: "3"
+    sources:
+      - path: helm/charts/hashicorp-vault
+    ignoreDifferences: true 
+    ignoreDifferencesConfig:
+      - group: admissionregistration.k8s.io
+        kind: MutatingWebhookConfiguration
+        jqPathExpressions:
+          - .webhooks[]?.clientConfig.caBundle
   minio-operator:
     name: minio-operator
     targetNamespace: minio-operator
-    syncwave: "3"
+    syncwave: "4"
     sources:
       - path: helm/charts/minio-operator
     syncOptions:
@@ -57,7 +69,7 @@ argocdManaged:
   minio-tenant:
     name: minio-tenant
     targetNamespace: minio-tenant
-    syncwave: "4"
+    syncwave: "5"
     sources:
       - path: helm/charts/minio-tenant
     syncOptions:
@@ -65,7 +77,7 @@ argocdManaged:
   monitoring:
     name: monitoring
     targetNamespace: monitoring
-    syncwave: "5"
+    syncwave: "6"
     sources:
       - path: helm/charts/monitoring
     syncOptions:
@@ -188,24 +200,6 @@ argocdManaged:
 #    disableAutomated: false
 #    automated: {}
 #    ignoreDifferences: false 
-#  vault:
-#    disable: true
-#    name: vault
-#    syncwave: "-5"
-#    targetNamespace: vault-system
-#    sources:
-#      - path: helm/charts/hashicorp-vault
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    disableAutomated: false
-#    automated: {}
-#    ignoreDifferences: true 
-#    ignoreDifferencesConfig:
-#      - group: admissionregistration.k8s.io
-#        kind: MutatingWebhookConfiguration
-#        jqPathExpressions:
-#          - .webhooks[]?.clientConfig.caBundle
 #  cert-manager:
 #    disable: true
 #    name: cert-manager
