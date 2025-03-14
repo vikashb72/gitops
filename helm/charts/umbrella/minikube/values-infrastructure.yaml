@@ -110,18 +110,12 @@ argocdManaged:
     syncwave: "9"
     sources:
       - path: helm/charts/keycloak
-#  gloo-ee:
-#    disable: false
-#    name: gloo-ee
-#    targetNamespace: gloo-system
-#    sources:
-#      - path: helm/charts/gloo-ee
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    syncwave: "10"
-#    disableAutomated: false
-#    automated: {}
+  gloo-ee:
+    name: gloo-ee
+    targetNamespace: gloo-system
+    syncwave: "10"
+    sources:
+      - path: helm/charts/gloo-ee
 #  gloo-mesh-core:
 #    disable: false
 #    name: gloo-mesh-core
