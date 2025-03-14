@@ -58,10 +58,16 @@ argocdManaged:
         kind: MutatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.clientConfig.caBundle
+  cert-manager:
+    name: cert-manager
+    targetNamespace: cert-manager
+    syncwave: "4"
+    sources:
+      - path: helm/charts/cert-manager
   minio-operator:
     name: minio-operator
     targetNamespace: minio-operator
-    syncwave: "4"
+    syncwave: "5"
     sources:
       - path: helm/charts/minio-operator
     syncOptions:
@@ -69,7 +75,7 @@ argocdManaged:
   minio-tenant:
     name: minio-tenant
     targetNamespace: minio-tenant
-    syncwave: "5"
+    syncwave: "6"
     sources:
       - path: helm/charts/minio-tenant
     syncOptions:
@@ -77,33 +83,11 @@ argocdManaged:
   monitoring:
     name: monitoring
     targetNamespace: monitoring
-    syncwave: "6"
+    syncwave: "7"
     sources:
       - path: helm/charts/monitoring
     syncOptions:
       ServerSideApply: true
-#  echoserver:
-#    disable: false
-#    name: echoserver
-#    targetNamespace: echoserver
-#    sources:
-#      - path: helm/charts/echoserver
-#        noHelmValues: true
-#    syncwave: "7"
-#    disableAutomated: false
-#    automated: {}
-#    ignoreDifferences: false 
-#  httpbin:
-#    disable: false
-#    name: httpbin
-#    targetNamespace: httpbin
-#    sources:
-#      - path: helm/charts/httpbin
-#        noHelmValues: true
-#    syncwave: "7"
-#    disableAutomated: false
-#    automated: {}
-#    ignoreDifferences: false 
 #  istio:
 #    disable: false
 #    name: istio
@@ -194,19 +178,6 @@ argocdManaged:
 #    syncwave: "13"
 #    sources:
 #      - path: helm/charts/goldilocks
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    disableAutomated: false
-#    automated: {}
-#    ignoreDifferences: false 
-#  cert-manager:
-#    disable: true
-#    name: cert-manager
-#    syncwave: "-5"
-#    targetNamespace: cert-manager
-#    sources:
-#      - path: helm/charts/cert-manager
 #        noHelmValues: false
 #        helm:
 #          envFile: true
