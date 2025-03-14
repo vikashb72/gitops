@@ -214,3 +214,7 @@ helm upgrade -n argocd argocd \
 helm template /tmp/gitops/helm/charts/umbrella/minikube \
     -f /tmp/gitops/helm/charts/umbrella/minikube/values-infrastructure.yaml \
     | kubectl -n argocd apply -f -
+
+helm template /tmp/gitops/helm/charts/umbrella/minikube \
+    -f /tmp/gitops/helm/charts/umbrella/minikube/values-apps.yaml \
+    | kubectl -n argocd apply -f -
