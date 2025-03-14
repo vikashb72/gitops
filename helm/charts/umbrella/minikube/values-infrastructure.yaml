@@ -88,27 +88,22 @@ argocdManaged:
       - path: helm/charts/monitoring
     syncOptions:
       ServerSideApply: true
-#  istio:
-#    disable: false
-#    name: istio
-#    targetNamespace: istio-system
-#    sources:
-#      - path: helm/charts/istio
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#          #parameters:
-#          #  - name: profile
-#          #    value: ambient
-#    syncwave: "8"
-#    disableAutomated: false
-#    automated: {}
-#    ignoreDifferences: true 
-#    ignoreDifferencesConfig:
-#      - group: admissionregistration.k8s.io
-#        kind: ValidatingWebhookConfiguration
-#        jqPathExpressions:
-#          - .webhooks[]?.failurePolicy
+  istio:
+    name: istio
+    targetNamespace: istio-system
+    syncwave: "8"
+    sources:
+      - path: helm/charts/istio
+        #helm:
+        #  parameters:
+        #    - name: profile
+        #      value: ambient
+    ignoreDifferences: true 
+    ignoreDifferencesConfig:
+      - group: admissionregistration.k8s.io
+        kind: ValidatingWebhookConfiguration
+        jqPathExpressions:
+          - .webhooks[]?.failurePolicy
 #  keycloak:
 #    disable: false
 #    name: keycloak
