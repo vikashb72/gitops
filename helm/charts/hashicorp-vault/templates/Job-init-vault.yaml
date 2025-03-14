@@ -4,8 +4,7 @@ metadata:
   name: vault-init
   namespace: argocd
   annotations:
-    "helm.sh/hook": sync
-    "helm.sh/hook-delete-policy": before-hook-creation
+    argocd.argoproj.io/hook: sync
 spec:
   serviceAccountName: argocd-application-controller
   template:
