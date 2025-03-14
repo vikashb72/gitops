@@ -116,17 +116,12 @@ argocdManaged:
     syncwave: "10"
     sources:
       - path: helm/charts/gloo-ee
-#  gloo-mesh-core:
-#    disable: false
-#    name: gloo-mesh-core
-#    targetNamespace: gloo-mesh
-#    sources:
-#      - path: helm/charts/gloo-mesh-core
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    disableAutomated: false
-#    automated: {}
+  gloo-mesh-core:
+    name: gloo-mesh-core
+    targetNamespace: gloo-mesh
+    syncwave: "10"
+    sources:
+      - path: helm/charts/gloo-mesh-core
 #
 #  istio-ingress:
 #    disable: true
