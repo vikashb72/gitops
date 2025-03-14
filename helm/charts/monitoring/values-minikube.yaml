@@ -492,7 +492,7 @@ kube-prometheus-stack:
       maximumStartupDurationSeconds: 600
       minReadySeconds: 90
       containers:
-        - name: prometheus
+        - name: monitoring-kube-prometheus-operator
           readinessProbe:
             periodSeconds: 30
             initialDelaySeconds: 30
