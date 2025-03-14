@@ -6,9 +6,10 @@ print_usage() {
 }
 
 EVT=""
+
 while getopts "e:" opt
 do
-   case: "${opt}" in
+   case "${opt}" in
      e) EVT=${OPTARG};;
      *) usage;;
    esac
