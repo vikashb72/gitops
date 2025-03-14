@@ -16,7 +16,7 @@ done
 
 # This is needed
 [ -z $EVT ] && echo "MISSING ENV: EVT" && usage && exit 2
-[ -z $VAULT_TOKEN ] && echo "MISSING ENV: VAULT_TOKEN" && exit 2
+#[ -z $VAULT_TOKEN ] && echo "MISSING ENV: VAULT_TOKEN" && exit 2
 
 VAULT_K8S_NAMESPACE="vault-system"
 WORKDIR=$(pwd)/work

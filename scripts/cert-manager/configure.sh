@@ -25,7 +25,7 @@ done
 # This is needed
 [ -z $EVT ] && echo "MISSING ENV: EVT" && usage && exit 2
 
-[ -z $VAULT_TOKEN ] && echo "MISSING ENV: VAULT_TOKEN" && exit 2
+#[ -z $VAULT_TOKEN ] && echo "MISSING ENV: VAULT_TOKEN" && exit 2
 
 # Check vault status (sealed etc)
 STATUS=$(kubectl -n $VAULT_K8S_NAMESPACE exec vault-0 -- vault status | \
@@ -41,7 +41,7 @@ path "pki/sign/generate-cert-role"    { capabilities = ["create", "update"] }
 path "pki/issue/generate-cert-role"   { capabilities = ["create"] }
 EOF
 
-kubectl -n vault-system exec -it vault-0 -- vault login $VAULT_TOKEN
+#kubectl -n vault-system exec -it vault-0 -- vault login $VAULT_TOKEN
 kubectl -n vault-system exec -it vault-0 -- vault secrets enable pki
 kubectl -n vault-system exec -it vault-0 -- vault auth enable kubernetes
 kubectl -n vault-system cp policy.hc1 vault-0:/tmp/pki.policy.hc1

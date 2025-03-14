@@ -16,7 +16,7 @@ done
 
 # This is needed
 [ -z $EVT ] && echo "MISSING ENV: EVT" && usage && exit 2
-[ -z $VAULT_TOKEN ] && echo "MISSING ENV: VAULT_TOKEN" && exit 2
+#[ -z $VAULT_TOKEN ] && echo "MISSING ENV: VAULT_TOKEN" && exit 2
 
 WORKDIR=$(pwd)/work
 
@@ -49,11 +49,11 @@ kubectl -n vault-system exec -it vault-0 -- \
         ext_key_usage_oids=1.3.6.1.5.5.7.3.1 \
         server_flag=true
 
-exit
 
 # test
 
 cd work
+kubectl -n vault-system exec -it vault-0 -- \
 vault write -format=json \
     pki/issue/generate-cert-role \
     common_name="test.${EVT}.example.com" \
