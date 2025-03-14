@@ -4,7 +4,8 @@ metadata:
   generateName: vault-init
   namespace: argocd
   annotations:
-    argocd.argoproj.io/hook: sync
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "1" # Ensure this runs after actual resources are deployed
 spec:
   serviceAccountName: argocd-application-controller
   template:
