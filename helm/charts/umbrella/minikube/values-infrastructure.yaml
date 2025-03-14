@@ -104,18 +104,12 @@ argocdManaged:
         kind: ValidatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
-#  keycloak:
-#    disable: false
-#    name: keycloak
-#    targetNamespace: keycloak
-#    sources:
-#      - path: helm/charts/keycloak
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    syncwave: "9"
-#    disableAutomated: false
-#    automated: {}
+  keycloak:
+    name: keycloak
+    targetNamespace: keycloak
+    syncwave: "9"
+    sources:
+      - path: helm/charts/keycloak
 #  gloo-ee:
 #    disable: false
 #    name: gloo-ee
