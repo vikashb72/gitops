@@ -438,7 +438,7 @@ kube-prometheus-stack:
       failurePolicy: Fail
       annotations:
         argocd.argoproj.io/hook: PreSync
-        argocd.argoproj.io/hook-delete-policy: HookSucceeded
+        argocd.argoproj.io/hook-delete-policy: HookFailed
       mutatingWebhookConfiguration:
         annotations:
           argocd.argoproj.io/hook: PreSync
@@ -450,7 +450,7 @@ kube-prometheus-stack:
         annotations:
           #argocd.argoproj.io/hook: PreSync
           argocd.argoproj.io/hook: Sync
-          argocd.argoproj.io/hook-delete-policy: HookSucceeded
+          argocd.argoproj.io/hook-delete-policy: HookFailed
         podAnnotations:
           sidecar.istio.io/inject: "false"
       certManager:
