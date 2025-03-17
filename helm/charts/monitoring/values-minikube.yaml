@@ -432,7 +432,7 @@ kube-prometheus-stack:
   prometheusOperator:
     enabled: true
     tls:
-      enabled: false
+      enabled: true
     admissionWebhooks:
       enabled: true
       failurePolicy: Fail
@@ -488,17 +488,17 @@ kube-prometheus-stack:
     serviceMonitor:
       selfMonitor: true
     prometheusSpec:
-      terminationGracePeriodSeconds: 90
-      maximumStartupDurationSeconds: 600
-      minReadySeconds: 90
-      containers:
-        - name: monitoring-kube-prometheus-operator
-          readinessProbe:
-            periodSeconds: 30
-            initialDelaySeconds: 30
-          livenessProbe:
-            periodSeconds: 30
-            initialDelaySeconds: 60
+    #  terminationGracePeriodSeconds: 90
+    #  maximumStartupDurationSeconds: 600
+    #  minReadySeconds: 90
+    #  containers:
+    #    - name: monitoring-kube-prometheus-operator
+    #      readinessProbe:
+    #        periodSeconds: 30
+    #        initialDelaySeconds: 30
+    #      livenessProbe:
+    #        periodSeconds: 30
+    #        initialDelaySeconds: 60
       enableRemoteWriteReceiver: true
       persistentVolumeClaimRetentionPolicy: {}
       storageSpec:
