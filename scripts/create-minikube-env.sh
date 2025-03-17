@@ -108,7 +108,7 @@ echo "Waiting for nfs-provisioning pods to startup"
 kubectl wait -n nfs-provisioning pods \
     -l app=nfs-subdir-external-provisioner \
     --for condition=Ready \
-    --timeout=30s
+    --timeout=180s
 
 # ---------------------------------------------------------------------------- #
 #                             Disable host path storage
@@ -163,19 +163,21 @@ helm dependency build /tmp/gitops/helm/charts/external-secrets
 helm install -n external-secrets external-secrets \
     /tmp/gitops/helm/charts/external-secrets \
     --set schema.bootstrap=true \
-    -f /tmp/gitops/helm/charts/external-secrets/values-${EVT}.yaml
+    -f /tmp/gitops/helm/charts/external-secrets/values-${EVT}.yaml \
+    --wait
 
 # wait for pods 
 # we are really waiting for the CRD installation
 kubectl -n external-secrets wait pods \
     -l app.kubernetes.io/instance=external-secrets \
     --for condition=Ready \
-    --timeout=90s
+    --timeout=180s
 
 # upgrade so that we install the secretstores
 helm upgrade -n external-secrets external-secrets \
     /tmp/gitops/helm/charts/external-secrets \
-    -f /tmp/gitops/helm/charts/external-secrets/values-${EVT}.yaml
+    -f /tmp/gitops/helm/charts/external-secrets/values-${EVT}.yaml \
+    --timeout=180s
 
 # ---------------------------------------------------------------------------- #
 #                             argocd
@@ -201,7 +203,7 @@ helm install -n argocd argocd \
 
 # wait
 kubectl -n argocd wait pods -l app.kubernetes.io/instance=argocd \
-   --for condition=Ready --timeout=60s
+   --for condition=Ready --timeout=180s
 
 # upgrade so that we install the Projects
 helm upgrade -n argocd argocd \
