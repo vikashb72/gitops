@@ -588,7 +588,7 @@ loki:
       - '-config.expand-env=true'
     extraEnvFrom:
       - secretRef:
-          name: minio-credentials
+          name: loki-minio-credentials
 
   ingester:
     replicas: 3 # To ensure data durability with replication
@@ -598,7 +598,7 @@ loki:
       - '-config.expand-env=true'
     extraEnvFrom:
       - secretRef:
-          name: minio-credentials
+          name: loki-minio-credentials
   querier:
     replicas: 3 # Improve query performance via parallelism
     maxUnavailable: 2
@@ -606,7 +606,7 @@ loki:
       - '-config.expand-env=true'
     extraEnvFrom:
       - secretRef:
-          name: minio-credentials
+          name: loki-minio-credentials
 
   queryFrontend:
     replicas: 2
@@ -615,7 +615,7 @@ loki:
       - '-config.expand-env=true'
     extraEnvFrom:
       - secretRef:
-          name: minio-credentials
+          name: loki-minio-credentials
 
   queryScheduler:
     replicas: 2
@@ -623,7 +623,7 @@ loki:
       - '-config.expand-env=true'
     extraEnvFrom:
       - secretRef:
-          name: minio-credentials
+          name: loki-minio-credentials
 
   distributor:
     replicas: 3
@@ -632,7 +632,7 @@ loki:
       - '-config.expand-env=true'
     extraEnvFrom:
       - secretRef:
-          name: minio-credentials
+          name: loki-minio-credentials
 
   compactor:
     replicas: 1
@@ -640,7 +640,7 @@ loki:
       - '-config.expand-env=true'
     extraEnvFrom:
       - secretRef:
-          name: minio-credentials
+          name: loki-minio-credentials
 
   indexGateway:
     replicas: 2
@@ -649,7 +649,7 @@ loki:
       - '-config.expand-env=true'
     extraEnvFrom:
       - secretRef:
-          name: minio-credentials
+          name: loki-minio-credentials
 
   bloomPlanner:
     replicas: 0
@@ -772,3 +772,85 @@ promtail:
   sidecar:
     configReloader:
       enabled: false
+
+tempo:
+  replicas: 3
+  
+  tempo:
+    metricsGenerator:
+      enabled: false
+      extraArgs:
+        - '-config.expand-env=true'
+      extraEnvFrom:
+        - secretRef:
+            name: tempo-minio-credentials
+
+    ingester:
+      extraArgs:
+        - '-config.expand-env=true'
+      extraEnvFrom:
+        - secretRef:
+            name: tempo-minio-credentials
+
+    querier:
+      extraArgs:
+        - '-config.expand-env=true'
+      extraEnvFrom:
+        - secretRef:
+            name: tempo-minio-credentials
+
+    queryFrontend:
+      extraArgs:
+        - '-config.expand-env=true'
+      extraEnvFrom:
+        - secretRef:
+            name: tempo-minio-credentials
+
+    compactor:
+      extraArgs:
+        - '-config.expand-env=true'
+      extraEnvFrom:
+        - secretRef:
+            name: tempo-minio-credentials
+
+    storage:
+      trace:
+        backend: s3
+        s3:
+          bucket: tempo-traces
+          endpoint: "${endpoint}"
+          region: null
+          secretAccessKey: "${secretKey}"
+          accessKeyId: "${accessKey}"
+          s3ForcePathStyle: true
+          insecure: true
+
+    receivers:
+      jaeger:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:14250
+          thrift_binary:
+            endpoint: 0.0.0.0:6832
+          thrift_compact:
+            endpoint: 0.0.0.0:6831
+          thrift_http:
+            endpoint: 0.0.0.0:14268
+
+    #extraArgs:
+    #  - '-config.expand-env=true'
+    #extraEnvFrom:
+    #  - secretRef:
+    #      name: tempo-minio-credentials
+
+  tempoQuery:
+    enabled: false
+
+  serviceMonitor:
+    enabled: false
+
+  persistence:
+    enabled: false
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
