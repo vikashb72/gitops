@@ -854,3 +854,30 @@ tempo:
     accessModes:
       - ReadWriteOnce
     size: 10Gi
+
+opentelemetry-collector:
+  # Valid values are "daemonset", "deployment", and "statefulset".
+  mode: "statefulset"
+  
+  presets:
+    logsCollection:
+      enabled: false
+    hostMetrics:
+      enabled: false
+    kubernetesAttributes:
+      enabled: false
+    kubeletMetrics:
+      enabled: false
+    kubernetesEvents:
+      enabled: false
+    clusterMetrics:
+      enabled: false
+  
+  service:
+    # By default, it's enabled on mode != daemonset.
+    # enabled: true
+  
+    type: ClusterIP
+    # type: LoadBalancer
+    # loadBalancerIP: 1.2.3.4
+    # loadBalancerSourceRanges: []
