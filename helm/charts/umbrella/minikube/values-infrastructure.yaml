@@ -47,6 +47,7 @@ argocdManaged:
       #- path: hooks/external-secrets
       #  noHelmValues: true
   vault:
+    disable: true
     name: vault
     targetNamespace: vault-system
     syncwave: "3"
@@ -59,12 +60,14 @@ argocdManaged:
         jqPathExpressions:
           - .webhooks[]?.clientConfig.caBundle
   cert-manager:
+    disable: true
     name: cert-manager
     targetNamespace: cert-manager
     syncwave: "4"
     sources:
       - path: helm/charts/cert-manager
   minio-operator:
+    disable: true
     name: minio-operator
     targetNamespace: minio-operator
     syncwave: "5"
@@ -73,6 +76,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   minio-tenant:
+    disable: true
     name: minio-tenant
     targetNamespace: minio-tenant
     syncwave: "6"
@@ -90,6 +94,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   istio:
+    disable: true
     name: istio
     targetNamespace: istio-system
     syncwave: "8"
@@ -106,18 +111,21 @@ argocdManaged:
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
   keycloak:
+    disable: true
     name: keycloak
     targetNamespace: keycloak
     syncwave: "9"
     sources:
       - path: helm/charts/keycloak
   gloo-ee:
+    disable: true
     name: gloo-ee
     targetNamespace: gloo-system
     syncwave: "10"
     sources:
       - path: helm/charts/gloo-ee
   gloo-mesh-core:
+    disable: true
     name: gloo-mesh-core
     targetNamespace: gloo-mesh
     syncwave: "10"
