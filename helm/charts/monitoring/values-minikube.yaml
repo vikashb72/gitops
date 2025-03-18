@@ -777,42 +777,6 @@ tempo:
   replicas: 3
   
   tempo:
-    #metricsGenerator:
-    #  enabled: false
-    #  extraArgs:
-    #    - '-config.expand-env=true'
-    #  extraEnvFrom:
-    #    - secretRef:
-    #        name: tempo-minio-credentials
-
-    #ingester:
-    #  extraArgs:
-    #    - '-config.expand-env=true'
-    #  extraEnvFrom:
-    #    - secretRef:
-    #        name: tempo-minio-credentials
-
-    #querier:
-    #  extraArgs:
-    #    - '-config.expand-env=true'
-    #  extraEnvFrom:
-    #    - secretRef:
-    #        name: tempo-minio-credentials
-
-    #queryFrontend:
-    #  extraArgs:
-    #    - '-config.expand-env=true'
-    #  extraEnvFrom:
-    #    - secretRef:
-    #        name: tempo-minio-credentials
-
-    #compactor:
-    #  extraArgs:
-    #    - '-config.expand-env=true'
-    #  extraEnvFrom:
-    #    - secretRef:
-    #        name: tempo-minio-credentials
-
     storage:
       trace:
         backend: s3
@@ -822,26 +786,14 @@ tempo:
           access_key: "${accessKey}"
           secret_key: "${secretKey}"
           insecure: true
-          #s3ForcePathStyle: true
-          #region: null
+        local: {}
+        wal: {}
 
-    receivers:
-      jaeger:
-        protocols:
-          grpc:
-            endpoint: 0.0.0.0:14250
-          thrift_binary:
-            endpoint: 0.0.0.0:6832
-          thrift_compact:
-            endpoint: 0.0.0.0:6831
-          thrift_http:
-            endpoint: 0.0.0.0:14268
-
-    #extraArgs:
-    #  - '-config.expand-env=true'
-    #extraEnvFrom:
-    #  - secretRef:
-    #      name: tempo-minio-credentials
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
 
   tempoQuery:
     enabled: false
