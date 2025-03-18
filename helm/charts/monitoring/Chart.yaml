@@ -14,9 +14,9 @@ dependencies:
   #- name: tempo
   #  version: 1.18.3
   #  repository: https://grafana.github.io/helm-charts
-  #- name: tempo-distributed
-  #  version: 1.32.7
-  #  repository: https://grafana.github.io/helm-charts
+  - name: tempo-distributed
+    version: 1.32.7
+    repository: https://grafana.github.io/helm-charts
   #- name: opentelemetry-collector
   #  version: 0.118.0
   #  repository: https://open-telemetry.github.io/opentelemetry-helm-charts
