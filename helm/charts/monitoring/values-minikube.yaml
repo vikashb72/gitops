@@ -844,6 +844,7 @@ tempo-distributed:
   
   # Configuration for the distributor
   distributor:
+    affinity: {}
     replicas: 1
     extraArgs:
       - '-config.expand-env=true'
