@@ -806,12 +806,12 @@ tempo:
     #    - secretRef:
     #        name: tempo-minio-credentials
 
-    compactor:
-      extraArgs:
-        - '-config.expand-env=true'
-      extraEnvFrom:
-        - secretRef:
-            name: tempo-minio-credentials
+    #compactor:
+    #  extraArgs:
+    #    - '-config.expand-env=true'
+    #  extraEnvFrom:
+    #    - secretRef:
+    #        name: tempo-minio-credentials
 
     storage:
       trace:
@@ -819,11 +819,11 @@ tempo:
         s3:
           bucket: tempo-traces
           endpoint: "${endpoint}"
-          region: null
-          secretAccessKey: "${secretKey}"
-          accessKeyId: "${accessKey}"
-          #s3ForcePathStyle: true
+          access_key: "${accessKey}"
+          secret_key: "${secretKey}"
           insecure: true
+          #s3ForcePathStyle: true
+          #region: null
 
     receivers:
       jaeger:
