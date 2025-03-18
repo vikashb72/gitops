@@ -773,6 +773,36 @@ promtail:
     configReloader:
       enabled: false
 
+opentelemetry-collector:
+  # Valid values are "daemonset", "deployment", and "statefulset".
+  mode: "statefulset"
+
+  image:
+    repository: "otel/opentelemetry-collector-k8s"
+  
+  presets:
+    logsCollection:
+      enabled: false
+    hostMetrics:
+      enabled: false
+    kubernetesAttributes:
+      enabled: false
+    kubeletMetrics:
+      enabled: false
+    kubernetesEvents:
+      enabled: false
+    clusterMetrics:
+      enabled: false
+  
+  service:
+    # By default, it's enabled on mode != daemonset.
+    # enabled: true
+  
+    type: ClusterIP
+    # type: LoadBalancer
+    # loadBalancerIP: 1.2.3.4
+    # loadBalancerSourceRanges: []
+
 tempo:
   replicas: 3
   
@@ -807,32 +837,165 @@ tempo:
       - ReadWriteOnce
     size: 10Gi
 
-opentelemetry-collector:
-  # Valid values are "daemonset", "deployment", and "statefulset".
-  mode: "statefulset"
+tempo-distributed:
+  global:
+    extraEnv: []
+    storageClass: null
+  useExternalConfig: false
+  
+  # Configuration for the ingester
+  ingester:
+    replicas: 3
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+    persistence:
+      enabled: false
+      inMemory: false
+      size: 10Gi
+      storageClass: null
+  
+  # Configuration for the metrics-generator
+  metricsGenerator:
+    enabled: false
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+  
+  # Configuration for the distributor
+  distributor:
+    replicas: 1
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+  
+  # Configuration for the compactor
+  compactor:
+    replicas: 1
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+  
+  querier:
+    replicas: 1
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+  
+  # Configuration for the query-frontend
+  queryFrontend:
+    query:
+      enabled: false
+      extraArgs:
+        - '-config.expand-env=true'
+      extraEnvFrom:
+        - secretRef:
+            name: tempo-minio-credentials
+    replicas: 1
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+  
+  multitenancyEnabled: false
+  
+  traces:
+    jaeger:
+      grpc:
+        # -- Enable Tempo to ingest Jaeger GRPC traces
+        enabled: true
+        # -- Jaeger GRPC receiver config
+        receiverConfig: {}
+      thriftBinary:
+        # -- Enable Tempo to ingest Jaeger Thrift Binary traces
+        enabled: false
+        # -- Jaeger Thrift Binary receiver config
+        receiverConfig: {}
+      thriftCompact:
+        # -- Enable Tempo to ingest Jaeger Thrift Compact traces
+        enabled: false
+        # -- Jaeger Thrift Compact receiver config
+        receiverConfig: {}
+      thriftHttp:
+        # -- Enable Tempo to ingest Jaeger Thrift HTTP traces
+        enabled: false
+        # -- Jaeger Thrift HTTP receiver config
+        receiverConfig: {}
+    zipkin:
+      # -- Enable Tempo to ingest Zipkin traces
+      enabled: false
+      # -- Zipkin receiver config
+      receiverConfig: {}
+    otlp:
+      http:
+        # -- Enable Tempo to ingest Open Telemetry HTTP traces
+        enabled: false
+        # -- HTTP receiver advanced config
+        receiverConfig: {}
+      grpc:
+        # -- Enable Tempo to ingest Open Telemetry GRPC traces
+        enabled: false
+        # -- GRPC receiver advanced config
+        receiverConfig: {}
+    opencensus:
+      # -- Enable Tempo to ingest Open Census traces
+      enabled: false
+      # -- Open Census receiver config
+      receiverConfig: {}
+    # -- Enable Tempo to ingest traces from Kafka. Reference: https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/kafkareceiver
+    kafka: {}
+  
+  storage:
+    trace:
+      backend: s3
+      s3:
+        bucket: tempo-traces
+        endpoint: "${endpoint}"
+        access_key: "${accessKey}"
+        secret_key: "${secretKey}"
+        insecure: true
+    admin:
+      backend: s3
+  
+  
+    grafanaAgent:
+      enabled: false
+  
+  # Rules for the Prometheus Operator
+  prometheusRule:
+    # -- If enabled, a PrometheusRule resource for Prometheus Operator is created
+    enabled: false
+    # -- Alternative namespace for the PrometheusRule resource
+    namespace: null
+    groups: []
+    # - name: loki-rules
+    #   rules:
+    #     - record: job:loki_request_duration_seconds_bucket:sum_rate
+    #       expr: sum(rate(loki_request_duration_seconds_bucket[1m])) by (le, job)
+    #     - record: job_route:loki_request_duration_seconds_bucket:sum_rate
+    #       expr: sum(rate(loki_request_duration_seconds_bucket[1m])) by (le, job, route)
+    #     - record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
+    #       expr: sum(rate(container_cpu_usage_seconds_total[1m])) by (node, namespace, pod, container)
+  
+  minio:
+    enabled: false
+  
+  gateway:
+    enabled: false
+  
+  enterprise:
+    enabled: false
 
-  image:
-    repository: "otel/opentelemetry-collector-k8s"
-  
-  presets:
-    logsCollection:
-      enabled: false
-    hostMetrics:
-      enabled: false
-    kubernetesAttributes:
-      enabled: false
-    kubeletMetrics:
-      enabled: false
-    kubernetesEvents:
-      enabled: false
-    clusterMetrics:
-      enabled: false
-  
-  service:
-    # By default, it's enabled on mode != daemonset.
-    # enabled: true
-  
-    type: ClusterIP
-    # type: LoadBalancer
-    # loadBalancerIP: 1.2.3.4
-    # loadBalancerSourceRanges: []
+  provisioner:
+    enabled: false
