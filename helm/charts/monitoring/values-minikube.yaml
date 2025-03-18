@@ -805,13 +805,17 @@ opentelemetry-collector:
 
 tempo-distributed:
   global:
-    extraEnv: []
-    storageClass: null
-  useExternalConfig: false
+    storageClass: nfs-client
   
+  tempo:
+    memberlist:
+      # -- Adds the appProtocol field to the memberlist service. 
+      # This allows memberlist to work with istio protocol selection.
+      #  Set the optional service protocol. Ex: "tcp", "http" or "https".
+      appProtocol: tcp
+
   # Configuration for the ingester
   ingester:
-    affinity: {}
     replicas: 3
     extraArgs:
       - '-config.expand-env=true'
@@ -819,10 +823,14 @@ tempo-distributed:
       - secretRef:
           name: tempo-minio-credentials
     persistence:
-      enabled: false
+      enabled: true
       inMemory: false
-      size: 10Gi
-      storageClass: null
+      size: 8Gi
+      storageClassName: nfs-client
+    # Adds the appProtocol field to the ingester service. 
+    # This allows ingester to work with istio protocol selection
+    appProtocol:
+      grpc: grpc
   
   # Configuration for the metrics-generator
   metricsGenerator:
@@ -836,18 +844,18 @@ tempo-distributed:
   
   # Configuration for the distributor
   distributor:
-    affinity: {}
     replicas: 1
     extraArgs:
       - '-config.expand-env=true'
     extraEnvFrom:
       - secretRef:
           name: tempo-minio-credentials
+    appProtocol:
+      grpc: grpc
   
   # Configuration for the compactor
   compactor:
     replicas: 1
-    affinity: {}
     extraArgs:
       - '-config.expand-env=true'
     extraEnvFrom:
@@ -855,17 +863,17 @@ tempo-distributed:
           name: tempo-minio-credentials
   
   querier:
-    affinity: {}
     replicas: 1
     extraArgs:
       - '-config.expand-env=true'
     extraEnvFrom:
       - secretRef:
           name: tempo-minio-credentials
+    appProtocol:
+      grpc: grpc
   
   # Configuration for the query-frontend
   queryFrontend:
-    affinity: {}
     query:
       enabled: false
       extraArgs:
@@ -879,6 +887,8 @@ tempo-distributed:
     extraEnvFrom:
       - secretRef:
           name: tempo-minio-credentials
+    appProtocol:
+      grpc: grpc
   
   multitenancyEnabled: false
   
@@ -889,43 +899,12 @@ tempo-distributed:
         enabled: true
         # -- Jaeger GRPC receiver config
         receiverConfig: {}
-      thriftBinary:
-        # -- Enable Tempo to ingest Jaeger Thrift Binary traces
-        enabled: false
-        # -- Jaeger Thrift Binary receiver config
-        receiverConfig: {}
-      thriftCompact:
-        # -- Enable Tempo to ingest Jaeger Thrift Compact traces
-        enabled: false
-        # -- Jaeger Thrift Compact receiver config
-        receiverConfig: {}
-      thriftHttp:
-        # -- Enable Tempo to ingest Jaeger Thrift HTTP traces
-        enabled: false
-        # -- Jaeger Thrift HTTP receiver config
-        receiverConfig: {}
-    zipkin:
-      # -- Enable Tempo to ingest Zipkin traces
-      enabled: false
-      # -- Zipkin receiver config
-      receiverConfig: {}
     otlp:
-      http:
-        # -- Enable Tempo to ingest Open Telemetry HTTP traces
-        enabled: false
-        # -- HTTP receiver advanced config
-        receiverConfig: {}
       grpc:
         # -- Enable Tempo to ingest Open Telemetry GRPC traces
-        enabled: false
+        enabled: true
         # -- GRPC receiver advanced config
         receiverConfig: {}
-    opencensus:
-      # -- Enable Tempo to ingest Open Census traces
-      enabled: false
-      # -- Open Census receiver config
-      receiverConfig: {}
-    # -- Enable Tempo to ingest traces from Kafka. Reference: https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/kafkareceiver
     kafka: {}
   
   storage:
@@ -940,15 +919,14 @@ tempo-distributed:
     admin:
       backend: s3
   
-  
+  metaMonitoring:
+    serviceMonitor:
+      enabled: false
     grafanaAgent:
       enabled: false
   
-  # Rules for the Prometheus Operator
   prometheusRule:
-    # -- If enabled, a PrometheusRule resource for Prometheus Operator is created
     enabled: false
-    # -- Alternative namespace for the PrometheusRule resource
     namespace: null
     groups: []
     # - name: loki-rules
