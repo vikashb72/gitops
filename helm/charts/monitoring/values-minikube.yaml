@@ -955,9 +955,45 @@ tempo-distributed:
   
   gateway:
     enabled: false
+    affinity: |-
+      podAntiAffinity: {}
   
   enterprise:
     enabled: false
 
   provisioner:
     enabled: false
+
+tempo:
+  # -- Define the amount of instances
+  replicas: 1
+  tempo:
+    storage:
+      trace:
+        backend: s3
+        s3:
+          bucket: tempo-traces
+          endpoint: "${endpoint}"
+          access_key: "${accessKey}"
+          secret_key: "${secretKey}"
+          insecure: true
+        local:
+          path: /var/tempo/traces
+        wal:
+          path: /var/tempo/wal
+    extraArgs:
+      config.expand-env: true
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+  
+  serviceMonitor:
+    enabled: false
+  
+  persistence:
+    enabled: false
+    enableStatefulSetAutoDeletePVC: false
+    storageClassName: nfs-client
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
