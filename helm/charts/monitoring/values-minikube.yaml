@@ -841,21 +841,16 @@ tempo:
     size: 10Gi
 
 # doesnt not want to work
-not-working-tempo-distributed:
+tempo-distributed:
   global:
     storageClass: nfs-client
-    extraArgs:
-      - '-config.expand-env=true'
-    extraEnvFrom:
-      - secretRef:
-          name: tempo-minio-credentials
   
   tempo:
     memberlist:
       # -- Adds the appProtocol field to the memberlist service. 
       # This allows memberlist to work with istio protocol selection.
       #  Set the optional service protocol. Ex: "tcp", "http" or "https".
-      appProtocol: tcp
+      appProtocol: null
 
   # Configuration for the ingester
   ingester:
@@ -866,14 +861,14 @@ not-working-tempo-distributed:
       - secretRef:
           name: tempo-minio-credentials
     persistence:
-      enabled: true
+      enabled: false
       inMemory: false
       size: 8Gi
       storageClassName: nfs-client
     # Adds the appProtocol field to the ingester service. 
     # This allows ingester to work with istio protocol selection
     appProtocol:
-      grpc: grpc
+      grpc: null
     topologySpreadConstraints: null
     affinity: null
   
@@ -881,11 +876,6 @@ not-working-tempo-distributed:
   metricsGenerator:
     enabled: false
     affinity: {}
-    extraArgs:
-      - '-config.expand-env=true'
-    extraEnvFrom:
-      - secretRef:
-          name: tempo-minio-credentials
   
   # Configuration for the distributor
   distributor:
@@ -898,12 +888,10 @@ not-working-tempo-distributed:
       - secretRef:
           name: tempo-minio-credentials
     appProtocol:
-      grpc: grpc
+      grpc: null
   
   # Configuration for the compactor
   compactor:
-    topologySpreadConstraints: null
-    affinity: null
     replicas: 1
     extraArgs:
       - '-config.expand-env=true'
@@ -1004,295 +992,3 @@ not-working-tempo-distributed:
 
   provisioner:
     enabled: false
-
-tempo-distributed:
-  global:
-    storageClass: nfs-client
-
-  reportingEnabled: false
-  
-  tempo:
-    memberlist:
-      # -- Adds the appProtocol field to the memberlist service.
-      # This allows memberlist to work with istio protocol selection.
-      # Set the optional service protocol. Ex: "tcp", "http" or "https".
-      appProtocol: null
-      # -- Adds the service field to the memberlist service
-
-  # Configuration for the ingester
-  ingester:
-    replicas: 3
-    extraArgs:
-      - '-config.expand-env=true'
-    extraEnvFrom:
-      - secretRef:
-          name: tempo-minio-credentials
-    # @default -- Defaults to allow skew no more then 1 node per AZ
-    topologySpreadConstraints: |
-      - maxSkew: 2
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: ScheduleAnyway
-        labelSelector:
-          matchLabels:
-            {{- include "tempo.selectorLabels" (dict "ctx" . "component" "ingester") | nindent 6 }}
-    affinity: |
-      podAntiAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  {{- include "tempo.selectorLabels" (dict "ctx" . "component" "ingester") | nindent 12 }}
-              topologyKey: kubernetes.io/hostname
-          - weight: 75
-            podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  {{- include "tempo.selectorLabels" (dict "ctx" . "component" "ingester") | nindent 12 }}
-              topologyKey: topology.kubernetes.io/zone
-    persistence:
-      enabled: false
-      inMemory: false
-      size: 8Gi
-      storageClassName: nfs-client
-      storageClass: nfs-client
-  
-    persistentVolumeClaimRetentionPolicy:
-      enabled: false
-      whenScaled: Retain
-      whenDeleted: Retain
-    appProtocol:
-      # -- Set the optional grpc service protocol. Ex: "grpc", "http2" or "https"
-      grpc: null
-
-  # Configuration for the metrics-generator
-  metricsGenerator:
-    enabled: false
-    extraArgs:
-      - '-config.expand-env=true'
-    extraEnvFrom:
-      - secretRef:
-          name: tempo-minio-credentials
-  
-  # Configuration for the distributor
-  distributor:
-    replicas: 1
-    extraArgs:
-      - '-config.expand-env=true'
-    extraEnvFrom:
-      - secretRef:
-          name: tempo-minio-credentials
-    podAnnotations: {}
-    topologySpreadConstraints: |
-      - maxSkew: 2
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: ScheduleAnyway
-        labelSelector:
-          matchLabels:
-            {{- include "tempo.selectorLabels" (dict "ctx" . "component" "distributor") | nindent 6 }}
-    # @default -- Hard node and soft zone anti-affinity
-    affinity: |
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                {{- include "tempo.selectorLabels" (dict "ctx" . "component" "distributor") | nindent 10 }}
-            topologyKey: kubernetes.io/hostname
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  {{- include "tempo.selectorLabels" (dict "ctx" . "component" "distributor") | nindent 12 }}
-              topologyKey: topology.kubernetes.io/zone
-    appProtocol:
-      # -- Set the optional grpc service protocol. Ex: "grpc", "http2" or "https"
-      grpc: null
-  
-  # Configuration for the compactor
-  compactor:
-    replicas: 1
-  
-    # @default -- Hard node and soft zone anti-affinity
-    affinity: |
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                {{- include "tempo.selectorLabels" (dict "ctx" . "component" "compactor") | nindent 10 }}
-            topologyKey: kubernetes.io/hostname
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  {{- include "tempo.selectorLabels" (dict "ctx" . "component" "compactor") | nindent 12 }}
-              topologyKey: topology.kubernetes.io/zone
-    extraArgs:
-      - '-config.expand-env=true'
-    extraEnvFrom:
-      - secretRef:
-          name: tempo-minio-credentials
-  
-  # Configuration for the querier
-  querier:
-    replicas: 1
-    # -- Annotations for querier pods
-    extraArgs:
-      - '-config.expand-env=true'
-    extraEnvFrom:
-      - secretRef:
-          name: tempo-minio-credentials
-    podAnnotations: {}
-    # @default -- Defaults to allow skew no more then 1 node per AZ
-    topologySpreadConstraints: |
-      - maxSkew: 2
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: ScheduleAnyway
-        labelSelector:
-          matchLabels:
-            {{- include "tempo.selectorLabels" (dict "ctx" . "component" "querier") | nindent 6 }}
-    # @default -- Hard node and soft zone anti-affinity
-    affinity: |
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                {{- include "tempo.selectorLabels" (dict "ctx" . "component" "querier" "memberlist" true) | nindent 10 }}
-            topologyKey: kubernetes.io/hostname
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  {{- include "tempo.selectorLabels" (dict "ctx" . "component" "querier" "memberlist" true) | nindent 12 }}
-              topologyKey: topology.kubernetes.io/zone
-    appProtocol:
-      # -- Set the optional grpc service protocol. Ex: "grpc", "http2" or "https"
-      grpc: null
-  
-  # Configuration for the query-frontend
-  queryFrontend:
-    query:
-      enabled: false
-    replicas: 1
-    extraArgs:
-      - '-config.expand-env=true'
-    extraEnvFrom:
-      - secretRef:
-          name: tempo-minio-credentials
-    # @default -- Defaults to allow skew no more then 1 node per AZ
-    topologySpreadConstraints: |
-      - maxSkew: 1
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: ScheduleAnyway
-        labelSelector:
-          matchLabels:
-            {{- include "tempo.selectorLabels" (dict "ctx" . "component" "query-frontend") | nindent 6 }}
-    # @default -- Hard node and soft zone anti-affinity
-    affinity: |
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                {{- include "tempo.selectorLabels" (dict "ctx" . "component" "query-frontend") | nindent 10 }}
-            topologyKey: kubernetes.io/hostname
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  {{- include "tempo.selectorLabels" (dict "ctx" . "component" "query-frontend") | nindent 12 }}
-              topologyKey: topology.kubernetes.io/zone
-    appProtocol:
-      grpc: null
-  
-  multitenancyEnabled: false
-  
-  traces:
-    jaeger:
-      grpc:
-        # -- Enable Tempo to ingest Jaeger GRPC traces
-        enabled: false
-    otlp:
-      http:
-        # -- Enable Tempo to ingest Open Telemetry HTTP traces
-        enabled: false
-      grpc:
-        # -- Enable Tempo to ingest Open Telemetry GRPC traces
-        enabled: false
-  
-  storage:
-    trace:
-      backend: s3
-      s3:
-        bucket: tempo-traces
-        endpoint: "${endpoint}"
-        access_key: "${accessKey}"
-        secret_key: "${secretKey}"
-        insecure: true
-    admin:
-      # -- The supported storage backends are gcs, s3 and azure, as specified in https://grafana.com/docs/enterprise-traces/latest/configure/reference/#admin_client_config
-      backend: filesystem
-  
-  metaMonitoring:
-    serviceMonitor:
-      enabled: false
-      # -- Alternative namespace for ServiceMonitor resources
-      namespace: null
-      tlsConfig: null
-  
-    grafanaAgent:
-      enabled: false
-  
-  # Rules for the Prometheus Operator
-  prometheusRule:
-    enabled: false
-
-  gateway:
-    enabled: false
-
-  enterprise:
-    enabled: false
-  
-  tokengenJob:
-    enable: false
-  
-  provisioner:
-    enabled: false
-    hookType: "post-install"
-    extraArgs: {}
-  
-  kubectlImage:
-    repository: bitnami/kubectl
-    tag: latest
-    pullPolicy: IfNotPresent
-  
-  adminApi:
-    replicas: 1
-    extraEnvFrom: []
-    topologySpreadConstraints: |
-      - maxSkew: 1
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: ScheduleAnyway
-        labelSelector:
-          matchLabels:
-            {{- include "tempo.selectorLabels" (dict "ctx" . "component" "admin-api") | nindent 6 }}
-    # -- Affinity for admin-api pods. Passed through `tpl` and, thus, to be configured as string
-    # @default -- Soft node and soft zone anti-affinity
-    affinity: |
-      podAntiAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  {{- include "tempo.selectorLabels" (dict "ctx" . "component" "admin-api") | nindent 12 }}
-              topologyKey: kubernetes.io/hostname
-          - weight: 75
-            podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  {{- include "tempo.selectorLabels" (dict "ctx" . "component" "admin-api") | nindent 12 }}
-              topologyKey: topology.kubernetes.io/zone
-  
