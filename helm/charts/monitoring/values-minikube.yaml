@@ -827,6 +827,7 @@ tempo-distributed:
   # Configuration for the metrics-generator
   metricsGenerator:
     enabled: false
+    affinity: {}
     extraArgs:
       - '-config.expand-env=true'
     extraEnvFrom:
@@ -846,6 +847,7 @@ tempo-distributed:
   # Configuration for the compactor
   compactor:
     replicas: 1
+    affinity: {}
     extraArgs:
       - '-config.expand-env=true'
     extraEnvFrom:
@@ -863,6 +865,7 @@ tempo-distributed:
   
   # Configuration for the query-frontend
   queryFrontend:
+    affinity: {}
     query:
       enabled: false
       extraArgs:
