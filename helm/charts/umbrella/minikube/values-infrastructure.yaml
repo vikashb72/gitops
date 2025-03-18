@@ -107,7 +107,7 @@ argocdManaged:
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
   keycloak:
-    disable: true
+    disable: false
     name: keycloak
     targetNamespace: keycloak
     syncwave: "9"
