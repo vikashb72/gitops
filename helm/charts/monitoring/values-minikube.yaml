@@ -858,6 +858,9 @@ tempo:
 opentelemetry-collector:
   # Valid values are "daemonset", "deployment", and "statefulset".
   mode: "statefulset"
+
+  image:
+    repository: "otel/opentelemetry-collector-k8s"
   
   presets:
     logsCollection:
