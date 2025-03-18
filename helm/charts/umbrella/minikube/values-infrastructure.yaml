@@ -47,7 +47,6 @@ argocdManaged:
       #- path: hooks/external-secrets
       #  noHelmValues: true
   vault:
-    disable: true
     name: vault
     targetNamespace: vault-system
     syncwave: "3"
