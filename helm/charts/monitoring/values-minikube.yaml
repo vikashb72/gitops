@@ -777,34 +777,34 @@ tempo:
   replicas: 3
   
   tempo:
-    metricsGenerator:
-      enabled: false
-      extraArgs:
-        - '-config.expand-env=true'
-      extraEnvFrom:
-        - secretRef:
-            name: tempo-minio-credentials
+    #metricsGenerator:
+    #  enabled: false
+    #  extraArgs:
+    #    - '-config.expand-env=true'
+    #  extraEnvFrom:
+    #    - secretRef:
+    #        name: tempo-minio-credentials
 
-    ingester:
-      extraArgs:
-        - '-config.expand-env=true'
-      extraEnvFrom:
-        - secretRef:
-            name: tempo-minio-credentials
+    #ingester:
+    #  extraArgs:
+    #    - '-config.expand-env=true'
+    #  extraEnvFrom:
+    #    - secretRef:
+    #        name: tempo-minio-credentials
 
-    querier:
-      extraArgs:
-        - '-config.expand-env=true'
-      extraEnvFrom:
-        - secretRef:
-            name: tempo-minio-credentials
+    #querier:
+    #  extraArgs:
+    #    - '-config.expand-env=true'
+    #  extraEnvFrom:
+    #    - secretRef:
+    #        name: tempo-minio-credentials
 
-    queryFrontend:
-      extraArgs:
-        - '-config.expand-env=true'
-      extraEnvFrom:
-        - secretRef:
-            name: tempo-minio-credentials
+    #queryFrontend:
+    #  extraArgs:
+    #    - '-config.expand-env=true'
+    #  extraEnvFrom:
+    #    - secretRef:
+    #        name: tempo-minio-credentials
 
     compactor:
       extraArgs:
@@ -822,7 +822,7 @@ tempo:
           region: null
           secretAccessKey: "${secretKey}"
           accessKeyId: "${accessKey}"
-          s3ForcePathStyle: true
+          #s3ForcePathStyle: true
           insecure: true
 
     receivers:
