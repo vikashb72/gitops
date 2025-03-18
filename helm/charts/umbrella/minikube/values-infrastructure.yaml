@@ -59,14 +59,12 @@ argocdManaged:
         jqPathExpressions:
           - .webhooks[]?.clientConfig.caBundle
   cert-manager:
-    disable: true
     name: cert-manager
     targetNamespace: cert-manager
     syncwave: "4"
     sources:
       - path: helm/charts/cert-manager
   minio-operator:
-    disable: true
     name: minio-operator
     targetNamespace: minio-operator
     syncwave: "5"
@@ -75,7 +73,6 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   minio-tenant:
-    disable: true
     name: minio-tenant
     targetNamespace: minio-tenant
     syncwave: "6"
