@@ -28,7 +28,7 @@ kubectl -n vault-system exec -it vault-0 -- \
         issuing_certificates="${ISSURER}/v1/pki/ca" \
         crl_distribution_points="${ISSURER}/v1/pki/crl"
 
-kubectl -n vault-system cp ${WORKDIR}/signed_${EVT}_intermediate_CA.crt \
+kubectl -n vault-system cp ${WORKDIR}/signed.${EVT}_intermediate_CA.csr.crt \
     vault-0:/tmp/signed_inter.crt
 kubectl -n vault-system exec -it vault-0 -- \
     vault write pki/intermediate/set-signed \
