@@ -40,6 +40,8 @@ tenant:
         objectLock: false
       - name: tempo-traces
         objectLock: false
+      - name: tempo-admin
+        objectLock: false
     users:
       - name: minio-loki-credentials
       - name: minio-tempo-credentials
