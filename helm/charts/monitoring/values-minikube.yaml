@@ -806,6 +806,8 @@ opentelemetry-collector:
 tempo-distributed:
   global:
     storageClass: nfs-client
+    extraArgs:
+      - '-config.expand-env=true'
   
   tempo:
     memberlist:
@@ -831,6 +833,8 @@ tempo-distributed:
     # This allows ingester to work with istio protocol selection
     appProtocol:
       grpc: grpc
+    topologySpreadConstraints: null
+    affinity: null
   
   # Configuration for the metrics-generator
   metricsGenerator:
@@ -844,7 +848,8 @@ tempo-distributed:
   
   # Configuration for the distributor
   distributor:
-    affinity: {}
+    topologySpreadConstraints: null
+    affinity: null
     replicas: 1
     extraArgs:
       - '-config.expand-env=true'
@@ -856,6 +861,8 @@ tempo-distributed:
   
   # Configuration for the compactor
   compactor:
+    topologySpreadConstraints: null
+    affinity: null
     replicas: 1
     extraArgs:
       - '-config.expand-env=true'
@@ -864,6 +871,8 @@ tempo-distributed:
           name: tempo-minio-credentials
   
   querier:
+    topologySpreadConstraints: null
+    affinity: null
     replicas: 1
     extraArgs:
       - '-config.expand-env=true'
@@ -875,6 +884,8 @@ tempo-distributed:
   
   # Configuration for the query-frontend
   queryFrontend:
+    topologySpreadConstraints: null
+    affinity: null
     query:
       enabled: false
       extraArgs:
