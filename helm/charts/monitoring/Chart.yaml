@@ -11,9 +11,9 @@ dependencies:
   - name: promtail
     version: 6.16.6
     repository: https://grafana.github.io/helm-charts
-  - name: tempo-distributed
-    version: 1.32.7
-    repository: https://grafana.github.io/helm-charts
-  - name: opentelemetry-collector
-    version: 0.118.0
-    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+  #- name: tempo-distributed
+  #  version: 1.32.7
+  #  repository: https://grafana.github.io/helm-charts
+  #- name: opentelemetry-collector
+  #  version: 0.118.0
+  #  repository: https://open-telemetry.github.io/opentelemetry-helm-charts
