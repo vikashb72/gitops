@@ -803,40 +803,6 @@ opentelemetry-collector:
     # loadBalancerIP: 1.2.3.4
     # loadBalancerSourceRanges: []
 
-tempo:
-  replicas: 3
-  
-  tempo:
-    storage:
-      trace:
-        backend: s3
-        s3:
-          bucket: tempo-traces
-          endpoint: "${endpoint}"
-          access_key: "${accessKey}"
-          secret_key: "${secretKey}"
-          insecure: true
-        local: {}
-        wal: {}
-
-    extraArgs:
-      - '-config.expand-env=true'
-    extraEnvFrom:
-      - secretRef:
-          name: tempo-minio-credentials
-
-  tempoQuery:
-    enabled: false
-
-  serviceMonitor:
-    enabled: false
-
-  persistence:
-    enabled: false
-    accessModes:
-      - ReadWriteOnce
-    size: 10Gi
-
 tempo-distributed:
   global:
     extraEnv: []
@@ -845,6 +811,7 @@ tempo-distributed:
   
   # Configuration for the ingester
   ingester:
+    affinity: {}
     replicas: 3
     extraArgs:
       - '-config.expand-env=true'
@@ -868,6 +835,7 @@ tempo-distributed:
   
   # Configuration for the distributor
   distributor:
+    affinity: {}
     replicas: 1
     extraArgs:
       - '-config.expand-env=true'
@@ -885,6 +853,7 @@ tempo-distributed:
           name: tempo-minio-credentials
   
   querier:
+    affinity: {}
     replicas: 1
     extraArgs:
       - '-config.expand-env=true'
