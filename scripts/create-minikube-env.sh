@@ -86,8 +86,26 @@ echo "
 -- Enter Load Balancer Start IP: ${MINIKUBE_IP}24
 -- Enter Load Balancer End IP: ${MINIKUBE_IP}54
 "
-minikube addons configure metallb
+#minikube addons configure metallb
 
+cat > /tmp/metallb.cm.yaml <<EOF
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: metallb-system
+data:
+  config: |
+    address-pools:
+      - name: default
+        protocol: layer2
+        addresses:
+          - ${MINIKUBE_IP}24-${MINIKUBE_IP}54
+EOF
+
+kubectl -n metallb-system apply -f /tmp/metallb.cm.yaml
+
+rm /tmp/metallb.cm.yaml
 # ---------------------------------------------------------------------------- #
 #                             Storage
 # ---------------------------------------------------------------------------- #
@@ -197,13 +215,14 @@ helm install -n argocd argocd \
     /tmp/gitops/helm/charts/argocd \
     --set argo-cd.configs.secret.argocdServerAdminPassword=${ARGOPASS} \
     --set schema.bootstrap=true  \
+    --set schema.serviceMonitor.enabled='&enable-serviceMonitor "false"'  \
     --create-namespace=true \
     -f /tmp/gitops/helm/charts/argocd/values-${EVT}.yaml \
     --wait
 
 # wait
 kubectl -n argocd wait pods -l app.kubernetes.io/instance=argocd \
-   --for condition=Ready --timeout=180s
+   --for condition=Ready --timeout=240s
 
 # upgrade so that we install the Projects
 helm upgrade -n argocd argocd \
@@ -217,6 +236,11 @@ helm template /tmp/gitops/helm/charts/umbrella/minikube \
     -f /tmp/gitops/helm/charts/umbrella/minikube/values-infrastructure.yaml \
     | kubectl -n argocd apply -f -
 
+for app in in-cluster-storage monitoring apps
+do
 helm template /tmp/gitops/helm/charts/umbrella/minikube \
-    -f /tmp/gitops/helm/charts/umbrella/minikube/values-apps.yaml \
+    -f /tmp/gitops/helm/charts/umbrella/minikube/values-${app}.yaml \
     | kubectl -n argocd apply -f -
+done
+
+/tmp/gitops/scripts/hvault/init.sh -e $EVT

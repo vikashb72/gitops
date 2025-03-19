@@ -46,8 +46,8 @@ argocdManaged:
       - path: helm/charts/external-secrets
       #- path: hooks/external-secrets
       #  noHelmValues: true
-  vault:
-    name: hashicorp-vault
+  hashicorp-vault:
+    name: vault
     targetNamespace: vault-system
     syncwave: "3"
     sources:
