@@ -1,0 +1,195 @@
+schema:
+  env: minikube
+  namespace: tempo-system
+  loki:
+
+# this works
+tempo:
+  replicas: 3
+  tempo:
+    metricsGenerator:
+      enabled: false
+      remoteWriteUrl: "http://monitoring-kube-prometheus-prometheus.monitoring:9090/api/v1/write"
+    storage:
+      trace:
+        backend: s3
+        s3:
+          bucket: tempo-traces
+          endpoint: "${endpoint}"
+          access_key: "${accessKey}"
+          secret_key: "${secretKey}"
+          insecure: true
+        local:
+          path: /var/tempo/traces
+        wal:
+          path: /var/tempo/wal
+    extraArgs:
+      config.expand-env: true
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+  
+  serviceMonitor:
+    enabled: false
+  
+  persistence:
+    enabled: false
+    enableStatefulSetAutoDeletePVC: false
+    storageClassName: nfs-client
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+
+# doesnt not want to work
+tempo-distributed:
+  global:
+    storageClass: nfs-client
+  
+  tempo:
+    memberlist:
+      # -- Adds the appProtocol field to the memberlist service. 
+      # This allows memberlist to work with istio protocol selection.
+      #  Set the optional service protocol. Ex: "tcp", "http" or "https".
+      appProtocol: null
+
+  # Configuration for the ingester
+  ingester:
+    replicas: 3
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+    persistence:
+      enabled: false
+      inMemory: false
+      size: 8Gi
+      storageClassName: nfs-client
+    # Adds the appProtocol field to the ingester service. 
+    # This allows ingester to work with istio protocol selection
+    appProtocol:
+      grpc: null
+    #topologySpreadConstraints: null
+    #affinity: null
+  
+  # Configuration for the metrics-generator
+  metricsGenerator:
+    enabled: false
+    affinity: |
+      podAntiAffinity: {}
+  
+  # Configuration for the distributor
+  distributor:
+    #topologySpreadConstraints: null
+    #affinity: null
+    replicas: 1
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+    appProtocol:
+      grpc: null
+  
+  # Configuration for the compactor
+  compactor:
+    replicas: 1
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+  
+  querier:
+    #topologySpreadConstraints: null
+    #affinity: null
+    replicas: 1
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+    appProtocol:
+      grpc: grpc
+  
+  # Configuration for the query-frontend
+  queryFrontend:
+    #topologySpreadConstraints: null
+    #affinity: null
+    query:
+      enabled: false
+      extraArgs:
+        - '-config.expand-env=true'
+      extraEnvFrom:
+        - secretRef:
+            name: tempo-minio-credentials
+    replicas: 1
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+    appProtocol:
+      grpc: grpc
+  
+  multitenancyEnabled: false
+  
+  traces:
+    jaeger:
+      grpc:
+        # -- Enable Tempo to ingest Jaeger GRPC traces
+        enabled: true
+        # -- Jaeger GRPC receiver config
+        receiverConfig: {}
+    otlp:
+      grpc:
+        # -- Enable Tempo to ingest Open Telemetry GRPC traces
+        enabled: true
+        # -- GRPC receiver advanced config
+        receiverConfig: {}
+    kafka: {}
+  
+  storage:
+    trace:
+      backend: s3
+      s3:
+        bucket: tempo-traces
+        endpoint: "${endpoint}"
+        access_key: "${accessKey}"
+        secret_key: "${secretKey}"
+        insecure: true
+    admin:
+      backend: s3
+  
+  metaMonitoring:
+    serviceMonitor:
+      enabled: false
+    grafanaAgent:
+      enabled: false
+  
+  prometheusRule:
+    enabled: false
+    namespace: null
+    groups: []
+    # - name: loki-rules
+    #   rules:
+    #     - record: job:loki_request_duration_seconds_bucket:sum_rate
+    #       expr: sum(rate(loki_request_duration_seconds_bucket[1m])) by (le, job)
+    #     - record: job_route:loki_request_duration_seconds_bucket:sum_rate
+    #       expr: sum(rate(loki_request_duration_seconds_bucket[1m])) by (le, job, route)
+    #     - record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
+    #       expr: sum(rate(container_cpu_usage_seconds_total[1m])) by (node, namespace, pod, container)
+  
+  minio:
+    enabled: false
+  
+  gateway:
+    enabled: false
+    affinity: |-
+      podAntiAffinity: {}
+  
+  enterprise:
+    enabled: false
+
+  provisioner:
+    enabled: false
