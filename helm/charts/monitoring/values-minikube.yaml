@@ -515,6 +515,7 @@ kube-prometheus-stack:
 # working distributed config
 loki:
   auth_enabled: false
+
   loki:
     auth_enabled: false
     server:
@@ -599,6 +600,9 @@ loki:
     extraEnvFrom:
       - secretRef:
           name: loki-minio-credentials
+    affinity: {}
+    topologySpreadConstraints: []
+
   querier:
     replicas: 3 # Improve query performance via parallelism
     maxUnavailable: 2
@@ -607,6 +611,8 @@ loki:
     extraEnvFrom:
       - secretRef:
           name: loki-minio-credentials
+    affinity: {}
+    topologySpreadConstraints: []
 
   queryFrontend:
     replicas: 2
@@ -633,6 +639,15 @@ loki:
     extraEnvFrom:
       - secretRef:
           name: loki-minio-credentials
+    affinity:
+      podAntiAffinity: {}
+      #podAntiAffinity:
+      #  preferredDuringSchedulingIgnoredDuringExecution:
+      #    - labelSelector:
+      #        matchLabels:
+      #          app.kubernetes.io/component: distributor-x
+      #      topologyKey: kubernetes.io/hostname
+    topologySpreadConstraints: []
 
   compactor:
     replicas: 1
@@ -875,7 +890,8 @@ tempo-distributed:
   # Configuration for the metrics-generator
   metricsGenerator:
     enabled: false
-    affinity: {}
+    affinity: |
+      podAntiAffinity: {}
   
   # Configuration for the distributor
   distributor:
