@@ -1,0 +1,51 @@
+schema:
+  env: minikube
+  bootstrap: false
+  hvault:
+    external:
+      addr: https://192.168.0.4:8443
+  metadata:
+    namespace: argocd
+    finalisers: resources-finalizer.argocd.argoproj.io
+  annotations:
+    syncwave: "100"
+  spec:
+    project: minikube-monitoring
+    repoURL: https://github.com/vikashb72/gitops.git
+    targetRevision: HEAD
+    destination:
+      server: https://kubernetes.default.svc
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+argocdManaged:
+  umbrella-chart-monitoring:
+    name: umbrella-chart-monitoring
+    namespace: argocd
+    syncwave: "1"
+    sources:
+      - path: helm/charts/umbrella/minikube
+        helm:
+          valueFiles:
+            - values-monitoring.yaml
+    automated:
+      allowEmpty: true
+  kube-prometheus-stack:
+    name: kube-prometheus-stack
+    targetNamespace: monitoring
+    syncwave: "7"
+    sources:
+      - path: helm/charts/kube-prometheus-stack
+    syncOptions:
+      ServerSideApply: true
+  #tempo-distributed:
+  #  name: tempo-distributed
+  #  targetNamespace: tempo-system
+  #  syncwave: "7"
+  #  sources:
+  #    - path: helm/charts/tempo-distributed
+  #  syncOptions:
+  #    ServerSideApply: true
+  # 
