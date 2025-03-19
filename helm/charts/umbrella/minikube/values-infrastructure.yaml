@@ -89,6 +89,16 @@ argocdManaged:
       - path: helm/charts/monitoring
     syncOptions:
       ServerSideApply: true
+  tracing:
+    disable: false
+    name: tracing
+    targetNamespace: tracing-system
+    syncwave: "7"
+    sources:
+      - path: helm/charts/tracing
+    syncOptions:
+      ServerSideApply: true
+
   istio:
     disable: true
     name: istio
