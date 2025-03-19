@@ -15,6 +15,7 @@ schema:
         - metallb-system
         - loki-system
         - cert-manager
+        - tempo-system
     json:
       namespace:
         - gloo-mesh
