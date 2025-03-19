@@ -242,5 +242,3 @@ helm template /tmp/gitops/helm/charts/umbrella/minikube \
     -f /tmp/gitops/helm/charts/umbrella/minikube/values-${app}.yaml \
     | kubectl -n argocd apply -f -
 done
-
-/tmp/gitops/scripts/hvault/init.sh -e $EVT
