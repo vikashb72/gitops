@@ -8,6 +8,13 @@ schema:
         - external-secrets
         - kube-system
         - monitoring
+        - vault-system
+        - nfs-provisioning
+        - minio-operator
+        - minio-tenant
+        - metallb-system
+        - loki-system
+        - cert-manager
     json:
       namespace:
         - gloo-mesh
