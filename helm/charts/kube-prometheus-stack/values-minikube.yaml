@@ -294,7 +294,7 @@ kube-prometheus-stack:
           httpHeaderName1: 'X-Scope-OrgID'
       - name: Tempo
         type: tempo
-        url: http://tempo-gateway.tempo-system
+        url: http://tempo-distributed-query-frontend.tempo-system:3100
         isDefault: false
         jsonData:
           tlsSkipVerify: true                                                   
