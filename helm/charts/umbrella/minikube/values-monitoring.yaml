@@ -40,6 +40,14 @@ argocdManaged:
       - path: helm/charts/kube-prometheus-stack
     syncOptions:
       ServerSideApply: true
+  loki:
+    name: loki
+    targetNamespace: loki-system
+    syncwave: "7"
+    sources:
+      - path: helm/charts/loki
+    syncOptions:
+      ServerSideApply: true
   #tempo-distributed:
   #  name: tempo-distributed
   #  targetNamespace: tempo-system
