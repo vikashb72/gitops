@@ -1,6 +1,6 @@
 schema:
   env: minikube
-  namespace: tempo-system
+  namespace: tracing-system
   loki:
 
 # this works
