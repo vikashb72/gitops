@@ -1,9 +1,7 @@
 schema:
   env: minikube
   namespace: tracing-system
-  loki:
 
-# this works
 tempo:
   replicas: 3
   tempo:
@@ -40,7 +38,6 @@ tempo:
       - ReadWriteOnce
     size: 10Gi
 
-# doesnt not want to work
 tempo-distributed:
   global:
     storageClass: nfs-client

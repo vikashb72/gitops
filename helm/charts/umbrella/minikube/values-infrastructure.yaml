@@ -81,7 +81,6 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   monitoring:
-    disable: false
     name: monitoring
     targetNamespace: monitoring
     syncwave: "7"
@@ -89,15 +88,14 @@ argocdManaged:
       - path: helm/charts/monitoring
     syncOptions:
       ServerSideApply: true
-  tracing:
-    disable: false
-    name: tracing
-    targetNamespace: tracing-system
-    syncwave: "7"
-    sources:
-      - path: helm/charts/tracing
-    syncOptions:
-      ServerSideApply: true
+  #tracing:
+  #  name: tracing
+  #  targetNamespace: tracing-system
+  #  syncwave: "7"
+  #  sources:
+  #    - path: helm/charts/tracing
+  #  syncOptions:
+  #    ServerSideApply: true
 
   istio:
     disable: true
@@ -117,7 +115,7 @@ argocdManaged:
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
   keycloak:
-    disable: false
+    disable: true
     name: keycloak
     targetNamespace: keycloak
     syncwave: "9"
