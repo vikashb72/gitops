@@ -43,15 +43,23 @@ argocdManaged:
   loki:
     name: loki
     targetNamespace: loki-system
-    syncwave: "7"
+    syncwave: "8"
     sources:
       - path: helm/charts/loki
+    syncOptions:
+      ServerSideApply: true
+  promtail:
+    name: promtail
+    targetNamespace: promtail-system
+    syncwave: "9"
+    sources:
+      - path: helm/charts/promtail
     syncOptions:
       ServerSideApply: true
   #tempo-distributed:
   #  name: tempo-distributed
   #  targetNamespace: tempo-system
-  #  syncwave: "7"
+  #  syncwave: "10"
   #  sources:
   #    - path: helm/charts/tempo-distributed
   #  syncOptions:
