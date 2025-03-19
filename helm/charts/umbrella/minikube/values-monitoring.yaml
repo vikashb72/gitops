@@ -56,12 +56,11 @@ argocdManaged:
       - path: helm/charts/promtail
     syncOptions:
       ServerSideApply: true
-  #tempo-distributed:
-  #  name: tempo-distributed
-  #  targetNamespace: tempo-system
-  #  syncwave: "10"
-  #  sources:
-  #    - path: helm/charts/tempo-distributed
-  #  syncOptions:
-  #    ServerSideApply: true
-  # 
+  tempo-distributed:
+    name: tempo-distributed
+    targetNamespace: tempo-system
+    syncwave: "10"
+    sources:
+      - path: helm/charts/tempo-distributed
+    syncOptions:
+      ServerSideApply: true

@@ -64,30 +64,6 @@ argocdManaged:
     syncwave: "4"
     sources:
       - path: helm/charts/cert-manager
-  #minio-operator:
-  #  name: minio-operator
-  #  targetNamespace: minio-operator
-  #  syncwave: "5"
-  #  sources:
-  #    - path: helm/charts/minio-operator
-  #  syncOptions:
-  #    ServerSideApply: true
-  #minio-tenant:
-  #  name: minio-tenant
-  #  targetNamespace: minio-tenant
-  #  syncwave: "6"
-  #  sources:
-  #    - path: helm/charts/minio-tenant
-  #  syncOptions:
-  #    ServerSideApply: true
-  #monitoring:
-  #  name: monitoring
-  #  targetNamespace: monitoring
-  #  syncwave: "7"
-  #  sources:
-  #    - path: helm/charts/monitoring
-  #  syncOptions:
-  #    ServerSideApply: true
   #tempo-distributed:
   #  name: tempo-distributed
   #  targetNamespace: tempo-system
