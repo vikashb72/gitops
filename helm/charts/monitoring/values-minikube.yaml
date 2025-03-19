@@ -302,6 +302,12 @@ kube-prometheus-stack:
         jsonData:
           tlsSkipVerify: true
           httpHeaderName1: 'X-Scope-OrgID'
+      - name: Tempo
+        type: tempo
+        url: http://tempo-gateway.tempo-system
+        isDefault: false
+        jsonData:
+          tlsSkipVerify: true
     plugins:
       - grafana-piechart-panel
       - macropower-analytics-panel
