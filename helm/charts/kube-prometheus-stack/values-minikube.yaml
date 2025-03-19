@@ -1,0 +1,499 @@
+schema:
+  env: minikube
+  namespace: kube-prometheus-stack
+
+kube-prometheus-stack:
+  crds:
+    enabled: true
+  # Create default rules for monitoring the cluster
+  defaultRules:
+    create: true
+    rules:
+      alertmanager: true
+      etcd: true   # looking for kube-etcd
+      configReloaders: true
+      general: true
+      k8sContainerCpuUsageSecondsTotal: true
+      k8sContainerMemoryCache: true
+      k8sContainerMemoryRss: true
+      k8sContainerMemorySwap: true
+      k8sContainerResource: true
+      k8sContainerMemoryWorkingSetBytes: true
+      k8sPodOwner: true
+      kubeApiserverAvailability: true
+      kubeApiserverBurnrate: true
+      kubeApiserverHistogram: true
+      kubeApiserverSlos: true
+      kubeControllerManager: false
+      kubelet: true
+      kubeProxy: true
+      kubePrometheusGeneral: true
+      kubePrometheusNodeRecording: true
+      kubernetesApps: true
+      kubernetesResources: true
+      kubernetesStorage: true
+      kubernetesSystem: true
+      kubeSchedulerAlerting: false
+      kubeSchedulerRecording: false
+      kubeStateMetrics: true
+      network: true
+      node: true
+      nodeExporterAlerting: true
+      nodeExporterRecording: true
+      prometheus: true
+      prometheusOperator: true
+      windows: false
+    # KubeAPIDown: true
+    # NodeRAIDDegraded: true
+  prometheus-windows-exporter:
+    prometheus:
+      monitor:
+        enabled: false
+  alertmanager:
+    enabled: true
+    config:
+      route:
+        group_by: ['namespace']
+        group_wait: 30s
+        group_interval: 5m
+        repeat_interval: 12h
+        receiver: "email-alert"
+        routes:
+          - receiver: "null"
+            match:
+              alertname: "Watchdog"
+          - receiver: "email-alert"
+            continue: true
+      receivers:
+        - name: "null"
+        - name: "email-alert"
+          email_configs:
+            - to: "vikashb@home.where-ever.za.net"
+              from: "monitor@minikube.where-ever.net"
+              #smarthost: "desktop.home.where-ever.za.net:587"
+              smarthost: "odroid-dlna.home.where-ever.za.net:25"
+              #auth_username: "vmail"
+              #auth_password_file: /etc/alertmanager/secrets/GF_SMTP_PASSWORD
+              #auth_password:
+              require_tls: false
+              send_resolved: true
+        # https://prometheus.io/docs/alerting/latest/configuration/#email_config
+        #- name: "msteams"
+        #  msteamsv2_configs:
+        #    - send_resolved: true
+        #      webhook_url_file: /etc/alertmanager/secrets/GF_MS_TEAMS_URL
+      templates:
+        - '/etc/alertmanager/config/*.tmpl'
+    ## Configuration for Alertmanager service
+    alertmanagerSpec:
+      persistentVolumeClaimRetentionPolicy:
+        whenDeleted: Delete
+        whenScaled: Retain
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: nfs-client
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 10Gi
+      volumes:
+        - name: prometheus-alerting-config
+          secret:
+            secretName: prometheus-alerting-config
+      volumeMounts:
+        - name: prometheus-alerting-config
+          mountPath: /etc/alertmanager/secrets
+          readOnly: true
+    service:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.245
+  grafana:
+    enabled: true
+    #env:
+    #  GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
+    #envValueFrom:
+    #  GF_SECURITY_ADMIN_USER:
+    #    secretKeyRef:
+    #      name: grafana-admin-credentials
+    #      key: GF_SECURITY_ADMIN_USER
+    #  GF_SECURITY_ADMIN_PASSWORD:
+    #    secretKeyRef:
+    #      name: grafana-admin-credentials
+    #      key: GF_SECURITY_ADMIN_PASSWORD
+    #  GF_SMTP_ENABLED:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_ENABLED
+    #  GF_SMTP_HOST:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_HOST
+    #  GF_SMTP_USER:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_USER
+    #  GF_SMTP_PASSWORD:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_PASSWORD
+    #  GF_SMTP_FROM_ADDRESS:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_FROM_ADDRESS
+    #  GF_SMTP_STARTTLS_POLICY:
+    #    secretKeyRef:
+    #      name: prometheus-alerting-config
+    #      key: GF_SMTP_STARTTLS_POLICY
+    #envFromSecret: "grafana-admin-credentials"
+    #adminUser: admin
+    #adminPassword: ""
+    #admin:
+    #  existingSecret: "grafana-admin-credentials"
+    #  userKey: GF_SECURITY_ADMIN_USER
+    #  passwordKey: GF_SECURITY_ADMIN_PASSWORD
+    #namespaceOverride: "monitoring"
+    defaultDashboardsEditable: true
+    smtp:
+      enabled: true
+      existingSecret: "prometheus-alerting-config"
+      passwordKey: "GF_SMTP_PASSWORD"
+      userKey: "GF_SMTP_USER"
+    grafana.ini:
+      #log:
+      #  level: debug
+      unified_alerting:
+        enabled: true
+      smtp:
+        enabled: true
+        host: desktop.home.where-ever.za.net:587
+        startTLS_policy: "MandatoryStartTLS"
+        from_address: monitor@minikube.where-ever.net
+        skip_verify: true # for minikube
+      security:
+        disable_initial_admin_creation: true
+    notifiers:
+      notifiers.yaml:
+        notifiers:
+          - name: alertmanager-operated
+            type: prometheus-alertmanager
+            uid: alertmanager-operated
+            org_id: 1
+            is_default: true
+            settings:
+              url: http://alertmanager-operated:9093/
+              #basicAuthPassword:
+              #basicAuthUser: admin
+          #- name: email-notifier
+          #  type: email
+          #  uid: email-notifier
+          #  org_id: 1
+          #  is_default: false
+          #  settings:
+          #    addresses: vikashb@home.where-ever.za.net
+    alerting:
+      policies.yaml:
+        apiVersion: 1
+        policies:
+            - orgId: 1
+              receiver: alertmanager-operated
+              #receiver: default-notification-email
+              group_by:
+                - grafana_folder
+                - alertname
+      contactpoints.yaml:
+        secret:
+          apiVersion: 1
+          contactPoints:
+            - orgId: 1
+              name: alertmanager-operated
+              receivers:
+                - uid: alertmanager-operated
+                  type: prometheus-alertmanager
+                  settings:
+                    #basicAuthPassword:
+                    #basicAuthUser: admin
+                    url: http://alertmanager-operated:9093/
+                  disableResolveMessage: false
+            #- orgId: 1
+            #  name: default-notification-email
+            #  receivers:
+            #    - uid: default-notification-email
+            #      type: email
+            #      settings:
+            #        addresses: vikashb@home.where-ever.za.net
+            #        singleEmail: false
+            #      disableResolveMessage: false
+            #- orgId: 1
+            #  name: ms-teams-channel
+            #  receivers:
+            #    - uid: ms-teams-channel
+            #      type: teams
+            #      settings:
+            #        url: https://localhost/
+            #      disableResolveMessage: false
+    initChownData:
+      enabled: true
+    serviceMonitor:
+      enabled: true
+      targetLabels:
+        - prometheus
+    persistence:
+      enabled: true
+      type: pvc
+      storageClassName: nfs-client
+      accessModes:
+        - ReadWriteOnce
+      size: 10Gi
+      finalizers:
+        - kubernetes.io/pvc-protection
+      inMemory:
+        enabled: false
+      lookupVolumeName: true
+    sidecar:
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+        labelValue: "1"
+        # Allow discovery in all namespaces for dashboards
+        searchNamespace: ALL
+
+        # Support for new table panels, when enabled grafana auto migrates the old table panels to newer table panels
+        enableNewTablePanelSyntax: false
+      datasources:
+        enabled: true
+        defaultDatasourceEnabled: true
+        isDefaultDatasource: true
+
+        name: Prometheus
+        uid: prometheus
+        exemplarTraceIdDestinations: {}
+          # datasourceUid: Jaeger
+          # traceIdLabelName: trace_id
+          # urlDisplayLabel: View traces
+        alertmanager:
+          enabled: true
+          name: Alertmanager
+          uid: alertmanager
+          handleGrafanaManagedAlerts: true
+          implementation: prometheus
+    service:
+      enabled: true
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.246
+    serviceMonitor:
+      enabled: true
+    additionalDataSources:
+      - name: Loki
+        type: loki
+        url: http://monitoring-loki-gateway/
+        access: proxy
+        isDefault: false
+        jsonData:
+          tlsSkipVerify: true
+          httpHeaderName1: 'X-Scope-OrgID'
+      - name: Tempo
+        type: tempo
+        url: http://tempo-gateway.tempo-system
+        isDefault: false
+        jsonData:
+          tlsSkipVerify: true                                                   
+    plugins:
+      - grafana-piechart-panel
+      - macropower-analytics-panel
+      - azure-monitor-app
+      - digrich-bubblechart-panel
+      - golioth-websocket-datasource
+      - snuids-trend-panel
+      - serrrios-statusoverview-panel
+      - innius-grpc-datasource
+      - novatec-sdg-panel
+      - integrationmatters-comparison-panel
+      ## You can also use other plugin download URL, as long as they are valid zip files,
+      ## and specify the name of the plugin after the semicolon. Like this:
+      # - https://grafana.com/api/plugins/marcusolsson-json-datasource/versions/1.3.2/download;marcusolsson-json-datasource
+    #dashboards:
+    #    redis-exporter:
+    #      gnetId: 11835
+    #      revision: 1
+    #      datasource: Prometheus
+    #    # https://grafana.com/grafana/dashboards/14699-kubernetes-status/
+    #    kubernetes-status:
+    #      gnetId: 14699
+    #      revision: 2
+    #      datasource: Prometheus
+    #    #
+    #    # TO TEST
+    #    #
+    #    # https://grafana.com/grafana/dashboards/14584-argocd/
+    #    argocd:
+    #      gnetId: 14584
+    #      revision: 1
+    #      datasource: Prometheus
+    #    ## https://grafana.com/grafana/dashboards/11001-cert-manager/
+    #    #cert-manager:
+    #    #  gnetId: 11001
+    #    #  revision: 1
+    #    #  datasource: Prometheus
+    #    ##keycloak-metrics:
+    #    ##  gnetId: 10441
+    #    ##  revision: 2
+    #    ##  datasource: Prometheus
+    #    ## https://grafana.com/grafana/dashboards/7645-istio-control-plane-dashboard/
+    #    ##itio-control-plane:
+    #    ##  gnetId: 7645
+    #    ##  revision: 240
+    #    ##  datasource: Prometheus
+    #    ## https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+    # I have no idea why this breaks
+  kubernetesServiceMonitors:
+    enabled: true
+  kubeApiServer:
+    enabled: true
+    tlsConfig:
+      serverName: kubernetes
+      insecureSkipVerify: false
+  kubelet:
+    enabled: true
+    namespace: kube-system
+    serviceMonitor:
+      kubelet: true
+  kubeControllerManager:
+    enabled: false
+    service:
+      enabled: false
+    serviceMonitor:
+      enabled: false
+  coreDns:
+    enabled: true
+    service:
+      enabled: true
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: true
+  kubeDns:
+    enabled: false
+    service:
+      ipDualStack:
+        enabled: false
+  kubeEtcd:
+    enabled: true
+    service:
+      enabled: true
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: true
+  kubeScheduler:
+    enabled: false
+    service:
+      enabled: false
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: false
+  kubeProxy:
+    enabled: true
+    service:
+      enabled: true
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      enabled: true
+  kubeStateMetrics:
+    enabled: true
+  kube-state-metrics:
+    #namespaceOverride: "monitoring"
+    rbac:
+      create: true
+    prometheusScrape: false
+    prometheus:
+      monitor:
+        enabled: true
+    selfMonitor:
+      enabled: true
+  nodeExporter:
+    enabled: true
+    operatingSystems:
+      linux:
+        enabled: true
+      aix:
+        enabled: false
+      darwin:
+        enabled: false
+  prometheus-node-exporter:
+    prometheus:
+      monitor:
+        enabled: true
+  prometheusOperator:
+    enabled: true
+    tls:
+      enabled: true
+    admissionWebhooks:
+      enabled: true
+      failurePolicy: Fail
+      annotations:
+        argocd.argoproj.io/hook: PreSync
+        argocd.argoproj.io/hook-delete-policy: HookFailed
+      mutatingWebhookConfiguration:
+        annotations:
+          argocd.argoproj.io/hook: PreSync
+      validatingWebhookConfiguration:
+        annotations:
+          argocd.argoproj.io/hook: PreSync
+      patch:
+        enabled: true
+        annotations:
+          argocd.argoproj.io/hook: PreSync
+          argocd.argoproj.io/hook-delete-policy: HookFailed
+        podAnnotations:
+          sidecar.istio.io/inject: "false"
+      certManager:
+        enabled: false
+    service:
+      ipDualStack:
+        enabled: false
+      type: ClusterIP
+    kubeletService:
+      enabled: true
+      namespace: kube-system
+    serviceMonitor:
+      selfMonitor: true
+    dnsConfig: {}
+      # nameservers:
+      #   - 1.2.3.4
+      # searches:
+      #   - ns1.svc.cluster-domain.example
+      #   - my.dns.search.suffix
+    # Enable vertical pod autoscaler support for prometheus-operator
+    verticalPodAutoscaler:
+      enabled: false
+    prometheusConfigReloader:
+      enableProbe: false
+  prometheus:
+    enabled: true
+    networkPolicy:
+      enabled: false
+    serviceAccount:
+      create: true
+    service:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.244
+      ipDualStack:
+        enabled: false
+    serviceMonitor:
+      selfMonitor: true
+    prometheusSpec:
+      enableRemoteWriteReceiver: true
+      persistentVolumeClaimRetentionPolicy: {}
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: nfs-client
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 10Gi
+    serviceMonitor:
+      selfMonitor: true
