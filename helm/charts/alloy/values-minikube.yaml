@@ -1,0 +1,48 @@
+schema:
+  env: minikube
+  namespace: alloy-system
+
+alloy:
+  crds:
+    create: true
+  
+  alloy:
+    configMap:
+      create: true
+      # -- Content to assign to the new ConfigMap.
+      #  This is passed into `tpl` allowing for templating from values.
+      content: |
+        logging {
+          level = "info"
+          format = "logfmt"
+        }
+  
+    clustering:
+      enabled: false
+
+    enableReporting: false
+  
+    envFrom: []
+
+    extraArgs: []
+  
+  configReloader:
+    # -- Enables automatically reloading when the Alloy config changes.
+    enabled: true
+  
+  service:
+    enabled: true
+    type: ClusterIP
+  
+  serviceMonitor:
+    enabled: false
+
+  extraObjects: []
+  # - apiVersion: v1
+  #   kind: Secret
+  #   metadata:
+  #     name: grafana-cloud
+  #   stringData:
+  #     PROMETHEUS_HOST: 'https://prometheus-us-central1.grafana.net/api/prom/push'
+  #     PROMETHEUS_USERNAME: '123456'
+  
