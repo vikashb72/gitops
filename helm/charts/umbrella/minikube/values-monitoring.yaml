@@ -65,7 +65,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   opentelemetry-collector:
-    name: opentelemetry-collector:
+    name: opentelemetry-collector
     targetNamespace: opentelemetry-system
     syncwave: "10"
     sources:
