@@ -54,27 +54,10 @@ opentelemetry-collector:
     exporters:
       otlphttp/loki:
         endpoint: http://loki-gateway.loki-system/loki/api/v1/push
-    #receivers:
-    #  loki:
-    #    protocols:
-    #      http:
-    #        endpoint: 0.0.0.0:3500
-    #    use_incoming_timestamp: true
-    #processors:
-    #  attributes:
-    #    actions:
-    #      - action: insert
-    #        key: loki.attribute.labels
-    #        value: namespace,container,pod,level,traceId
-    #      - action: insert
-    #        key: loki.format
-    #        value: raw
-    #service:
-    #  pipelines:
-    #    logs:
-    #      receivers: [loki]
-    #      exporters: [loki]
-    #      processors: [attributes]
+    service:
+      pipelines:
+        logs:
+          exporters: [otlphttp/loki]
 
   service:
     enabled: true
