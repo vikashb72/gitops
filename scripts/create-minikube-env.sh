@@ -103,7 +103,8 @@ data:
           - ${MINIKUBE_IP}24-${MINIKUBE_IP}54
 EOF
 
-kubectl -n metallb-system apply -f /tmp/metallb.cm.yaml
+# this does not survive a reboot
+#kubectl -n metallb-system apply -f /tmp/metallb.cm.yaml
 
 rm /tmp/metallb.cm.yaml
 # ---------------------------------------------------------------------------- #
