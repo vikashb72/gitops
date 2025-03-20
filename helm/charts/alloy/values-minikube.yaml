@@ -9,13 +9,13 @@ alloy:
   alloy:
     configMap:
       create: true
-      # -- Content to assign to the new ConfigMap.
-      #  This is passed into `tpl` allowing for templating from values.
-      #content:
-      #  logging {
-      #    level = "info"
-      #    format = "logfmt"
-      #  }
+       -- Content to assign to the new ConfigMap.
+        This is passed into `tpl` allowing for templating from values.
+      content: |
+        logging {
+          level = "info"
+          format = "logfmt"
+        }
   
     clustering:
       enabled: false
