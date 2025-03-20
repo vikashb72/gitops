@@ -69,14 +69,15 @@ opentelemetry-collector:
           - action: insert
             key: loki.format
             value: raw
+    service:
+      pipelines:
+        logs:
+          receivers: [loki]
+          exporters: [loki]
+          processors: [attributes]
 
   service:
     enabled: true
-    pipelines:
-      logs:
-        receivers: [loki]
-        exporters: [loki]
-        processors: [attributes]
     type: ClusterIP
     # type: LoadBalancer
     # loadBalancerIP: 1.2.3.4
