@@ -52,7 +52,7 @@ opentelemetry-collector:
   # For example, {{ REDACTED_EMAIL }} becomes {{` {{ REDACTED_EMAIL }} `}}.
   config:
     exporters:
-      loki:
+      otlphttp/loki:
         endpoint: http://loki-gateway.loki-system/loki/api/v1/push
     #receivers:
     #  loki:
