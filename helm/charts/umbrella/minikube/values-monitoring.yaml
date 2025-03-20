@@ -72,3 +72,11 @@ argocdManaged:
       - path: helm/charts/opentelemetry-collector
     syncOptions:
       ServerSideApply: true
+  alloy:
+    name: alloy
+    targetNamespace: alloy-system
+    syncwave: "10"
+    sources:
+      - path: helm/charts/alloy
+    syncOptions:
+      ServerSideApply: true

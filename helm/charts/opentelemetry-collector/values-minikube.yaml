@@ -52,12 +52,14 @@ opentelemetry-collector:
   # For example, {{ REDACTED_EMAIL }} becomes {{` {{ REDACTED_EMAIL }} `}}.
   config:
     exporters:
-      otlphttp/loki:
-        endpoint: http://loki-gateway.loki-system/loki/api/v1/push
+      otlphttp:
+        endpoint: http://loki-gateway.loki-system/otlp
+        #endpoint: http://loki-gateway.loki-system/otlp
     service:
       pipelines:
         logs:
-          exporters: [otlphttp/loki]
+          exporters: [otlphttp]
+  # https://grafana.com/docs/loki/latest/send-data/otel/
 
   service:
     enabled: true
