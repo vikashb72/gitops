@@ -64,3 +64,11 @@ argocdManaged:
       - path: helm/charts/tempo-distributed
     syncOptions:
       ServerSideApply: true
+  opentelemetry-collector:
+    name: opentelemetry-collector:
+    targetNamespace: opentelemetry-system
+    syncwave: "10"
+    sources:
+      - path: helm/charts/opentelemetry-collector
+    syncOptions:
+      ServerSideApply: true
