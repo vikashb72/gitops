@@ -32,7 +32,7 @@ alloy:
   
   service:
     enabled: true
-    type: ClusterIP
+    #type: ClusterIP
   
   serviceMonitor:
     enabled: false
