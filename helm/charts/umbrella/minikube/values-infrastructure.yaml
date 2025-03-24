@@ -65,7 +65,6 @@ argocdManaged:
     sources:
       - path: helm/charts/cert-manager
   keycloak:
-    disable: true
     name: keycloak
     targetNamespace: keycloak
     syncwave: "5"
