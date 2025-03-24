@@ -319,43 +319,75 @@ kube-prometheus-stack:
       - innius-grpc-datasource
       - novatec-sdg-panel
       - integrationmatters-comparison-panel
-      ## You can also use other plugin download URL, as long as they are valid zip files,
-      ## and specify the name of the plugin after the semicolon. Like this:
-      # - https://grafana.com/api/plugins/marcusolsson-json-datasource/versions/1.3.2/download;marcusolsson-json-datasource
-    #dashboards:
-    #    redis-exporter:
-    #      gnetId: 11835
-    #      revision: 1
-    #      datasource: Prometheus
-    #    # https://grafana.com/grafana/dashboards/14699-kubernetes-status/
-    #    kubernetes-status:
-    #      gnetId: 14699
-    #      revision: 2
-    #      datasource: Prometheus
-    #    #
-    #    # TO TEST
-    #    #
-    #    # https://grafana.com/grafana/dashboards/14584-argocd/
-    #    argocd:
-    #      gnetId: 14584
-    #      revision: 1
-    #      datasource: Prometheus
-    #    ## https://grafana.com/grafana/dashboards/11001-cert-manager/
-    #    #cert-manager:
-    #    #  gnetId: 11001
-    #    #  revision: 1
-    #    #  datasource: Prometheus
-    #    ##keycloak-metrics:
-    #    ##  gnetId: 10441
-    #    ##  revision: 2
-    #    ##  datasource: Prometheus
-    #    ## https://grafana.com/grafana/dashboards/7645-istio-control-plane-dashboard/
-    #    ##itio-control-plane:
-    #    ##  gnetId: 7645
-    #    ##  revision: 240
-    #    ##  datasource: Prometheus
-    #    ## https://grafana.com/grafana/dashboards/1860-node-exporter-full/
-    # I have no idea why this breaks
+    dashboardProviders:
+      additionaldashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+    dashboards:
+      default:
+        istio-control-plane:
+          gnetId: 7645
+          revision: 247
+          datasource: Prometheus
+        istio-control-plane:
+          #https://grafana.com/grafana/dashboards/7645-istio-control-plane-dashboard/
+          gnetId: 7645
+          revision: 247
+          datasource: Prometheus
+        istio-mesh:
+          #https://grafana.com/grafana/dashboards/7639-istio-mesh-dashboard/
+          gnetId: 7639
+          revision: 247
+          datasource: Prometheus
+        istio-performance:
+          #https://grafana.com/grafana/dashboards/11829-istio-performance-dashboard/
+          gnetId: 11829
+          revision: 247
+          datasource: Prometheus
+        istio-service:
+          #https://grafana.com/grafana/dashboards/7636-istio-service-dashboard/
+          gnetId: 7636
+          revision: 247
+          datasource: Prometheus
+        istio-workload:
+          #https://grafana.com/grafana/dashboards/7630-istio-workload-dashboard/
+          gnetId: 7630
+          revision: 247
+          datasource: Prometheus
+        redis-exporter:
+          gnetId: 11835
+          revision: 1
+          datasource: Prometheus
+        #istio-ztunnel:
+        #  #https://grafana.com/grafana/dashboards/21306-istio-ztunnel-dashboard/
+        #  gnetId: 21306
+        #  revision: 14
+        #  datasource: Prometheus
+        # TO TEST
+        #
+        # https://grafana.com/grafana/dashboards/14584-argocd/
+        #argocd:
+        #  gnetId: 14584
+        #  revision: 1
+        #  datasource: Prometheus
+        ### https://grafana.com/grafana/dashboards/11001-cert-manager/
+        #cert-manager:
+        #  gnetId: 11001
+        #  revision: 1
+        #  datasource: Prometheus
+        #keycloak-metrics:
+        #  gnetId: 10441
+        #  revision: 2
+        #  datasource: Prometheus
+        # https://grafana.com/grafana/dashboards/7645-istio-control-plane-dashboard/
   kubernetesServiceMonitors:
     enabled: true
   kubeApiServer:
