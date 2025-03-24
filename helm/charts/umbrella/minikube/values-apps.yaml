@@ -49,17 +49,11 @@ argocdManaged:
     targetNamespace: kafka-system
     sources:
       - path: helm/charts/strimzi-kafka-operator
-#  reloader:
-#    disable: true
-#    name: reloader
-#    targetNamespace: reloader
-#    sources:
-#      - path: helm/charts/reloader
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    disableAutomated: false
-#    automated: {}
+  reloader:
+    name: reloader
+    targetNamespace: reloader
+    sources:
+      - path: helm/charts/reloader
 #  keda:
 #    disable: true
 #    name: keda
