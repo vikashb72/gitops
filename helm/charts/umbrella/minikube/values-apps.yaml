@@ -20,8 +20,8 @@ schema:
       allowEmpty: false
 
 argocdManaged:
-  apps-umbrella-chart:
-    name: apps-umbrella-chart
+  umbrella-chart-apps:
+    name: umbrella-chart-apps
     sources:
       - path: helm/charts/umbrella/minikube
         helm:
