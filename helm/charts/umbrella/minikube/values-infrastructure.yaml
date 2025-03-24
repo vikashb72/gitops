@@ -70,6 +70,12 @@ argocdManaged:
     syncwave: "5"
     sources:
       - path: helm/charts/keycloak
+  knative-operator:
+    name: knative-operator
+    targetNamespace: knative-operator
+    syncwave: "6"
+    sources:
+      - path: helm/charts/knative-operator
   #istio:
   #  disable: true
   #  name: istio
