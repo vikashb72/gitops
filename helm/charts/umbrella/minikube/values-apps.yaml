@@ -44,17 +44,11 @@ argocdManaged:
     targetNamespace: redis
     sources:
       - path: helm/charts/redis
-#  strimzi-kafka-operator:
-#    disable: true
-#    name: strimzi-kafka-operator
-#    targetNamespace: kafka-system
-#    sources:
-#      - path: helm/charts/strimzi-kafka-operator
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    disableAutomated: false
-#    automated: {}
+  strimzi-kafka-operator:
+    name: strimzi-kafka-operator
+    targetNamespace: kafka-system
+    sources:
+      - path: helm/charts/strimzi-kafka-operator
 #  reloader:
 #    disable: true
 #    name: reloader
