@@ -9,13 +9,6 @@ cluster:
   kafka:
     version: 3.7.1
     metadataVersion: "3.7"
-    #resources:
-    #  requests:
-    #    memory: 384Mi
-    #    cpu: 250m
-    #  limits:
-    #    memory: 384Mi
-    #    cpu: 500m
     jvmOptions:
       xms: 256m
       xmx: 256m
@@ -36,14 +29,14 @@ cluster:
         - id: 0
           type: persistent-claim
           class: nfs-client
-          size: 2Gi
+          size: 4Gi
           deleteClaim: true
   zookeeper:
     replicas: 3
     storage:
       type: persistent-claim
       class: nfs-client
-      size: 2Gi
+      size: 4Gi
       deleteClaim: true
     logging:
       type: inline
@@ -65,5 +58,5 @@ topics:
     replicas: 1
   - name: test.topic.2
     size: 52428800
-    partitions: 1
+    partitions: 3
     replicas: 3
