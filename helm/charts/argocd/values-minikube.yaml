@@ -6,6 +6,7 @@ schema:
     minikube-applications: Minikube Applications
     minikube-in-cluster-storage: In Cluster Storage
     minikube-monitoring: Monitoring
+    minikube-networking: Networking
   loadBalancerIP: &server-loadBalancerIP "192.168.49.250"
   serviceMonitor:
     enabled: &enable-serviceMonitor "true"
