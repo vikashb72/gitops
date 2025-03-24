@@ -86,7 +86,7 @@ echo "
 -- Enter Load Balancer Start IP: ${MINIKUBE_IP}24
 -- Enter Load Balancer End IP: ${MINIKUBE_IP}54
 "
-#minikube addons configure metallb
+minikube addons configure metallb
 
 cat > /tmp/metallb.cm.yaml <<EOF
 apiVersion: v1
