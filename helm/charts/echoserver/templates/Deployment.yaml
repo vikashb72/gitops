@@ -16,6 +16,7 @@ spec:
       serviceAccountName: echoserver
       containers:
         - image: k8s.gcr.io/echoserver:1.10
+          #image: kicbase/echo-server:1.0
           imagePullPolicy: IfNotPresent
           name: echoserver
           ports:
