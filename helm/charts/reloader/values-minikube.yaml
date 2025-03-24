@@ -1,5 +1,11 @@
 reloader:
   reloader:
+    autoReloadAll: false
+    isArgoRollouts: false
     isOpenshift: false
-    reloadStrategy: default
+    ignoreSecrets: false
+    ignoreConfigMaps: false
+    reloadOnCreate: false
+    reloadOnDelete: false
+    syncAfterRestart: false
     watchGlobally: true
