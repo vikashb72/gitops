@@ -11,8 +11,8 @@ strimzi-kafka-operator:
 cluster:
   name: "kafka-cluster"
   kafka:
-    version: 3.7.1
-    metadataVersion: "3.7"
+    version: 3.8.0
+    metadataVersion: "3.8"
     jvmOptions:
       xms: 256m
       xmx: 256m
