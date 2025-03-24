@@ -76,18 +76,18 @@ argocdManaged:
     syncwave: "6"
     sources:
       - path: helm/charts/knative-operator
-  vpa:
-    name: vpa
-    targetNamespace: vpa-system
-    syncwave: "12"
-    sources:
-      - path: helm/charts/vpa
-  goldilocks:
-    name: goldilocks
-    targetNamespace: goldilocks-system
-    syncwave: "13"
-    sources:
-      - path: helm/charts/goldilocks
+  #vpa:
+  #  name: vpa
+  #  targetNamespace: vpa-system
+  #  syncwave: "12"
+  #  sources:
+  #    - path: helm/charts/vpa
+  #goldilocks:
+  #  name: goldilocks
+  #  targetNamespace: goldilocks-system
+  #  syncwave: "13"
+  #  sources:
+  #    - path: helm/charts/goldilocks
   #istio:
   #  disable: true
   #  name: istio
