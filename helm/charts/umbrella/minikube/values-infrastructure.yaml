@@ -64,15 +64,13 @@ argocdManaged:
     syncwave: "4"
     sources:
       - path: helm/charts/cert-manager
-  #tempo-distributed:
-  #  name: tempo-distributed
-  #  targetNamespace: tempo-system
-  #  syncwave: "7"
-  #  sources:
-  #    - path: helm/charts/tempo-distributed
-  #  syncOptions:
-  #    ServerSideApply: true
-  # 
+  keycloak:
+    disable: true
+    name: keycloak
+    targetNamespace: keycloak
+    syncwave: "5"
+    sources:
+      - path: helm/charts/keycloak
   #istio:
   #  disable: true
   #  name: istio
@@ -90,13 +88,6 @@ argocdManaged:
   #      kind: ValidatingWebhookConfiguration
   #      jqPathExpressions:
   #        - .webhooks[]?.failurePolicy
-  #keycloak:
-  #  disable: true
-  #  name: keycloak
-  #  targetNamespace: keycloak
-  #  syncwave: "9"
-  #  sources:
-  #    - path: helm/charts/keycloak
   #gloo-ee:
   #  disable: true
   #  name: gloo-ee
@@ -151,19 +142,6 @@ argocdManaged:
 #    disableAutomated: false
 #    automated: {}
 #    ignoreDifferences: false 
-#  grafana:
-#    disable: true
-#    name: grafana
-#    targetNamespace: grafana
-#    sources:
-#      - path: helm/charts/grafana
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    disableAutomated: false
-#    automated: {}
-#    syncOptions:
-#      ServerSideApply: true
 #  redis:
 #    disable: true
 #    name: redis
