@@ -32,8 +32,7 @@ do
    c=$((c+1))
    CMD="${CMD} key${c}=\"$KEY\""
 done
-CMD="${CMD} root_token=\"${ROOT_TOKEN}"
-
+CMD="${CMD} root_token=\"${ROOT_TOKEN}\""
 
 kubectl -n vault-system exec -it vault-0 -- vault login $ROOT_TOKEN
 
