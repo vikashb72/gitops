@@ -2,3 +2,4 @@ charts/**/charts
 charts/**/Chart.lock
 charts/**/charts/*.tgz
 **/workdir/*
+**.swp
