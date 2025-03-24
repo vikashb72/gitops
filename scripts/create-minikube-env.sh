@@ -221,6 +221,11 @@ helm install -n argocd argocd \
     -f /tmp/gitops/helm/charts/argocd/values-${EVT}.yaml \
     --wait
 
+# wait for argocd-redis-secret-init pod to disappear, as it now takes 240 s
+# "timed out waiting for the condition on pods/argocd-redis-secret-init"
+# this should solve the issue ?
+sleep 30 
+
 # wait
 kubectl -n argocd wait pods -l app.kubernetes.io/instance=argocd \
    --for condition=Ready --timeout=240s
