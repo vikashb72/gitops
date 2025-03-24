@@ -4,18 +4,31 @@ schema:
   loki:
     logfmt:
       namespace:
+        - alloy-system
         - argocd
+        - cert-manager
+        - echoserver
         - external-secrets
+        - goldilocks-system
+        - httpbin
+        - keycloak
+        - knative-operator
+        - kube-flannel
+        - kube-node-lease
+        - kube-public
         - kube-system
-        - monitoring
-        - vault-system
-        - nfs-provisioning
+        - kubernetes-dashboard
+        - loki-system
+        - metallb-system
         - minio-operator
         - minio-tenant
-        - metallb-system
-        - loki-system
-        - cert-manager
+        - monitoring
+        - nfs-provisioning
+        - opentelemetry-system
+        - promtail-system
         - tempo-system
+        - vault-system
+        - vpa-system
     json:
       namespace:
         - gloo-mesh
