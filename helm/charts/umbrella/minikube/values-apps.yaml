@@ -39,3 +39,67 @@ argocdManaged:
     targetNamespace: httpbin
     sources:
       - path: helm/charts/httpbin
+  redis:
+    name: redis
+    targetNamespace: redis
+    sources:
+      - path: helm/charts/redis
+#  strimzi-kafka-operator:
+#    disable: true
+#    name: strimzi-kafka-operator
+#    targetNamespace: kafka-system
+#    sources:
+#      - path: helm/charts/strimzi-kafka-operator
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    disableAutomated: false
+#    automated: {}
+#  reloader:
+#    disable: true
+#    name: reloader
+#    targetNamespace: reloader
+#    sources:
+#      - path: helm/charts/reloader
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    disableAutomated: false
+#    automated: {}
+#  keda:
+#    disable: true
+#    name: keda
+#    targetNamespace: keda
+#    sources:
+#      - path: helm/charts/keda
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    disableAutomated: false
+#    automated: {}
+#    syncOptions:
+#      ServerSideApply: true
+#  gha-runner-controller:
+#    disable: true
+#    name: gha-runner-controller
+#    targetNamespace: gha-controller
+#    sources:
+#      - path: helm/charts/gha-runner-controller
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    disableAutomated: false
+#    automated: {}
+#    syncOptions:
+#      ServerSideApply: true
+#  gha-runner-scale-set:
+#    disable: true
+#    name: gha-runner-scale-set
+#    targetNamespace: gha-runners
+#    sources:
+#      - path: helm/charts/gha-runner-scale-set
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    disableAutomated: false
+#    automated: {}
