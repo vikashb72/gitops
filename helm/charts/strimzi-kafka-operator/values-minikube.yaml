@@ -4,6 +4,10 @@ schema:
 strimzi-kafka-operator:
   replicas: 1
 
+  dashboards:
+    enabled: true
+    namespace: monitoring
+
 cluster:
   name: "kafka-cluster"
   kafka:
