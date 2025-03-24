@@ -29,7 +29,7 @@ argocdManaged:
       - path: helm/charts/umbrella/minikube
         helm:
           valueFiles:
-            - values-infrastructure.yaml
+            - values-networking.yaml
     automated:
       allowEmpty: true
   istio:
