@@ -1,0 +1,65 @@
+schema:
+  env: minikube
+  bootstrap: false
+  hvault:
+    external:
+      addr: https://192.168.0.4:8443
+  metadata:
+    namespace: argocd
+    finalisers: resources-finalizer.argocd.argoproj.io
+  annotations:
+    syncwave: "100"
+  spec:
+    project: minikube-networking
+    repoURL: https://github.com/vikashb72/gitops.git
+    targetRevision: HEAD
+    destination:
+      server: https://kubernetes.default.svc
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+argocdManaged:
+  istio:
+    name: istio
+    targetNamespace: istio-system
+    syncwave: "8"
+    sources:
+      - path: helm/charts/istio
+        #helm:
+        #  parameters:
+        #    - name: profile
+        #      value: ambient
+    ignoreDifferences: true 
+    ignoreDifferencesConfig:
+      - group: admissionregistration.k8s.io
+        kind: ValidatingWebhookConfiguration
+        jqPathExpressions:
+          - .webhooks[]?.failurePolicy
+  gloo-ee:
+    name: gloo-ee
+    targetNamespace: gloo-system
+    syncwave: "10"
+    sources:
+      - path: helm/charts/gloo-ee
+  gloo-mesh-core:
+    name: gloo-mesh-core
+    targetNamespace: gloo-mesh
+    syncwave: "10"
+    sources:
+      - path: helm/charts/gloo-mesh-core
+#
+#  istio-ingress:
+#    disable: true
+#    name: istio-ingress
+#    targetNamespace: istio-ingress
+#    sources:
+#      - path: helm/charts/istio-ingress
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    syncwave: "11"
+#    disableAutomated: false
+#    automated: {}
+#
