@@ -21,10 +21,21 @@ schema:
       allowEmpty: false
 
 argocdManaged:
+  umbrella-chart-networking:
+    name: umbrella-chart-networking
+    namespace: argocd
+    syncwave: "1"
+    sources:
+      - path: helm/charts/umbrella/minikube
+        helm:
+          valueFiles:
+            - values-infrastructure.yaml
+    automated:
+      allowEmpty: true
   istio:
     name: istio
     targetNamespace: istio-system
-    syncwave: "8"
+    syncwave: "2"
     sources:
       - path: helm/charts/istio
         #helm:
