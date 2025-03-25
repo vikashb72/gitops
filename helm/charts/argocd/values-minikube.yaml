@@ -72,9 +72,9 @@ argo-cd:
 
       serviceMonitor:
         enabled: *enable-serviceMonitor
+        namespace: "monitoring"
         selector:
           prometheus: kube-prometheus-stack
-          namespace: "monitoring"
         additionalLabels:
           release: kube-prometheus-stack
 
@@ -118,9 +118,9 @@ argo-cd:
       serviceMonitor:
         # -- Enable a prometheus ServiceMonitor
         enabled: *enable-serviceMonitor
+        namespace: "monitoring"
         selector:
           prometheus: kube-prometheus-stack
-          namespace: "monitoring"
         additionalLabels:
           release: kube-prometheus-stack
 
@@ -137,9 +137,9 @@ argo-cd:
       serviceMonitor:
         # -- Enable a prometheus ServiceMonitor
         enabled: *enable-serviceMonitor
+        namespace: "monitoring"
         selector:
           prometheus: kube-prometheus-stack
-          namespace: "monitoring"
         additionalLabels:
           release: kube-prometheus-stack
 
@@ -182,9 +182,9 @@ argo-cd:
 
       serviceMonitor:  
         enabled: *enable-serviceMonitor
+        namespace: "monitoring"
         selector:
           prometheus: kube-prometheus-stack
-          namespace: "monitoring"
         additionalLabels:
           release: kube-prometheus-stack
 
@@ -194,9 +194,9 @@ argo-cd:
 
       serviceMonitor:  
         enabled: *enable-serviceMonitor
+        namespace: "monitoring"
         selector:
           prometheus: kube-prometheus-stack
-          namespace: "monitoring"
         additionalLabels:
           release: kube-prometheus-stack
 
@@ -206,9 +206,9 @@ argo-cd:
 
       serviceMonitor:  
         enabled: *enable-serviceMonitor
+        namespace: "monitoring"
         selector:
           prometheus: kube-prometheus-stack
-          namespace: "monitoring"
         additionalLabels:
           release: kube-prometheus-stack
 
@@ -220,9 +220,9 @@ argo-cd:
 
       serviceMonitor:  
         enabled: *enable-serviceMonitor
+        namespace: "monitoring"
         selector:
           prometheus: kube-prometheus-stack
-          namespace: "monitoring"
         additionalLabels:
           release: kube-prometheus-stack
 
