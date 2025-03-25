@@ -573,13 +573,6 @@ kube-prometheus-stack:
     serviceMonitor:
       selfMonitor: true
 
-    dnsConfig: {}
-      # nameservers:
-      #   - 1.2.3.4
-      # searches:
-      #   - ns1.svc.cluster-domain.example
-      #   - my.dns.search.suffix
-
     # Enable vertical pod autoscaler support for prometheus-operator
     verticalPodAutoscaler:
       enabled: false
