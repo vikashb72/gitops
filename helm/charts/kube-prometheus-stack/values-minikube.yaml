@@ -413,8 +413,8 @@ kube-prometheus-stack:
           gnetId: 19975
           revision: 3
         argocd:
-          url: https://raw.githubusercontent.com/argoproj/argo-cd/refs/heads/master/examples/dashboard.json
-          token: ''
+          file: dashboards/ArgoCD/dashboard.json
+          #url: https://raw.githubusercontent.com/argoproj/argo-cd/refs/heads/master/examples/dashboard.json
         #  # last updated 2021
         #  # https://grafana.com/grafana/dashboards/14584-argocd/
         #  gnetId: 14584
