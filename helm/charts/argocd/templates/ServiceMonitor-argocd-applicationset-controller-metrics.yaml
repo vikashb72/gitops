@@ -5,7 +5,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: argocd-applicationset-controller-metrics
-  namespace: argocd
+  namespace: monitoring
   labels:
     release: kube-prometheus-stack
 spec:
