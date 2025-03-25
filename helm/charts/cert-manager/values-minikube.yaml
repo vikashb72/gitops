@@ -10,6 +10,11 @@ cert-manager:
   prometheus:
     # NB: you can not enable both PodMonitor and ServiceMonitor
     servicemonitor:
-      enabled: false
+      enabled: true
+      namespace: cert-manager
+      #prometheusInstance: default
+      labels:
+        release: kube-prometheus-stack
+
     podmonitor:
       enabled: false
