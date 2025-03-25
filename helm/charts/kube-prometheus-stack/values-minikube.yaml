@@ -399,11 +399,27 @@ kube-prometheus-stack:
           gnetId: 21306
           revision: 14
           datasource: Prometheus
-        argocd:
-          # https://grafana.com/grafana/dashboards/14584-argocd/
-          gnetId: 14584
-          revision: 1
+        argocd-app-overview:
+          #https://grafana.com/grafana/dashboards/19974-argocd-application-overview/
+          gnetId: 19974
+          revision: 3
           datasource: Prometheus
+        argocd-operational-overview:
+          #https://grafana.com/grafana/dashboards/19993-argocd-operational-overview/
+          gnetId: 19993
+          revision: 3
+        argocd-notifications-overview:
+          #https://grafana.com/grafana/dashboards/19975-argocd-notifications-overview/
+          gnetId: 19975
+          revision: 3
+        argocd:
+          url: https://raw.githubusercontent.com/argoproj/argo-cd/refs/heads/master/examples/dashboard.json
+          token: ''
+        #  # last updated 2021
+        #  # https://grafana.com/grafana/dashboards/14584-argocd/
+        #  gnetId: 14584
+        #  revision: 1
+        #  datasource: Prometheus
         cert-manager:
           # https://grafana.com/grafana/dashboards/11001-cert-manager/
           gnetId: 11001
