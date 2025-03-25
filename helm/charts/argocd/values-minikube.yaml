@@ -9,8 +9,8 @@ schema:
     minikube-networking: Networking
   loadBalancerIP: &server-loadBalancerIP "192.168.49.250"
   serviceMonitor:
-    enabled: &enable-serviceMonitor "true"
-    templates: true
+    enabled: &enable-serviceMonitor false
+    templates: false
 
 argo-cd:
   namespaceOverride: "argocd"
@@ -72,12 +72,17 @@ argo-cd:
 
       serviceMonitor:
         enabled: *enable-serviceMonitor
+        selector:
+          prometheus: kube-prometheus-stack
+          namespace: "monitoring"
+        additionalLabels:
+          release: kube-prometheus-stack
 
       rules:
         enabled: false
         namespace: "monitoring"
-        selector: {}
-          # prometheus: kube-prometheus
+        selector:
+          prometheus: kube-prometheus-stack
         spec:
           - alert: ArgoAppMissing
             expr: |
@@ -113,6 +118,11 @@ argo-cd:
       serviceMonitor:
         # -- Enable a prometheus ServiceMonitor
         enabled: *enable-serviceMonitor
+        selector:
+          prometheus: kube-prometheus-stack
+          namespace: "monitoring"
+        additionalLabels:
+          release: kube-prometheus-stack
 
   redis:
     enabled: true
@@ -124,10 +134,17 @@ argo-cd:
     metrics:
       enabled: true
 
-      # Redis metrics service configuration
       serviceMonitor:
         # -- Enable a prometheus ServiceMonitor
         enabled: *enable-serviceMonitor
+        selector:
+          prometheus: kube-prometheus-stack
+          namespace: "monitoring"
+        additionalLabels:
+          release: kube-prometheus-stack
+
+  redisSecretInit:
+    enabled: false
 
   server:
     #extraArgs:
@@ -165,6 +182,11 @@ argo-cd:
 
       serviceMonitor:  
         enabled: *enable-serviceMonitor
+        selector:
+          prometheus: kube-prometheus-stack
+          namespace: "monitoring"
+        additionalLabels:
+          release: kube-prometheus-stack
 
   repoServer:
     metrics:
@@ -172,6 +194,11 @@ argo-cd:
 
       serviceMonitor:  
         enabled: *enable-serviceMonitor
+        selector:
+          prometheus: kube-prometheus-stack
+          namespace: "monitoring"
+        additionalLabels:
+          release: kube-prometheus-stack
 
   applicationSet:
     metrics:
@@ -179,6 +206,11 @@ argo-cd:
 
       serviceMonitor:  
         enabled: *enable-serviceMonitor
+        selector:
+          prometheus: kube-prometheus-stack
+          namespace: "monitoring"
+        additionalLabels:
+          release: kube-prometheus-stack
 
   notifications:
     enabled: true
@@ -188,6 +220,11 @@ argo-cd:
 
       serviceMonitor:  
         enabled: *enable-serviceMonitor
+        selector:
+          prometheus: kube-prometheus-stack
+          namespace: "monitoring"
+        additionalLabels:
+          release: kube-prometheus-stack
 
 argo-workflows:
   namespaceOverride: "argocd"
