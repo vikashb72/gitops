@@ -394,28 +394,25 @@ kube-prometheus-stack:
           gnetId: 11835
           revision: 1
           datasource: Prometheus
-        #istio-ztunnel:
-        #  #https://grafana.com/grafana/dashboards/21306-istio-ztunnel-dashboard/
-        #  gnetId: 21306
-        #  revision: 14
-        #  datasource: Prometheus
-        # TO TEST
-        #
-        # https://grafana.com/grafana/dashboards/14584-argocd/
-        #argocd:
-        #  gnetId: 14584
-        #  revision: 1
-        #  datasource: Prometheus
-        ### https://grafana.com/grafana/dashboards/11001-cert-manager/
-        #cert-manager:
-        #  gnetId: 11001
-        #  revision: 1
-        #  datasource: Prometheus
-        #keycloak-metrics:
-        #  gnetId: 10441
-        #  revision: 2
-        #  datasource: Prometheus
-        # https://grafana.com/grafana/dashboards/7645-istio-control-plane-dashboard/
+        istio-ztunnel:
+          #https://grafana.com/grafana/dashboards/21306-istio-ztunnel-dashboard/
+          gnetId: 21306
+          revision: 14
+          datasource: Prometheus
+        argocd:
+          # https://grafana.com/grafana/dashboards/14584-argocd/
+          gnetId: 14584
+          revision: 1
+          datasource: Prometheus
+        cert-manager:
+          # https://grafana.com/grafana/dashboards/11001-cert-manager/
+          gnetId: 11001
+          revision: 1
+          datasource: Prometheus
+        keycloak-metrics:
+          gnetId: 10441
+          revision: 2
+          datasource: Prometheus
 
   kubernetesServiceMonitors:
     enabled: true
