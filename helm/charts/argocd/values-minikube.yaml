@@ -23,7 +23,7 @@ argo-cd:
     # Used for ingresses, certificates, SSO, notifications, etc.
     domain: argocd.minikube.where-ever.net
     # an alternative to the ServiceMonitors
-    addPrometheusAnnotations: false
+    addPrometheusAnnotations: true
   configs:
     cm:
       accounts.argo-admin.enabled: "false"
