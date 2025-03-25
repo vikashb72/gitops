@@ -10,7 +10,7 @@ schema:
   loadBalancerIP: &server-loadBalancerIP "192.168.49.250"
   serviceMonitor:
     enabled: &enable-serviceMonitor "true"
-    templates: false
+    templates: true
 
 argo-cd:
   namespaceOverride: "argocd"
@@ -27,7 +27,7 @@ argo-cd:
     domain: argocd.minikube.where-ever.net
 
     # an alternative to the ServiceMonitors
-    addPrometheusAnnotations: true
+    addPrometheusAnnotations: false
 
   configs:
     cm:
