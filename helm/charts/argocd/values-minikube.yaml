@@ -14,16 +14,21 @@ schema:
 
 argo-cd:
   namespaceOverride: "argocd"
+
   crds:
     install: true
+
   openshift:
     enabled: false
+
   global:
     # -- Default domain used by all components
     # Used for ingresses, certificates, SSO, notifications, etc.
     domain: argocd.minikube.where-ever.net
+
     # an alternative to the ServiceMonitors
     addPrometheusAnnotations: true
+
   configs:
     cm:
       accounts.argo-admin.enabled: "false"
@@ -35,6 +40,7 @@ argo-cd:
         hs.status = "Healthy"
         hs.message = "we are good"
         return hs
+
     params:
       #server.insecure: false
       #server.basehref: /
@@ -47,6 +53,7 @@ argo-cd:
       # Limit on number of concurrent manifests generate requests.
       # Any value less the 1 means no limit.
       reposerver.parallelism.limit: 0
+
     rbac:
       policy.default: ''
       policy.csv: |
@@ -62,8 +69,10 @@ argo-cd:
   controller:
     metrics:
       enabled: false
+
       serviceMonitor:
         enabled: *enable-serviceMonitor
+
       rules:
         enabled: false
         namespace: "" # "monitoring"
@@ -97,19 +106,24 @@ argo-cd:
 
   dex:
     enabled: true
+
     metrics:
       enabled: false
+
       serviceMonitor:
         # -- Enable a prometheus ServiceMonitor
         enabled: *enable-serviceMonitor
 
   redis:
     enabled: true
+
     ## Prometheus redis-exporter sidecar
     exporter:
       enabled: false
+
     metrics:
       enabled: false
+
       # Redis metrics service configuration
       serviceMonitor:
         # -- Enable a prometheus ServiceMonitor
@@ -129,9 +143,11 @@ argo-cd:
     env:
       - name: ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT
         value: "0"
+
     extensions:
       enabled: false
       ## Ref: https://github.com/argoproj-labs/argocd-extension-metrics#install-ui-extension
+
       extensionList: []
       #  - name: extension-metrics
       #    env:
@@ -143,41 +159,51 @@ argo-cd:
     service:
       type: LoadBalancer
       loadBalancerIP: *server-loadBalancerIP
+
     metrics:
       enabled: true
+
       serviceMonitor:  
         enabled: *enable-serviceMonitor
 
   repoServer:
     metrics:
       enabled: true
+
       serviceMonitor:  
         enabled: *enable-serviceMonitor
 
   applicationSet:
     metrics:
       enabled: true
+
       serviceMonitor:  
         enabled: *enable-serviceMonitor
 
   notifications:
     enabled: true
+
     metrics:
       enabled: true
+
       serviceMonitor:  
         enabled: *enable-serviceMonitor
 
 argo-workflows:
   namespaceOverride: "argocd"
+
   workflow:
     serviceAccount:
       create: true
       name: "argo-workflow"
+
     rbac:
       create: true
+
   controller:
     workflowDefaults:
       spec:
         serviceAccountName: argo-workflow
+
   metricsConfig:
     enabled: true
