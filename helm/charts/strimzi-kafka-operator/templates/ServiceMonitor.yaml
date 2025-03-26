@@ -1,16 +1,16 @@
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: kafka-service-monitor
-  labels:
-    release: kube-prometheus-stack
-spec:
-  endpoints:
-  - port: jmx
-    interval: 30s
-  namespaceSelector:
-    matchNames:
-    - kafka-system
-  selector:
-    matchLabels:
-      strimzi.io/cluster: kafka-cluster
+#apiVersion: monitoring.coreos.com/v1
+#kind: ServiceMonitor
+#metadata:
+#  name: kafka-service-monitor
+#  labels:
+#    release: kube-prometheus-stack
+#spec:
+#  endpoints:
+#  - port: jmx
+#    interval: 30s
+#  namespaceSelector:
+#    matchNames:
+#    - kafka-system
+#  selector:
+#    matchLabels:
+#      strimzi.io/cluster: kafka-cluster
