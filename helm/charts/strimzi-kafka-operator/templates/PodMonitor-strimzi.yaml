@@ -5,6 +5,7 @@ metadata:
   namespace: monitoring
   labels:
     app: strimzi
+    release: kube-prom-stack
 spec:
   selector:
     matchLabels:
@@ -23,6 +24,7 @@ metadata:
   namespace: monitoring
   labels:
     app: strimzi
+    release: kube-prom-stack
 spec:
   selector:
     matchLabels:
@@ -41,6 +43,7 @@ metadata:
   namespace: monitoring
   labels:
     app: strimzi
+    release: kube-prom-stack
 spec:
   selector:
     matchLabels:
@@ -59,6 +62,7 @@ metadata:
   namespace: monitoring
   labels:
     app: strimzi
+    release: kube-prom-stack
 spec:
   selector:
     matchExpressions:
