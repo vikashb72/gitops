@@ -93,6 +93,11 @@ spec:
         configMapKeyRef:
           name: kafka-metrics
           key: kafka-metrics-config.yml
+    template:
+      pod:
+        metadata:
+          labels:
+            kafka-metrics: 'true'
   zookeeper:
     livenessProbe:
       initialDelaySeconds: 30
@@ -129,7 +134,7 @@ spec:
       pod:
         metadata:
           labels:
-            kafka-metrics: true
+            kafka-metrics: 'true'
   kafkaExporter:
     topicRegex: ".*"
     groupRegex: ".*"
