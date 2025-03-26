@@ -18,7 +18,7 @@ cluster:
       xmx: 256m
     replicas: 3
     external_listener:
-      enabled: true
+      enabled: false
       annotations:
         - "metallb.universe.tf/address-pool: default"
         - 'service.beta.kubernetes.io/azure-load-balancer-internal: "true"'
