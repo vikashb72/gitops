@@ -8,6 +8,8 @@ strimzi-kafka-operator:
     enabled: true
     namespace: monitoring
 
+  #featureGates: +UseKRaft,+KafkaNodePools,+UnidirectionalTopicOperator
+
 cluster:
   name: "kafka-cluster"
   kafka:
