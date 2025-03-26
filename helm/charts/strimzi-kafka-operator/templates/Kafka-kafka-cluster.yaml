@@ -59,23 +59,23 @@ spec:
         tls: {{ default false .Values.cluster.kafka.external_listener.tls }}
         configuration:
           bootstrap:
-{{- if .Values.cluster.kafka.external_listener.annotations }}
+  {{- if .Values.cluster.kafka.external_listener.annotations }}
             annotations:
-{{- range .Values.cluster.kafka.external_listener.annotations }}
+    {{- range .Values.cluster.kafka.external_listener.annotations }}
               {{ . }}
-{{- end }}
-{{- end }}
+    {{- end }}
+  {{- end }}
           brokers:
 {{- $count := (.Values.cluster.kafka.replicas | int) }}
-{{- range until $count }}
+  {{- range until $count }}
             - broker: {{.}}
-{{- if $.Values.cluster.kafka.external_listener.annotations }}
-              annotations:
-{{- range $annotation := $.Values.cluster.kafka.external_listener.annotations }}
-                {{.}}
-{{- end }}
-{{- end }}
-{{- end }}
+    {{- if $.Values.cluster.kafka.external_listener.annotations }}
+              #annotations:
+      {{- range $annotation := $.Values.cluster.kafka.external_listener.annotations }}
+              #  {{.}}
+      {{- end }}
+    {{- end }}
+  {{- end }}
 {{- end }}
     storage:
       type: {{ .Values.cluster.kafka.storage.type }}
