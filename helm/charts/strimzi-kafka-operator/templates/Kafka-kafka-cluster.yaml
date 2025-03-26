@@ -57,27 +57,6 @@ spec:
         port: {{ default 9094 .Values.cluster.kafka.external_listener.port }}
         type: {{ default "loadbalancer" .Values.cluster.kafka.external_listener.type }}
         tls: {{ default false .Values.cluster.kafka.external_listener.tls }}
-        #configuration:
-        #  bootstrap:
-        #    host: kafka-cluster-kafka-bootstrap.kafka-system
-  {{- if .Values.cluster.kafka.external_listener.annotations }}
-        #    #annotations:
-    {{- range .Values.cluster.kafka.external_listener.annotations }}
-        #    #  {{ . }}
-    {{- end }}
-  {{- end }}
-        #  brokers:
-{{- $count := (.Values.cluster.kafka.replicas | int) }}
-  {{- range until $count }}
-        #    - broker: {{.}}
-        #      host: kafka-cluster-kafka-{{ . }}.kafka-system
-    {{- if $.Values.cluster.kafka.external_listener.annotations }}
-        #      #annotations:
-      {{- range $annotation := $.Values.cluster.kafka.external_listener.annotations }}
-        #      #  {{.}}
-      {{- end }}
-    {{- end }}
-  {{- end }}
 {{- end }}
     storage:
       type: {{ .Values.cluster.kafka.storage.type }}
