@@ -87,6 +87,12 @@ spec:
           size: {{ .size }}
           deleteClaim: {{ .deleteClaim }}
 {{- end }}
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: kafka-metrics-config.yml
   zookeeper:
     livenessProbe:
       initialDelaySeconds: 30
@@ -113,3 +119,22 @@ spec:
       class: {{ .Values.cluster.zookeeper.storage.class }}
       size: {{ .Values.cluster.zookeeper.storage.size }}
       deleteClaim: {{ .Values.cluster.zookeeper.storage.deleteClaim }}
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: zookeeper-metrics-config.yml
+  kafkaExporter: {}
+    #topicRegex: ".*"
+    #groupRegex: ".*"
+
+  #cruiseControl:
+  #  config:
+  #    webserver.security.enable: false
+  #  metricsConfig:
+  #    type: jmxPrometheusExporter
+  #    valueFrom:
+  #      configMapKeyRef:
+  #        name: kafka-metrics
+  #        key: cruise-control-metrics.yml
