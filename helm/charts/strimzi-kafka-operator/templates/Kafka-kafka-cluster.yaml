@@ -125,9 +125,14 @@ spec:
         configMapKeyRef:
           name: kafka-metrics
           key: zookeeper-metrics-config.yml
-  kafkaExporter: {}
-    #topicRegex: ".*"
-    #groupRegex: ".*"
+  kafkaExporter:
+    topicRegex: ".*"
+    groupRegex: ".*"
+    template:
+      pod:
+        metadata:
+          labels:
+            kafka-metrics: 'true'
 
   #cruiseControl:
   #  config:
