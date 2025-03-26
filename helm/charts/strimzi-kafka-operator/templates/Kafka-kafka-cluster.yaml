@@ -52,7 +52,7 @@ spec:
         port: 9093
         type: internal
         tls: true
-{{- if .Values.cluster.kafka.external_listener.enabled }}
+{{- if and .Values.cluster.kafka.external_listener .Values.cluster.kafka.external_listener.enabled }}
       - name: external
         port: {{ default 9094 .Values.cluster.kafka.external_listener.port }}
         type: {{ default "loadbalancer" .Values.cluster.kafka.external_listener.type }}
