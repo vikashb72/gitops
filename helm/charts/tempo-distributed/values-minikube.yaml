@@ -35,9 +35,11 @@ tempo-distributed:
   
   # Configuration for the metrics-generator
   metricsGenerator:
-    enabled: false
-    affinity: |
-      podAntiAffinity: {}
+    enabled: true
+    #storage:
+    #  remote_write:
+    #    - url: http://monitoring-kube-prometheus-prometheus.monitoring:9090/api/v1/write
+    #      send_exemplars: true
   
   # Configuration for the distributor
   distributor:
