@@ -420,8 +420,8 @@ kube-prometheus-stack:
           revision: 1
           datasource: Prometheus
         cert-manager:
-          # https://grafana.com/grafana/dashboards/11001-cert-manager/
-          gnetId: 11001
+          #https://grafana.com/grafana/dashboards/20850-cert-manager/
+          gnetId: 20850
           revision: 1
           datasource: Prometheus
         keycloak-metrics:
@@ -631,3 +631,22 @@ kube-prometheus-stack:
 
     serviceMonitor:
       selfMonitor: true
+
+    #secrets:
+    #  # The Secrets are mounted into /etc/prometheus/secrets/
+    #  - vault_token
+
+    #additionalScrapeConfigs:
+    #  - job_name: vault
+    #    # https://developer.hashicorp.com/vault/tutorials/archive/monitor-telemetry-grafana-prometheus
+    #    metrics_path: /v1/sys/metrics
+    #    params:
+    #      format: ['prometheus']
+    #    scheme: https
+    #    authorization:
+    #      credentials_file: /etc/prometheus/secrets/vault-token
+    #    static_configs:
+    #      - targets: 
+    #          - vault-0.vault-system:8200
+    #          - vault-1.vault-system:8200
+    #          - vault-2.vault-system:8200
