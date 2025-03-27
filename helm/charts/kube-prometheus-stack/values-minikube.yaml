@@ -255,8 +255,6 @@ kube-prometheus-stack:
 
     serviceMonitor:
       enabled: true
-      targetLabels:
-        - prometheus
 
     persistence:
       enabled: true
