@@ -1,11 +1,10 @@
 reloader:
   reloader:
-    autoReloadAll: false
-    isArgoRollouts: false
-    isOpenshift: false
-    ignoreSecrets: false
-    ignoreConfigMaps: false
-    reloadOnCreate: false
-    reloadOnDelete: false
-    syncAfterRestart: false
-    watchGlobally: true
+    enableMetricsByNamespace: true
+
+    podMonitor:
+      enabled: true
+      namespace: monitoring
+      labels:
+        release: kube-prometheus-stack
+  
