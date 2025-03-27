@@ -1,4 +1,4 @@
-csi-secrets-store:
+secrets-store-csi-driver:
   linux:
     enabled: true
   
