@@ -417,11 +417,11 @@ kube-prometheus-stack:
           gnetId: 22576
           revision: 1
           datasource: Prometheus
-        vpa-recommendations:
-          #https://grafana.com/grafana/dashboards/14588-vpa-recommendations/
-          gnetId: 14588
-          revision: 5
-          datasource: Prometheus
+        #vpa-recommendations:
+        #  #https://grafana.com/grafana/dashboards/14588-vpa-recommendations/
+        #  gnetId: 14588
+        #  revision: 5
+        #  datasource: Prometheus
         vpa-recommendations-alt:
           #https://grafana.com/grafana/dashboards/16294-vpa-recommendations/
           gnetId: 16294
