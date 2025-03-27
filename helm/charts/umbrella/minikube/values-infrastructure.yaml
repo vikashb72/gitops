@@ -24,12 +24,13 @@ argocdManaged:
   argocd:
     name: argocd
     namespace: argocd
+    targetNamespace: argocd
     syncwave: "1"
     sources:
       - path: helm/charts/argocd
   secrets-store-csi-driver:
     name: secrets-store-csi-driver
-    namespace: kube-system
+    targetNamespace: kube-system
     syncwave: "1"
     sources:
       - path: helm/charts/secrets-store-csi-driver
