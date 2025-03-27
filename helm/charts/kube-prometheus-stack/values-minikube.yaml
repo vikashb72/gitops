@@ -422,6 +422,11 @@ kube-prometheus-stack:
           gnetId: 14588
           revision: 5
           datasource: Prometheus
+        vpa-recommendations-alt:
+          #https://grafana.com/grafana/dashboards/16294-vpa-recommendations/
+          gnetId: 16294
+          revision: 4
+          datasource: Prometheus
         # need to fix
         cert-manager-2:
           #https://grafana.com/grafana/dashboards/20850-cert-manager/
