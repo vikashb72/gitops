@@ -27,6 +27,12 @@ argocdManaged:
     syncwave: "1"
     sources:
       - path: helm/charts/argocd
+  secrets-store-csi-driver:
+    name: secrets-store-csi-driver
+    namespace: kube-system
+    syncwave: "1"
+    sources:
+      - path: helm/charts/secrets-store-csi-driver
   umbrella-chart-infrastructure:
     name: umbrella-chart-infrastructure
     namespace: argocd
