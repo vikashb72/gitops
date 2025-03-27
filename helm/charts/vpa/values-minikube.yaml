@@ -1,11 +1,23 @@
 vpa:
   recommender:
     enabled: true
-    resources:
+
     podMonitor:
       enabled: true
       labels:
         release: kube-prometheus-stack
+
+    extraArgs:
+      pod-recommendation-min-cpu-millicores: 15
+      pod-recommendation-min-memory-mb: 100
+      prometheus-address: http://kube-prometheus-stack-prometheus.monitoring:9090
+      storage: prometheus
+      prometheus-cadvisor-job-name: kubelet
+      pod-namespace-label: namespace
+      pod-name-label: pod
+      container-namespace-label: namespace
+      container-pod-name-label: pod
+      container-name-label: container
   
   updater:
     enabled: false
