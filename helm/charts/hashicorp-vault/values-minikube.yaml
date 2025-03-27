@@ -114,11 +114,11 @@ vault:
 
   csi:
     # https://github.com/kubernetes-sigs/secrets-store-csi-driver#install-the-secrets-store-csi-driver
-    enabled: false
+    enabled: true
 
   serverTelemetry:
     serviceMonitor:
-      enabled: false
+      enabled: true
 
     prometheusRules:
       # The Prometheus operator *must* be installed before enabling this

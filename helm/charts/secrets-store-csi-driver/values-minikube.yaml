@@ -51,3 +51,16 @@ secrets-store-csi-driver:
   tokenRequests: []
   # - audience: aud1
   # - audience: aud2
+
+csi-secrets-store-provider-azure:
+  logFormatJSON: false
+
+  logVerbosity: 0
+  
+  enableArcExtension: false
+  
+  secrets-store-csi-driver:
+    install: false
+  
+  metricsAddr: "8898"
+  
