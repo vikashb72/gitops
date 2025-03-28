@@ -73,5 +73,10 @@ kubectl exec -n vault-system -it vault-0 -- \
 kubectl exec -ti vault-0 -n vault-system -c vault -- sh -c 'vault write auth/kubernetes/config kubernetes_host="https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT" kubernetes_ca_cert="$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt)" token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" disable_iss_validation=true disable_local_ca_jwt=true'
 
 
-echo "SAVE ..... "
+echo "saving init keys..... "
+echo $CMD > $WORKDIR/vault.cmd.sh
+scp $WORKDIR/vault.cmd.sh 192.168.0.4:/tmp/vault.cmd.sh
+ssh 192.168.0.4 bash -x /tmp/vault.cmd.sh
+ssh 192.168.0.4 rm /tmp/vault.cmd.sh
+
 echo $CMD
