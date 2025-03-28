@@ -28,8 +28,9 @@ installChart() {
     LABEL=""
     PROFILE=""
     UPGRADE=""
+    STATE='Ready'
 
-    while getopts c:d:l:n:s:u: opt
+    while getopts c:d:l:n:s:u:S: opt
     do
         case $opt in
             c) CHART_NAME="${OPTARG}";;
@@ -37,6 +38,7 @@ installChart() {
             l) LABEL="${OPTARG}";;
             n) NAMESPACE="${OPTARG}";;
             s) SET_ARGS="${SET_ARGS} --set ${OPTARG}";;
+            S) STATE="${OPTARG}";;
             u) UPGRADE=1;;
             *) echo "HUH $OPT";;
         esac
@@ -53,7 +55,7 @@ installChart() {
         echo "Waiting for pods in $NAMESPACE to startup"
         kubectl wait -n $NAMESPACE pods \
             -l $LABEL \
-            --for condition=Ready \
+            --for condition=${STATE} \
             --timeout=180s
 
         kubectl -n $NAMESPACE get pods
@@ -230,7 +232,8 @@ installChart -d "${CHARTS_REPO_BASE}/external-secrets" \
 installChart -d "${CHARTS_REPO_BASE}/hashicorp-vault" \
     -c vault \
     -n vault-system \
-    -l "app.kubernetes.io/instance=vault" 
+    -l "app.kubernetes.io/instance=vault" \
+    -S Initialized
 
 # init vault
 cd ${REPO_DIR}/scripts/hvault && ./init.sh -e $EVT
@@ -242,8 +245,6 @@ cd ${REPO_DIR}/scripts/hvault/intermediate-ca && \
     ssh 192.168.0.4 /usr/local/etc/step-ca/bin/sign-ica.sh -c /tmp/${EVT}_intermediate_CA.csr && \
     scp 192.168.0.4:/tmp/${EVT}_intermediate_CA.csr.signed.crt work/signed.${EVT}_intermediate_CA.csr.crt && \
     ./save-signed-intermediate.sh -e $EVT
-
-    
 
 # ---------------------------------------------------------------------------- #
 # argocd

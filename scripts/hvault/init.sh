@@ -76,7 +76,7 @@ kubectl exec -ti vault-0 -n vault-system -c vault -- sh -c 'vault write auth/kub
 echo "saving init keys..... "
 echo $CMD > $WORKDIR/vault.cmd.sh
 scp $WORKDIR/vault.cmd.sh 192.168.0.4:/tmp/vault.cmd.sh
-ssh 192.168.0.4 bash -x /tmp/vault.cmd.sh
+ssh 192.168.0.4 "source ~/.vault.env; /tmp/vault.cmd.sh"
 ssh 192.168.0.4 rm /tmp/vault.cmd.sh
 
 echo $CMD
