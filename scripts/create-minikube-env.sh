@@ -132,7 +132,7 @@ export MINIKUBE_IP=$(minikube --profile $EVT ip)
 minikube --profile $EVT addons enable metrics-server 
 #minikube addons enable volumesnapshots
 #minikube addons enable dashboard 
-##minikube addons enable metallb
+#minikube addons enable metallb
 
 # ---------------------------------------------------------------------------- #
 # Clone Charts repo
@@ -236,7 +236,7 @@ installChart -d "${CHARTS_REPO_BASE}/hashicorp-vault" \
 cd ${REPO_DIR}/scripts/hvault && ./init.sh -e $EVT
 
 # init pki
-cd ${REPODIR}/scripts/hvault/intermediate-ca && \
+cd ${REPO_DIR}/scripts/hvault/intermediate-ca && \
     ./create-intermediate.sh -e $EVT && \
     scp work/${EVT}_intermediate_CA.csr 192.168.0.4:/tmp/ && \
     ssh 192.168.0.4 /usr/local/etc/step-ca/bin/sign-ica.sh -c /tmp/${EVT}_intermediate_CA.csr && \
