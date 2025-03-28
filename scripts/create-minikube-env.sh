@@ -233,7 +233,10 @@ installChart -d "${CHARTS_REPO_BASE}/hashicorp-vault" \
     -c vault \
     -n vault-system \
     -l "app.kubernetes.io/instance=vault" \
-    -S Initialized
+    -S PodReadyToStartContainers
+
+kubectl -n vault-system wait --for=condition=Initialized pod/vault2 \
+    --timeout=300s
 
 # init vault
 cd ${REPO_DIR}/scripts/hvault && ./init.sh -e $EVT
