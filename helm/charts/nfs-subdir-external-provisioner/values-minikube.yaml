@@ -5,8 +5,8 @@ nfs-subdir-external-provisioner:
   replicaCount: 1
   
   nfs:
-    server:
-    path: /data/nfs
+    server: 192.168.0.20
+    path:  /data/nfs
   
   # For creating the StorageClass automatically:
   storageClass:
@@ -19,6 +19,6 @@ nfs-subdir-external-provisioner:
     archiveOnDelete: false
   
     # Set access mode - ReadWriteOnce, ReadOnlyMany or ReadWriteMany
-    #accessModes: ReadWriteOnce
-    accessModes: ReadWriteMany
+    accessModes: ReadWriteOnce
+    #accessModes: ReadWriteMany
   

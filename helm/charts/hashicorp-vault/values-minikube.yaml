@@ -7,12 +7,12 @@ vault:
     namespace: "vault-system"
     tlsDisable: false
     serverTelemetry:
-      prometheusOperator: false
+      prometheusOperator: true
 
   injector:
     enabled: true
     metrics:
-      enabled: false
+      enabled: true
 
   server:
     enabled: true
@@ -119,22 +119,26 @@ vault:
   serverTelemetry:
     serviceMonitor:
       enabled: true
+      selectors:
+        release: kube-prometheus-stack
 
     prometheusRules:
       # The Prometheus operator *must* be installed before enabling this
-      enabled: false
-      rules: []
-        #  - alert: vault-HighResponseTime
-        #    annotations:
-        #      message: The response time of Vault is over 500ms on average over the last 5 minutes.
-        #    expr: vault_core_handle_request{quantile="0.5", namespace="mynamespace"} > 500
-        #    for: 5m
-        #    labels:
-        #      severity: warning
-        #  - alert: vault-HighResponseTime
-        #    annotations:
-        #      message: The response time of Vault is over 1s on average over the last 5 minutes.
-        #    expr: vault_core_handle_request{quantile="0.5", namespace="mynamespace"} > 1000
-        #    for: 5m
-        #    labels:
-        #      severity: critical
+      enabled: true
+      selectors:
+        release: kube-prometheus-stack
+      rules:
+        - alert: vault-HighResponseTime
+          annotations:
+            message: The response time of Vault is over 500ms on average over the last 5 minutes.
+          expr: vault_core_handle_request{quantile="0.5", namespace="mynamespace"} > 500
+          for: 5m
+          labels:
+            severity: warning
+        - alert: vault-HighResponseTime
+          annotations:
+            message: The response time of Vault is over 1s on average over the last 5 minutes.
+          expr: vault_core_handle_request{quantile="0.5", namespace="mynamespace"} > 1000
+          for: 5m
+          labels:
+            severity: critical
