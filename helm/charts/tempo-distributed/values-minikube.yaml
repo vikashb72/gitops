@@ -40,6 +40,11 @@ tempo-distributed:
     #  remote_write:
     #    - url: http://monitoring-kube-prometheus-prometheus.monitoring:9090/api/v1/write
     #      send_exemplars: true
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
   
   # Configuration for the distributor
   distributor:
