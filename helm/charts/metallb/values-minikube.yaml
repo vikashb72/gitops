@@ -1,0 +1,84 @@
+schema:
+  env: minikube
+  ippools:
+    - name: default
+      addresses: 192.168.58.2.224-192.168.58.254
+
+metallb:
+  loadBalancerClass: ""
+  
+  prometheus:
+    scrapeAnnotations: false
+    metricsPort: 7472
+    # if set, enables rbac proxy on the controller and speaker to expose
+    # the metrics via tls.
+    # secureMetricsPort: 9120
+  
+    serviceAccount: "sa-metallb-prometheus"
+
+    namespace: monitoring 
+
+    # Prometheus Operator PodMonitors
+    podMonitor:
+      # enable support for Prometheus Operator
+      enabled: true
+  
+      # optional additional labels for podMonitors
+      additionalLabels:
+        release: kube-prometheus-stack 
+  
+    # Prometheus Operator ServiceMonitors. To be used as an alternative
+    # to podMonitor, supports secure metrics.
+    serviceMonitor:
+      enabled: false
+  
+      speaker:
+        additionalLabels:
+          release: kube-prometheus-stack 
+  
+      controller:
+        additionalLabels:
+          release: kube-prometheus-stack 
+  
+    # Prometheus Operator alertmanager alerts
+    prometheusRule:
+      # enable alertmanager alerts
+      enabled: false
+  
+      # optional additional labels for prometheusRules
+      additionalLabels: {}
+  
+      # MetalLBConfigNotLoaded
+      configNotLoaded:
+        enabled: true
+        labels:
+          severity: warning
+  
+      # MetalLBAddressPoolExhausted
+      addressPoolExhausted:
+        enabled: true
+        labels:
+          severity: critical
+  
+      addressPoolUsage:
+        enabled: true
+        thresholds:
+          - percent: 75
+            labels:
+              severity: warning
+          - percent: 85
+            labels:
+              severity: warning
+          - percent: 95
+            labels:
+              severity: critical
+  
+  controller:
+    enabled: true
+
+  speaker:
+    enabled: true
+
+  crds:
+    enabled: true
+    validationFailurePolicy: Fail
