@@ -1,6 +1,7 @@
 schema:
   env: minikube
   namespace: monitoring
+  bootstrap: false
 
 kube-prometheus-stack:
   crds:

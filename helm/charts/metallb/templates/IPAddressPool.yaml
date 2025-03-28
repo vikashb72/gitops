@@ -1,3 +1,4 @@
+{{- if not .Values.schema.bootstrap }}
 {{- range .Values.schema.ippools }}
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
@@ -14,4 +15,5 @@ metadata:
   name: l2-{{ .name }}
   namespace: metallb-system
 ---
+{{- end }}
 {{- end }}
