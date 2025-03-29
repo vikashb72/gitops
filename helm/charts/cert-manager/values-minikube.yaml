@@ -1,5 +1,6 @@
 schema:
   env: minikube
+  bootstrap: false
 
 cert-manager:
   crds:
