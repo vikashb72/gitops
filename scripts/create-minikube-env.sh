@@ -62,9 +62,10 @@ installChart() {
     fi
 
     if [ ! -z $UPGRADE ]; then
+        UP_ARGS=$(echo $SET_ARGS \
+            | sed  's/schema.bootstrap=true/schema.bootstrap=false/')
         helm upgrade -n $NAMESPACE $CHART_NAME \
-        $CHART_DIR $SET_ARGS \
-        --set  schema.bootstrap=false \
+        $CHART_DIR $UP_ARGS \
         -f ${CHART_DIR}/values-${EVT}.yaml \
         --wait
     fi 
@@ -124,17 +125,20 @@ minikube start \
     --container-runtime=containerd \
     --insecure-registry "192.168.0.0/24" \
     --nodes=${NODES} \
+    --addons=metrics-server \
+    --addons=metallb \
     --wait=all
 
 export MINIKUBE_IP=$(minikube --profile $EVT ip)
 
 # ---------------------------------------------------------------------------- #
-# Enable Minikube Addons
+# Configure metallb
 # ---------------------------------------------------------------------------- #
-minikube --profile $EVT addons enable metrics-server 
-#minikube addons enable volumesnapshots
-#minikube addons enable dashboard 
-#minikube addons enable metallb
+cat <<EOT
+Start IP: ${MINIKUBE_IP}24
+End IP: ${MINIKUBE_IP}54
+EOT
+minikube addons configure metallb
 
 # ---------------------------------------------------------------------------- #
 # Clone Charts repo
@@ -171,20 +175,6 @@ installChart -d "${CHARTS_REPO_BASE}/kube-prometheus-stack" \
     -s kube-prometheus-stack.grafana.enabled=false \
     -s kube-prometheus-stack.prometheus.enabled=false \
     -s kube-prometheus-stack.kubernetesServiceMonitors.enabled=false 
-
-# ---------------------------------------------------------------------------- #
-# Setup metallb 
-# requires podmonitors.monitoring.coreos.com from kube-prometheus-stack
-# ---------------------------------------------------------------------------- #
-installChart -d "${CHARTS_REPO_BASE}/metallb" \
-    -c metallb \
-    -n metallb-system \
-    -s schema.bootstrap=true \
-    -l "app.kubernetes.io/instance=metallb" \
-    -u true
-
-kubectl create secret generic -n metallb-system metallb-memberlist \
-    --from-literal=secretkey="$(openssl rand -base64 128)"
 
 # ---------------------------------------------------------------------------- #
 # Login to External Vault
@@ -253,45 +243,34 @@ cd ${REPO_DIR}/scripts/hvault/intermediate-ca && \
     ./save-signed-intermediate.sh -e $EVT
 
 # ---------------------------------------------------------------------------- #
+# cert-manager
+# ---------------------------------------------------------------------------- #
+installChart -d "${CHARTS_REPO_BASE}/cert-manager" \
+    -c cert-manager \
+    -n cert-manager 
+    -s schema.bootstrap=true \
+    -l "app.kubernetes.io/instance=cert-manager" \
+    -u true
+
+# ---------------------------------------------------------------------------- #
 # argocd
 # ---------------------------------------------------------------------------- #
-## get argocd admin password
-#ARGOPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
-#    kv/minikube/argocd/admin-password \
-#    | jq -r '.data.data.bcrypt')
-#
-#helm repo add argocd https://argoproj.github.io/argo-helm
-#helm repo update
-#helm dep update /tmp/gitops/helm/charts/argocd
-#
-## bootstrap installation
-## the point of this is really to install the CRDs
-#helm install -n argocd argocd \
-#    /tmp/gitops/helm/charts/argocd \
-#    --set argo-cd.configs.secret.argocdServerAdminPassword=${ARGOPASS} \
-#    --set schema.bootstrap=true  \
-#    --set schema.serviceMonitor.enabled='&enable-serviceMonitor "false"'  \
-#    --create-namespace=true \
-#    -f /tmp/gitops/helm/charts/argocd/values-${EVT}.yaml \
-#    --wait
-#
-## wait for argocd-redis-secret-init pod to disappear, as it now takes 240 s
-## "timed out waiting for the condition on pods/argocd-redis-secret-init"
-## this should solve the issue ?
-#sleep 30 
-#
-## wait
-#kubectl -n argocd wait pods -l app.kubernetes.io/instance=argocd \
-#   --for condition=Ready --timeout=240s
-#
-## upgrade so that we install the Projects
-#helm upgrade -n argocd argocd \
-#    /tmp/gitops/helm/charts/argocd \
-#    --set argo-cd.configs.secret.argocdServerAdminPassword=${ARGOPASS} \
-#    --create-namespace=true \
-#    -f /tmp/gitops/helm/charts/argocd/values-${EVT}.yaml \
-#    --wait
-#
+# get argocd admin password
+ARGOPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/minikube/argocd/admin-password \
+    | jq -r '.data.data.bcrypt')
+
+installChart -d "${CHARTS_REPO_BASE}/argocd" \
+    -c argocd \
+    -n argocd \
+    -s schema.bootstrap=true \
+    -s argo-cd.configs.secret.argocdServerAdminPassword=${ARGOPASS} \
+    -l "app.kubernetes.io/instance=argocd" \
+    -u true
+
+
+#kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods | grep grafana | awk '{ print $1 }') -- grafana cli  admin reset-admin-password prom-operator
+
 #helm template /tmp/gitops/helm/charts/umbrella/minikube \
 #    -f /tmp/gitops/helm/charts/umbrella/minikube/values-infrastructure.yaml \
 #    | kubectl -n argocd apply -f -
