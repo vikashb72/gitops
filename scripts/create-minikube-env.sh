@@ -183,6 +183,9 @@ installChart -d "${CHARTS_REPO_BASE}/metallb" \
     -l "app.kubernetes.io/instance=metallb" \
     -u true
 
+kubectl create secret generic -n metallb-system metallb-memberlist \
+    --from-literal=secretkey="$(openssl rand -base64 128)"
+
 # ---------------------------------------------------------------------------- #
 # Login to External Vault
 # ---------------------------------------------------------------------------- #
