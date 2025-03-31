@@ -172,13 +172,12 @@ argo-cd:
       enabled: true
       duration: 2160h
       additionalHosts:
-        - localhost
         - argocd-server
         - argocd-server.argocd
         - argocd-server.argocd.svc
         - argocd-server.argocd.svc.cluster
         - argocd-server.argocd.svc.cluster.local
-        - 127.0.0.1
+        - localhost
       issuer:
         group: cert-manager.io
         kind: ClusterIssuer
