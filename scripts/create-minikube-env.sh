@@ -44,7 +44,7 @@ installChart() {
         esac
     done
 
-    helm dependency update $CHART_DIR
+    helm dependency update $CHART_DIR | grep -v "Successfully got an update" 
     helm install --create-namespace=true \
         -n $NAMESPACE $CHART_NAME \
         $CHART_DIR $SET_ARGS \
@@ -265,6 +265,9 @@ installChart -d "${CHARTS_REPO_BASE}/cert-manager" \
     -l "app.kubernetes.io/instance=cert-manager" \
     -u true
 
+# check clusterissuer status
+kubectl get clusterissuers.cert-manager.io 
+
 exit
 # ---------------------------------------------------------------------------- #
 # argocd
@@ -282,6 +285,7 @@ installChart -d "${CHARTS_REPO_BASE}/argocd" \
     -l "app.kubernetes.io/instance=argocd" \
     -u true
 
+exit
 
 #kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods | grep grafana | awk '{ print $1 }') -- grafana cli  admin reset-admin-password prom-operator
 
