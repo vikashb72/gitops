@@ -132,7 +132,8 @@ minikube start \
 export MINIKUBE_IP=$(minikube --profile $EVT ip)
 
 # ---------------------------------------------------------------------------- #
-# Configure metallb
+# Metallb
+# PROVIDES: loadbalancer
 # ---------------------------------------------------------------------------- #
 cat <<EOT
 Start IP: ${MINIKUBE_IP}24
@@ -147,7 +148,8 @@ rm -rf $REPO_DIR
 git clone git@github.com:vikashb72/gitops.git $REPO_DIR
 
 # ---------------------------------------------------------------------------- #
-# nfs-subdir-external-provisioner for Storage
+# nfs-subdir-external-provisioner
+# PROVIDES: storage
 # ---------------------------------------------------------------------------- #
 
 installChart -d "${CHARTS_REPO_BASE}/nfs-subdir-external-provisioner" \
@@ -161,8 +163,9 @@ kubectl patch storageclass standard \
     {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
 
 # ---------------------------------------------------------------------------- #
-# Install Promethues
-# requires nfs storage
+# Promethues
+# REQUIRES: nfs storage
+# PROVIDES: PodMonitor, ServiceMonitor
 # ---------------------------------------------------------------------------- #
 installChart -d "${CHARTS_REPO_BASE}/kube-prometheus-stack" \
     -c kube-prometheus-stack \
@@ -178,6 +181,7 @@ installChart -d "${CHARTS_REPO_BASE}/kube-prometheus-stack" \
 
 # ---------------------------------------------------------------------------- #
 # Login to External Vault
+# PROVIDES: Secrets for Azure Service Principle
 # ---------------------------------------------------------------------------- #
 # log in to external vault and renew token
 vault login -address $EXTERNAL_VAULT_ADDR $ESO_TOKEN  
@@ -185,6 +189,7 @@ vault token renew -address $EXTERNAL_VAULT_ADDR $ESO_TOKEN
 
 # ---------------------------------------------------------------------------- #
 # Get Azure Credentials
+# PROVIDES: vault unseal token
 # ---------------------------------------------------------------------------- #
 # get azure cred
 vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
@@ -202,6 +207,8 @@ rm /tmp/az.creds.json
 
 # ---------------------------------------------------------------------------- #
 # External Secrets
+# Requires: ServiceMonitor
+# PROVIDES: Secret Stores (azure key vault, external hashicorp-vault)
 # ---------------------------------------------------------------------------- #
 kubectl create ns external-secrets
 kubectl -n external-secrets delete secret azure-eso-config
@@ -220,7 +227,9 @@ installChart -d "${CHARTS_REPO_BASE}/external-secrets" \
     -u true
 
 # ---------------------------------------------------------------------------- #
-# hashicorp-vault
+# Hashicorp Vault
+# REQUIRES: ServiceMonitor
+# PROVIDES: pki, secrets
 # ---------------------------------------------------------------------------- #
 installChart -d "${CHARTS_REPO_BASE}/hashicorp-vault" \
     -c vault \
@@ -240,18 +249,23 @@ cd ${REPO_DIR}/scripts/hvault/intermediate-ca && \
     scp work/${EVT}_intermediate_CA.csr 192.168.0.4:/tmp/ && \
     ssh 192.168.0.4 /usr/local/etc/step-ca/bin/sign-ica.sh -c /tmp/${EVT}_intermediate_CA.csr && \
     scp 192.168.0.4:/tmp/${EVT}_intermediate_CA.csr.signed.crt work/signed.${EVT}_intermediate_CA.csr.crt && \
-    ./save-signed-intermediate.sh -e $EVT
+    ./save-signed-intermediate.sh -e $EVT && \
+    cd ${REPO_DIR}/scripts/cert-manager && \
+    ./configure.sh -e $EVT
 
 # ---------------------------------------------------------------------------- #
 # cert-manager
+# REQUIRES: ServiceMonitor
+# PROVIDES: tls cert management
 # ---------------------------------------------------------------------------- #
 installChart -d "${CHARTS_REPO_BASE}/cert-manager" \
     -c cert-manager \
-    -n cert-manager 
+    -n cert-manager \
     -s schema.bootstrap=true \
     -l "app.kubernetes.io/instance=cert-manager" \
     -u true
 
+exit
 # ---------------------------------------------------------------------------- #
 # argocd
 # ---------------------------------------------------------------------------- #
