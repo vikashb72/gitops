@@ -10,8 +10,6 @@ schema:
     minikube-monitoring: Monitoring
     minikube-networking: Networking
 
-  loadBalancerIP: &server-loadBalancerIP "192.168.49.250"
-
   serviceMonitor:
     templates: false
 
@@ -150,16 +148,6 @@ argo-cd:
     enabled: false
 
   server:
-    #extraArgs:
-    #  - --staticassets
-    #  - /shared/app
-    #  - --redis
-    #  - argocd-redis:6379
-    #  - --insecure
-    #  - --basehref
-    #  - /argocd
-    #  - --rootpath
-    #  - /argocd
     env:
       - name: ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT
         value: "0"
@@ -178,8 +166,26 @@ argo-cd:
 
     service:
       type: LoadBalancer
-      loadBalancerIP: *server-loadBalancerIP
+      loadBalancerIP: 192.168.49.250
 
+    certificate:
+      enabled: true
+      duration: 2160h
+      additionalHosts:
+        - localhost
+        - argocd-server
+        - argocd-server.argocd
+        - argocd-server.argocd.svc
+        - argocd-server.argocd.svc.cluster
+        - argocd-server.argocd.svc.cluster.local
+        - 127.0.0.1
+      issuer:
+        group: cert-manager.io
+        kind: ClusterIssuer
+        name: vault-cert-issuer
+      usages:
+        - digital signature
+        - key encipherment
     metrics:
       enabled: true
 
