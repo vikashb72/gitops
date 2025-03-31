@@ -4,6 +4,8 @@ schema:
 operator:
   operator:
     env:
+      - name: OPERATOR_STS_AUTO_TLS_ENABLED
+        value: "off"
       - name: OPERATOR_STS_ENABLED
         value: "on"
       - name: WATCHED_NAMESPACE
