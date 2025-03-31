@@ -1,0 +1,216 @@
+authentik:
+  fullnameOverride: "authentik.minikube.home.where-ever.net"
+  
+  ## Globally shared configuration for authentik components.
+  global:
+    # -- Environment variables to pass to all deployed Deployments. Does not apply to GeoIP
+    # See configuration options at https://goauthentik.io/docs/installation/configuration/
+    # @default -- `[]` (See [values.yaml])
+    env: []
+      # - name: AUTHENTIK_VAR_NAME
+      #   value: VALUE
+      # - name: AUTHENTIK_VAR_OTHER
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: secret-name
+      #       key: secret-key
+      # - name: AUTHENTIK_VAR_ANOTHER
+      #   valueFrom:
+      #     configMapKeyRef:
+      #       name: config-map-name
+      #       key: config-map-key
+  
+    # -- envFrom to pass to all deployed Deployments. Does not apply to GeoIP
+    # @default -- `[]` (See [values.yaml])
+    envFrom: []
+      # - configMapRef:
+      #     name: config-map-name
+      # - secretRef:
+      #     name: secret-name
+  
+  ## Authentik configuration
+  authentik:
+    # -- Secret key used for cookie singing and unique user IDs,
+    # don't change this after the first install
+    secret_key: ""
+    email:
+      # -- SMTP Server emails are sent from, fully optional
+      host: ""
+      # -- SMTP server port
+      port: 587
+      # -- SMTP credentials, when left empty, no authentication will be done
+      username: ""
+      # -- SMTP credentials, when left empty, no authentication will be done
+      password: ""
+      # -- Enable either use_tls or use_ssl, they can't be enabled at the same time.
+      use_tls: false
+      # -- Enable either use_tls or use_ssl, they can't be enabled at the same time.
+      use_ssl: false
+      # -- Connection timeout
+      timeout: 30
+      # -- Email from address, can either be in the format "foo@bar.baz" or "authentik <foo@bar.baz>"
+      from: ""
+    outposts:
+    error_reporting:
+      enabled: false
+    postgresql:
+      # @default -- `{{ .Release.Name }}-postgresql`
+      host: "{{ .Release.Name }}-postgresql"
+      name: "authentik"
+      user: "authentik"
+      password: ""
+      port: 5432
+    redis:
+      host: "{{ .Release.Name }}-redis-master"
+      password: ""
+  
+  
+  blueprints:
+    # -- List of config maps to mount blueprints from.
+    # Only keys in the configMap ending with `.yaml` will be discovered and applied.
+    configMaps: []
+    # -- List of secrets to mount blueprints from.
+    # Only keys in the secret ending with `.yaml` will be discovered and applied.
+    secrets: []
+  
+  
+  ## authentik server
+  server:
+    # -- Environment variables to pass to the authentik server. Does not apply to GeoIP
+    # See configuration options at https://goauthentik.io/docs/installation/configuration/
+    # @default -- `[]` (See [values.yaml])
+    env: []
+      # - name: AUTHENTIK_VAR_NAME
+      #   value: VALUE
+      # - name: AUTHENTIK_VAR_OTHER
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: secret-name
+      #       key: secret-key
+      # - name: AUTHENTIK_VAR_ANOTHER
+      #   valueFrom:
+      #     configMapKeyRef:
+      #       name: config-map-name
+      #       key: config-map-key
+  
+    # -- envFrom to pass to the authentik server. Does not apply to GeoIP
+    # @default -- `[]` (See [values.yaml])
+    envFrom: []
+      # - configMapRef:
+      #     name: config-map-name
+      # - secretRef:
+      #     name: secret-name
+  
+    ## authentik server service configuration
+    service:
+      type: ClusterIP
+      servicePortHttp: 80
+      servicePortHttps: 443
+      loadBalancerIP: ""
+  
+    ## authentik server metrics service configuration
+    metrics:
+      # -- deploy metrics service
+      enabled: false
+      serviceMonitor:
+        enabled: false
+        selector: {}
+          # prometheus: kube-prometheus
+  
+        # -- Prometheus ServiceMonitor scheme
+        scheme: ""
+        # -- Prometheus ServiceMonitor tlsConfig
+        tlsConfig: {}
+        # -- Prometheus ServiceMonitor namespace
+        namespace: ""
+        # -- Prometheus ServiceMonitor labels
+        labels: {}
+        # -- Prometheus ServiceMonitor annotations
+        annotations: {}
+  
+    ingress:
+      enabled: false
+      https: false
+  
+  
+  ## authentik worker
+  worker:
+    # -- authentik worker name
+    name: worker
+  
+    env: []
+      # - name: AUTHENTIK_VAR_NAME
+      #   value: VALUE
+      # - name: AUTHENTIK_VAR_OTHER
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: secret-name
+      #       key: secret-key
+      # - name: AUTHENTIK_VAR_ANOTHER
+      #   valueFrom:
+      #     configMapKeyRef:
+      #       name: config-map-name
+      #       key: config-map-key
+  
+    # -- envFrom to pass to the authentik worker. Does not apply to GeoIP
+    # @default -- `[]` (See [values.yaml])
+    envFrom: []
+      # - configMapRef:
+      #     name: config-map-name
+      # - secretRef:
+      #     name: secret-name
+  
+    # -- Additional volumeMounts to the authentik worker main container
+    volumeMounts: []
+      # - name: custom
+      #   mountPath: /custom
+  
+    # -- Additional volumes to the authentik worker pod
+    volumes: []
+      # - name: custom
+      #   emptyDir: {}
+  
+  geoip:
+    enabled: false
+  
+    editionIds: "GeoLite2-City GeoLite2-ASN"
+  
+  prometheus:
+    rules:
+      enabled: false
+      # -- PrometheusRule namespace
+      namespace: "monitoring"
+      # -- PrometheusRule selector
+      selector:
+        release: kube-prometheus-stack
+  
+      # -- PrometheusRule labels
+      labels:
+        release: kube-prometheus-stack
+
+  
+  postgresql:
+    # -- enable the Bitnami PostgreSQL chart. Refer to https://github.com/bitnami/charts/blob/main/bitnami/postgresql/ for possible values.
+    enabled: false
+    auth:
+      username: authentik
+      database: authentik
+      # password: ""
+    primary:
+      extendedConfiguration: |
+        max_connections = 500
+      resourcesPreset: "none"
+      # persistence:
+      #   enabled: true
+      #   storageClass:
+      #   accessModes:
+      #     - ReadWriteOnce
+    metrics:
+      resourcesPreset: "none"
+  
+  
+  redis:
+    # -- enable the Bitnami Redis chart. Refer to https://github.com/bitnami/charts/blob/main/bitnami/redis/ for possible values.
+    enabled: false
+    auth:
+      enabled: false
