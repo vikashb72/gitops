@@ -51,9 +51,10 @@ rm policy.hc1
 kubectl -n vault-system exec -it vault-0 -- \
     vault write auth/kubernetes/role/vault-cert-issuer \
     bound_service_account_names=vault-cert-issuer \
-    bound_service_account_namespaces=cert-manager \
+    bound_service_account_namespaces=cert-manager,minio-operator,minio-tenant \
     policies=pki \
-    ttl=20m
+    key_type=any \
+    ttl=30m
 
 kubectl -n vault-system exec -it vault-0 -- \
     vault write auth/kubernetes/config \
