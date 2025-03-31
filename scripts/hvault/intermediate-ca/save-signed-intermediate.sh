@@ -44,6 +44,7 @@ kubectl -n vault-system exec -it vault-0 -- \
         allow_subdomains=true \
         max_ttl=21600h \
         key_usage="DigitalSignature,KeyEncipherment" \
+        key_type=any \
         ext_key_usage="" \
         client_flag=false \
         ext_key_usage_oids=1.3.6.1.5.5.7.3.1 \
