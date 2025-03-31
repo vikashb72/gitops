@@ -1,0 +1,24 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: minikube-minio-tenant-certmanager-cert
+  namespace: minio-tenant
+spec:
+  commonName: minio
+  dnsNames:
+    - minio.minio-tenant
+    - minio.minio-tenant.svc
+    - minio.minio-tenant.cluster
+    - minio.minio-tenant.cluster.local
+    - '*.minikube-hl.minio.minio-tenant'
+    - '*.minikube-hl.minio.minio-tenant.svc'
+    - '*.minikube-hl.minio.minio-tenant.svc.cluster'
+    - '*.minikube-hl.minio.minio-tenant.svc.cluster.local'
+    - '*.minio-tenant'
+    - '*.minio-tenant.svc'
+    - '*.minio-tenant.svc.cluster'
+    - '*.minio-tenant.svc.cluster.local'
+  secretName: minikube-minio-tenant-tls
+  issuerRef:
+    name: minio-tenant-ca-issuer
+    kind: Issuer
