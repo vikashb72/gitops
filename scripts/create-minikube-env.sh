@@ -268,7 +268,6 @@ installChart -d "${CHARTS_REPO_BASE}/cert-manager" \
 # check clusterissuer status
 kubectl get clusterissuers.cert-manager.io 
 
-exit
 # ---------------------------------------------------------------------------- #
 # argocd
 # ---------------------------------------------------------------------------- #
@@ -285,6 +284,34 @@ installChart -d "${CHARTS_REPO_BASE}/argocd" \
     -l "app.kubernetes.io/instance=argocd" \
     -u true
 
+# ---------------------------------------------------------------------------- #
+# minio-operator
+# REQUIRES: cert-manager
+# PROVIDES: operator for minio-tenant
+# ---------------------------------------------------------------------------- #
+installChart -d "${CHARTS_REPO_BASE}/minio-operator" \
+    -c operator \
+    -n minio-operator \
+    -l "app.kubernetes.io/instance=operator"
+
+# ---------------------------------------------------------------------------- #
+# minio-tenant
+# REQUIRES: minio-operator
+# PROVIDES: storage for loki, tempo
+# ---------------------------------------------------------------------------- #
+installChart -d "${CHARTS_REPO_BASE}/minio-tenant" \
+    -c tenant \
+    -n minio-tenant \
+    -l "v1.min.io/tenant=minikube"
+
+kubectl -n minio-tenant get secrets minikube-minio-tenant-tls \
+    -o=jsonpath='{.data.ca\.crt}' \
+    | base64 -d > /tmp/minio-tenant.ca.crt
+
+kubectl create secret generic operator-ca-tls-tenant-minikube \
+     --from-file=/tmp/minio-tenant.ca.crt -n minio-operator
+
+rm /tmp/minio-tenant.ca.crt
 exit
 
 #kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods | grep grafana | awk '{ print $1 }') -- grafana cli  admin reset-admin-password prom-operator
