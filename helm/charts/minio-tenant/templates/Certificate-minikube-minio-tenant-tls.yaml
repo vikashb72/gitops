@@ -4,20 +4,20 @@ metadata:
   name: minikube-minio-tenant-certmanager-cert
   namespace: minio-tenant
 spec:
-  commonName: minio
+  commonName: "*.minikube-hl.minio-tenant.svc.cluster.local"
   dnsNames:
     - minio.minio-tenant
     - minio.minio-tenant.svc
-    - minio.minio-tenant.cluster
-    - minio.minio-tenant.cluster.local
-    - '*.minikube-hl.minio-tenant'
-    - '*.minikube-hl.minio-tenant.svc'
-    - '*.minikube-hl.minio-tenant.svc.cluster'
-    - '*.minikube-hl.minio-tenant.svc.cluster.local'
-    - '*.minio-tenant'
-    - '*.minio-tenant.svc'
-    - '*.minio-tenant.svc.cluster'
-    - '*.minio-tenant.svc.cluster.local'
+    - minio.minio-tenant.svc.cluster
+    - minio.minio-tenant.svc.cluster.local
+    - "*.minikube-hl.minio-tenant"
+    - "*.minikube-hl.minio-tenant.svc"
+    - "*.minikube-hl.minio-tenant.svc.cluster"
+    - "*.minikube-hl.minio-tenant.svc.cluster.local"
+    - "*.minio-tenant"
+    - "*.minio-tenant.svc"
+    - "*.minio-tenant.svc.cluster"
+    - "*.minio-tenant.svc.cluster.local"
   secretName: minikube-minio-tenant-tls
   issuerRef:
     name: minio-tenant-ca-issuer
