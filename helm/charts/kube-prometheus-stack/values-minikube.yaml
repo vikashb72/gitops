@@ -734,7 +734,7 @@ kube-prometheus-stack:
           sidecar.istio.io/inject: "false"
 
       certManager:
-        enabled: true
+        enabled: false
         admissionCert:
           issuerRef:
             name: vault-cert-issuer
