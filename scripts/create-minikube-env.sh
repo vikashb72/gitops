@@ -181,6 +181,8 @@ installChart -d "${CHARTS_REPO_BASE}/kube-prometheus-stack" \
     -s kube-prometheus-stack.prometheus.enabled=false \
     -s kube-prometheus-stack.kubernetesServiceMonitors.enabled=false 
 
+helm uninstall -n monitoring kube-prometheus-stack
+kubectl delete ns monitoring
 # ---------------------------------------------------------------------------- #
 # Login to External Vault
 # PROVIDES: Secrets for Azure Service Principle
@@ -213,7 +215,6 @@ rm /tmp/az.creds.json
 # PROVIDES: Secret Stores (azure key vault, external hashicorp-vault)
 # ---------------------------------------------------------------------------- #
 kubectl create ns external-secrets
-kubectl -n external-secrets delete secret azure-eso-config
 kubectl -n external-secrets create secret generic \
     azure-eso-config \
     --from-literal=clientId="${AZURE_CLIENT_ID}" \
@@ -271,6 +272,24 @@ installChart -d "${CHARTS_REPO_BASE}/cert-manager" \
 
 # check clusterissuer status
 kubectl get clusterissuers.cert-manager.io 
+
+# ---------------------------------------------------------------------------- #
+# kube-prometheus-stack
+# ---------------------------------------------------------------------------- #
+GRAFANAPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/minikube/grafana/admin \
+    | jq -r '.data.data.GF_SECURITY_ADMIN_PASSWORD')
+
+installChart -d "${CHARTS_REPO_BASE}/kube-prometheus-stack" \
+    -c kube-prometheus-stack \
+    -n monitoring \
+    -l "app.kubernetes.io/instance=kube-prometheus-stack" \
+    -s kube-prometheus-stack.crds.enabled=true
+    -s kube-prometheus-stack.grafana.adminPassword="$GRAFANAPASS"
+
+kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods \
+    | grep grafana | awk '{ print $1 }') -- \
+    grafana cli  admin reset-admin-password $GRAFANAPASS
 
 # ---------------------------------------------------------------------------- #
 # argocd
@@ -334,15 +353,24 @@ installChart -d "${CHARTS_REPO_BASE}/redis" \
     -n redis \
     -l "app.kubernetes.io/instance=redis"
 
-#kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods | grep grafana | awk '{ print $1 }') -- grafana cli  admin reset-admin-password prom-operator
+# ---------------------------------------------------------------------------- #
+# keycloak
+# ---------------------------------------------------------------------------- #
+installChart -d "${CHARTS_REPO_BASE}/keycloak" \
+    -c keycloak \
+    -n keycloak \
+    -l "app.kubernetes.io/instance=keycloak"
 
-#helm template /tmp/gitops/helm/charts/umbrella/minikube \
-#    -f /tmp/gitops/helm/charts/umbrella/minikube/values-infrastructure.yaml \
-#    | kubectl -n argocd apply -f -
-#
-#for app in in-cluster-storage monitoring apps networking
-#do
-#helm template /tmp/gitops/helm/charts/umbrella/minikube \
-#    -f /tmp/gitops/helm/charts/umbrella/minikube/values-${app}.yaml \
-#    | kubectl -n argocd apply -f -
-#done
+sleep 10
+
+helm template /tmp/gitops/helm/charts/umbrella/minikube \
+    -f /tmp/gitops/helm/charts/umbrella/minikube/values-infrastructure.yaml \
+    | kubectl -n argocd apply -f -
+
+for app in in-cluster-storage monitoring apps networking
+do
+helm template /tmp/gitops/helm/charts/umbrella/minikube \
+    -f /tmp/gitops/helm/charts/umbrella/minikube/values-${app}.yaml \
+    | kubectl -n argocd apply -f -
+    sleep 10
+done
