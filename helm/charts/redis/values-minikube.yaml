@@ -1,9 +1,10 @@
+schema:
+  env: minikube
+
 redis:
   global:
     defaultStorageClass: nfs-client
     storageClass: nfs-client
-    redis:
-      password: ""
 
   image:
     debug: false
@@ -11,11 +12,22 @@ redis:
   architecture: replication
 
   auth:
-    enabled: false
+    enabled: true
     sentinel: true
-    existingSecret: ""
-    existingSecretPasswordKey: ""
-
+    existingSecret: "redis-password"
+    existingSecretPasswordKey: "password"
+    acl:
+      enabled: false
+      sentinel: false
+      users: [ ]
+      # users:
+      #   - username: "my-user"
+      #     password: "mypassword"
+      #     enabled: "on"
+      #     commands: "+@all"
+      #     keys: "~*"
+      #     channels: "&*"
+      
   commonConfiguration: |
     maxmemory-policy allkeys-lru
     maxmemory 32mb
@@ -50,10 +62,18 @@ redis:
       type: ClusterIP
       loadBalancerIP: ""
 
+  tls:
+    enabled: false
+    authClients: false
+    existingSecret: redis-tls
+    certFilename: tls.crt
+    certKeyFilename: tls.key
+    certCAFilename: ca.crt
+
   metrics:
     enabled: true
     serviceMonitor:
-      enabled: true
+      enabled: false
       namespace: monitoring
       additionalLabels:
         release: kube-prometheus-stack
