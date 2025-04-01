@@ -63,7 +63,7 @@ redis:
       loadBalancerIP: ""
 
   tls:
-    enabled: false
+    enabled: true
     authClients: false
     existingSecret: redis-tls
     certFilename: tls.crt
@@ -73,7 +73,7 @@ redis:
   metrics:
     enabled: true
     serviceMonitor:
-      enabled: false
+      enabled: true
       namespace: monitoring
       additionalLabels:
         release: kube-prometheus-stack
