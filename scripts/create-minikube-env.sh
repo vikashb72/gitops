@@ -52,6 +52,7 @@ installChart() {
         --wait
 
     if [ ! -z $LABEL ]; then
+        sleep 5
         echo "Waiting for pods in $NAMESPACE to startup"
         kubectl wait -n $NAMESPACE pods \
             -l $LABEL \
@@ -62,6 +63,7 @@ installChart() {
     fi
 
     if [ ! -z $UPGRADE ]; then
+        sleep 5
         UP_ARGS=$(echo $SET_ARGS \
             | sed  's/schema.bootstrap=true/schema.bootstrap=false/')
         helm upgrade -n $NAMESPACE $CHART_NAME \
@@ -251,7 +253,7 @@ cd ${REPO_DIR}/scripts/hvault/intermediate-ca && \
     scp 192.168.0.4:/tmp/${EVT}_intermediate_CA.csr.signed.crt work/signed.${EVT}_intermediate_CA.csr.crt && \
     ./save-signed-intermediate.sh -e $EVT && \
     cd ${REPO_DIR}/scripts/cert-manager && \
-    ./configure.sh -e $EVT
+    ./role-vault-cert-issuer.sh -e $EVT
 
 # ---------------------------------------------------------------------------- #
 # cert-manager
@@ -304,14 +306,19 @@ installChart -d "${CHARTS_REPO_BASE}/minio-tenant" \
     -n minio-tenant \
     -l "v1.min.io/tenant=minikube"
 
+# wait for secret to be created
+sleep 10
+
+# filename must be named ca.crt
+mkdir /tmp/minio-tenant
 kubectl -n minio-tenant get secrets minikube-minio-tenant-tls \
     -o=jsonpath='{.data.ca\.crt}' \
-    | base64 -d > /tmp/minio-tenant.ca.crt
+    | base64 -d > /tmp/minio-tenant/ca.crt
 
-kubectl create secret generic operator-ca-tls-tenant-minikube \
-     --from-file=/tmp/minio-tenant.ca.crt -n minio-operator
+kubectl create secret generic operator-ca-tls-minio-tenant \
+     --from-file=/tmp/minio-tenant/ca.crt -n minio-operator
 
-rm /tmp/minio-tenant.ca.crt
+rm -r /tmp/minio-tenant
 exit
 
 #kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods | grep grafana | awk '{ print $1 }') -- grafana cli  admin reset-admin-password prom-operator
