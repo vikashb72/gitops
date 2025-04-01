@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: redis-ertmanager-cert
+  namespace: redis
+spec:
+  commonName: "*.redis.svc.cluster.local"
+  dnsNames:
+    - "*.redis"
+    - "*.redis.svc"
+    - "*.redis.svc.cluster"
+    - "*.redis.svc.cluster.local"
+  secretName: redis-tls
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
