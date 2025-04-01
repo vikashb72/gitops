@@ -249,8 +249,10 @@ cd ${REPO_DIR}/scripts/hvault && ./init.sh -e $EVT
 cd ${REPO_DIR}/scripts/hvault/intermediate-ca && \
     ./create-intermediate.sh -e $EVT && \
     scp work/${EVT}_intermediate_CA.csr 192.168.0.4:/tmp/ && \
-    ssh 192.168.0.4 /usr/local/etc/step-ca/bin/sign-ica.sh -c /tmp/${EVT}_intermediate_CA.csr && \
-    scp 192.168.0.4:/tmp/${EVT}_intermediate_CA.csr.signed.crt work/signed.${EVT}_intermediate_CA.csr.crt && \
+    ssh 192.168.0.4 /usr/local/etc/step-ca/bin/sign-ica.sh \
+        -c /tmp/${EVT}_intermediate_CA.csr && \
+    scp 192.168.0.4:/tmp/${EVT}_intermediate_CA.csr.signed.crt \
+        work/signed.${EVT}_intermediate_CA.csr.crt && \
     ./save-signed-intermediate.sh -e $EVT && \
     cd ${REPO_DIR}/scripts/cert-manager && \
     ./role-vault-cert-issuer.sh -e $EVT
@@ -319,7 +321,18 @@ kubectl create secret generic operator-ca-tls-minio-tenant \
      --from-file=/tmp/minio-tenant/ca.crt -n minio-operator
 
 rm -r /tmp/minio-tenant
-exit
+
+# ---------------------------------------------------------------------------- #
+# redis
+# ---------------------------------------------------------------------------- #
+REDISPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/minikube/redis/password \
+    | jq -r '.data.data.password')
+
+installChart -d "${CHARTS_REPO_BASE}/redis" \
+    -c redis \
+    -n redis \
+    -l "app.kubernetes.io/instance=redis"
 
 #kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods | grep grafana | awk '{ print $1 }') -- grafana cli  admin reset-admin-password prom-operator
 
