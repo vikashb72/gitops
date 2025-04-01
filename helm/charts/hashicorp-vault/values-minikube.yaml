@@ -124,7 +124,7 @@ vault:
 
     prometheusRules:
       # The Prometheus operator *must* be installed before enabling this
-      enabled: true
+      enabled: false
       selectors:
         release: kube-prometheus-stack
       rules:
