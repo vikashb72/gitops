@@ -706,7 +706,7 @@ kube-prometheus-stack:
     enabled: true
 
     tls:
-      enabled: true
+      enabled: false
 
     admissionWebhooks:
       enabled: true
