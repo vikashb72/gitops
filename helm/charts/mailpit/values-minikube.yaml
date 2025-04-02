@@ -35,7 +35,7 @@ mailpit:
         htpasswd: ""
         existingSecret: {}
       tls:
-        enabled: true
+        enabled: false
         secretName: "dev-tools-tls"
     relay:
       enabled: false
