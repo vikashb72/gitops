@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: reference-certmanager-cert
+  namespace: cert-manager
+spec:
+  commonName: "reference.cert-manager.svc.cluster.local"
+  dnsNames:
+    - "reference.cert-manager"
+    - "reference.cert-manager.svc"
+    - "reference.cert-manager.svc.cluster"
+    - "reference.cert-manager.svc.cluster.local"
+  secretName: reference-tls
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
