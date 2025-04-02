@@ -706,7 +706,7 @@ kube-prometheus-stack:
     enabled: true
 
     tls:
-      enabled: false
+      enabled: true
 
     admissionWebhooks:
       enabled: true
@@ -734,7 +734,7 @@ kube-prometheus-stack:
           sidecar.istio.io/inject: "false"
 
       certManager:
-        enabled: false
+        enabled: true
         admissionCert:
           issuerRef:
             name: vault-cert-issuer
