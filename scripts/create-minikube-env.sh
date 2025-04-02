@@ -78,7 +78,7 @@ installChart() {
 # ---------------------------------------------------------------------------- #
 # Defaults
 # ---------------------------------------------------------------------------- #
-NFS_SERVER="192.168.0.3"
+NFS_SERVER="192.168.0.20"
 NFS_PATH="/data/nfs"
 VAULT_URL="https://192.168.0.4:8443"
 CPU=2
@@ -165,25 +165,6 @@ kubectl patch storageclass standard \
     {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
 
 # ---------------------------------------------------------------------------- #
-# Promethues
-# REQUIRES: nfs storage
-# PROVIDES: PodMonitor, ServiceMonitor
-# ---------------------------------------------------------------------------- #
-installChart -d "${CHARTS_REPO_BASE}/kube-prometheus-stack" \
-    -c kube-prometheus-stack \
-    -n monitoring \
-    -l "app.kubernetes.io/instance=kube-prometheus-stack" \
-    -s schema.bootstrap=true \
-    -s kube-prometheus-stack.crds.enabled=true \
-    -s kube-prometheus-stack.defaultRules.create=false \
-    -s kube-prometheus-stack.alertmanager.enabled=false \
-    -s kube-prometheus-stack.grafana.enabled=false \
-    -s kube-prometheus-stack.prometheus.enabled=false \
-    -s kube-prometheus-stack.kubernetesServiceMonitors.enabled=false 
-
-helm uninstall -n monitoring kube-prometheus-stack
-kubectl delete ns monitoring
-# ---------------------------------------------------------------------------- #
 # Login to External Vault
 # PROVIDES: Secrets for Azure Service Principle
 # ---------------------------------------------------------------------------- #
@@ -207,14 +188,15 @@ VAULT_AZUREKEYVAULT_KEY_NAME=$(jq -r \
     '.data.data.VAULT_AZUREKEYVAULT_KEY_NAME' /tmp/az.creds.json)
 VAULT_AZUREKEYVAULT_VAULT_NAME=$(jq -r \
     '.data.data.VAULT_AZUREKEYVAULT_VAULT_NAME' /tmp/az.creds.json)
+
 rm /tmp/az.creds.json
 
 # ---------------------------------------------------------------------------- #
 # External Secrets
-# Requires: ServiceMonitor
 # PROVIDES: Secret Stores (azure key vault, external hashicorp-vault)
 # ---------------------------------------------------------------------------- #
 kubectl create ns external-secrets
+
 kubectl -n external-secrets create secret generic \
     azure-eso-config \
     --from-literal=clientId="${AZURE_CLIENT_ID}" \
@@ -226,18 +208,23 @@ installChart -d "${CHARTS_REPO_BASE}/external-secrets" \
     -c external-secrets \
     -n external-secrets \
     -s schema.bootstrap=true \
+    -s external-secrets.serviceMonitor.enabled=false \
+    -s external-secrets.webhook.certManager.enabled=false \
     -l "app.kubernetes.io/instance=external-secrets" \
     -u true
 
 # ---------------------------------------------------------------------------- #
 # Hashicorp Vault
-# REQUIRES: ServiceMonitor
 # PROVIDES: pki, secrets
 # ---------------------------------------------------------------------------- #
 installChart -d "${CHARTS_REPO_BASE}/hashicorp-vault" \
     -c vault \
     -n vault-system \
     -l "app.kubernetes.io/instance=vault" \
+    -s vault.global.serverTelemetry.prometheusOperator=false \
+    -s vault.injector.metrics.enabled=false \
+    -s vault.serverTelemetry.serviceMonitor.enabled=false \
+    -s vault.serverTelemetry.prometheusRules.enabled=false \
     -S PodReadyToStartContainers
 
 kubectl -n vault-system wait --for=condition=Initialized pod/vault-0 \
@@ -267,29 +254,12 @@ installChart -d "${CHARTS_REPO_BASE}/cert-manager" \
     -c cert-manager \
     -n cert-manager \
     -s schema.bootstrap=true \
+    -s cert-manager.prometheus.servicemonitor.enabled=false \
     -l "app.kubernetes.io/instance=cert-manager" \
     -u true
 
 # check clusterissuer status
 kubectl get clusterissuers.cert-manager.io 
-
-# ---------------------------------------------------------------------------- #
-# kube-prometheus-stack
-# ---------------------------------------------------------------------------- #
-GRAFANAPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
-    kv/minikube/grafana/admin \
-    | jq -r '.data.data.GF_SECURITY_ADMIN_PASSWORD')
-
-installChart -d "${CHARTS_REPO_BASE}/kube-prometheus-stack" \
-    -c kube-prometheus-stack \
-    -n monitoring \
-    -l "app.kubernetes.io/instance=kube-prometheus-stack" \
-    -s kube-prometheus-stack.crds.enabled=true
-    -s kube-prometheus-stack.grafana.adminPassword="$GRAFANAPASS"
-
-kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods \
-    | grep grafana | awk '{ print $1 }') -- \
-    grafana cli  admin reset-admin-password $GRAFANAPASS
 
 # ---------------------------------------------------------------------------- #
 # argocd
@@ -307,70 +277,118 @@ installChart -d "${CHARTS_REPO_BASE}/argocd" \
     -l "app.kubernetes.io/instance=argocd" \
     -u true
 
-# ---------------------------------------------------------------------------- #
-# minio-operator
-# REQUIRES: cert-manager
-# PROVIDES: operator for minio-tenant
-# ---------------------------------------------------------------------------- #
-installChart -d "${CHARTS_REPO_BASE}/minio-operator" \
-    -c operator \
-    -n minio-operator \
-    -l "app.kubernetes.io/instance=operator"
-
-# ---------------------------------------------------------------------------- #
-# minio-tenant
-# REQUIRES: minio-operator
-# PROVIDES: storage for loki, tempo
-# ---------------------------------------------------------------------------- #
-installChart -d "${CHARTS_REPO_BASE}/minio-tenant" \
-    -c tenant \
-    -n minio-tenant \
-    -l "v1.min.io/tenant=minikube"
-
-# wait for secret to be created
-sleep 10
-
-# filename must be named ca.crt
-mkdir /tmp/minio-tenant
-kubectl -n minio-tenant get secrets minikube-minio-tenant-tls \
-    -o=jsonpath='{.data.ca\.crt}' \
-    | base64 -d > /tmp/minio-tenant/ca.crt
-
-kubectl create secret generic operator-ca-tls-minio-tenant \
-     --from-file=/tmp/minio-tenant/ca.crt -n minio-operator
-
-rm -r /tmp/minio-tenant
-
-# ---------------------------------------------------------------------------- #
-# redis
-# ---------------------------------------------------------------------------- #
-REDISPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
-    kv/minikube/redis/password \
-    | jq -r '.data.data.password')
-
-installChart -d "${CHARTS_REPO_BASE}/redis" \
-    -c redis \
-    -n redis \
-    -l "app.kubernetes.io/instance=redis"
-
-# ---------------------------------------------------------------------------- #
-# keycloak
-# ---------------------------------------------------------------------------- #
-installChart -d "${CHARTS_REPO_BASE}/keycloak" \
-    -c keycloak \
-    -n keycloak \
-    -l "app.kubernetes.io/instance=keycloak"
-
-sleep 10
-
-helm template /tmp/gitops/helm/charts/umbrella/minikube \
-    -f /tmp/gitops/helm/charts/umbrella/minikube/values-infrastructure.yaml \
+helm template ${CHARTS_REPO_BASE}/umbrella/minikube \
+    -f ${CHARTS_REPO_BASE}/umbrella/minikube/values-infrastructure.yaml \
     | kubectl -n argocd apply -f -
 
 for app in in-cluster-storage monitoring apps networking
 do
-helm template /tmp/gitops/helm/charts/umbrella/minikube \
-    -f /tmp/gitops/helm/charts/umbrella/minikube/values-${app}.yaml \
-    | kubectl -n argocd apply -f -
-    sleep 10
+    helm template ${CHARTS_REPO_BASE}/umbrella/minikube \
+        -f ${CHARTS_REPO_BASE}/umbrella/minikube/values-${app}.yaml \
+        | kubectl -n argocd apply -f -
+        sleep 10
 done
+
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+#
+#exit
+## ---------------------------------------------------------------------------- #
+## Promethues
+## REQUIRES: nfs storage
+## PROVIDES: PodMonitor, ServiceMonitor
+## ---------------------------------------------------------------------------- #
+#installChart -d "${CHARTS_REPO_BASE}/kube-prometheus-stack" \
+#    -c kube-prometheus-stack \
+#    -n monitoring \
+#    -l "app.kubernetes.io/instance=kube-prometheus-stack" \
+#    -s schema.bootstrap=true \
+#    -s kube-prometheus-stack.crds.enabled=true \
+#    -s kube-prometheus-stack.defaultRules.create=false \
+#    -s kube-prometheus-stack.alertmanager.enabled=false \
+#    -s kube-prometheus-stack.grafana.enabled=false \
+#    -s kube-prometheus-stack.prometheus.enabled=false \
+#    -s kube-prometheus-stack.kubernetesServiceMonitors.enabled=false 
+#
+#helm uninstall -n monitoring kube-prometheus-stack
+#kubectl delete ns monitoring
+#
+#exit
+#
+## ---------------------------------------------------------------------------- #
+## kube-prometheus-stack
+## ---------------------------------------------------------------------------- #
+#GRAFANAPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+#    kv/minikube/grafana/admin \
+#    | jq -r '.data.data.GF_SECURITY_ADMIN_PASSWORD')
+#
+#installChart -d "${CHARTS_REPO_BASE}/kube-prometheus-stack" \
+#    -c kube-prometheus-stack \
+#    -n monitoring \
+#    -l "app.kubernetes.io/instance=kube-prometheus-stack" \
+#    -s kube-prometheus-stack.crds.enabled=true \
+#    -s kube-prometheus-stack.grafana.adminPassword="$GRAFANAPASS"
+#
+#kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods \
+#    | grep grafana | awk '{ print $1 }') -- \
+#    grafana cli  admin reset-admin-password $GRAFANAPASS
+#
+#exit
+#
+## ---------------------------------------------------------------------------- #
+## minio-operator
+## REQUIRES: cert-manager
+## PROVIDES: operator for minio-tenant
+## ---------------------------------------------------------------------------- #
+#installChart -d "${CHARTS_REPO_BASE}/minio-operator" \
+#    -c operator \
+#    -n minio-operator \
+#    -l "app.kubernetes.io/instance=operator"
+#
+## ---------------------------------------------------------------------------- #
+## minio-tenant
+## REQUIRES: minio-operator
+## PROVIDES: storage for loki, tempo
+## ---------------------------------------------------------------------------- #
+#installChart -d "${CHARTS_REPO_BASE}/minio-tenant" \
+#    -c tenant \
+#    -n minio-tenant \
+#    -l "v1.min.io/tenant=minikube"
+#
+## wait for secret to be created
+#sleep 10
+#
+## filename must be named ca.crt
+#mkdir /tmp/minio-tenant
+#kubectl -n minio-tenant get secrets minikube-minio-tenant-tls \
+#    -o=jsonpath='{.data.ca\.crt}' \
+#    | base64 -d > /tmp/minio-tenant/ca.crt
+#
+#kubectl create secret generic operator-ca-tls-minio-tenant \
+#     --from-file=/tmp/minio-tenant/ca.crt -n minio-operator
+#
+#rm -r /tmp/minio-tenant
+#
+## ---------------------------------------------------------------------------- #
+## redis
+## ---------------------------------------------------------------------------- #
+#REDISPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+#    kv/minikube/redis/password \
+#    | jq -r '.data.data.password')
+#
+#installChart -d "${CHARTS_REPO_BASE}/redis" \
+#    -c redis \
+#    -n redis \
+#    -l "app.kubernetes.io/instance=redis"
+#
+## ---------------------------------------------------------------------------- #
+## keycloak
+## ---------------------------------------------------------------------------- #
+#installChart -d "${CHARTS_REPO_BASE}/keycloak" \
+#    -c keycloak \
+#    -n keycloak \
+#    -l "app.kubernetes.io/instance=keycloak"
+#
+#sleep 10
