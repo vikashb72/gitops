@@ -1,0 +1,13 @@
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  name: {{ schema.env }}-ca-bundle
+spec:
+  sources:
+    - useDefaultCAs: true
+    - secret:
+      name: "reference-tls"
+      key: "ca.crt"
+  target:
+    configMap:
+      key: "{{ schema.env }}-ca-bundle.pem"
