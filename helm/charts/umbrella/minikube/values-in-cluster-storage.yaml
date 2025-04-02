@@ -40,11 +40,11 @@ argocdManaged:
       - path: helm/charts/minio-operator
     syncOptions:
       ServerSideApply: true
-#  minio-tenant:
-#    name: minio-tenant
-#    targetNamespace: minio-tenant
-#    syncwave: "6"
-#    sources:
-#      - path: helm/charts/minio-tenant
-#    syncOptions:
-#      ServerSideApply: true
+  minio-tenant:
+    name: minio-tenant
+    targetNamespace: minio-tenant
+    syncwave: "6"
+    sources:
+      - path: helm/charts/minio-tenant
+    syncOptions:
+      ServerSideApply: true
