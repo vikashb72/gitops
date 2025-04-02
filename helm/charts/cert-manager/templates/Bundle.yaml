@@ -4,7 +4,6 @@ metadata:
   name: {{ .Values.schema.env }}-ca-bundle
 spec:
   sources:
-    - useDefaultCAs: true
     - secret:
       name: "reference-tls"
       key: "ca.crt"
