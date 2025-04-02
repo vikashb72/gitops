@@ -18,7 +18,9 @@ spec:
         - image: nicolaka/netshoot
           name: netshoot
           command: ["/bin/bash"]
-          args: ["-c", "apk add sslscan;while true; do ping localhost; sleep 60;done"]
+          args:
+            - "-c"
+            - "apk add sslscan;ping -i 30 localhost"
           volumeMounts:
             - mountPath: /etc/ssl/certs/
               name: root-ca-certificate-only
