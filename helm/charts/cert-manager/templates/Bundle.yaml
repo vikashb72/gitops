@@ -5,8 +5,8 @@ metadata:
 spec:
   sources:
     - secret:
-      name: "reference-tls"
-      key: "ca.crt"
+        name: "reference-tls"
+        key: "ca.crt"
   target:
     configMap:
       key: "{{ .Values.schema.env }}-ca-bundle.pem"
