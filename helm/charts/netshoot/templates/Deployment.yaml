@@ -15,7 +15,20 @@ spec:
         app: netshoot
     spec:
       containers:
-      - image: nicolaka/netshoot
-        name: netshoot
-        command: ["/bin/bash"]
-        args: ["-c", "apk add sslscan;while true; do ping localhost; sleep 60;done"]
+        - image: nicolaka/netshoot
+          name: netshoot
+          command: ["/bin/bash"]
+          args: ["-c", "apk add sslscan;while true; do ping localhost; sleep 60;done"]
+          volumeMounts:
+            - mountPath: /etc/ssl/certs/
+              name: root-ca-certificate-only
+              readOnly: true
+      volumes:
+        - name: root-ca-certificate-only
+          configMap:
+            name: minikube-ca-bundle
+            defaultMode: 0644
+            optional: false
+            items:
+            - key: minikube-ca-bundle.pem
+              path: minikube-ca-bundle.pem
