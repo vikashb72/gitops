@@ -1,7 +1,7 @@
 apiVersion: trust.cert-manager.io/v1alpha1
 kind: Bundle
 metadata:
-  name: {{ .Values.schema.env }}-ca-bundle
+  name: own-ca-bundle
 spec:
   sources:
     - useDefaultCAs: true
@@ -10,4 +10,4 @@ spec:
         key: "ca.crt"
   target:
     configMap:
-      key: "{{ .Values.schema.env }}-ca-bundle.pem"
+      key: "own-ca-bundle.pem"
