@@ -307,3 +307,27 @@ kubectl wait deployment -n monitoring kube-prometheus-stack-grafana \
 kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods \
     | grep grafana | awk '{ print $1 }') -- \
     grafana cli  admin reset-admin-password $GRAFANAPASS
+
+
+#
+mkdir /tmp/minio-tenant
+
+kubectl wait -n minio-tenant pods \
+    -l "v1.min.io/tenant=minikube" \
+    --for condition=Ready \
+    --timeout=180s
+
+while true
+do
+    kubectl -n minio-tenant get secrets minikube-minio-tenant-tls && break 
+    sleep 2
+done
+
+kubectl -n minio-tenant get secrets minikube-minio-tenant-tls \
+    -o=jsonpath='{.data.ca\.crt}' \
+    | base64 -d > /tmp/minio-tenant/ca.crt
+
+kubectl create secret generic operator-ca-tls-minio-tenant \
+     --from-file=/tmp/minio-tenant/ca.crt -n minio-operator
+
+rm -r /tmp/minio-tenant
