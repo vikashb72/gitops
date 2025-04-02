@@ -32,6 +32,14 @@ argocdManaged:
             - values-dev-tools.yaml
     automated:
       allowEmpty: true
+  netshoot:
+    name: netshoot
+    targetNamespace: dev-tools
+    syncwave: "5"
+    sources:
+      - path: helm/charts/netshoot
+    syncOptions:
+      ServerSideApply: true
   #mailpit:
   #  name: mailpit
   #  targetNamespace: dev-tools
