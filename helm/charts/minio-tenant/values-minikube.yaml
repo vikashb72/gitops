@@ -56,7 +56,7 @@ tenant:
     # Directs the Operator to add the Tenant's metric scrape configuration 
     # to an existing Kubernetes Prometheus deployment 
     # managed by the Prometheus Operator.
-    prometheusOperator: false
+    prometheusOperator: true
     logging: { }
     env: [ ]
   ingress:
