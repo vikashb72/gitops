@@ -32,19 +32,19 @@ argocdManaged:
             - values-dev-tools.yaml
     automated:
       allowEmpty: true
-  mailpit:
-    name: mailpit
+  #mailpit:
+  #  name: mailpit
+  #  targetNamespace: dev-tools
+  #  syncwave: "5"
+  #  sources:
+  #    - path: helm/charts/mailpit
+  #  syncOptions:
+  #    ServerSideApply: true
+  mailhog:
+    name: mailhog
     targetNamespace: dev-tools
     syncwave: "5"
     sources:
-      - path: helm/charts/mailpit
+      - path: helm/charts/mailhog
     syncOptions:
       ServerSideApply: true
-#  mailhog:
-#    name: mailhog
-#    targetNamespace: dev-tools
-#    syncwave: "5"
-#    sources:
-#      - path: helm/charts/mailhog
-#    syncOptions:
-#      ServerSideApply: true
