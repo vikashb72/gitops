@@ -1,0 +1,52 @@
+mailpit:
+  global:
+    storageClass: ""
+  
+  image:
+    debug: false
+  
+  resourcesPreset: "nano"
+  
+  # https://github.com/axllent/mailpit/wiki/HTTPS
+  mailpit:
+    ui:
+      authFile:
+        enabled: false
+      tls:
+        enabled: false
+        secretName: ""
+    smtp:
+      ## @param mailpit.smtp.authFile.enabled Adding SMTP authentication
+      ## @param mailpit.smtp.authFile.htpasswd htpasswd content
+      ## @param mailpit.smtp.authFile.existingSecret Secret containing htpasswd content
+      authFile:
+        enabled: false
+        htpasswd: ""
+        existingSecret: {}
+      ## @param mailpit.smtp.tls.enabled Enable tls for SMTP
+      ## @param mailpit.smtp.tls.secretName tls secret for SMTP
+      tls:
+        enabled: false
+        secretName: ""
+    relay:
+      enabled: false
+      relayAll: false
+  
+  service:
+    http:
+      type: LoadBalancer
+      #type: ClusterIP
+      port: 80
+      loadBalancerIP: "192.168.49.239"
+    smtp:
+      type: LoadBalancer
+      #type: ClusterIP
+      port: 25
+      loadBalancerIP: "192.168.49.239"
+      externalTrafficPolicy: Cluster
+  
+  ingress:
+    enabled: false
+  
+  persistence:
+    enabled: false
