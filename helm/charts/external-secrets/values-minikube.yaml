@@ -65,21 +65,27 @@ schema:
 
 external-secrets:
   namespaceOverride: *schema-namespace
+
   global:
     compatibility:
       openshift:
         adaptSecurityContext: disabled
 
-  installCRDs: true
-
   serviceMonitor:
     enabled: true
 
+    namespace: "monitoring"
+
+    additionalLabels:
+      release: kube-prometheus-stack
+
   webhook:
     certManager:
-      # Enabling cert-manager support will disable the built in secret and
-      # switch to using cert-manager (installed separately) 
-      # to automatically issue and renew the webhook certificate. 
-      # This chart does not install
-      # cert-manager for you, See https://cert-manager.io/docs/
-      enabled: true
+      addInjectorAnnotations: true
+
+      cert:
+        create: true
+        issuerRef:
+          group: cert-manager.io
+          kind: "ClusterIssuer"
+          name: "vault-cert-issuer"
