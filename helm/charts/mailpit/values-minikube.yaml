@@ -24,14 +24,14 @@ mailpit:
       authFile:
         enabled: false
       tls:
-        enabled: true
+        enabled: false
         secretName: "dev-tools-tls"
     smtp:
       ## @param mailpit.smtp.authFile.enabled Adding SMTP authentication
       ## @param mailpit.smtp.authFile.htpasswd htpasswd content
       ## @param mailpit.smtp.authFile.existingSecret Secret containing htpasswd content
       authFile:
-        enabled: false
+        enabled: true
         htpasswd: ""
         existingSecret: {}
       tls:
