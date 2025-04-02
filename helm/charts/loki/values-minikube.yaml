@@ -34,6 +34,31 @@ schema:
         - gloo-mesh
 
 loki:
+  global:
+    # scope: admin-api, backend, bloom-builder, bloom-gateway, bloom-planner,
+    #        compactor, distributor, index-gateway, ingester, 
+    #        overrides-exporter, pattern-ingester, querier, query-frontend, 
+    #        query-scheduler, read, ruler, write.
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: loki-minio-credentials
+    extraEnv: []
+    extraVolumes:
+      - name: root-ca-certificate-only
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: root-ca-certificate-only
+        readOnly: true
+
   auth_enabled: false
 
   loki:
@@ -76,8 +101,8 @@ loki:
         accessKeyId: "${accessKey}"
         s3ForcePathStyle: true
         #insecure: true
-        http_config:
-          insecure_skip_verify: true
+        http_config: {}
+        #  insecure_skip_verify: true
     rulerConfig:
       storage:
         type: local
