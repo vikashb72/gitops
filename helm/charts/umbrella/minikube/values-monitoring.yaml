@@ -32,63 +32,63 @@ argocdManaged:
             - values-monitoring.yaml
     automated:
       allowEmpty: true
-  kube-prometheus-stack:
-    name: kube-prometheus-stack
-    targetNamespace: monitoring
-    syncwave: "7"
-    sources:
-      - path: helm/charts/kube-prometheus-stack
-    syncOptions:
-      ServerSideApply: true
-  loki:
-    name: loki
-    targetNamespace: loki-system
-    syncwave: "8"
-    sources:
-      - path: helm/charts/loki
-    syncOptions:
-      ServerSideApply: true
-  promtail:
-    name: promtail
-    targetNamespace: promtail-system
-    syncwave: "9"
-    sources:
-      - path: helm/charts/promtail
-    syncOptions:
-      ServerSideApply: true
-  tempo-distributed:
-    name: tempo-distributed
-    targetNamespace: tempo-system
-    syncwave: "10"
-    sources:
-      - path: helm/charts/tempo-distributed
-    syncOptions:
-      ServerSideApply: true
-  opentelemetry-collector:
-    name: opentelemetry-collector
-    targetNamespace: opentelemetry-system
-    syncwave: "10"
-    sources:
-      - path: helm/charts/opentelemetry-collector
-    syncOptions:
-      ServerSideApply: true
-  alloy:
-    name: alloy
-    targetNamespace: alloy-system
-    syncwave: "10"
-    sources:
-      - path: helm/charts/alloy
-    syncOptions:
-      ServerSideApply: true
-  vpa:
-    name: vpa
-    targetNamespace: vpa-system
-    syncwave: "11"
-    sources:
-      - path: helm/charts/vpa
-  goldilocks:
-    name: goldilocks
-    targetNamespace: goldilocks-system
-    syncwave: "12"
-    sources:
-      - path: helm/charts/goldilocks
+#  kube-prometheus-stack:
+#    name: kube-prometheus-stack
+#    targetNamespace: monitoring
+#    syncwave: "7"
+#    sources:
+#      - path: helm/charts/kube-prometheus-stack
+#    syncOptions:
+#      ServerSideApply: true
+#  loki:
+#    name: loki
+#    targetNamespace: loki-system
+#    syncwave: "8"
+#    sources:
+#      - path: helm/charts/loki
+#    syncOptions:
+#      ServerSideApply: true
+#  promtail:
+#    name: promtail
+#    targetNamespace: promtail-system
+#    syncwave: "9"
+#    sources:
+#      - path: helm/charts/promtail
+#    syncOptions:
+#      ServerSideApply: true
+#  tempo-distributed:
+#    name: tempo-distributed
+#    targetNamespace: tempo-system
+#    syncwave: "10"
+#    sources:
+#      - path: helm/charts/tempo-distributed
+#    syncOptions:
+#      ServerSideApply: true
+#  opentelemetry-collector:
+#    name: opentelemetry-collector
+#    targetNamespace: opentelemetry-system
+#    syncwave: "10"
+#    sources:
+#      - path: helm/charts/opentelemetry-collector
+#    syncOptions:
+#      ServerSideApply: true
+#  alloy:
+#    name: alloy
+#    targetNamespace: alloy-system
+#    syncwave: "10"
+#    sources:
+#      - path: helm/charts/alloy
+#    syncOptions:
+#      ServerSideApply: true
+#  vpa:
+#    name: vpa
+#    targetNamespace: vpa-system
+#    syncwave: "11"
+#    sources:
+#      - path: helm/charts/vpa
+#  goldilocks:
+#    name: goldilocks
+#    targetNamespace: goldilocks-system
+#    syncwave: "12"
+#    sources:
+#      - path: helm/charts/goldilocks

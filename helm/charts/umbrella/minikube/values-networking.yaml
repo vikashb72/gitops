@@ -32,45 +32,45 @@ argocdManaged:
             - values-networking.yaml
     automated:
       allowEmpty: true
-  istio:
-    name: istio
-    targetNamespace: istio-system
-    syncwave: "2"
-    sources:
-      - path: helm/charts/istio
-        #helm:
-        #  parameters:
-        #    - name: profile
-        #      value: ambient
-    ignoreDifferences: true 
-    ignoreDifferencesConfig:
-      - group: admissionregistration.k8s.io
-        kind: ValidatingWebhookConfiguration
-        jqPathExpressions:
-          - .webhooks[]?.failurePolicy
-  gloo-ee:
-    name: gloo-ee
-    targetNamespace: gloo-system
-    syncwave: "10"
-    sources:
-      - path: helm/charts/gloo-ee
-  gloo-mesh-core:
-    name: gloo-mesh-core
-    targetNamespace: gloo-mesh
-    syncwave: "10"
-    sources:
-      - path: helm/charts/gloo-mesh-core
-#
-#  istio-ingress:
-#    disable: true
-#    name: istio-ingress
-#    targetNamespace: istio-ingress
+#  istio:
+#    name: istio
+#    targetNamespace: istio-system
+#    syncwave: "2"
 #    sources:
-#      - path: helm/charts/istio-ingress
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    syncwave: "11"
-#    disableAutomated: false
-#    automated: {}
-#
+#      - path: helm/charts/istio
+#        #helm:
+#        #  parameters:
+#        #    - name: profile
+#        #      value: ambient
+#    ignoreDifferences: true 
+#    ignoreDifferencesConfig:
+#      - group: admissionregistration.k8s.io
+#        kind: ValidatingWebhookConfiguration
+#        jqPathExpressions:
+#          - .webhooks[]?.failurePolicy
+#  gloo-ee:
+#    name: gloo-ee
+#    targetNamespace: gloo-system
+#    syncwave: "10"
+#    sources:
+#      - path: helm/charts/gloo-ee
+#  gloo-mesh-core:
+#    name: gloo-mesh-core
+#    targetNamespace: gloo-mesh
+#    syncwave: "10"
+#    sources:
+#      - path: helm/charts/gloo-mesh-core
+##
+##  istio-ingress:
+##    disable: true
+##    name: istio-ingress
+##    targetNamespace: istio-ingress
+##    sources:
+##      - path: helm/charts/istio-ingress
+##        noHelmValues: false
+##        helm:
+##          envFile: true
+##    syncwave: "11"
+##    disableAutomated: false
+##    automated: {}
+##

@@ -21,19 +21,6 @@ schema:
       allowEmpty: false
 
 argocdManaged:
-  argocd:
-    name: argocd
-    namespace: argocd
-    targetNamespace: argocd
-    syncwave: "1"
-    sources:
-      - path: helm/charts/argocd
-  #secrets-store-csi-driver:
-  #  name: secrets-store-csi-driver
-  #  targetNamespace: kube-system
-  #  syncwave: "1"
-  #  sources:
-  #    - path: helm/charts/secrets-store-csi-driver
   umbrella-chart-infrastructure:
     name: umbrella-chart-infrastructure
     namespace: argocd
@@ -45,41 +32,54 @@ argocdManaged:
             - values-infrastructure.yaml
     automated:
       allowEmpty: true
-  external-secrets:
-    name: external-secrets
-    targetNamespace: external-secrets
-    syncwave: "2"
+  argocd:
+    name: argocd
+    namespace: argocd
+    targetNamespace: argocd
+    syncwave: "1"
     sources:
-      - path: helm/charts/external-secrets
-      #- path: hooks/external-secrets
-      #  noHelmValues: true
-  hashicorp-vault:
-    name: vault
-    targetNamespace: vault-system
-    syncwave: "3"
-    sources:
-      - path: helm/charts/hashicorp-vault
-    ignoreDifferences: true 
-    ignoreDifferencesConfig:
-      - group: admissionregistration.k8s.io
-        kind: MutatingWebhookConfiguration
-        jqPathExpressions:
-          - .webhooks[]?.clientConfig.caBundle
-  cert-manager:
-    name: cert-manager
-    targetNamespace: cert-manager
-    syncwave: "4"
-    sources:
-      - path: helm/charts/cert-manager
-  keycloak:
-    name: keycloak
-    targetNamespace: keycloak
-    syncwave: "5"
-    sources:
-      - path: helm/charts/keycloak
-  knative-operator:
-    name: knative-operator
-    targetNamespace: knative-operator
-    syncwave: "6"
-    sources:
-      - path: helm/charts/knative-operator
+      - path: helm/charts/argocd
+#  #secrets-store-csi-driver:
+#  #  name: secrets-store-csi-driver
+#  #  targetNamespace: kube-system
+#  #  syncwave: "1"
+#  #  sources:
+#  #    - path: helm/charts/secrets-store-csi-driver
+#  external-secrets:
+#    name: external-secrets
+#    targetNamespace: external-secrets
+#    syncwave: "2"
+#    sources:
+#      - path: helm/charts/external-secrets
+#      #- path: hooks/external-secrets
+#      #  noHelmValues: true
+#  hashicorp-vault:
+#    name: vault
+#    targetNamespace: vault-system
+#    syncwave: "3"
+#    sources:
+#      - path: helm/charts/hashicorp-vault
+#    ignoreDifferences: true 
+#    ignoreDifferencesConfig:
+#      - group: admissionregistration.k8s.io
+#        kind: MutatingWebhookConfiguration
+#        jqPathExpressions:
+#          - .webhooks[]?.clientConfig.caBundle
+#  cert-manager:
+#    name: cert-manager
+#    targetNamespace: cert-manager
+#    syncwave: "4"
+#    sources:
+#      - path: helm/charts/cert-manager
+#  keycloak:
+#    name: keycloak
+#    targetNamespace: keycloak
+#    syncwave: "5"
+#    sources:
+#      - path: helm/charts/keycloak
+#  knative-operator:
+#    name: knative-operator
+#    targetNamespace: knative-operator
+#    syncwave: "6"
+#    sources:
+#      - path: helm/charts/knative-operator
