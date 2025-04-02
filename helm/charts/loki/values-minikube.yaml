@@ -75,8 +75,9 @@ loki:
         secretAccessKey: "${secretKey}"
         accessKeyId: "${accessKey}"
         s3ForcePathStyle: true
-        insecure: true
-        http_config: {}
+        #insecure: true
+        http_config:
+          insecure_skip_verify: true
     rulerConfig:
       storage:
         type: local
