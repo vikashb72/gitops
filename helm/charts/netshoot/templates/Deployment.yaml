@@ -30,5 +30,5 @@ spec:
             defaultMode: 0644
             optional: false
             items:
-            - key: minikube-ca-bundle.pem
-              path: minikube-ca-bundle.pem
+              - key: ca-certificates.crt
+                path: ca-certificates.crt
