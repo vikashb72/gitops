@@ -28,9 +28,9 @@ spec:
       volumes:
         - name: root-ca-certificate-only
           configMap:
-            name: minikube-ca-bundle
+            name: own-ca-bundle
             defaultMode: 0644
             optional: false
             items:
-              - key: minikube-ca-bundle.pem
+              - key: own-ca-bundle.pem
                 path: ca-certificates.crt
