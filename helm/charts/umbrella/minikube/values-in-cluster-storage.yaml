@@ -32,14 +32,14 @@ argocdManaged:
             - values-in-cluster-storage.yaml
     automated:
       allowEmpty: true
-#  minio-operator:
-#    name: minio-operator
-#    targetNamespace: minio-operator
-#    syncwave: "5"
-#    sources:
-#      - path: helm/charts/minio-operator
-#    syncOptions:
-#      ServerSideApply: true
+  minio-operator:
+    name: minio-operator
+    targetNamespace: minio-operator
+    syncwave: "5"
+    sources:
+      - path: helm/charts/minio-operator
+    syncOptions:
+      ServerSideApply: true
 #  minio-tenant:
 #    name: minio-tenant
 #    targetNamespace: minio-tenant
