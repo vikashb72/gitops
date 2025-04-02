@@ -288,3 +288,22 @@ do
         | kubectl -n argocd apply -f -
         sleep 10
 done
+
+# ---------------------------------------------------------------------------- #
+# Set passwords
+# ---------------------------------------------------------------------------- #
+GRAFANAPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/minikube/grafana/admin \
+    | jq -r '.data.data.GF_SECURITY_ADMIN_PASSWORD')
+
+kubectl wait -n monitoring pods \
+    -l app.kubernetes.io/name=grafana \
+    --for condition=Ready \
+    --timeout=180s
+
+kubectl wait deployment -n monitoring kube-prometheus-stack-grafana \
+     --for condition=Available=True --timeout=90s
+
+kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods \
+    | grep grafana | awk '{ print $1 }') -- \
+    grafana cli  admin reset-admin-password $GRAFANAPASS
