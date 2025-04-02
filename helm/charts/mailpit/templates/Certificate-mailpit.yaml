@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: mailpit-certmanager-cert
+  namespace: dev-tools
+spec:
+  commonName: "mailpit.dev-tools.svc.cluster.local"
+  dnsNames:
+    - "mailpit-http.dev-tools"
+    - "mailpit-http.dev-tools.svc"
+    - "mailpit-http.dev-tools.svc.cluster"
+    - "mailpit-http.dev-tools.svc.cluster.local"
+    - "mailpit-smtp.dev-tools"
+    - "mailpit-smtp.dev-tools.svc"
+    - "mailpit-smtp.dev-tools.svc.cluster"
+    - "mailpit-smtp.dev-tools.svc.cluster.local"
+  secretName: dev-tools-tls
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
