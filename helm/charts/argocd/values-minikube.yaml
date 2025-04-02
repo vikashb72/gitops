@@ -9,6 +9,7 @@ schema:
     minikube-in-cluster-storage: In Cluster Storage
     minikube-monitoring: Monitoring
     minikube-networking: Networking
+    minikube-dev-tools: Dev Tools for testing
 
   serviceMonitor:
     templates: false
