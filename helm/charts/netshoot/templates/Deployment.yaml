@@ -18,4 +18,4 @@ spec:
       - image: nicolaka/netshoot
         name: netshoot
         command: ["/bin/bash"]
-        args: ["-c", "while true; do ping localhost; sleep 60;done"]
+        args: ["-c", "apk add sslscan;while true; do ping localhost; sleep 60;done"]
