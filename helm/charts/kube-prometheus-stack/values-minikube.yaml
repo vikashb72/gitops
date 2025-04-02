@@ -59,8 +59,8 @@ kube-prometheus-stack:
           email_configs:
             - to: "vikashb@home.where-ever.za.net"
               from: "monitor@minikube.where-ever.net"
-              #smarthost: "desktop.home.where-ever.za.net:587"
-              smarthost: "odroid-dlna.home.where-ever.za.net:25"
+              smarthost: "mailhog.minikube.where-ever.net:1025"
+              #smarthost: "odroid-dlna.home.where-ever.za.net:25"
               #auth_username: "vmail"
               #auth_password_file: /etc/alertmanager/secrets/GF_SMTP_PASSWORD
               #auth_password:
