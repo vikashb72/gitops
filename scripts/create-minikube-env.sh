@@ -281,7 +281,7 @@ helm template ${CHARTS_REPO_BASE}/umbrella/minikube \
     -f ${CHARTS_REPO_BASE}/umbrella/minikube/values-infrastructure.yaml \
     | kubectl -n argocd apply -f -
 
-for app in in-cluster-storage monitoring apps networking
+for app in in-cluster-storage monitoring apps networking dev-tools
 do
     helm template ${CHARTS_REPO_BASE}/umbrella/minikube \
         -f ${CHARTS_REPO_BASE}/umbrella/minikube/values-${app}.yaml \
