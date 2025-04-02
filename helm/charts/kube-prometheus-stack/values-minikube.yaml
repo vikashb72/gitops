@@ -12,42 +12,24 @@ kube-prometheus-stack:
     create: true
 
     rules:
-      alertmanager: true
-      etcd: true   # looking for kube-etcd
-      configReloaders: true
-      general: true
-      k8sContainerCpuUsageSecondsTotal: true
-      k8sContainerMemoryCache: true
-      k8sContainerMemoryRss: true
-      k8sContainerMemorySwap: true
-      k8sContainerResource: true
-      k8sContainerMemoryWorkingSetBytes: true
-      k8sPodOwner: true
-      kubeApiserverAvailability: true
-      kubeApiserverBurnrate: true
-      kubeApiserverHistogram: true
-      kubeApiserverSlos: true
-      kubeControllerManager: false
-      kubelet: true
-      kubeProxy: true
-      kubePrometheusGeneral: true
-      kubePrometheusNodeRecording: true
-      kubernetesApps: true
-      kubernetesResources: true
-      kubernetesStorage: true
-      kubernetesSystem: true
-      kubeSchedulerAlerting: false
-      kubeSchedulerRecording: false
-      kubeStateMetrics: true
-      network: true
-      node: true
-      nodeExporterAlerting: true
-      nodeExporterRecording: true
-      prometheus: true
-      prometheusOperator: true
+      #etcd: true   # looking for kube-etcd
+      #kubeSchedulerAlerting: true
+      #kubeSchedulerRecording: true
       windows: false
-    # KubeAPIDown: true
-    # NodeRAIDDegraded: true
+
+    disabled:
+      NodeRAIDDegraded: true
+
+  additionalPrometheusRulesMap: {}
+  #  rule-name:
+  #    groups:
+  #    - name: my_group
+  #      rules:
+  #      - record: my_record
+  #        expr: 100 * my_record
+
+  windowsMonitoring:
+    enabled: false
 
   prometheus-windows-exporter:
     prometheus:
@@ -93,6 +75,11 @@ kube-prometheus-stack:
       templates:
         - '/etc/alertmanager/config/*.tmpl'
 
+    service:
+      #type: ClusterIP
+      type: LoadBalancer
+      loadBalancerIP: 192.168.49.245
+
     ## Configuration for Alertmanager service
     alertmanagerSpec:
       persistentVolumeClaimRetentionPolicy:
@@ -117,10 +104,6 @@ kube-prometheus-stack:
         - name: prometheus-alerting-config
           mountPath: /etc/alertmanager/secrets
           readOnly: true
-
-    service:
-      type: LoadBalancer
-      loadBalancerIP: 192.168.49.245
 
   grafana:
     enabled: true
@@ -176,8 +159,6 @@ kube-prometheus-stack:
       userKey: "GF_SMTP_USER"
 
     grafana.ini:
-      #log:
-      #  level: debug
       unified_alerting:
         enabled: true
       smtp:
@@ -201,13 +182,13 @@ kube-prometheus-stack:
               url: http://alertmanager-operated:9093/
               #basicAuthPassword:
               #basicAuthUser: admin
-          #- name: email-notifier
-          #  type: email
-          #  uid: email-notifier
-          #  org_id: 1
-          #  is_default: false
-          #  settings:
-          #    addresses: vikashb@home.where-ever.za.net
+          - name: email-notifier
+            type: email
+            uid: email-notifier
+            org_id: 1
+            is_default: false
+            settings:
+              addresses: vikashb@home.where-ever.za.net
 
     alerting:
       policies.yaml:
@@ -236,15 +217,15 @@ kube-prometheus-stack:
                     #basicAuthUser: admin
                     url: http://alertmanager-operated:9093/
                   disableResolveMessage: false
-            #- orgId: 1
-            #  name: default-notification-email
-            #  receivers:
-            #    - uid: default-notification-email
-            #      type: email
-            #      settings:
-            #        addresses: vikashb@home.where-ever.za.net
-            #        singleEmail: false
-            #      disableResolveMessage: false
+            - orgId: 1
+              name: default-notification-email
+              receivers:
+                - uid: default-notification-email
+                  type: email
+                  settings:
+                    addresses: vikashb@home.where-ever.za.net
+                    singleEmail: false
+                  disableResolveMessage: false
             #- orgId: 1
             #  name: ms-teams-channel
             #  receivers:
@@ -261,7 +242,7 @@ kube-prometheus-stack:
       enabled: true
       type: pvc
       storageClassName: nfs-client
-      size: 10Gi
+      size: 16Gi
       lookupVolumeName: true
 
       accessModes:
@@ -719,6 +700,7 @@ kube-prometheus-stack:
       mutatingWebhookConfiguration:
         annotations:
           argocd.argoproj.io/hook: PreSync
+
       validatingWebhookConfiguration:
         annotations:
           argocd.argoproj.io/hook: PreSync
@@ -745,12 +727,9 @@ kube-prometheus-stack:
         enabled: false
       type: ClusterIP
 
-    kubeletService:
-      enabled: true
-      namespace: kube-system
-
     serviceMonitor:
       selfMonitor: true
+      additionalLabels: {}
 
     # Enable vertical pod autoscaler support for prometheus-operator
     verticalPodAutoscaler:
@@ -762,12 +741,6 @@ kube-prometheus-stack:
   prometheus:
     enabled: true
 
-    networkPolicy:
-      enabled: false
-
-    serviceAccount:
-      create: true
-
     service:
       type: LoadBalancer
 
@@ -778,6 +751,7 @@ kube-prometheus-stack:
 
     serviceMonitor:
       selfMonitor: true
+      additionalLabels: {}
 
     prometheusSpec:
       enableRemoteWriteReceiver: true

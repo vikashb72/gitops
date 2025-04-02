@@ -73,7 +73,7 @@ external-secrets:
   installCRDs: true
 
   serviceMonitor:
-    enabled: false
+    enabled: true
 
   webhook:
     certManager:
@@ -82,4 +82,4 @@ external-secrets:
       # to automatically issue and renew the webhook certificate. 
       # This chart does not install
       # cert-manager for you, See https://cert-manager.io/docs/
-      enabled: false
+      enabled: true
