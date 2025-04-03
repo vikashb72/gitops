@@ -64,14 +64,14 @@ argocdManaged:
       - path: helm/charts/tempo-distributed
     syncOptions:
       ServerSideApply: true
-  #alloy:
-  #  name: alloy
-  #  targetNamespace: alloy-system
-  #  syncwave: "10"
-  #  sources:
-  #    - path: helm/charts/alloy
-  #  syncOptions:
-  #    ServerSideApply: true
+  alloy:
+    name: alloy
+    targetNamespace: alloy-system
+    syncwave: "10"
+    sources:
+      - path: helm/charts/alloy
+    syncOptions:
+      ServerSideApply: true
 #  opentelemetry-collector:
 #    name: opentelemetry-collector
 #    targetNamespace: opentelemetry-system
