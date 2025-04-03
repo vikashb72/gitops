@@ -31,11 +31,31 @@ promtail:
 
   automountServiceAccountToken: true
 
+  extraVolumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+        - key: own-ca-bundle.pem
+          path: ca-certificates.crt
+
+  extraVolumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
+
   # ServiceMonitor configuration
   serviceMonitor:
     enabled: true
+    namespace: "monitoring"
+    labels:
+      release: kube-prometheus-stack
+    scheme: http
+
     prometheusRule:
-      enabled: false
+      enabled: true
       additionalLabels: {}
       rules:
         - alert: PromtailRequestErrors
