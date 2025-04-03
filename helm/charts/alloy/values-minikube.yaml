@@ -21,10 +21,6 @@ alloy:
         loki.write "default" {
           endpoint {
             url = "http://loki-gateway.loki-system/loki/api/v1/push"
-            tls {
-               insecure = true
-               insecure_skip_verify = true
-            }
           }
         }
 
@@ -150,10 +146,6 @@ alloy:
         prometheus.remote_write "default" {
           endpoint {
             url = "http://kube-prometheus-stack-prometheus.monitoring:9090/api/v1/write"
-            tls {
-               insecure = true
-               insecure_skip_verify = true
-            }
           }
         }
 
