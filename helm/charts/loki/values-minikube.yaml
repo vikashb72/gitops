@@ -131,73 +131,33 @@ loki:
       - name: rules
         configMap:
           name: loki-alerting-rules
-    #extraArgs:
-    #  - '-config.expand-env=true'
-    #extraEnvFrom:
-    #  - secretRef:
-    #      name: loki-minio-credentials
 
   ingester:
     replicas: 3 # To ensure data durability with replication
     zoneAwareReplication:
        enabled: false
-    #extraArgs:
-    #  - '-config.expand-env=true'
-    #extraEnvFrom:
-    #  - secretRef:
-    #      name: loki-minio-credentials
 
   querier:
     replicas: 3 # Improve query performance via parallelism
     maxUnavailable: 2
-    #extraArgs:
-    #  - '-config.expand-env=true'
-    #extraEnvFrom:
-    #  - secretRef:
-    #      name: loki-minio-credentials
 
   queryFrontend:
     replicas: 2
     maxUnavailable: 1
-    #extraArgs:
-    #  - '-config.expand-env=true'
-    #extraEnvFrom:
-    #  - secretRef:
-    #      name: loki-minio-credentials
 
   queryScheduler:
     replicas: 2
-    #extraArgs:
-    #  - '-config.expand-env=true'
-    #extraEnvFrom:
-    #  - secretRef:
-    #      name: loki-minio-credentials
 
   distributor:
     replicas: 3
     maxUnavailable: 2
-    #extraArgs:
-    #  - '-config.expand-env=true'
-    #extraEnvFrom:
-    #  - secretRef:
-    #      name: loki-minio-credentials
 
   compactor:
     replicas: 1
-    #extraArgs:
-    #  - '-config.expand-env=true'
-    #extraEnvFrom:
-    #  - secretRef:
-    #      name: loki-minio-credentials
 
   indexGateway:
     replicas: 2
     maxUnavailable: 1
-    #extraArgs:
-    #  - '-config.expand-env=true'
-    #extraEnvFrom:
-    #  - secretRef:
-    #      name: loki-minio-credentials
 
   bloomPlanner:
     replicas: 0
@@ -225,11 +185,11 @@ loki:
 
   monitoring:
     dashboards:
-      enabled: false
+      enabled: true
 
     rules:
-      enabled: false
-      alerting: false
+      enabled: true
+      alerting: true
       additionalGroups:
        - name: additional-loki-rules
          rules:
@@ -240,6 +200,6 @@ loki:
            - record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
              expr: sum(rate(container_cpu_usage_seconds_total[1m])) by (node, namespace, pod, container)
     selfMonitoring:
-      enabled: false
+      enabled: true
     grafanaAgent:
       installOperator: false
