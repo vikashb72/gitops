@@ -145,13 +145,7 @@ alloy:
 
         prometheus.remote_write "default" {
           endpoint {
-            url = "http://kube-prometheus-stack-prometheus.monitoring:9090/api/v1/push"
-          }
-        }
-
-        prometheus.remote_write "default" {
-          endpoint {
-            url = "http://prometheus:9090/api/v1/write"
+            url = "http://kube-prometheus-stack-prometheus.monitoring:9090/api/v1/write"
           }
         }
 
