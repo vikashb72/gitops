@@ -21,6 +21,10 @@ alloy:
         loki.write "default" {
           endpoint {
             url = "http://loki-gateway.loki-system/loki/api/v1/push"
+            tls {
+               insecure = true
+               insecure_skip_verify = true
+            }
           }
         }
 
@@ -146,6 +150,10 @@ alloy:
         prometheus.remote_write "default" {
           endpoint {
             url = "http://kube-prometheus-stack-prometheus.monitoring:9090/api/v1/write"
+            tls {
+               insecure = true
+               insecure_skip_verify = true
+            }
           }
         }
 
@@ -163,9 +171,13 @@ alloy:
         }
 
         otelcol.exporter.otlp "default" {
-            client {
-                endpoint = "http://tempo-distributed-distributor.tempo-system:4317"
+          client {
+            endpoint = "http://tempo-distributed-distributor.tempo-system:4317"
+            tls {
+               insecure = true
+               insecure_skip_verify = true
             }
+          }
         }
 
         otelcol.exporter.loki "default" {
@@ -206,7 +218,6 @@ alloy:
             traces  = [otelcol.exporter.otlp.default.input]
           }
         }
-
 
     clustering:
       enabled: false
