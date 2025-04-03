@@ -46,7 +46,7 @@ loki:
           name: loki-minio-credentials
     extraEnv: []
     extraVolumes:
-      - name: root-ca-certificate-only
+      - name: own-ca-bundle
         configMap:
           name: own-ca-bundle
           defaultMode: 0644
@@ -56,7 +56,7 @@ loki:
             path: ca-certificates.crt
     extraVolumeMounts:
       - mountPath: /etc/ssl/certs/
-        name: root-ca-certificate-only
+        name: own-ca-bundle
         readOnly: true
 
   auth_enabled: false
