@@ -39,11 +39,11 @@ argocdManaged:
     targetNamespace: httpbin
     sources:
       - path: helm/charts/httpbin
-#  redis:
-#    name: redis
-#    targetNamespace: redis
-#    sources:
-#      - path: helm/charts/redis
+  redis:
+    name: redis
+    targetNamespace: redis
+    sources:
+      - path: helm/charts/redis
 #  strimzi-kafka-operator:
 #    name: strimzi-kafka-operator
 #    targetNamespace: kafka-system
