@@ -11,3 +11,8 @@ spec:
   target:
     configMap:
       key: "own-ca-bundle.pem"
+    additionalFormats:
+      jks:
+        key: "bundle.jks"
+      pkcs12:
+        key: "bundle.p12"
