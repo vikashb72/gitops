@@ -55,7 +55,7 @@ promtail:
     scheme: http
 
     prometheusRule:
-      enabled: true
+      enabled: false
       additionalLabels: {}
       rules:
         - alert: PromtailRequestErrors
