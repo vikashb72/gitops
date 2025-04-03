@@ -185,7 +185,7 @@ loki:
 
   monitoring:
     dashboards:
-      enabled: true
+      enabled: false
 
     rules:
       enabled: true
