@@ -65,6 +65,11 @@ argocdManaged:
     syncwave: "4"
     sources:
       - path: helm/charts/cert-manager
+  reloader:
+    name: reloader
+    targetNamespace: reloader
+    sources:
+      - path: helm/charts/reloader
 #  #secrets-store-csi-driver:
 #  #  name: secrets-store-csi-driver
 #  #  targetNamespace: kube-system
