@@ -164,7 +164,7 @@ alloy:
 
         otelcol.exporter.otlp "default" {
             client {
-                endpoint = "tempo-distributed-distributor.tempo-system:4317"
+                endpoint = "http://tempo-distributed-distributor.tempo-system:4317"
             }
         }
 
