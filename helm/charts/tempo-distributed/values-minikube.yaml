@@ -262,7 +262,29 @@ tempo-distributed:
     enabled: false
   
   gateway:
-    enabled: false
+    enabled: true
+
+    extraArgs:
+      - '-config.expand-env=true'
+
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
 
     affinity: |-
       podAntiAffinity: {}
