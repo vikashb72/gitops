@@ -48,6 +48,7 @@ argocdManaged:
       - path: helm/charts/loki
     syncOptions:
       ServerSideApply: true
+  # EOL 03/2026
   #promtail:
   #  name: promtail
   #  targetNamespace: promtail-system
@@ -72,14 +73,14 @@ argocdManaged:
       - path: helm/charts/alloy
     syncOptions:
       ServerSideApply: true
-#  opentelemetry-collector:
-#    name: opentelemetry-collector
-#    targetNamespace: opentelemetry-system
-#    syncwave: "10"
-#    sources:
-#      - path: helm/charts/opentelemetry-collector
-#    syncOptions:
-#      ServerSideApply: true
+  opentelemetry-collector:
+    name: opentelemetry-collector
+    targetNamespace: opentelemetry-system
+    syncwave: "10"
+    sources:
+      - path: helm/charts/opentelemetry-collector
+    syncOptions:
+      ServerSideApply: true
 #  vpa:
 #    name: vpa
 #    targetNamespace: vpa-system
