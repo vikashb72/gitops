@@ -26,6 +26,8 @@ spec:
       transaction.state.log.replication.factor: 3
       transaction.state.log.min.isr: 2
       unclean.leader.election.enable: false
+    authorization:
+      type: simple
     jvmOptions:
       -Xms: {{ .Values.cluster.kafka.jvmOptions.xms }}
       -Xmx: {{ .Values.cluster.kafka.jvmOptions.xmx }}
@@ -46,15 +48,13 @@ spec:
     livenessProbe:
       initialDelaySeconds: 30
       timeoutSeconds: 10
-    authorization:
-      type: simple
     listeners:
-      - name: plain
-        port: 9092
-        type: internal
-        tls: false
-        authentication:
-          type: scram-sha-512
+      #- name: plain
+      #  port: 9092
+      #  type: internal
+      #  tls: false
+      #  authentication:
+      #    type: scram-sha-512
       - name: tls
         port: 9093
         type: internal
