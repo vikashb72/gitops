@@ -2,11 +2,19 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
   name: "{{ .Values.cluster.name }}"
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    strimzi.io/node-pools: enabled
+    strimzi.io/kraft: enabled
 spec:
+{{- with .Values.cluster.kafka.clusterCa }}
   clusterCa:
-    generateCertificateAuthority: false
+{{- toYaml . | nindent 4 }}
+{{- end }}
+{{- with .Values.cluster.kafka.clusterCa }}
   clientsCa:
-    generateCertificateAuthority: false
+{{- toYaml . | nindent 4 }}
+{{- end }}
   entityOperator:
     topicOperator: {}
     userOperator: {}
@@ -28,14 +36,9 @@ spec:
       type: inline
       loggers:
         kafka.root.logger.level: INFO
-{{- if .Values.cluster.kafka.resources }}
+{{- with .Values.cluster.kafka.resources }}
     resources:
-      requests:
-        memory: {{ .Values.cluster.kafka.resources.requests.memory }}
-        cpu: {{ .Values.cluster.kafka.resources.requests.cpu }}
-      limits:
-        memory: {{ .Values.cluster.kafka.resources.limits.memory }}
-        cpu: {{ .Values.cluster.kafka.resources.limits.cpu }}
+{{- toYaml . | nindent 6 }}
 {{- end }}
     readinessProbe:
       initialDelaySeconds: 30
@@ -77,16 +80,6 @@ spec:
     {{- end }}
   {{- end }}
 {{- end }}
-    storage:
-      type: {{ .Values.cluster.kafka.storage.type }}
-      volumes:
-{{- range $volume := $.Values.cluster.kafka.storage.volumes }}
-        - id: {{ .id }}
-          type: {{ .type }}
-          class: {{ .class }}
-          size: {{ .size }}
-          deleteClaim: {{ .deleteClaim }}
-{{- end }}
     metricsConfig:
       type: jmxPrometheusExporter
       valueFrom:
@@ -98,43 +91,7 @@ spec:
         metadata:
           labels:
             kafka-metrics: 'true'
-  zookeeper:
-    livenessProbe:
-      initialDelaySeconds: 30
-      timeoutSeconds: 10
-    logging:
-      type: inline
-      loggers:
-        kafka.root.logger.level: INFO
-    readinessProbe:
-      initialDelaySeconds: 30
-      timeoutSeconds: 10
-    replicas: {{ .Values.cluster.zookeeper.replicas }}
-{{- if .Values.cluster.zookeeper.resources }}
-    resources:
-      requests:
-        memory: {{ .Values.cluster.zookeeper.resources.requests.memory }}
-        cpu: {{ .Values.cluster.zookeeper.resources.requests.cpu }}
-      limits:
-        memory: {{ .Values.cluster.zookeeper.resources.limits.memory }}
-        cpu: {{ .Values.cluster.zookeeper.resources.limits.cpu }}
-{{- end }}
-    storage:
-      type: {{ .Values.cluster.zookeeper.storage.type }}
-      class: {{ .Values.cluster.zookeeper.storage.class }}
-      size: {{ .Values.cluster.zookeeper.storage.size }}
-      deleteClaim: {{ .Values.cluster.zookeeper.storage.deleteClaim }}
-    metricsConfig:
-      type: jmxPrometheusExporter
-      valueFrom:
-        configMapKeyRef:
-          name: kafka-metrics
-          key: zookeeper-metrics-config.yml
-    template:
-      pod:
-        metadata:
-          labels:
-            kafka-metrics: 'true'
+
   kafkaExporter:
     topicRegex: ".*"
     groupRegex: ".*"

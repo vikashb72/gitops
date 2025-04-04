@@ -8,19 +8,29 @@ strimzi-kafka-operator:
     enabled: true
     namespace: monitoring
 
-  #featureGates: +UseKRaft,+KafkaNodePools,+UnidirectionalTopicOperator
-
 cluster:
   name: "kafka-cluster"
+
   kafka:
+    clusterCa:
+      generateCertificateAuthority: false
+
+    clientsCa:
+      generateCertificateAuthority: false
+
     version: 3.8.0
+
     metadataVersion: "3.8"
+
     jvmOptions:
       xms: 256m
       xmx: 256m
+
     replicas: 3
+
     external_listener:
       enabled: false
+
       annotations:
         - "metallb.universe.tf/address-pool: default"
         - 'service.beta.kubernetes.io/azure-load-balancer-internal: "true"'
@@ -28,33 +38,23 @@ cluster:
       type: loadbalancer
       port: 9094
       tls: true
-      subnet: "snet-home-za01-workload01"
+
+  kraft:
+    replicas: 3
+
+    roles:
+      - broker
+      - controller
+
     storage:
       type: jbod
+
       volumes:
-        - id: 0
-          type: persistent-claim
-          class: nfs-client
-          size: 4Gi
-          deleteClaim: true
-  zookeeper:
-    replicas: 3
-    storage:
-      type: persistent-claim
-      class: nfs-client
-      size: 4Gi
-      deleteClaim: true
-    logging:
-      type: inline
-      loggers:
-        kafka.root.logger.level: INFO
-    #resources:
-    #  requests:
-    #    memory: 256Mi
-    #    cpu: 125m
-    #  limits:
-    #    memory: 1Gi
-    #    cpu: "2"
+       - id: 0
+         type: persistent-claim
+         class: nfs-client
+         size: 4Gi
+         deleteClaim: true
 
 topics:
   - name: test.topic.1

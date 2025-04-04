@@ -13,4 +13,4 @@
 #    - kafka-system
 #  selector:
 #    matchLabels:
-#      strimzi.io/cluster: kafka-cluster
+#      strimzi.io/cluster: {{ .Values.cluster.name }}
