@@ -1,0 +1,18 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaRebalance
+metadata:
+  name: rebalance
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    strimzi.io/cluster: {{ $.Values.cluster.name }}
+  annotations:
+    strimzi.io/rebalance-auto-approval: "true"
+spec:
+  goals:
+    - CpuCapacityGoal
+    - NetworkInboundCapacityGoal
+    - DiskCapacityGoal
+    - RackAwareGoal
+    - MinTopicLeadersPerBrokerGoal
+    - NetworkOutboundCapacityGoal
+    - ReplicaCapacityGoal
