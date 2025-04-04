@@ -18,7 +18,7 @@ spec:
           type: topic
           name: "{{ $topic.name }}"
           patternType: literal
-        hosts: "*"
+        host: "*"
         operations:
 {{- range $topic.operations }}
           - {{ . }}
