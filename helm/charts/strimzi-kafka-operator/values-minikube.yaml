@@ -66,3 +66,35 @@ topics:
     size: 52428800
     partitions: 3
     replicas: 3
+
+users:
+  - name: topic-admin
+    topics:
+      - name: test.topic.1
+        operations:
+          - Read
+          - Write
+      - name: test.topic.2
+        operations:
+          - Read
+          - Write
+  - name: topic-1-read
+    topics:
+      - name: test.topic.1
+        operations:
+          - Read
+  - name: topic-1-write
+    topics:
+      - name: test.topic.1
+        operations:
+          - Write
+  - name: topic-2-read
+    topics:
+      - name: test.topic.2
+        operations:
+          - Read
+  - name: topic-2-write
+    topics:
+      - name: test.topic.2
+        operations:
+          - Write

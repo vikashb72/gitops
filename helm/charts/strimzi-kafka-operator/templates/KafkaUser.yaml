@@ -1,0 +1,27 @@
+{{- range $user := .Values.users -}}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: KafkaUser-{{ .name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    strimzi.io/cluster: {{ $.Values.cluster.name }}
+spec:
+  authentication:
+    type: scram-sha-512
+    # The password will be automatically generated and stored in a k8s Secret
+  authorization:
+    type: simple
+    acls:
+{{- range .topics }}
+{{- $topic := . }}
+{{- range $topic.operations }}
+      - resource:
+          type: topic
+          name: "{{ $topic.name }}"
+          patternType: literal
+        operation: {{ . }}
+{{- end }}
+{{- end }}
+---
+{{- end }}

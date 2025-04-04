@@ -51,15 +51,21 @@ spec:
         port: 9092
         type: internal
         tls: false
+        authentication:
+          type: scram-sha-512
       - name: tls
         port: 9093
         type: internal
         tls: true
+        authentication:
+          type: scram-sha-512
 {{- if and .Values.cluster.kafka.external_listener .Values.cluster.kafka.external_listener.enabled }}
       - name: external
         port: {{ default 9094 .Values.cluster.kafka.external_listener.port }}
         type: {{ default "loadbalancer" .Values.cluster.kafka.external_listener.type }}
         tls: {{ default false .Values.cluster.kafka.external_listener.tls }}
+        authentication:
+          type: scram-sha-512
         configuration:
           bootstrap:
   {{- if .Values.cluster.kafka.external_listener.annotations }}
