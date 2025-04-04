@@ -72,29 +72,37 @@ users:
     topics:
       - name: test.topic.1
         operations:
+          - Create
+          - Describe
           - Read
           - Write
       - name: test.topic.2
         operations:
+          - Create
+          - Describe
           - Read
           - Write
   - name: topic-1-read
     topics:
       - name: test.topic.1
         operations:
+          - Describe
           - Read
   - name: topic-1-write
     topics:
       - name: test.topic.1
         operations:
+          - Describe
           - Write
   - name: topic-2-read
     topics:
       - name: test.topic.2
         operations:
+          - Describe
           - Read
   - name: topic-2-write
     topics:
       - name: test.topic.2
         operations:
+          - Describe
           - Write

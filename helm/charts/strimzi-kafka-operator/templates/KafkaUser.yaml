@@ -13,15 +13,16 @@ spec:
   authorization:
     type: simple
     acls:
-{{- range .topics }}
-{{- $topic := . }}
-{{- range $topic.operations }}
+{{- range $topic := .topics }}
       - resource:
           type: topic
           name: "{{ $topic.name }}"
           patternType: literal
-        operation: {{ . }}
-{{- end }}
+        hosts: "*"
+        operations:
+{{- range $topic.operations }}
+          - {{ . }}
+{{- end }}        
 {{- end }}
 ---
 {{- end }}

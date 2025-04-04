@@ -46,6 +46,8 @@ spec:
     livenessProbe:
       initialDelaySeconds: 30
       timeoutSeconds: 10
+    authorization:
+      type: simple
     listeners:
       - name: plain
         port: 9092
