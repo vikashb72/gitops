@@ -44,11 +44,11 @@ argocdManaged:
     targetNamespace: redis
     sources:
       - path: helm/charts/redis
-#  strimzi-kafka-operator:
-#    name: strimzi-kafka-operator
-#    targetNamespace: kafka-system
-#    sources:
-#      - path: helm/charts/strimzi-kafka-operator
+  strimzi-kafka-operator:
+    name: strimzi-kafka-operator
+    targetNamespace: kafka-system
+    sources:
+      - path: helm/charts/strimzi-kafka-operator
 #  keda:
 #    disable: true
 #    name: keda
