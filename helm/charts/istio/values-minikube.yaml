@@ -3,8 +3,10 @@ base:
     istioNamespace: istio-system
   base:
     defaultRevision: ""
+  profile: ambient
 
 istiod:
+  profile: ambient
   cni:
     enabled: false
     provider: default
@@ -50,16 +52,18 @@ istiod:
     omitSidecarInjectorConfigMap: false
 
 cni:
+  profile: ambient
   ambient:
     enabled: true
 
 gateway:
+  profile: ambient
   service:
     type: LoadBalancer
     loadBalancerIP: 192.168.49.251
 
 ztunnel:
-   profile: ambient
+  profile: ambient
 
 kiali-server:
   external_services:
