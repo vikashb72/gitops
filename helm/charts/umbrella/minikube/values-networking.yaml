@@ -33,7 +33,6 @@ argocdManaged:
     automated:
       allowEmpty: true
   istio:
-    disable: true
     name: istio
     targetNamespace: istio-system
     syncwave: "2"
