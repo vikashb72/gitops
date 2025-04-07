@@ -49,6 +49,10 @@ istiod:
 
     omitSidecarInjectorConfigMap: false
 
+cni:
+  ambient:
+    enabled: true
+
 gateway:
   service:
     type: LoadBalancer
