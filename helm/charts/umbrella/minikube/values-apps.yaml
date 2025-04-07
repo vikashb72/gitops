@@ -49,6 +49,11 @@ argocdManaged:
     targetNamespace: kafka-system
     sources:
       - path: helm/charts/strimzi-kafka-operator
+  homepage:
+    name: homepage
+    targetNamespace: homepage
+    sources:
+      - path: helm/charts/homepage
 #  keda:
 #    disable: true
 #    name: keda
