@@ -32,22 +32,22 @@ argocdManaged:
             - values-networking.yaml
     automated:
       allowEmpty: true
-#  istio:
-#    name: istio
-#    targetNamespace: istio-system
-#    syncwave: "2"
-#    sources:
-#      - path: helm/charts/istio
-#        #helm:
-#        #  parameters:
-#        #    - name: profile
-#        #      value: ambient
-#    ignoreDifferences: true 
-#    ignoreDifferencesConfig:
-#      - group: admissionregistration.k8s.io
-#        kind: ValidatingWebhookConfiguration
-#        jqPathExpressions:
-#          - .webhooks[]?.failurePolicy
+  istio:
+    name: istio
+    targetNamespace: istio-system
+    syncwave: "2"
+    sources:
+      - path: helm/charts/istio
+        helm:
+          parameters:
+            - name: profile
+              value: ambient
+    ignoreDifferences: true 
+    ignoreDifferencesConfig:
+      - group: admissionregistration.k8s.io
+        kind: ValidatingWebhookConfiguration
+        jqPathExpressions:
+          - .webhooks[]?.failurePolicy
 #  gloo-ee:
 #    name: gloo-ee
 #    targetNamespace: gloo-system
