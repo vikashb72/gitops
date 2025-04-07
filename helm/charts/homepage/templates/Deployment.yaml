@@ -28,7 +28,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
-              value: minikube.home.where-ever.za.net:3000,192.168.0.20:3000
+              value: {{ .Values.homepage.allowed_hosts }}
           ports:
             - name: http
               containerPort: 3000
