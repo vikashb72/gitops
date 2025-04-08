@@ -10,8 +10,8 @@ spec:
   selector:
     istio: {{ default "istio" $value.selector }}
 {{- else }}
-  gatewayClassName: {{ default "istio" $value.gateway }}
 {{- end }}
+  gatewayClassName: {{ default "istio" $value.gateway }}
 {{- with $value.servers }}
   servers:
     {{- toYaml . | nindent 4 }}
