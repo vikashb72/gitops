@@ -2,7 +2,7 @@ gateways:
   httpbin-gateway:
     namespace: istio-ingress
     gateway: istio
-    selector: app-gateway
+    #selector: app-gateway
     listeners:
       - name: httpbin-http
         hostname: "httpbin.minikube.where-ever.net"

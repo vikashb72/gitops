@@ -9,7 +9,6 @@ spec:
 {{- if $value.selector }}
   selector:
     istio: {{ default "istio" $value.selector }}
-{{- else }}
 {{- end }}
   gatewayClassName: {{ default "istio" $value.gateway }}
 {{- with $value.servers }}
