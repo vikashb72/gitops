@@ -48,6 +48,18 @@ argocdManaged:
         kind: ValidatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
+  istio-ingress:
+    disable: false
+    name: istio-ingress
+    targetNamespace: istio-ingress
+    sources:
+      - path: helm/charts/istio-ingress
+        noHelmValues: false
+        helm:
+          envFile: true
+    syncwave: "11"
+    disableAutomated: false
+    automated: {}
 #  gloo-ee:
 #    name: gloo-ee
 #    targetNamespace: gloo-system
@@ -60,17 +72,4 @@ argocdManaged:
 #    syncwave: "10"
 #    sources:
 #      - path: helm/charts/gloo-mesh-core
-##
-##  istio-ingress:
-##    disable: true
-##    name: istio-ingress
-##    targetNamespace: istio-ingress
-##    sources:
-##      - path: helm/charts/istio-ingress
-##        noHelmValues: false
-##        helm:
-##          envFile: true
-##    syncwave: "11"
-##    disableAutomated: false
-##    automated: {}
 ##
