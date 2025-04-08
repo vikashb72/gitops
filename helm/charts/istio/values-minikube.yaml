@@ -57,7 +57,7 @@ infra-gateway:
 
   service:
     type: LoadBalancer
-    loadBalancerIP: 192.168.49.251
+    loadBalancerIP: 192.168.49.252
 
 kiali-server:
   external_services:
