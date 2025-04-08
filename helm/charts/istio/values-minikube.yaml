@@ -11,45 +11,26 @@ base:
 
 istiod:
   profile: ambient
+
   cni:
     enabled: false
-    provider: default
-
-  env: {}
-
-  taint:
-    enabled: false
-
-  sidecarInjectorWebhook:
-    neverInjectSelector: []
-    alwaysInjectSelector: []
-    injectedAnnotations: {}
-    templates: {}
-    defaultTemplates: []
 
   istiodRemote:
     enabled: false
 
   telemetry:
     enabled: true
+
     v2:
       enabled: true
+
       prometheus:
         enabled: true
-      stackdriver:
-        enabled: false
+
   revision: ""
 
   global:
     istioNamespace: istio-system
-    certSigners: []
-    defaultPodDisruptionBudget:
-      enabled: true
-    defaultResources:
-      requests:
-        cpu: 10m
-    istiod:
-      enableAnalysis: false
 
     logAsJson: false
 
@@ -57,17 +38,19 @@ istiod:
 
 cni:
   profile: ambient
+
   ambient:
     enabled: true
 
+ztunnel:
+  profile: ambient
+
 gateway:
   profile: ambient
+
   service:
     type: LoadBalancer
     loadBalancerIP: 192.168.49.251
-
-ztunnel:
-  profile: ambient
 
 kiali-server:
   external_services:
