@@ -46,6 +46,7 @@ ztunnel:
   profile: ambient
 
 app-gateway:
+  name: "app-gateway"
   profile: ambient
 
   service:
@@ -53,6 +54,7 @@ app-gateway:
     loadBalancerIP: 192.168.49.251
 
 infra-gateway:
+  name: "infra-gateway"
   profile: ambient
 
   service:
