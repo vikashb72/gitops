@@ -1,9 +1,13 @@
 base:
   global:
     istioNamespace: istio-system
+
   base:
-    defaultRevision: ""
+    enableCRDTemplates: true
+
   profile: ambient
+
+  defaultRevision: "default"
 
 istiod:
   profile: ambient
