@@ -6,6 +6,9 @@ metadata:
   name: {{ $key }}
   namespace: {{ $value.namespace }}
 spec:
+  #addresses:
+  #  - value: 192.0.2.0
+  #    type: IPAddress
 {{- if $value.selector }}
   selector:
     istio: {{ default "istio" $value.selector }}
