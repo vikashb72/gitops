@@ -46,7 +46,6 @@ ztunnel:
   profile: ambient
 
 gateway:
-  name: "app-gateway"
   profile: ambient
 
   service:
