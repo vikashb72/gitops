@@ -114,3 +114,10 @@ gateways:
               - name: argocd-server
                 port: 443
                 appProtocol: HTTPS
+                group: ''
+                kind: Service
+                weight: 1
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /
