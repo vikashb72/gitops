@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: app-gw-certmanager-cert
-  namespace: istio-ingress
+  namespace: {{ .Release.Namespace }}
 spec:
   commonName: "istio-app-gw.minikube.where-ever.net"
   dnsNames:

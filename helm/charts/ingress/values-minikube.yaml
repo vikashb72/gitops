@@ -1,6 +1,5 @@
 gateways:
   app-gateway:
-    namespace: ingress-gateways
     gateway: istio
     LoadBalancerIP: "192.168.49.251"
     listeners:
@@ -51,7 +50,6 @@ gateways:
               - name: echoserver
                 port: 80
   infra-gateway:
-    namespace: ingress-gateways
     LoadBalancerIP: "192.168.49.252"
     gateway: istio
     listeners:

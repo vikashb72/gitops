@@ -6,7 +6,7 @@ apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
   name: {{ $key }}
-  namespace: {{ $value.namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
 {{- with .hosts }}
   hosts:
