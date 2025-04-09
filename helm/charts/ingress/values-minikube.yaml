@@ -11,6 +11,8 @@ certificates:
     dnsNames:
       - argocd.minikube.where-ever.net
       - argocd-gui.minikube.where-ever.net
+  - name: prometheus-gateway-tls
+    host: prometheus.minikube.where-ever.net
 
 gateways:
   app-gateway:
@@ -94,10 +96,10 @@ gateways:
         allowedRoutes:
           namespaces:
             from: All
-      - name: prometheus-http
+      - name: prometheus-https
         hostname: "prometheus.minikube.where-ever.net"
-        protocol: HTTP
-        port: 80
+        protocol: HTTPS
+        port: 443
         allowedRoutes:
           namespaces:
             from: All
