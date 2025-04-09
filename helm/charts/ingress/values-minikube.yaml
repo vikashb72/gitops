@@ -10,13 +10,13 @@ gateways:
         allowedRoutes:
           namespaces:
             from: All
-      #- name: echoserver-http
-      #  hostname: "echoserver.minikube.where-ever.net"
-      #  port: 80
-      #  protocol: HTTP
-      #  allowedRoutes:
-      #    namespaces:
-      #      from: All
+      - name: echoserver-http
+        hostname: "echoserver.minikube.where-ever.net"
+        port: 80
+        protocol: HTTP
+        allowedRoutes:
+          namespaces:
+            from: All
     httproutes:
       - name: httpbin
         namespace: httpbin
@@ -38,17 +38,17 @@ gateways:
             backendRefs:
               - name: httpbin
                 port: 8000
-      #- name: echoserver
-      #  namespace: echoserver
-      #  hostnames: '["echoserver.minikube.where-ever.net"]'
-      #  rules:
-      #    - matches:
-      #        - path:
-      #            type: PathPrefix
-      #            value: /
-      #      backendRefs:
-      #        - name: echoserver
-      #          port: 80
+      - name: echoserver
+        namespace: echoserver
+        hostnames: '["echoserver.minikube.where-ever.net"]'
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            backendRefs:
+              - name: echoserver
+                port: 80
   #infra-gateway:
   #  LoadBalancerIP: "192.168.49.252"
   #  gateway: istio
