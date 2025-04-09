@@ -11,6 +11,8 @@ spec:
   parentRefs:
     - name: {{ $key }}
       namespace: {{ $value.namespace }}
+      group: gateway.networking.k8s.io
+      kind: Gateway
 {{- if .sectionName }}
       sectionName: {{ .sectionName }}
 {{- end }}
