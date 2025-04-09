@@ -100,6 +100,11 @@ gateways:
         hostname: "prometheus.minikube.where-ever.net"
         protocol: HTTPS
         port: 443
+        tls:
+          mode: Terminate
+          certificateRefs:
+            - kind: Secret
+              name: prometheus-gateway-tls
         allowedRoutes:
           namespaces:
             from: All
