@@ -10,7 +10,7 @@ metadata:
 spec:
   parentRefs:
     - name: {{ $key }}
-      namespace: {{ $value.namespace }}
+      namespace: {{ $.Release.Namespace }}
       group: gateway.networking.k8s.io
       kind: Gateway
 {{- if .sectionName }}
