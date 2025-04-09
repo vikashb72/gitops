@@ -83,7 +83,8 @@ gateways:
         protocol: TLS
         port: 443
         tls:
-          mode: Terminate
+          #mode: Terminate
+          mode: Passthrough
           certificateRefs:
             - kind: Secret
               name: argocd-gateway-tls
