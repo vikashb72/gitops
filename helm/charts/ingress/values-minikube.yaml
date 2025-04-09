@@ -7,7 +7,7 @@ certificates:
   - name: echoserver-gateway-tls
     host: echoserver.minikube.where-ever.net
   - name: argocd-gateway-tls
-  - host: argocd.minikube.where-ever.net
+    host: argocd.minikube.where-ever.net
     dnsNames:
       - argocd.minikube.where-ever.net
       - argocd-gui.minikube.where-ever.net
