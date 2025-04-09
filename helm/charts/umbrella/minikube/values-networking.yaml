@@ -48,18 +48,12 @@ argocdManaged:
         kind: ValidatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
-  istio-ingress:
-    disable: true
+  ingress-gateways:
     name: ingress-gateways
     targetNamespace: ingress-gateways
+    syncwave: "3"
     sources:
       - path: helm/charts/ingress
-        noHelmValues: false
-        helm:
-          envFile: true
-    syncwave: "11"
-    disableAutomated: false
-    automated: {}
 #  gloo-ee:
 #    name: gloo-ee
 #    targetNamespace: gloo-system
