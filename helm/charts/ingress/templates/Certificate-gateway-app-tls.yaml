@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: app-gw-certmanager-cert
+  namespace: istio-ingress
+spec:
+  commonName: "istio-app-gw.minikube.where-ever.net"
+  dnsNames:
+    - istio-app-gw.minikube.where-ever.net
+    - httpbin.minikube.where-ever.net
+    - echoserver.minikube.where-ever.net
+  secretName: app-gw-tls
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
