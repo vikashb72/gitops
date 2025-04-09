@@ -49,11 +49,11 @@ argocdManaged:
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
   istio-ingress:
-    disable: false
-    name: istio-ingress
-    targetNamespace: istio-ingress
+    disable: true
+    name: ingress-gateways
+    targetNamespace: ingress-gateways
     sources:
-      - path: helm/charts/istio-ingress
+      - path: helm/charts/ingress
         noHelmValues: false
         helm:
           envFile: true
