@@ -107,7 +107,7 @@ gateways:
                   statusCode: 301
       - name: argocd-https
         namespace: argocd
-        #sectionName: argocd-https
+        sectionName: argocd-https
         hostnames: '["argocd.minikube.where-ever.net"]'
         rules:
           - backendRefs:
