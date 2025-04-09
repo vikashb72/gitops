@@ -94,6 +94,13 @@ gateways:
         allowedRoutes:
           namespaces:
             from: All
+      - name: prometheus-http
+        hostname: "prometheus.minikube.where-ever.net"
+        protocol: HTTP
+        port: 80
+        allowedRoutes:
+          namespaces:
+            from: All
     httproutes:
       - name: argocd-http
         namespace: argocd
@@ -120,3 +127,14 @@ gateways:
               - path:
                   type: PathPrefix
                   value: /
+      - name: prometheus
+        namespace: monitoring
+        hostnames: '["prometheus.minikube.where-ever.net"]'
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            backendRefs:
+              - name: kube-prometheus-stack-prometheus
+                port: 9090
