@@ -113,3 +113,4 @@ gateways:
           - backendRefs:
               - name: argocd-server
                 port: 443
+                appProtocol: HTTPS
