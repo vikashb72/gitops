@@ -44,7 +44,7 @@ argo-cd:
         return hs
 
     params:
-      #server.insecure: false
+      server.insecure: true
       #server.basehref: /
       #server.rootpath: ''
       #server.staticassets: /shared/app

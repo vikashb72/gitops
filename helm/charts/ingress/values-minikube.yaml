@@ -113,10 +113,10 @@ gateways:
         rules:
           - backendRefs:
               - name: argocd-server
-                port: 443
-                group: ''
-                kind: Service
-                weight: 1
+                port: 80
+                #group: ''
+                #kind: Service
+                #weight: 1
             matches:
               - path:
                   type: PathPrefix
