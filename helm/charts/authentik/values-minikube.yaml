@@ -1,197 +1,142 @@
+schema:
+  env: minikube
+
 authentik:
-  fullnameOverride: "authentik.minikube.home.where-ever.net"
-  
-  ## Globally shared configuration for authentik components.
   global:
-    # -- Environment variables to pass to all deployed Deployments. Does not apply to GeoIP
-    # See configuration options at https://goauthentik.io/docs/installation/configuration/
-    # @default -- `[]` (See [values.yaml])
-    env: []
-      # - name: AUTHENTIK_VAR_NAME
-      #   value: VALUE
-      # - name: AUTHENTIK_VAR_OTHER
-      #   valueFrom:
-      #     secretKeyRef:
-      #       name: secret-name
-      #       key: secret-key
-      # - name: AUTHENTIK_VAR_ANOTHER
-      #   valueFrom:
-      #     configMapKeyRef:
-      #       name: config-map-name
-      #       key: config-map-key
-  
-    # -- envFrom to pass to all deployed Deployments. Does not apply to GeoIP
-    # @default -- `[]` (See [values.yaml])
-    envFrom: []
-      # - configMapRef:
-      #     name: config-map-name
-      # - secretRef:
-      #     name: secret-name
+    env:
+      - name: AUTHENTIK_ERROR_REPORTING__ENABLED
+        value: false
+      - name: AUTHENTIK_SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_SECRET_KEY
+      - name: AUTHENTIK_POSTGRESQL__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_POSTGRESQL__PASSWORD
+      - name: AUTHENTIK_REDIS__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_REDIS__PASSWORD
+      - name: AUTHENTIK_BOOTSTRAP_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_BOOTSTRAP_PASSWORD
+      - name: AUTHENTIK_BOOTSTRAP_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_BOOTSTRAP_TOKEN
+      - name: AUTHENTIK_EMAIL__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__PASSWORD
+      - name: AUTHENTIK_EMAIL__USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__USERNAME
+      - name: AUTHENTIK_EMAIL__HOST
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__HOST
+      - name: AUTHENTIK_EMAIL__PORT
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__PORT
+      - name: AUTHENTIK_EMAIL__USE_TLS
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__USE_TLS
+      - name: AUTHENTIK_EMAIL__USE_SSL
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__USE_SSL
+      - name: AUTHENTIK_EMAIL__FROM
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__FROM
+
+    envFrom:
+      - secretRef:
+          name: authentik-secrets
   
   ## Authentik configuration
   authentik:
-    # -- Secret key used for cookie singing and unique user IDs,
-    # don't change this after the first install
-    secret_key: ""
-    email:
-      # -- SMTP Server emails are sent from, fully optional
-      host: ""
-      # -- SMTP server port
-      port: 587
-      # -- SMTP credentials, when left empty, no authentication will be done
-      username: ""
-      # -- SMTP credentials, when left empty, no authentication will be done
-      password: ""
-      # -- Enable either use_tls or use_ssl, they can't be enabled at the same time.
-      use_tls: false
-      # -- Enable either use_tls or use_ssl, they can't be enabled at the same time.
-      use_ssl: false
-      # -- Connection timeout
-      timeout: 30
-      # -- Email from address, can either be in the format "foo@bar.baz" or "authentik <foo@bar.baz>"
-      from: ""
-    outposts:
     error_reporting:
       enabled: false
-    postgresql:
-      # @default -- `{{ .Release.Name }}-postgresql`
-      host: "{{ .Release.Name }}-postgresql"
-      name: "authentik"
-      user: "authentik"
-      password: ""
-      port: 5432
-    redis:
-      host: "{{ .Release.Name }}-redis-master"
-      password: ""
-  
-  
+      send_pii: false
+
   blueprints:
-    # -- List of config maps to mount blueprints from.
-    # Only keys in the configMap ending with `.yaml` will be discovered and applied.
     configMaps: []
-    # -- List of secrets to mount blueprints from.
-    # Only keys in the secret ending with `.yaml` will be discovered and applied.
     secrets: []
   
   
   ## authentik server
   server:
-    # -- Environment variables to pass to the authentik server. Does not apply to GeoIP
-    # See configuration options at https://goauthentik.io/docs/installation/configuration/
-    # @default -- `[]` (See [values.yaml])
-    env: []
-      # - name: AUTHENTIK_VAR_NAME
-      #   value: VALUE
-      # - name: AUTHENTIK_VAR_OTHER
-      #   valueFrom:
-      #     secretKeyRef:
-      #       name: secret-name
-      #       key: secret-key
-      # - name: AUTHENTIK_VAR_ANOTHER
-      #   valueFrom:
-      #     configMapKeyRef:
-      #       name: config-map-name
-      #       key: config-map-key
+    envFrom:
+      - secretRef:
+          name: authentik-secrets
   
-    # -- envFrom to pass to the authentik server. Does not apply to GeoIP
-    # @default -- `[]` (See [values.yaml])
-    envFrom: []
-      # - configMapRef:
-      #     name: config-map-name
-      # - secretRef:
-      #     name: secret-name
-  
-    ## authentik server service configuration
     service:
+      labels: {}
       type: ClusterIP
-      servicePortHttp: 80
-      servicePortHttps: 443
       loadBalancerIP: ""
   
     ## authentik server metrics service configuration
     metrics:
-      # -- deploy metrics service
-      enabled: false
+      enabled: true
+
       serviceMonitor:
-        enabled: false
+        enabled: true
+
         selector: {}
           # prometheus: kube-prometheus
-  
-        # -- Prometheus ServiceMonitor scheme
-        scheme: ""
-        # -- Prometheus ServiceMonitor tlsConfig
-        tlsConfig: {}
-        # -- Prometheus ServiceMonitor namespace
-        namespace: ""
-        # -- Prometheus ServiceMonitor labels
-        labels: {}
-        # -- Prometheus ServiceMonitor annotations
-        annotations: {}
+
+        namespace: "monitoring"
+
+        labels:
+          release: kube-prometheus-stack
   
     ingress:
       enabled: false
-      https: false
-  
   
   ## authentik worker
   worker:
-    # -- authentik worker name
-    name: worker
-  
-    env: []
-      # - name: AUTHENTIK_VAR_NAME
-      #   value: VALUE
-      # - name: AUTHENTIK_VAR_OTHER
-      #   valueFrom:
-      #     secretKeyRef:
-      #       name: secret-name
-      #       key: secret-key
-      # - name: AUTHENTIK_VAR_ANOTHER
-      #   valueFrom:
-      #     configMapKeyRef:
-      #       name: config-map-name
-      #       key: config-map-key
-  
-    # -- envFrom to pass to the authentik worker. Does not apply to GeoIP
-    # @default -- `[]` (See [values.yaml])
-    envFrom: []
-      # - configMapRef:
-      #     name: config-map-name
-      # - secretRef:
-      #     name: secret-name
-  
-    # -- Additional volumeMounts to the authentik worker main container
-    volumeMounts: []
-      # - name: custom
-      #   mountPath: /custom
-  
-    # -- Additional volumes to the authentik worker pod
-    volumes: []
-      # - name: custom
-      #   emptyDir: {}
+    replicas: 1
+
+    envFrom:
+      - secretRef:
+          name: authentik-secrets
   
   geoip:
     enabled: false
   
-    editionIds: "GeoLite2-City GeoLite2-ASN"
-  
   prometheus:
     rules:
-      enabled: false
-      # -- PrometheusRule namespace
+      enabled: true
+
       namespace: "monitoring"
-      # -- PrometheusRule selector
-      selector:
-        release: kube-prometheus-stack
+
+      selector: {}
+        # prometheus: kube-prometheus
   
-      # -- PrometheusRule labels
       labels:
         release: kube-prometheus-stack
-
+  
   
   postgresql:
-    # -- enable the Bitnami PostgreSQL chart. Refer to https://github.com/bitnami/charts/blob/main/bitnami/postgresql/ for possible values.
-    enabled: false
+    enabled: true
     auth:
       username: authentik
       database: authentik
@@ -199,18 +144,28 @@ authentik:
     primary:
       extendedConfiguration: |
         max_connections = 500
-      resourcesPreset: "none"
-      # persistence:
-      #   enabled: true
-      #   storageClass:
-      #   accessModes:
-      #     - ReadWriteOnce
-    metrics:
-      resourcesPreset: "none"
-  
+      resourcesPreset: "nano"
+      persistence:
+        enabled: true
+        storageClass: nfs-client
+        size: 4Gi
+        accessModes:
+          - ReadWriteOnce
   
   redis:
-    # -- enable the Bitnami Redis chart. Refer to https://github.com/bitnami/charts/blob/main/bitnami/redis/ for possible values.
-    enabled: false
+    enabled: true
+    architecture: standalone
     auth:
-      enabled: false
+      enabled: true
+    master:
+      resourcesPreset: "nano"
+    replica:
+      resourcesPreset: "nano"
+    sentinel:
+      resourcesPreset: "nano"
+    metrics:
+      resourcesPreset: "nano"
+    volumePermissions:
+      resourcesPreset: "nano"
+    sysctl:
+      resourcesPreset: "nano"
