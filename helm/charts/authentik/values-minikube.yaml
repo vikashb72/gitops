@@ -67,9 +67,9 @@ authentik:
             name: authentik-secrets
             key: AUTHENTIK_EMAIL__FROM
 
-    envFrom:
-      - secretRef:
-          name: authentik-secrets
+    #envFrom:
+    #  - secretRef:
+    #      name: authentik-secrets
   
   ## Authentik configuration
   authentik:
@@ -84,9 +84,9 @@ authentik:
   
   ## authentik server
   server:
-    envFrom:
-      - secretRef:
-          name: authentik-secrets
+    #envFrom:
+    #  - secretRef:
+    #      name: authentik-secrets
   
     service:
       labels: {}
@@ -115,9 +115,9 @@ authentik:
   worker:
     replicas: 1
 
-    envFrom:
-      - secretRef:
-          name: authentik-secrets
+    #envFrom:
+    #  - secretRef:
+    #      name: authentik-secrets
   
   geoip:
     enabled: false
@@ -137,14 +137,18 @@ authentik:
   
   postgresql:
     enabled: true
+
     auth:
       username: authentik
       database: authentik
       # password: ""
+
     primary:
       extendedConfiguration: |
         max_connections = 500
+
       resourcesPreset: "nano"
+
       persistence:
         enabled: true
         storageClass: nfs-client
@@ -154,18 +158,26 @@ authentik:
   
   redis:
     enabled: true
+
     architecture: standalone
+
     auth:
       enabled: true
+
     master:
       resourcesPreset: "nano"
+
     replica:
       resourcesPreset: "nano"
+
     sentinel:
       resourcesPreset: "nano"
+
     metrics:
       resourcesPreset: "nano"
+
     volumePermissions:
       resourcesPreset: "nano"
+
     sysctl:
       resourcesPreset: "nano"
