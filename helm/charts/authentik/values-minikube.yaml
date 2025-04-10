@@ -5,7 +5,7 @@ authentik:
   global:
     env:
       - name: AUTHENTIK_ERROR_REPORTING__ENABLED
-        value: false
+        value: "false"
       - name: AUTHENTIK_SECRET_KEY
         valueFrom:
           secretKeyRef:
