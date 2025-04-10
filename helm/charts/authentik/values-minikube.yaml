@@ -3,73 +3,73 @@ schema:
 
 authentik:
   global:
-    env:
-      - name: AUTHENTIK_ERROR_REPORTING__ENABLED
-        value: "false"
-      - name: AUTHENTIK_SECRET_KEY
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_SECRET_KEY
-      - name: AUTHENTIK_POSTGRESQL__PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_POSTGRESQL__PASSWORD
-      - name: AUTHENTIK_REDIS__PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_REDIS__PASSWORD
-      - name: AUTHENTIK_BOOTSTRAP_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_BOOTSTRAP_PASSWORD
-      - name: AUTHENTIK_BOOTSTRAP_TOKEN
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_BOOTSTRAP_TOKEN
-      - name: AUTHENTIK_EMAIL__PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_EMAIL__PASSWORD
-      - name: AUTHENTIK_EMAIL__USERNAME
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_EMAIL__USERNAME
-      - name: AUTHENTIK_EMAIL__HOST
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_EMAIL__HOST
-      - name: AUTHENTIK_EMAIL__PORT
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_EMAIL__PORT
-      - name: AUTHENTIK_EMAIL__USE_TLS
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_EMAIL__USE_TLS
-      - name: AUTHENTIK_EMAIL__USE_SSL
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_EMAIL__USE_SSL
-      - name: AUTHENTIK_EMAIL__FROM
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: AUTHENTIK_EMAIL__FROM
+    #env:
+    #  - name: AUTHENTIK_ERROR_REPORTING__ENABLED
+    #    value: "false"
+    #  - name: AUTHENTIK_SECRET_KEY
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_SECRET_KEY
+    #  - name: AUTHENTIK_POSTGRESQL__PASSWORD
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_POSTGRESQL__PASSWORD
+    #  - name: AUTHENTIK_REDIS__PASSWORD
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_REDIS__PASSWORD
+    #  - name: AUTHENTIK_BOOTSTRAP_PASSWORD
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_BOOTSTRAP_PASSWORD
+    #  - name: AUTHENTIK_BOOTSTRAP_TOKEN
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_BOOTSTRAP_TOKEN
+    #  - name: AUTHENTIK_EMAIL__PASSWORD
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_EMAIL__PASSWORD
+    #  - name: AUTHENTIK_EMAIL__USERNAME
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_EMAIL__USERNAME
+    #  - name: AUTHENTIK_EMAIL__HOST
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_EMAIL__HOST
+    #  - name: AUTHENTIK_EMAIL__PORT
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_EMAIL__PORT
+    #  - name: AUTHENTIK_EMAIL__USE_TLS
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_EMAIL__USE_TLS
+    #  - name: AUTHENTIK_EMAIL__USE_SSL
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_EMAIL__USE_SSL
+    #  - name: AUTHENTIK_EMAIL__FROM
+    #    valueFrom:
+    #      secretKeyRef:
+    #        name: authentik-secrets
+    #        key: AUTHENTIK_EMAIL__FROM
 
-    #envFrom:
-    #  - secretRef:
-    #      name: authentik-secrets
+    envFrom:
+      - secretRef:
+          name: authentik-secrets
   
   ## Authentik configuration
   authentik:
@@ -84,9 +84,9 @@ authentik:
   
   ## authentik server
   server:
-    #envFrom:
-    #  - secretRef:
-    #      name: authentik-secrets
+    envFrom:
+      - secretRef:
+          name: authentik-secrets
   
     service:
       labels: {}
@@ -115,9 +115,9 @@ authentik:
   worker:
     replicas: 1
 
-    #envFrom:
-    #  - secretRef:
-    #      name: authentik-secrets
+    envFrom:
+      - secretRef:
+          name: authentik-secrets
   
   geoip:
     enabled: false
