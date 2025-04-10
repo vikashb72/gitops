@@ -70,6 +70,11 @@ argocdManaged:
     targetNamespace: reloader
     sources:
       - path: helm/charts/reloader
+  authentik:
+    name: authentik
+    targetNamespace: authentik
+    sources:
+      - path: helm/charts/authentik
 #  #secrets-store-csi-driver:
 #  #  name: secrets-store-csi-driver
 #  #  targetNamespace: kube-system
