@@ -84,9 +84,9 @@ authentik:
   
   ## authentik server
   server:
-    envFrom:
-      - secretRef:
-          name: authentik-secrets
+    #envFrom:
+    #  - secretRef:
+    #      name: authentik-secrets
   
     service:
       labels: {}
@@ -115,9 +115,9 @@ authentik:
   worker:
     replicas: 1
 
-    envFrom:
-      - secretRef:
-          name: authentik-secrets
+    #envFrom:
+    #  - secretRef:
+    #      name: authentik-secrets
   
   geoip:
     enabled: false
@@ -163,6 +163,8 @@ authentik:
 
     auth:
       enabled: true
+      existingSecret: "authentik-secrets"
+      existingSecretPasswordKey: "AUTHENTIK_REDIS__PASSWORD"
 
     master:
       resourcesPreset: "nano"
