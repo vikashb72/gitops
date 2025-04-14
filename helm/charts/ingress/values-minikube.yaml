@@ -385,7 +385,7 @@ gateways:
                 port: 8200
       - name: goldilocks-https
         namespace: goldilocks-system
-        hostnames: '[ goldilocks.minikube.where-ever.net"]'
+        hostnames: '["goldilocks.minikube.where-ever.net"]'
         rules:
           - matches:
               - path:
