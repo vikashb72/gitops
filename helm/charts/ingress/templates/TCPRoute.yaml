@@ -1,0 +1,30 @@
+{{- range $key, $value := .Values.gateways }}
+{{- if not $value.disabled }}
+{{- if $value.tcproutes }}
+{{- range $value.tcproutes }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: TCPRoute
+metadata:
+  name: tcproute-{{ .name }}
+  namespace: {{ .namespace }}
+spec:
+  parentRefs:
+    - name: {{ $key }}
+      namespace: {{ $.Release.Namespace }}
+      group: gateway.networking.k8s.io
+      kind: Gateway
+{{- if .sectionName }}
+      sectionName: {{ .sectionName }}
+{{- end }}
+{{- if .hostnames }}
+  hostnames: {{ .hostnames }}
+{{- end }}
+{{- with .rules }}
+  rules:
+    {{- toYaml . | nindent 4 }}
+{{- end }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

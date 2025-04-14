@@ -261,13 +261,13 @@ gateways:
         allowedRoutes:
           namespaces:
             from: All
-      #- name: mailhog-smtp
-      #  hostname: "mailhog.minikube.where-ever.net"
-      #  protocol: TCP
-      #  port: 25
-      #  allowedRoutes:
-      #    namespaces:
-      #      from: All
+      - name: mailhog-smtp
+        #hostname: "mailhog.minikube.where-ever.net"
+        protocol: TCP
+        port: 25
+        allowedRoutes:
+          kinds:
+            - kind: All
       - name: homepage-https
         hostname: "homepage.minikube.where-ever.net"
         protocol: HTTPS
@@ -427,13 +427,6 @@ gateways:
             backendRefs:
               - name: mailhog
                 port: 8025
-      #- name: mailhog-smtp
-      #  namespace: dev-tools
-      #  hostnames: '["mailhog.minikube.where-ever.net"]'
-      #  rules:
-      #    - backendRefs:
-      #        - name: mailhog
-      #          port: 1025
       - name: homepage-https
         namespace: homepage
         hostnames: '["homepage.minikube.where-ever.net"]'
@@ -445,3 +438,11 @@ gateways:
             backendRefs:
               - name: homepage
                 port: 3000
+    #tcproutes:
+    #  - name: mailhog-smtp
+    #    sectionName: mailhog-smtp
+    #    namespace: dev-tools
+    #    rules:
+    #      - backendRefs:
+    #          - name: mailhog
+    #            port: 1025
