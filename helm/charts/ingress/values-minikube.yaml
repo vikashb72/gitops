@@ -417,7 +417,7 @@ gateways:
       #        - name: smtp-prometheus-stack-prometheus
       #          port: 25
       - name: mailhog-https
-        namespace: monitoring
+        namespace: dev-tools
         hostnames: '["mailhog.minikube.where-ever.net"]'
         rules:
           - matches:
