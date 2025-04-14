@@ -340,7 +340,7 @@ gateways:
               - name: alertmanager-operated
                 port: 9093
       - name: loki-https
-        namespace: monitoring
+        namespace: loki-system
         hostnames: '["loki.minikube.where-ever.net"]'
         rules:
           - matches:
