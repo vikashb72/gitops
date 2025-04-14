@@ -225,18 +225,18 @@ gateways:
         allowedRoutes:
           namespaces:
             from: All
-      - name: mailpit-https
-        hostname: "mailpit.minikube.where-ever.net"
-        protocol: HTTPS
-        port: 443
-        tls:
-          mode: Terminate
-          certificateRefs:
-            - kind: Secret
-              name: mailpit-gateway-tls
-        allowedRoutes:
-          namespaces:
-            from: All
+      #- name: mailpit-https
+      #  hostname: "mailpit.minikube.where-ever.net"
+      #  protocol: HTTPS
+      #  port: 443
+      #  tls:
+      #    mode: Terminate
+      #    certificateRefs:
+      #      - kind: Secret
+      #        name: mailpit-gateway-tls
+      #  allowedRoutes:
+      #    namespaces:
+      #      from: All
       #- name: smtp-https
       #  hostname: "smtp.minikube.where-ever.net"
       #  protocol: HTTPS
@@ -261,13 +261,13 @@ gateways:
         allowedRoutes:
           namespaces:
             from: All
-      - name: mailhog-smtp
-        hostname: "mailhog.minikube.where-ever.net"
-        protocol: HTTP
-        port: 25
-        allowedRoutes:
-          namespaces:
-            from: All
+      #- name: mailhog-smtp
+      #  hostname: "mailhog.minikube.where-ever.net"
+      #  protocol: SMTP
+      #  port: 25
+      #  allowedRoutes:
+      #    namespaces:
+      #      from: All
       - name: homepage-https
         hostname: "homepage.minikube.where-ever.net"
         protocol: HTTPS
@@ -394,17 +394,17 @@ gateways:
             backendRefs:
               - name: goldilocks-dashboard
                 port: 80
-      - name: mailpit-https
-        namespace: dev-tools
-        hostnames: '["mailpit.minikube.where-ever.net"]'
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /
-            backendRefs:
-              - name: mailpit
-                port: 80
+      #- name: mailpit-https
+      #  namespace: dev-tools
+      #  hostnames: '["mailpit.minikube.where-ever.net"]'
+      #  rules:
+      #    - matches:
+      #        - path:
+      #            type: PathPrefix
+      #            value: /
+      #      backendRefs:
+      #        - name: mailpit
+      #          port: 80
       #- name: mailpit-smtp
       #  namespace: dev-tools
       #  hostnames: '["smtp.minikube.where-ever.net"]'
@@ -427,17 +427,17 @@ gateways:
             backendRefs:
               - name: mailhog
                 port: 8025
-      - name: mailhog-smtp
-        namespace: dev-tools
-        hostnames: '["mailhog.minikube.where-ever.net"]'
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /
-            backendRefs:
-              - name: mailhog
-                port: 1025
+      #- name: mailhog-smtp
+      #  namespace: dev-tools
+      #  hostnames: '["mailhog.minikube.where-ever.net"]'
+      #  rules:
+      #    - matches:
+      #        - path:
+      #            type: PathPrefix
+      #            value: /
+      #      backendRefs:
+      #        - name: mailhog
+      #          port: 1025
       - name: homepage-https
         namespace: homepage
         hostnames: '["homepage.minikube.where-ever.net"]'
