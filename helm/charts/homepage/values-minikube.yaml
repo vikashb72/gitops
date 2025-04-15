@@ -10,22 +10,30 @@ services:
   Infrastructure:
     argocd:
       href: https://argocd.minikube.where-ever.net/
+      icon: argo-cd
     authentik:
       href: https://authentik.minikube.where-ever.net/
+      icon: authentik
     vault:
       href: https://vault.minikube.where-ever.net/
+      icon: hashicorp-vault
   Monitoring:
     grafana:
       href: https://grafana.minikube.where-ever.net/
+      icon: grafana
     alertmanager:
       href: https://alertmanager.minikube.where-ever.net/
+      icon: alertmanager
     prometheus:
       href: https://prometheus.minikube.where-ever.net/
+      icon: prometheus
     goldilocks:
       href: https://goldilocks.minikube.where-ever.net/
+      icon: https://192.168.0.20:41443/static/images/favicon.ico
   devtools:
     mailhog:
       href: https://mailhog.minikube.where-ever.net/
+      icon: mailhog
 
 #  widgets.yaml: |
 #    - kubernetes:

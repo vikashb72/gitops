@@ -21,25 +21,17 @@ data:
   services.yaml: |
 {{- range $key, $values := .Values.services }}
     - {{ $key }}:
-{{- range $grp, $params := $values }}
+  {{- range $grp, $params := $values }}
       - {{ $grp }}:
           href: {{ $params.href }} 
+    {{- if $params.icon }}
+          icon: {{ $params.icon }}
+    {{- end }}
+    {{- if $params.description }}
+          description: {{ $params.description }}
+    {{- end }}
+  {{- end }}
 {{- end }}
-{{- end }}
-    #- My First Group:
-    #    - My First Service:
-    #        href: http://localhost/
-    #        description: Homepage is awesome
-
-    #- My Second Group:
-    #    - My Second Service:
-    #        href: http://localhost/
-    #        description: Homepage is the best
-
-    #- My Third Group:
-    #    - My Third Service:
-    #        href: http://localhost/
-    #        description: Homepage is 😎
   widgets.yaml: |
     - kubernetes:
         cluster:
