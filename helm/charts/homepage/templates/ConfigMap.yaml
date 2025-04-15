@@ -30,6 +30,10 @@ data:
     {{- if $params.description }}
           description: {{ $params.description }}
     {{- end }}
+    {{- if and $params.widgets }}
+          widget:
+{{ toYaml $params.widgets | indent 12 }}
+    {{- end }}
   {{- end }}
 {{- end }}
   widgets.yaml: |
@@ -51,9 +55,6 @@ data:
         cpu: true
         memory: true
         network: default
-    - widget:
-        type: prometheus
-        url: https://prometheus.minikube.where-ever.net/
     #- search:
     #    provider: duckduckgo
     #    target: _blank

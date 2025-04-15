@@ -27,6 +27,9 @@ services:
     prometheus:
       href: https://prometheus.minikube.where-ever.net/
       icon: prometheus
+      widgets:
+        type: prometheus 
+        url: https://prometheus.minikube.where-ever.net/
     goldilocks:
       href: https://goldilocks.minikube.where-ever.net/
       icon: https://192.168.0.20:41443/static/images/favicon.ico
