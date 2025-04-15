@@ -20,9 +20,9 @@ data:
               href: https://github.com/
   services.yaml: |
 {{- range $key, $values := .Values.services }}
-    - {{ $key }}
+    - {{ $key }}:
 {{- range $grp, $params := $values }}
-      - {{ $grp }}
+      - {{ $grp }}:
           href: {{ $params.href }} 
 {{- end }}
 {{- end }}
