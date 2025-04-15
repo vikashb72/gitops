@@ -30,6 +30,7 @@ services:
     goldilocks:
       href: https://goldilocks.minikube.where-ever.net/
       icon: https://192.168.0.20:41443/static/images/favicon.ico
+      #icon: https://goldilocks.minikube.where-ever.net/static/images/favicon.ico
   devtools:
     mailhog:
       href: https://mailhog.minikube.where-ever.net/
@@ -54,9 +55,3 @@ services:
 #        cpu: true
 #        memory: true
 #        network: default
-#    - search:
-#        provider: duckduckgo
-#        target: _blank
-#  docker.yaml: ""
-#
-#
