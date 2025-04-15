@@ -4,7 +4,51 @@ schema:
 homepage:
   service:
     type: ClusterIP
-  #  type: LoadBalancer
-  #  loadBalancerIP: 192.168.49.236
-  #allowed_hosts: minikube.home.where-ever.za.net:3000,192.168.0.20:3000,192.168.0.20:38443,homepage.minikube.where-ever.net:443
   allowed_hosts: homepage.minikube.where-ever.net
+
+services:
+  Infrastructure:
+    argocd:
+      href: https://argocd.minikube.where-ever.net/
+    authentik:
+      href: https://authentik.minikube.where-ever.net/
+    vault:
+      href: https://vault.minikube.where-ever.net/
+  Monitoring:
+    grafana:
+      href: https://grafana.minikube.where-ever.net/
+    alertmanager:
+      href: https://alertmanager.minikube.where-ever.net/
+    prometheus:
+      href: https://prometheus.minikube.where-ever.net/
+    goldilocks:
+      href: https://goldilocks.minikube.where-ever.net/
+  devtools:
+    mailhog:
+      href: https://mailhog.minikube.where-ever.net/
+
+#  widgets.yaml: |
+#    - kubernetes:
+#        cluster:
+#          show: true
+#          cpu: true
+#          memory: true
+#          showLabel: true
+#          label: "cluster"
+#        nodes:
+#          show: true
+#          cpu: true
+#          memory: true
+#          showLabel: true
+#    - resources:
+#        backend: resources
+#        expanded: true
+#        cpu: true
+#        memory: true
+#        network: default
+#    - search:
+#        provider: duckduckgo
+#        target: _blank
+#  docker.yaml: ""
+#
+#
