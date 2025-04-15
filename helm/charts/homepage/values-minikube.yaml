@@ -11,9 +11,17 @@ services:
     argocd:
       href: https://argocd.minikube.where-ever.net/
       icon: argo-cd
+      #widget:
+      #  type: argocd
+      #  url: https://argocd.minikube.where-ever.net/
+      #  key: argocdapikey
     authentik:
       href: https://authentik.minikube.where-ever.net/
       icon: authentik
+      #widget:
+      #  type: authentik
+      #  url: https://authentik.minikube.where-ever.net/
+      #  key: api_token
     vault:
       href: https://vault.minikube.where-ever.net/
       icon: hashicorp-vault
@@ -21,6 +29,11 @@ services:
     grafana:
       href: https://grafana.minikube.where-ever.net/
       icon: grafana
+      #widget:
+      #  type: grafana
+      #  url: https://grafana.minikube.where-ever.net/
+      #  username: username
+      #  password: password
     alertmanager:
       href: https://alertmanager.minikube.where-ever.net/
       icon: alertmanager
