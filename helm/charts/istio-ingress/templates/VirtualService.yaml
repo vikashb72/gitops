@@ -1,12 +1,12 @@
 {{- range $key, $value := .Values.gateways }}
 {{- if not .disabled }}
-{{- if $value.virtualservices }}
-{{- range $value.virtualservices }}
+{{- if $value.VirtualServices }}
+{{- range $value.VirtualServices }}
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
-  name: {{ $key }}
-  namespace: {{ $value.namespace }}
+  name: {{ .name }}
+  namespace: {{ .namespace }}
 spec:
 {{- with .hosts }}
   hosts:

@@ -1,0 +1,26 @@
+{{- range $key, $value := .Values.gateways }}
+{{- if not .disabled }}
+{{- if $value.servers }}
+{{- range $value.servers }}
+{{- if eq .port.protocol "HTTPS" }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $value.gateway.selector }}-{{ $key }}-{{ .port.name }}-gw-tls
+  namespace: {{ default "istio-system" $.Values.schema.istioNamespace }}
+spec:
+  commonName: {{ index .hosts 0 }}
+  dnsNames:
+{{- range .hosts }}
+    - {{ . }}
+{{- end }}
+  secretName: {{ $value.gateway.selector }}-{{ $key }}-{{ .port.name }}-gw-tls
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
+---
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

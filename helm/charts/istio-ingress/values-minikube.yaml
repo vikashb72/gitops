@@ -1,100 +1,305 @@
-gateways:
-  httpbin-gateway:
-    namespace: istio-ingress
-    gateway: istio
-    #selector: app-gateway
-    listeners:
-      - name: httpbin-http
-        hostname: "httpbin.minikube.where-ever.net"
-        port: 80
-        protocol: HTTP
-        allowedRoutes:
-          namespaces:
-            from: All
-    httproutes:
-      - name: httpbin
-        namespace: httpbin
-        hostnames: '["httpbin.minikube.where-ever.net"]'
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /get
-              - path:
-                  type: PathPrefix
-                  value: /headers
-            filters:
-              - type: RequestHeaderModifier
-                requestHeaderModifier:
-                  add:
-                  - name: Added-Header
-                    value: added-value
-            backendRefs:
-              - name: httpbin
-                port: 8000
-  #echoserver-gateway:
-  #  namespace: istio-ingress
-  #  gateway: istio
-  #  listeners:
-  #    - name: echoserver-http
-  #      hostname: "echoserver.minikube.where-ever.net"
-  #      port: 80
-  #      protocol: HTTP
-  #      allowedRoutes:
-  #        namespaces:
-  #          from: All
-  #  httproutes:
-  #    - name: echoserver
-  #      namespace: echoserver
-  #      hostnames: '["echoserver.minikube.where-ever.net"]'
-  #      rules:
-  #        - matches:
-  #            - path:
-  #                type: PathPrefix
-  #                value: /
-  #          backendRefs:
-  #            - name: echoserver
-  #              port: 80
+schema:
+  env: minikube
+  istioNamespace: istio-system
 
-  #argocd-gateway:
-  #  namespace: istio-ingress
-  #  gateway: istio
-  #  listeners:
-  #    - name: argocd-http
-  #      hostname: "argocd.minikube.where-ever.net"
-  #      protocol: HTTP
-  #      port: 80
-  #      allowedRoutes:
-  #        namespaces:
-  #          from: All
-  #    - name: argocd-https
-  #      hostname: "argocd.minikube.where-ever.net"
-  #      protocol: HTTPS
-  #      port: 443
-  #      tls:
-  #        mode: Terminate
-  #        certificateRefs:
-  #          - kind: Secret
-  #            name: argocd-tls
-  #      allowedRoutes:
-  #        namespaces:
-  #          from: All
-  #  httproutes:
-  #    - name: argocd-http
-  #      namespace: argocd
-  #      sectionName: argocd-http
-  #      hostnames: '["argocd.minikube.where-ever.net"]'
-  #      rules:
-  #        - filters:
-  #            - type: RequestRedirect
-  #              requestRedirect:
-  #                scheme: https
-  #                statusCode: 301
-  #    - name: argocd
-  #      namespace: argocd-https
-  #      sectionName: argocd-https
-  #      hostnames: '["argocd.minikube.where-ever.net"]'
-  #      rules:
-  #        - backendRefs:
-  #            - name: argocd-server
-  #              port: 80
+gateways:
+  # httpbin (via app-gateway)
+  httpbin-gateway:
+    namespace: httpbin
+    gateway:
+      selector: app-gateway
+    servers:
+      - port:
+          number: 443
+          name: httpbin-https
+          protocol: HTTPS
+        hosts:
+          - 'httpbin.minikube.where-ever.net'
+      #- port:
+      #    number: 80
+      #    name: httpbin-http
+      #    protocol: HTTP
+      #  hosts:
+      #    - 'httpbin.minikube.where-ever.net'
+    VirtualServices:
+      - name: httpbin-virtual-service
+        namespace: httpbin
+        hosts:
+          - "httpbin.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /get
+            - uri:
+                prefix: /headers
+            - uri:
+                prefix: /delay
+            - uri:
+                prefix: /drip
+            route:
+              - destination:
+                  port:
+                    number: 8000
+                  host: httpbin
+  # echoserver (via app-gateway)
+  echoserver-gateway:
+    namespace: echoserver
+    gateway:
+      selector: app-gateway
+    servers:
+      - port:
+          number: 443
+          name: echoserver-https
+          protocol: HTTPS
+        hosts:
+          - 'echoserver.minikube.where-ever.net'
+    VirtualServices:
+      - name: echoserver
+        namespace: echoserver
+        hosts:
+          - "echoserver.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: echoserver
+  # argocd (via infra-gateway)
+  argocd-gateway:
+    namespace: argocd
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: argocd-https
+          protocol: HTTPS
+        hosts:
+          - 'argocd.minikube.where-ever.net'
+    VirtualServices:
+      - name: argocd
+        namespace: argocd
+        hosts:
+          - "argocd.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: argocd-server
+  # prometheus (via infra-gateway)
+  prometheus-gateway:
+    namespace: prometheus
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: prometheus-https
+          protocol: HTTPS
+        hosts:
+          - 'prometheus.minikube.where-ever.net'
+    VirtualServices:
+      - name: argocd
+        namespace: argocd
+        hosts:
+          - "prometheus.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 9090
+                  host: kube-prometheus-stack-prometheus
+  # authentik (via infra-gateway)
+  authentik-gateway:
+    namespace: authentik
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: authentik-https
+          protocol: HTTPS
+        hosts:
+          - 'authentik.minikube.where-ever.net'
+          - 'auth.minikube.where-ever.net'
+    VirtualServices:
+      - name: authentik
+        namespace: authentik
+        hosts:
+          - "authentik.minikube.where-ever.net"
+          - "auth.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: authentik
+  # grafana (via infra-gateway)
+  grafana-gateway:
+    namespace: monitoring
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: grafana-https
+          protocol: HTTPS
+        hosts:
+          - 'grafana.minikube.where-ever.net'
+    VirtualServices:
+      - name: grafana
+        namespace: monitoring
+        hosts:
+          - "grafana.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: kube-prometheus-stack-grafana
+  # alertmanager (via infra-gateway)
+  alertmanager-gateway:
+    namespace: monitoring
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: alertmanager-https
+          protocol: HTTPS
+        hosts:
+          - 'alertmanager.minikube.where-ever.net'
+    VirtualServices:
+      - name: alertmanager
+        namespace: monitoring
+        hosts:
+          - "alertmanager.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 9093
+                  host: alertmanager-operated
+  # loki (via infra-gateway)
+  loki-gateway:
+    namespace: loki-system
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: loki-https
+          protocol: HTTPS
+        hosts:
+          - 'loki.minikube.where-ever.net'
+    VirtualServices:
+      - name: loki
+        namespace: loki-system
+        hosts:
+          - "loki.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: loki-gateway
+  # vault (via infra-gateway)
+  vault-gateway:
+    namespace: vault-system
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: vault-https
+          protocol: HTTPS
+        hosts:
+          - 'vault.minikube.where-ever.net'
+    VirtualServices:
+      - name: vault
+        namespace: vault-system
+        hosts:
+          - "vault.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 8200
+                  host: vault-ui
+  # goldilocks (via infra-gateway)
+  goldilocks-gateway:
+    namespace: goldilocks
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: goldilocks-https
+          protocol: HTTPS
+        hosts:
+          - 'goldilocks.minikube.where-ever.net'
+    VirtualServices:
+      - name: goldilocks
+        namespace: goldilocks
+        hosts:
+          - "goldilocks.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: goldilocks-dashboard
+  # mailhog (via infra-gateway)
+  mailhog-gateway:
+    namespace: mailhog
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: mailhog-https
+          protocol: HTTPS
+        hosts:
+          - 'mailhog.minikube.where-ever.net'
+    VirtualServices:
+      - name: mailhog
+        namespace: mailhog
+        hosts:
+          - "mailhog.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 3000
+                  host: mailhog

@@ -1,25 +1,31 @@
 {{- range $key, $value := .Values.gateways }}
 {{- if not .disabled }}
-apiVersion: {{ default "gateway.networking.k8s.io/v1" $value.api }}
+apiVersion: {{ default "networking.istio.io/v1" $value.api }}
 kind: Gateway
 metadata:
   name: {{ $key }}
   namespace: {{ $value.namespace }}
 spec:
-  #addresses:
-  #  - value: 192.0.2.0
-  #    type: IPAddress
-{{- if $value.selector }}
   selector:
-    istio: {{ default "istio" $value.selector }}
-{{- end }}
-  gatewayClassName: {{ default "istio" $value.gateway }}
-{{- with $value.servers }}
+    istio: {{ default "istio" $value.gateway.selector }}
   servers:
-    {{- toYaml . | nindent 4 }}
+{{- range $value.servers }}
+    - port:
+        number: {{ .port.number }}
+        name: {{ .port.name }}
+        protocol: {{ .port.protocol }}
+{{- if eq .port.protocol "HTTPS" }}
+      tls:
+        mode: SIMPLE
+        credentialName: {{ $value.gateway.selector }}-{{ $key }}-{{ .port.name }}-gw-tls
 {{- end }}
-{{- with $value.listeners }}
-  listeners:
+      hosts:
+{{- range .hosts }}
+        - {{ . }}
+{{- end }}
+{{- end }}
+{{- with $value.serversXC }}
+  servers:
     {{- toYaml . | nindent 4 }}
 {{- end }}
 ---
