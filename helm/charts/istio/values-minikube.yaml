@@ -45,28 +45,25 @@ cni:
 ztunnel:
   profile: ambient
 
-gateway:
-  profile: ambient
-
-  service:
-    type: LoadBalancer
-    loadBalancerIP: 192.168.49.251
-
-app-gateway:
+appGateway:
   name: "app-gateway"
   profile: ambient
 
   service:
     type: LoadBalancer
     loadBalancerIP: 192.168.49.251
+    annotations:
+      metallb.universe.tf/address-pool: default
 
-infra-gateway:
+infraGateway:
   name: "infra-gateway"
   profile: ambient
 
   service:
     type: LoadBalancer
     loadBalancerIP: 192.168.49.252
+    annotations:
+      metallb.universe.tf/address-pool: default
 
 kiali-server:
   external_services:

@@ -15,21 +15,15 @@ dependencies:
     version: 1.25.1
     repository: https://istio-release.storage.googleapis.com/charts
   #- name: gateway
+  #  alias: appGateway
   #  version: 1.25.1
   #  repository: https://istio-release.storage.googleapis.com/charts
   #- name: gateway
-  #  alias: app-gateway
+  #  alias: infraGateway
   #  version: 1.25.1
   #  repository: https://istio-release.storage.googleapis.com/charts
   #- name: gateway
-  #  alias: infra-gateway
-  #  version: 1.25.1
-  #  repository: https://istio-release.storage.googleapis.com/charts
-  #- name: gateway
-  #  alias: external-ingress
-  #  version: 1.25.1
-  #  repository: https://istio-release.storage.googleapis.com/charts
-  #- name: ambient
+  #  alias: externalIngress
   #  version: 1.25.1
   #  repository: https://istio-release.storage.googleapis.com/charts
   #- name: kiali-server
