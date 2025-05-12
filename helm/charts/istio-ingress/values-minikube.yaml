@@ -301,5 +301,5 @@ gateways:
             route:
               - destination:
                   port:
-                    number: 3000
+                    number: 8025
                   host: mailhog
