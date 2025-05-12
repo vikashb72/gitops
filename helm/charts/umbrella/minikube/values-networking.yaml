@@ -48,6 +48,12 @@ argocdManaged:
         kind: ValidatingWebhookConfiguration
         jqPathExpressions:
           - .webhooks[]?.failurePolicy
+  istio-ingress:
+    name: istio-ingress
+    targetNamespace: istio-ingress
+    syncwave: "3"
+    sources:
+      - path: helm/charts/istio-ingress
   #ingress-gateways:
   #  name: ingress-gateways
   #  targetNamespace: ingress-gateways
