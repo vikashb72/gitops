@@ -146,7 +146,7 @@ gateways:
               - destination:
                   port:
                     number: 80
-                  host: authentik
+                  host: authentik-server
   # grafana (via infra-gateway)
   grafana-gateway:
     namespace: monitoring
