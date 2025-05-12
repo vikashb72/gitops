@@ -305,7 +305,7 @@ gateways:
                   host: mailhog
   # homepage (via infra-gateway)
   homepage-gateway:
-    namespace: dev-tools-virtual-service
+    namespace: homepage
     gateway:
       selector: infra-gateway
     servers:
@@ -316,8 +316,8 @@ gateways:
         hosts:
           - 'homepage.minikube.where-ever.net'
     VirtualServices:
-      - name: homepage
-        namespace: dev-tools
+      - name: homepage-virtual-service
+        namespace: homepage
         hosts:
           - "mailhog.minikube.where-ever.net"
         http:
