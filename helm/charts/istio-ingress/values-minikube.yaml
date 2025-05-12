@@ -54,7 +54,7 @@ gateways:
         hosts:
           - 'echoserver.minikube.where-ever.net'
     VirtualServices:
-      - name: echoserver
+      - name: echoserver-virtual-service
         namespace: echoserver
         hosts:
           - "echoserver.minikube.where-ever.net"
@@ -80,7 +80,7 @@ gateways:
         hosts:
           - 'argocd.minikube.where-ever.net'
     VirtualServices:
-      - name: argocd
+      - name: argocd-virtual-service
         namespace: argocd
         hosts:
           - "argocd.minikube.where-ever.net"
@@ -106,7 +106,7 @@ gateways:
         hosts:
           - 'prometheus.minikube.where-ever.net'
     VirtualServices:
-      - name: prometheus
+      - name: prometheus-virtual-service
         namespace: monitoring
         hosts:
           - "prometheus.minikube.where-ever.net"
@@ -133,7 +133,7 @@ gateways:
           - 'authentik.minikube.where-ever.net'
           - 'auth.minikube.where-ever.net'
     VirtualServices:
-      - name: authentik
+      - name: authentik-virtual-service
         namespace: authentik
         hosts:
           - "authentik.minikube.where-ever.net"
@@ -160,7 +160,7 @@ gateways:
         hosts:
           - 'grafana.minikube.where-ever.net'
     VirtualServices:
-      - name: grafana
+      - name: grafana-virtual-service
         namespace: monitoring
         hosts:
           - "grafana.minikube.where-ever.net"
@@ -186,7 +186,7 @@ gateways:
         hosts:
           - 'alertmanager.minikube.where-ever.net'
     VirtualServices:
-      - name: alertmanager
+      - name: alertmanager-virtual-service
         namespace: monitoring
         hosts:
           - "alertmanager.minikube.where-ever.net"
@@ -212,7 +212,7 @@ gateways:
         hosts:
           - 'loki.minikube.where-ever.net'
     VirtualServices:
-      - name: loki
+      - name: loki-virtual-service
         namespace: loki-system
         hosts:
           - "loki.minikube.where-ever.net"
@@ -238,7 +238,7 @@ gateways:
         hosts:
           - 'vault.minikube.where-ever.net'
     VirtualServices:
-      - name: vault
+      - name: vault-virtual-service
         namespace: vault-system
         hosts:
           - "vault.minikube.where-ever.net"
@@ -264,7 +264,7 @@ gateways:
         hosts:
           - 'goldilocks.minikube.where-ever.net'
     VirtualServices:
-      - name: goldilocks
+      - name: goldilocks-virtual-service
         namespace: goldilocks-system
         hosts:
           - "goldilocks.minikube.where-ever.net"
@@ -290,7 +290,7 @@ gateways:
         hosts:
           - 'mailhog.minikube.where-ever.net'
     VirtualServices:
-      - name: mailhog
+      - name: mailhog-virtual-service
         namespace: dev-tools
         hosts:
           - "mailhog.minikube.where-ever.net"
@@ -305,7 +305,7 @@ gateways:
                   host: mailhog
   # homepage (via infra-gateway)
   homepage-gateway:
-    namespace: dev-tools
+    namespace: dev-tools-virtual-service
     gateway:
       selector: infra-gateway
     servers:
@@ -316,7 +316,7 @@ gateways:
         hosts:
           - 'homepage.minikube.where-ever.net'
     VirtualServices:
-      - name: mailhog
+      - name: homepage
         namespace: dev-tools
         hosts:
           - "mailhog.minikube.where-ever.net"
