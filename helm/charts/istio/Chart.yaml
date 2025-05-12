@@ -14,14 +14,14 @@ dependencies:
   - name: ztunnel
     version: 1.25.1
     repository: https://istio-release.storage.googleapis.com/charts
-  #- name: gateway
-  #  alias: appGateway
-  #  version: 1.25.1
-  #  repository: https://istio-release.storage.googleapis.com/charts
-  #- name: gateway
-  #  alias: infraGateway
-  #  version: 1.25.1
-  #  repository: https://istio-release.storage.googleapis.com/charts
+  - name: gateway
+    alias: appGateway
+    version: 1.25.1
+    repository: https://istio-release.storage.googleapis.com/charts
+  - name: gateway
+    alias: infraGateway
+    version: 1.25.1
+    repository: https://istio-release.storage.googleapis.com/charts
   #- name: gateway
   #  alias: externalIngress
   #  version: 1.25.1
