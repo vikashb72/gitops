@@ -319,7 +319,7 @@ gateways:
       - name: homepage-virtual-service
         namespace: homepage
         hosts:
-          - "mailhog.minikube.where-ever.net"
+          - "homepage.minikube.where-ever.net"
         http:
           - match:
             - uri:
