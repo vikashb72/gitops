@@ -303,3 +303,29 @@ gateways:
                   port:
                     number: 8025
                   host: mailhog
+  # homepage (via infra-gateway)
+  homepage-gateway:
+    namespace: dev-tools
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: homepage-https
+          protocol: HTTPS
+        hosts:
+          - 'homepage.minikube.where-ever.net'
+    VirtualServices:
+      - name: mailhog
+        namespace: dev-tools
+        hosts:
+          - "mailhog.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 3000
+                  host: homepage
