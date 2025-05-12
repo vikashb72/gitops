@@ -95,7 +95,7 @@ gateways:
                   host: argocd-server
   # prometheus (via infra-gateway)
   prometheus-gateway:
-    namespace: prometheus
+    namespace: monitoring
     gateway:
       selector: infra-gateway
     servers:
@@ -106,8 +106,8 @@ gateways:
         hosts:
           - 'prometheus.minikube.where-ever.net'
     VirtualServices:
-      - name: argocd
-        namespace: argocd
+      - name: prometheus
+        namespace: monitoring
         hosts:
           - "prometheus.minikube.where-ever.net"
         http:
@@ -253,7 +253,7 @@ gateways:
                   host: vault-ui
   # goldilocks (via infra-gateway)
   goldilocks-gateway:
-    namespace: goldilocks
+    namespace: goldilocks-system
     gateway:
       selector: infra-gateway
     servers:
@@ -265,7 +265,7 @@ gateways:
           - 'goldilocks.minikube.where-ever.net'
     VirtualServices:
       - name: goldilocks
-        namespace: goldilocks
+        namespace: goldilocks-system
         hosts:
           - "goldilocks.minikube.where-ever.net"
         http:
@@ -279,7 +279,7 @@ gateways:
                   host: goldilocks-dashboard
   # mailhog (via infra-gateway)
   mailhog-gateway:
-    namespace: mailhog
+    namespace: dev-tools
     gateway:
       selector: infra-gateway
     servers:
@@ -291,7 +291,7 @@ gateways:
           - 'mailhog.minikube.where-ever.net'
     VirtualServices:
       - name: mailhog
-        namespace: mailhog
+        namespace: dev-tools
         hosts:
           - "mailhog.minikube.where-ever.net"
         http:
