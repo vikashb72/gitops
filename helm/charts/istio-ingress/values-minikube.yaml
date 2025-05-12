@@ -307,7 +307,7 @@ gateways:
   homepage-gateway:
     namespace: homepage
     gateway:
-      selector: infra-gateway
+      selector: app-gateway
     servers:
       - port:
           number: 443
