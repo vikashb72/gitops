@@ -33,6 +33,7 @@ argo-cd:
 
   configs:
     cm:
+      application.sync.impersonation.enabled: false
       accounts.argo-admin.enabled: "false"
       accounts.argo-admin: apiKey, login
       accounts.argo-readonly: apiKey, login
@@ -43,18 +44,25 @@ argo-cd:
         hs.message = "we are good"
         return hs
 
+    dex.config: |
+      connectors:
+        - config:
+            issuer: https://authentik.minikube.where-ever.net/application/o/argocd/
+            clientID: $argocd-authentic-client:id
+            clientSecret: $argocd-authentic-client:secret
+            insecureEnableGroups: false
+            scopes:
+              - openid
+              - profile
+              - email
+          name: authentik
+          type: oidc
+          id: authentik
+
     params:
       server.insecure: true
-      #server.basehref: /
-      #server.rootpath: ''
-      #server.staticassets: /shared/app
-      #server.disable.auth: false
-      #server.enable.gzip: true
-      #server.enable.proxy.extension: false
-      #server.x.frame.options: sameorigin
-      # Limit on number of concurrent manifests generate requests.
-      # Any value less the 1 means no limit.
       reposerver.parallelism.limit: 0
+      server.disable.auth: false
 
     rbac:
       policy.default: ''
@@ -67,6 +75,33 @@ argo-cd:
         p, role:readonly, applications, get, *, allow
         g, argo-admin, role:org-admin
         g, argo-readonly, role:readonly
+
+    credentialTemplates: {}
+      # github-enterprise-creds-1:
+      #   url: https://github.com/argoproj
+      #   githubAppID: 1
+      #   githubAppInstallationID: 2
+      #   githubAppEnterpriseBaseUrl: https://ghe.example.com/api/v3
+      #   githubAppPrivateKey: |
+      #     -----BEGIN OPENSSH PRIVATE KEY-----
+      #     ...
+      #     -----END OPENSSH PRIVATE KEY-----
+
+    credentialTemplatesAnnotations: {}
+
+    repositories: {}
+      # private-helm-repo:
+      #   url: https://my-private-chart-repo.internal
+      #   name: private-repo
+      #   type: helm
+      #   password: my-password
+      #   username: my-username
+      # private-repo:
+      #   url: https://github.com/argoproj/private-repo
+
+    secret:
+      extra: {}
+        # LDAP_PASSWORD: "mypassword"
 
   controller:
     metrics:
