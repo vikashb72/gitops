@@ -37,6 +37,24 @@ istiod:
 
     omitSidecarInjectorConfigMap: false
 
+  meshConfig:
+    enablePrometheusMerge: true
+    extensionProviders:
+      - name: authentik
+        envoyExtAuthzHttp:
+          headersToDownstreamOnAllow:
+            - cookie
+          headersToUpstreamOnAllow:
+            - set-cookie
+            - x-authentik-*
+          includeRequestHeadersInCheck:
+            - cookie
+          pathPrefix: /outpost.goauthentik.io/auth/envoy
+          service: "ak-outpost-authentik-embedded-outpost.authentik.svc.cluster.local"
+          port: "9000"
+          #port: 80
+          #service: authentik-server.authentik.svc.cluster.local
+
 cni:
   profile: ambient
 
