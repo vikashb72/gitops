@@ -50,7 +50,7 @@ argo-cd:
               issuer: https://authentik.minikube.where-ever.net/application/o/argocd/
               clientID: $argocd-authentic-client:id
               clientSecret: $argocd-authentic-client:secret
-              insecureEnableGroups: false
+              insecureEnableGroups: true
               scopes:
                 - openid
                 - profile
@@ -160,6 +160,21 @@ argo-cd:
           prometheus: kube-prometheus-stack
         additionalLabels:
           release: kube-prometheus-stack
+
+    volumeMounts: 
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+  
+    volumes: 
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
 
   redis:
     enabled: true
