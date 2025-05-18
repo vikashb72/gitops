@@ -2,6 +2,7 @@ base:
   global:
     istioNamespace: istio-system
 
+base:
   base:
     enableCRDTemplates: true
 
