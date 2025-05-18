@@ -44,20 +44,20 @@ argo-cd:
         hs.message = "we are good"
         return hs
 
-    dex.config: |
-      connectors:
-        - config:
-            issuer: https://authentik.minikube.where-ever.net/application/o/argocd/
-            clientID: $argocd-authentic-client:id
-            clientSecret: $argocd-authentic-client:secret
-            insecureEnableGroups: false
-            scopes:
-              - openid
-              - profile
-              - email
-          name: authentik
-          type: oidc
-          id: authentik
+      dex.config: |
+        connectors:
+          - config:
+              issuer: https://authentik.minikube.where-ever.net/application/o/argocd/
+              clientID: $argocd-authentic-client:id
+              clientSecret: $argocd-authentic-client:secret
+              insecureEnableGroups: false
+              scopes:
+                - openid
+                - profile
+                - email
+            name: authentik
+            type: oidc
+            id: authentik
 
     params:
       server.insecure: true
