@@ -3,28 +3,28 @@ name: istio
 version: 1.0.0
 dependencies:
   - name: base
-    version: 1.25.1
+    version: 1.26.0
     repository: https://istio-release.storage.googleapis.com/charts
   - name: istiod
-    version: 1.25.1
+    version: 1.26.0
     repository: https://istio-release.storage.googleapis.com/charts
   - name: cni
-    version: 1.25.1
+    version: 1.26.0
     repository: https://istio-release.storage.googleapis.com/charts
   - name: ztunnel
-    version: 1.25.1
+    version: 1.26.0
     repository: https://istio-release.storage.googleapis.com/charts
   - name: gateway
     alias: appGateway
-    version: 1.25.1
+    version: 1.26.0
     repository: https://istio-release.storage.googleapis.com/charts
   - name: gateway
     alias: infraGateway
-    version: 1.25.1
+    version: 1.26.0
     repository: https://istio-release.storage.googleapis.com/charts
   #- name: gateway
   #  alias: externalIngress
-  #  version: 1.25.1
+  #  version: 1.26.0
   #  repository: https://istio-release.storage.googleapis.com/charts
   #- name: kiali-server
   #  version: 2.6.0
