@@ -44,6 +44,7 @@ argo-cd:
         hs.message = "we are good"
         return hs
 
+      url: https://argocd.minikube.where-ever.net
       dex.config: |
         connectors:
           - config:
@@ -55,6 +56,7 @@ argo-cd:
                 - openid
                 - profile
                 - email
+                - groups
             name: authentik
             type: oidc
             id: authentik
