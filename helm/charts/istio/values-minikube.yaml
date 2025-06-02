@@ -35,7 +35,8 @@ istiod:
 
     logAsJson: false
 
-    logging:                                                                          level: "default:debug"
+    logging:
+      level: "default:debug"
 
     omitSidecarInjectorConfigMap: false
 
