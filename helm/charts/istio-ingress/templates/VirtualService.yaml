@@ -1,21 +1,31 @@
 {{- range $key, $value := .Values.gateways }}
 {{- if not .disabled }}
 {{- if $value.VirtualServices }}
-{{- range $value.VirtualServices }}
+{{- range $VirtualService:= $value.VirtualServices }}
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
-  name: {{ .name }}
+  name: {{ $VirtualService.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
-{{- with .hosts }}
+{{- with $VirtualService.hosts }}
   hosts:
     {{- toYaml . | nindent 4 }}
 {{- end }}
   gateways:
     - {{ $key }}
-{{- with .http }}
+{{- with $VirtualService.http }}
   http:
+{{- if $VirtualService.CustomAuthorizationPolicy }}
+    - match:
+        - uri:
+            prefix: /outpost.goauthentik.io
+      route:
+        - destination:
+            host: authentik-server.authentik.svc.cluster.local
+            port:
+              number: 80
+{{- end }}
     {{- toYaml . | nindent 4 }}
 {{- end }}
 ---

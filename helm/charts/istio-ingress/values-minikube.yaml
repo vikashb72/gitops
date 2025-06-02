@@ -15,24 +15,13 @@ gateways:
           protocol: HTTPS
         hosts:
           - 'httpbin.minikube.where-ever.net'
-    CustomAuthorizationPolicy:
-      - name: httpbin-authorization-policy
-        hosts:
-          - httpbin.minikube.where-ever.net
     VirtualServices:
       - name: httpbin-virtual-service
         namespace: istio-ingress
+        CustomAuthorizationPolicy: true
         hosts:
           - "httpbin.minikube.where-ever.net"
         http:
-          - match:
-              - uri:
-                  prefix: /outpost.goauthentik.io
-            route:
-              - destination:
-                  host: authentik-server.authentik.svc.cluster.local
-                  port:
-                    number: 80
           - match:
               - uri:
                   regex: ^\/[^\.]+.*
@@ -43,6 +32,7 @@ gateways:
                   host: httpbin.httpbin.svc.cluster.local
                   port:
                     number: 8000
+
   # echoserver (via app-gateway)
   echoserver-gateway:
     namespace: echoserver

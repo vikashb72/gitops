@@ -1,7 +1,8 @@
 {{- range $key, $value := .Values.gateways }}
 {{- if not .disabled }}
-{{- if $value.CustomAuthorizationPolicy }}
-{{- range $value.CustomAuthorizationPolicy }}
+{{- if $value.VirtualServices }}
+{{- range $value.VirtualServices }}
+{{- if .CustomAuthorizationPolicy }}
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
@@ -22,6 +23,7 @@ spec:
             - "{{ . }}"
 {{- end }}
 ---
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
