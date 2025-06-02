@@ -19,6 +19,7 @@ redis:
     acl:
       enabled: false
       sentinel: false
+      # this does not work, using mount aclfile /opt/bitnami/redis/etc/users.acl
       users: [ ]
       # users:
       #   - username: "my-user"
@@ -34,12 +35,25 @@ redis:
     repl-backlog-size 2mb
     appendonly yes
     save ""
+    aclfile /opt/bitnami/redis/etc/users.acl
 
   master:
     count: 3
     resourcesPreset: "nano" 			# nano, micro, small, medium
     persistence: 
       enabled: false
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
+      - name: redis-users-acl
+        secret:
+          secretName: redis-users-acl
 
   replica:
     resourcesPreset: "nano"
@@ -50,6 +64,14 @@ redis:
       enabled: false
     autoscaling:
       enabled: false
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+      - name: redis-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/redis/etc/users.acl"
 
   sentinel:
     enabled: true
@@ -61,6 +83,26 @@ redis:
     service:
       type: ClusterIP
       loadBalancerIP: ""
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
+      - name: redis-users-acl
+        secret:
+          secretName: redis-users-acl
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+      - name: redis-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/redis/etc/users.acl"
 
   tls:
     enabled: true
@@ -72,6 +114,14 @@ redis:
 
   metrics:
     enabled: true
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+      - name: redis-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/redis/etc/users.acl"
     serviceMonitor:
       enabled: true
       namespace: monitoring
