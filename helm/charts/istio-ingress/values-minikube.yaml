@@ -25,14 +25,14 @@ gateways:
         hosts:
           - "httpbin.minikube.where-ever.net"
         http:
-          - match:
-              - uri:
-                  prefix: /outpost.goauthentik.io
-            route:
-              - destination:
-                  host: authentik.authentik.svc.cluster.local
-                  port:
-                    number: 80
+          #- match:
+          #    - uri:
+          #        prefix: /outpost.goauthentik.io
+          #  route:
+          #    - destination:
+          #        host: authentik.authentik.svc.cluster.local
+          #        port:
+          #          number: 80
           - match:
               - uri:
                   regex: ^\/[^\.]+.*
