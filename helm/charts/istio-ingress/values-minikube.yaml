@@ -30,7 +30,7 @@ gateways:
                   prefix: /outpost.goauthentik.io
             route:
               - destination:
-                  host: authentik.authentik.svc.cluster.local
+                  host: authentik-server.authentik.svc.cluster.local
                   port:
                     number: 80
           - match:
