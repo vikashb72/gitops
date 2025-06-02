@@ -3,10 +3,10 @@ name: cert-manager
 version: 1.0.0
 dependencies:
   - name: cert-manager
-    version: v1.17.1
+    version: v1.17.2
     repository: https://charts.jetstack.io
   - name: trust-manager
-    version: v0.16.0
+    version: v0.17.1
     repository: https://charts.jetstack.io
   #- name: cert-manager-csi-driver
   #  version: v0.10.2

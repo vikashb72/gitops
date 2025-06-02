@@ -8,6 +8,12 @@ spec:
     - secret:
         name: "reference-tls"
         key: "ca.crt"
+    - secret:
+        name: "root-ca"
+        key: "ca.crt"
+    - configMap:
+        name: "kube-root-ca.crt"
+        key: "ca.crt"
   target:
     configMap:
       key: "own-ca-bundle.pem"
