@@ -1,7 +1,10 @@
 schema:
   env: minikube
+
   bootstrap: false
+
   namespace: &schema-namespace "external-secrets"
+
   SecretStores:
     azure-backend:
       disable: false
@@ -17,6 +20,7 @@ schema:
         clientSecret:
           name: azure-eso-config
           key: clientSecret
+
     external-vault-backend:
       disable: false
       provider: vault
@@ -33,6 +37,27 @@ schema:
         name: external-hashicorp-vault-token
         key: ca.crt
         namespace: *schema-namespace
+
+    k8s-vault-backend:
+      disable: false
+      namespace: *schema-namespace
+      provider: vault
+      server: https://vault-active.vault-system.svc.cluster.local:8200
+      path: "kv"
+      version: "v2"
+      caProvider:
+        type: Secret
+        name: vault-tls
+        key: ca.crt
+        namespace: external-secrets
+      auth:
+        kubernetes:
+          mountPath: "kubernetes"
+          role: eso-role
+          serviceAccountRef:
+            name: external-secrets
+            namespace: external-secrets
+
   Secrets:
     external-hashicorp-vault-token:
       namespace: *schema-namespace
@@ -48,8 +73,9 @@ schema:
         - localkey: ca.crt
           remotekey: "k8s-minikube-eso-external-vault"
           remoteproperty: ca.crt
+
     vault-tls:
-      #namespace: *schema-namespace
+      namespace: *schema-namespace
       refresh: 1h
       store: external-vault-backend
       properties:
