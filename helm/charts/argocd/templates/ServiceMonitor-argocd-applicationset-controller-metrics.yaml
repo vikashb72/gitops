@@ -5,7 +5,7 @@
 #kind: ServiceMonitor
 #metadata:
 #  name: argocd-applicationset-controller-metrics
-#  namespace: argocd
+#  namespace: {{ $.Release.Namespace }}
 #  labels:
 #    release: kube-prometheus-stack
 #spec:

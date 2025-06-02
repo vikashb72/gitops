@@ -6,7 +6,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: argocd-internal-deployer
-  namespace: argocd
+  namespace: {{ $.Release.Namespace }}
 roleRef:
   kind: ClusterRole
   name: argocd-internal-deployer-cluster-role
