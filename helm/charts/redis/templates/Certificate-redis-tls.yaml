@@ -6,11 +6,23 @@ metadata:
 spec:
   commonName: "*.redis.svc.cluster.local"
   dnsNames:
-    - "*.redis"
-    - "*.redis.svc"
-    - "*.redis.svc.cluster"
-    - "*.redis.svc.cluster.local"
+    - "127.0.0.1"
+    - "localhost"
+    - "redis"
+    - "redis-headless.redis.svc.cluster.local"
+    - "*.redis-headless.redis.svc.cluster.local"
+    - "*.redis.redis.svc.cluster.local"
+    - "redis-master.redis.svc.cluster.local"
+    - "*.redis-master.redis.svc.cluster.local"
+    - "redis-headless.redis"
+    - "*.redis-headless.redis"
+    - "*.redis.redis"
+    - "redis-master.redis"
+    - "*.redis-master.redis"
   secretName: redis-tls
+  privateKey:
+    algorithm: RSA
+    size: 2048
   issuerRef:
     name: vault-cert-issuer
     kind: ClusterIssuer
