@@ -6,7 +6,7 @@
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
-  name: {{ .name }}
+  name: {{ .name | replace "virtual-service" "authorization-policy" }}
   namespace: {{ default "istio-system" $.Values.schema.istioNamespace }}
 spec:
   selector:
