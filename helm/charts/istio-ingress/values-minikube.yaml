@@ -18,7 +18,7 @@ gateways:
     CustomAuthorizationPolicy:
       - name: httpbin-authorization-policy
         hosts:
-          - httpbin.prd.iss.nttltd.global.ntt
+          - httpbin.minikube.where-ever.net
     VirtualServices:
       - name: httpbin-virtual-service
         namespace: istio-ingress
