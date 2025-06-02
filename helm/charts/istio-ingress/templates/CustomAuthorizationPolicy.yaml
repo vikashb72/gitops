@@ -1,0 +1,28 @@
+{{- range $key, $value := .Values.gateways }}
+{{- if not .disabled }}
+{{- if $value.CustomAuthorizationPolicy }}
+{{- range $value.CustomAuthorizationPolicy }}
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: {{ .name }}
+  namespace: {{ default "istio-system" $.Values.schema.istioNamespace }}
+spec:
+  selector:
+    matchLabels:
+      istio: {{ $value.gateway.selector }}
+  action: CUSTOM
+  provider:
+    name: "authentik"
+  rules:
+    - to:
+      - operation:
+          hosts:
+{{- range .hosts }}
+            - "{{ . }}"
+{{- end }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
