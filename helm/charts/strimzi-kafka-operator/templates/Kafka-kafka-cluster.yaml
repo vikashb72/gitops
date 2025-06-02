@@ -11,7 +11,7 @@ spec:
   clusterCa:
 {{- toYaml . | nindent 4 }}
 {{- end }}
-{{- with .Values.cluster.kafka.clusterCa }}
+{{- with .Values.cluster.kafka.clientsCa }}
   clientsCa:
 {{- toYaml . | nindent 4 }}
 {{- end }}
@@ -26,8 +26,10 @@ spec:
       transaction.state.log.replication.factor: 3
       transaction.state.log.min.isr: 2
       unclean.leader.election.enable: false
+{{- if .Values.schema.auth }}
     authorization:
       type: simple
+{{- end }}
     jvmOptions:
       -Xms: {{ .Values.cluster.kafka.jvmOptions.xms }}
       -Xmx: {{ .Values.cluster.kafka.jvmOptions.xmx }}
@@ -49,25 +51,29 @@ spec:
       initialDelaySeconds: 30
       timeoutSeconds: 10
     listeners:
-      #- name: plain
-      #  port: 9092
-      #  type: internal
-      #  tls: false
-      #  authentication:
-      #    type: scram-sha-512
+{{- if .Values.schema.tls }}
       - name: tls
         port: 9093
         type: internal
         tls: true
+{{- else }}
+      - name: plain
+        port: 9092
+        type: internal
+{{- end }}
+{{- if .Values.schema.auth }}
         authentication:
           type: scram-sha-512
+{{- end }}
 {{- if and .Values.cluster.kafka.external_listener .Values.cluster.kafka.external_listener.enabled }}
       - name: external
         port: {{ default 9094 .Values.cluster.kafka.external_listener.port }}
         type: {{ default "loadbalancer" .Values.cluster.kafka.external_listener.type }}
         tls: {{ default false .Values.cluster.kafka.external_listener.tls }}
+{{- if .Values.schema.auth }}
         authentication:
           type: scram-sha-512
+{{- end }}
         configuration:
           bootstrap:
   {{- if .Values.cluster.kafka.external_listener.annotations }}

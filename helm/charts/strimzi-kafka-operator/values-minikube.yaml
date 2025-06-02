@@ -1,5 +1,7 @@
 schema:
   env: minikube
+  auth: true
+  tls: true
 
 strimzi-kafka-operator:
   replicas: 1
