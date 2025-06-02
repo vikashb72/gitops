@@ -15,10 +15,10 @@ gateways:
           protocol: HTTPS
         hosts:
           - 'httpbin.minikube.where-ever.net'
-    #CustomAuthorizationPolicy:
-    #  - name: httpbin-authorization-policy
-    #    hosts:
-    #      - httpbin.minikube.where-ever.net
+    CustomAuthorizationPolicy:
+      - name: httpbin-authorization-policy
+        hosts:
+          - httpbin.minikube.where-ever.net
     VirtualServices:
       - name: httpbin-virtual-service
         namespace: istio-ingress
@@ -34,8 +34,8 @@ gateways:
           #        port:
           #          number: 80
           - match:
-              - uri:
-                  regex: ^\/[^\.]+.*
+              #- uri:
+              #    regex: ^\/[^\.]+.*
               - uri:
                   exact: /
             route:
@@ -96,31 +96,31 @@ gateways:
                     number: 80
                   host: argocd-server.argocd.svc.cluster.local
   # prometheus (via infra-gateway)
-  prometheus-gateway:
-    namespace: monitoring
-    gateway:
-      selector: infra-gateway
-    servers:
-      - port:
-          number: 443
-          name: prometheus-https
-          protocol: HTTPS
-        hosts:
-          - 'prometheus.minikube.where-ever.net'
-    VirtualServices:
-      - name: prometheus-virtual-service
-        namespace: monitoring
-        hosts:
-          - "prometheus.minikube.where-ever.net"
-        http:
-          - match:
-            - uri:
-                prefix: /
-            route:
-              - destination:
-                  port:
-                    number: 9090
-                  host: kube-prometheus-stack-prometheus.monitoring.svc.cluster.local
+  #prometheus-gateway:
+  #  namespace: monitoring
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: prometheus-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'prometheus.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: prometheus-virtual-service
+  #      namespace: monitoring
+  #      hosts:
+  #        - "prometheus.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 9090
+  #                host: kube-prometheus-stack-prometheus.monitoring.svc.cluster.local
   # authentik (via infra-gateway)
   authentik-gateway:
     namespace: authentik
@@ -150,184 +150,184 @@ gateways:
                     number: 80
                   host: authentik-server.authentik.svc.cluster.local
   # grafana (via infra-gateway)
-  grafana-gateway:
-    namespace: monitoring
-    gateway:
-      selector: infra-gateway
-    servers:
-      - port:
-          number: 443
-          name: grafana-https
-          protocol: HTTPS
-        hosts:
-          - 'grafana.minikube.where-ever.net'
-    VirtualServices:
-      - name: grafana-virtual-service
-        namespace: monitoring
-        hosts:
-          - "grafana.minikube.where-ever.net"
-        http:
-          - match:
-            - uri:
-                prefix: /
-            route:
-              - destination:
-                  port:
-                    number: 80
-                  host: kube-prometheus-stack-grafana
-  # alertmanager (via infra-gateway)
-  alertmanager-gateway:
-    namespace: monitoring
-    gateway:
-      selector: infra-gateway
-    servers:
-      - port:
-          number: 443
-          name: alertmanager-https
-          protocol: HTTPS
-        hosts:
-          - 'alertmanager.minikube.where-ever.net'
-    VirtualServices:
-      - name: alertmanager-virtual-service
-        namespace: monitoring
-        hosts:
-          - "alertmanager.minikube.where-ever.net"
-        http:
-          - match:
-            - uri:
-                prefix: /
-            route:
-              - destination:
-                  port:
-                    number: 9093
-                  host: alertmanager-operated
-  # loki (via infra-gateway)
-  loki-gateway:
-    namespace: loki-system
-    gateway:
-      selector: infra-gateway
-    servers:
-      - port:
-          number: 443
-          name: loki-https
-          protocol: HTTPS
-        hosts:
-          - 'loki.minikube.where-ever.net'
-    VirtualServices:
-      - name: loki-virtual-service
-        namespace: loki-system
-        hosts:
-          - "loki.minikube.where-ever.net"
-        http:
-          - match:
-            - uri:
-                prefix: /
-            route:
-              - destination:
-                  port:
-                    number: 80
-                  host: loki-gateway
-  # vault (via infra-gateway)
-  vault-gateway:
-    namespace: vault-system
-    gateway:
-      selector: infra-gateway
-    servers:
-      - port:
-          number: 443
-          name: vault-https
-          protocol: HTTPS
-        hosts:
-          - 'vault.minikube.where-ever.net'
-    VirtualServices:
-      - name: vault-virtual-service
-        namespace: vault-system
-        hosts:
-          - "vault.minikube.where-ever.net"
-        http:
-          - match:
-            - uri:
-                prefix: /
-            route:
-              - destination:
-                  port:
-                    number: 8200
-                  host: vault-ui
-  # goldilocks (via infra-gateway)
-  goldilocks-gateway:
-    namespace: goldilocks-system
-    gateway:
-      selector: infra-gateway
-    servers:
-      - port:
-          number: 443
-          name: goldilocks-https
-          protocol: HTTPS
-        hosts:
-          - 'goldilocks.minikube.where-ever.net'
-    VirtualServices:
-      - name: goldilocks-virtual-service
-        namespace: goldilocks-system
-        hosts:
-          - "goldilocks.minikube.where-ever.net"
-        http:
-          - match:
-            - uri:
-                prefix: /
-            route:
-              - destination:
-                  port:
-                    number: 80
-                  host: goldilocks-dashboard
-  # mailhog (via infra-gateway)
-  mailhog-gateway:
-    namespace: dev-tools
-    gateway:
-      selector: infra-gateway
-    servers:
-      - port:
-          number: 443
-          name: mailhog-https
-          protocol: HTTPS
-        hosts:
-          - 'mailhog.minikube.where-ever.net'
-    VirtualServices:
-      - name: mailhog-virtual-service
-        namespace: dev-tools
-        hosts:
-          - "mailhog.minikube.where-ever.net"
-        http:
-          - match:
-            - uri:
-                prefix: /
-            route:
-              - destination:
-                  port:
-                    number: 8025
-                  host: mailhog
+  #grafana-gateway:
+  #  namespace: monitoring
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: grafana-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'grafana.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: grafana-virtual-service
+  #      namespace: monitoring
+  #      hosts:
+  #        - "grafana.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 80
+  #                host: kube-prometheus-stack-grafana
+  ## alertmanager (via infra-gateway)
+  #alertmanager-gateway:
+  #  namespace: monitoring
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: alertmanager-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'alertmanager.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: alertmanager-virtual-service
+  #      namespace: monitoring
+  #      hosts:
+  #        - "alertmanager.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 9093
+  #                host: alertmanager-operated
+  ## loki (via infra-gateway)
+  #loki-gateway:
+  #  namespace: loki-system
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: loki-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'loki.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: loki-virtual-service
+  #      namespace: loki-system
+  #      hosts:
+  #        - "loki.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 80
+  #                host: loki-gateway
+  ## vault (via infra-gateway)
+  #vault-gateway:
+  #  namespace: vault-system
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: vault-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'vault.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: vault-virtual-service
+  #      namespace: vault-system
+  #      hosts:
+  #        - "vault.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 8200
+  #                host: vault-ui
+  ## goldilocks (via infra-gateway)
+  #goldilocks-gateway:
+  #  namespace: goldilocks-system
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: goldilocks-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'goldilocks.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: goldilocks-virtual-service
+  #      namespace: goldilocks-system
+  #      hosts:
+  #        - "goldilocks.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 80
+  #                host: goldilocks-dashboard
+  ## mailhog (via infra-gateway)
+  #mailhog-gateway:
+  #  namespace: dev-tools
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: mailhog-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'mailhog.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: mailhog-virtual-service
+  #      namespace: dev-tools
+  #      hosts:
+  #        - "mailhog.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 8025
+  #                host: mailhog
   # homepage (via infra-gateway)
-  homepage-gateway:
-    namespace: homepage
-    gateway:
-      selector: infra-gateway
-    servers:
-      - port:
-          number: 443
-          name: homepage-https
-          protocol: HTTPS
-        hosts:
-          - 'homepage.minikube.where-ever.net'
-    VirtualServices:
-      - name: homepage-virtual-service
-        namespace: homepage
-        hosts:
-          - "homepage.minikube.where-ever.net"
-        http:
-          - match:
-            - uri:
-                prefix: /
-            route:
-              - destination:
-                  port:
-                    number: 3000
-                  host: homepage
+  #homepage-gateway:
+  #  namespace: homepage
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: homepage-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'homepage.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: homepage-virtual-service
+  #      namespace: homepage
+  #      hosts:
+  #        - "homepage.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 3000
+  #                host: homepage
