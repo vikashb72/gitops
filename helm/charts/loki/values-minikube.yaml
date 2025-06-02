@@ -29,9 +29,9 @@ schema:
         - tempo-system
         - vault-system
         - vpa-system
-    json:
-      namespace:
-        - gloo-mesh
+    json: {}
+    #  namespace:
+    #    - gloo-mesh
 
 loki:
   global:
