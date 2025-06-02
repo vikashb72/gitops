@@ -21,7 +21,7 @@ gateways:
           - httpbin.prd.iss.nttltd.global.ntt
     VirtualServices:
       - name: httpbin-virtual-service
-        namespace: httpbin
+        namespace: istio-ingress
         hosts:
           - "httpbin.minikube.where-ever.net"
         http:
