@@ -4,7 +4,7 @@ apiVersion: {{ default "networking.istio.io/v1" $value.api }}
 kind: Gateway
 metadata:
   name: {{ $key }}
-  namespace: {{ $value.namespace }}
+  namespace: {{ $.Release.Namespace }}
 spec:
   selector:
     istio: {{ default "istio" $value.gateway.selector }}
