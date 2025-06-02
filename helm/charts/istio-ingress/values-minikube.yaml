@@ -15,10 +15,10 @@ gateways:
           protocol: HTTPS
         hosts:
           - 'httpbin.minikube.where-ever.net'
-    CustomAuthorizationPolicy:
-      - name: httpbin-authorization-policy
-        hosts:
-          - httpbin.minikube.where-ever.net
+    #CustomAuthorizationPolicy:
+    #  - name: httpbin-authorization-policy
+    #    hosts:
+    #      - httpbin.minikube.where-ever.net
     VirtualServices:
       - name: httpbin-virtual-service
         namespace: istio-ingress
