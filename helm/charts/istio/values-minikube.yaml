@@ -53,8 +53,6 @@ istiod:
           includeRequestHeadersInCheck:
             - cookie
           pathPrefix: /outpost.goauthentik.io/auth/envoy
-          #service: "ak-outpost-authentik-embedded-outpost.authentik.svc.cluster.local"
-          #port: "9000"
           service: authentik-server.authentik.svc.cluster.local
           port: 80
 
