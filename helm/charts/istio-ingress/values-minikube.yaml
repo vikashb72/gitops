@@ -224,6 +224,9 @@ gateways:
           - 'vault.minikube.where-ever.net'
     VirtualServices:
       - name: vault-virtual-service
+        DestinationRule:
+          host: vault-ui.vault-system.svc.cluster.local
+          tls: true
         hosts:
           - "vault.minikube.where-ever.net"
         #tls:
