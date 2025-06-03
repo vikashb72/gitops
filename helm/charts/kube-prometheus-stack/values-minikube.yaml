@@ -166,6 +166,8 @@ kube-prometheus-stack:
       userKey: "GF_SMTP_USER"
 
     grafana.ini:
+      server:
+        root_url: https://grafana.minikube.where-ever.net/
       #auth:
       #  signout_redirect_url: "https://authentik.minikube.where-ever.net/application/o/grafana/" 
       #  oauth_auto_login: true
