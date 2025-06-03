@@ -28,6 +28,10 @@ spec:
 {{- end }}
     {{- toYaml . | nindent 4 }}
 {{- end }}
+{{- with $VirtualService.tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+{{- end }}
 ---
 {{- end }}
 {{- end }}

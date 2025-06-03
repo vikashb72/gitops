@@ -225,15 +225,23 @@ gateways:
       - name: vault-virtual-service
         hosts:
           - "vault.minikube.where-ever.net"
-        http:
+        tls:
           - match:
-            - uri:
-                prefix: /
+             - port: 8200
+               sniHosts:
+                 - "vault.minikube.where-ever.net"
             route:
               - destination:
-                  port:
-                    number: 8200
                   host: vault-ui.vault-system.svc.cluster.local
+        #http:
+        #  - match:
+        #    - uri:
+        #        prefix: /
+        #    route:
+        #      - destination:
+        #          port:
+        #            number: 8200
+        #          host: vault-ui.vault-system.svc.cluster.local
   ## goldilocks (via infra-gateway)
   #goldilocks-gateway:
   #  gateway:
