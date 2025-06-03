@@ -170,7 +170,7 @@ kube-prometheus-stack:
         root_url: https://grafana.minikube.where-ever.net/
       auth:
         signout_redirect_url: "https://authentik.minikube.where-ever.net/application/o/grafana/" 
-        oauth_auto_login: true
+        oauth_auto_login: false
       "auth.generic_oauth":
         name: authentik
         enabled: true
@@ -182,6 +182,7 @@ kube-prometheus-stack:
         api_url: "https://authentik.minikube.where-ever.net/application/o/userinfo/"
         # Optionally map user groups to Grafana roles
         role_attribute_path: contains(groups, 'Grafana Admins') && 'Admin' || contains(groups, 'Grafana Editors') && 'Editor' || 'Viewer'
+        allow_assign_grafana_admin: true
       unified_alerting:
         enabled: true
       smtp:
