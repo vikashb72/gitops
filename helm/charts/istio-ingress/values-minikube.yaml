@@ -172,12 +172,15 @@ gateways:
           - 'alertmanager.minikube.where-ever.net'
     VirtualServices:
       - name: alertmanager-virtual-service
+        CustomAuthorizationPolicy: true
         hosts:
           - "alertmanager.minikube.where-ever.net"
         http:
           - match:
-            - uri:
-                prefix: /
+              - uri:
+                  regex: ^\/[^\.]+.*
+              - uri:
+                  prefix: /
             route:
               - destination:
                   port:
