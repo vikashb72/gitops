@@ -58,20 +58,20 @@ istiod:
           service: authentik-server.authentik.svc.cluster.local
           port: 80
 
-    volumes:
-      - name: own-ca-bundle
-        configMap:
-          name: own-ca-bundle
-          defaultMode: 0644
-          optional: false
-          items:
-          - key: own-ca-bundle.pem
-            path: ca-certificates.crt
-
-    volumeMounts:
-      - mountPath: /etc/ssl/certs/
+  volumes:
+    - name: own-ca-bundle
+      configMap:
         name: own-ca-bundle
-        readOnly: true
+        defaultMode: 0644
+        optional: false
+        items:
+        - key: own-ca-bundle.pem
+          path: ca-certificates.crt
+
+  volumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
 
 cni:
   profile: ambient
@@ -101,6 +101,21 @@ infraGateway:
     loadBalancerIP: 192.168.49.252
     annotations:
       metallb.universe.tf/address-pool: default
+
+  volumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+        - key: own-ca-bundle.pem
+          path: ca-certificates.crt
+
+  volumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
 
 kiali-server:
   external_services:
