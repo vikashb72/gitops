@@ -182,7 +182,7 @@ gateways:
               - destination:
                   port:
                     number: 9093
-                  host: alertmanager-operated
+                  host: alertmanager-operated.monitoring.svc.cluster.local
   ## loki (via infra-gateway)
   #loki-gateway:
   #  gateway:
@@ -206,7 +206,7 @@ gateways:
   #            - destination:
   #                port:
   #                  number: 80
-  #                host: loki-gateway
+  #                host: loki-gateway.loki-system.svc.cluster.local
   ## vault (via infra-gateway)
   vault-gateway:
     gateway:
@@ -230,7 +230,7 @@ gateways:
               - destination:
                   port:
                     number: 8200
-                  host: vault-ui
+                  host: vault-ui.vault-system.svc.cluster.local
   ## goldilocks (via infra-gateway)
   #goldilocks-gateway:
   #  gateway:
@@ -254,7 +254,7 @@ gateways:
   #            - destination:
   #                port:
   #                  number: 80
-  #                host: goldilocks-dashboard
+  #                host: goldilocks-dashboard.goldilocks-system.svc.cluster.local
   ## mailhog (via infra-gateway)
   #mailhog-gateway:
   #  gateway:
@@ -278,7 +278,7 @@ gateways:
   #            - destination:
   #                port:
   #                  number: 8025
-  #                host: mailhog
+  #                host: mailhog.dev-tools.svc.cluster.local
   # homepage (via infra-gateway)
   #homepage-gateway:
   #  gateway:
@@ -302,4 +302,4 @@ gateways:
   #            - destination:
   #                port:
   #                  number: 3000
-  #                host: homepage
+  #                host: homepage.homepage.svc.cluster.local
