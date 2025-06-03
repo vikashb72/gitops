@@ -152,6 +152,13 @@ kube-prometheus-stack:
     #namespaceOverride: "monitoring"
     defaultDashboardsEditable: true
 
+    extraSecretMounts:
+      - name: auth-generic-oauth-secret-mount
+        secretName: grafana-authentik-client
+        defaultMode: 0440
+        mountPath: /etc/secrets/auth_generic_oauth
+        readOnly: true
+
     smtp:
       enabled: true
       existingSecret: "prometheus-alerting-config"
@@ -159,6 +166,20 @@ kube-prometheus-stack:
       userKey: "GF_SMTP_USER"
 
     grafana.ini:
+      auth:
+        signout_redirect_url: "https://authentik.minikube.where-ever.net/application/o/grafana/" 
+        oauth_auto_login: true
+          auth.generic_oauth:
+        name: authentik
+        enabled: true
+        client_id: $__file{/etc/secrets/auth_generic_oauth/id}
+        client_secret: $__file{/etc/secrets/auth_generic_oauth/secret}
+        scopes: "openid profile email"
+        auth_url: "https://authentik.minikube.where-ever.net/application/o/authorize/"
+        token_url: "https://authentik.minikube.where-ever.net/application/o/authorize/"
+        api_url: "https://authentik.minikube.where-ever.net/application/o/userinfo/"
+        # Optionally map user groups to Grafana roles
+        role_attribute_path: contains(groups, 'Grafana Admins') && 'Admin' || contains(groups, 'Grafana Editors') && 'Editor' || 'Viewer'
       unified_alerting:
         enabled: true
       smtp:
@@ -169,6 +190,9 @@ kube-prometheus-stack:
         skip_verify: true # for minikube
       security:
         disable_initial_admin_creation: true
+      users:
+        auto_assign_org: true
+        auto_assign_org_id: 1
 
     notifiers:
       notifiers.yaml:
