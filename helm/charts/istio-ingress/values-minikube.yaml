@@ -219,6 +219,7 @@ gateways:
           number: 443
           name: vault-https
           protocol: HTTPS
+          tlsMode: PASSTHROUGH
         hosts:
           - 'vault.minikube.where-ever.net'
     VirtualServices:

@@ -16,7 +16,7 @@ spec:
         protocol: {{ .port.protocol }}
 {{- if eq .port.protocol "HTTPS" }}
       tls:
-        mode: SIMPLE
+        mode: {{ default "SIMPLE" .port.tlsMode }}
         credentialName: {{ $value.gateway.selector }}-{{ $key }}-{{ .port.name }}-gw-tls
 {{- end }}
       hosts:
