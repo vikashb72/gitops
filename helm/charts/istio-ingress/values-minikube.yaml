@@ -229,16 +229,6 @@ gateways:
           tls: true
         hosts:
           - "vault.minikube.where-ever.net"
-        #tls:
-        #  - match:
-        #     - port: 8200
-        #       sniHosts:
-        #         - "vault.minikube.where-ever.net"
-        #    route:
-        #      - destination:
-        #          host: vault-ui.vault-system.svc.cluster.local
-        #          port:
-        #            number: 8200
         http:
           - match:
             - uri:
@@ -248,6 +238,10 @@ gateways:
                   port:
                     number: 8200
                   host: vault-ui.vault-system.svc.cluster.local
+            headers:
+              request:
+                set:
+                  X-Forwarded-Proto: https
   ## goldilocks (via infra-gateway)
   #goldilocks-gateway:
   #  gateway:
