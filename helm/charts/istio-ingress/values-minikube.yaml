@@ -136,29 +136,29 @@ gateways:
                     number: 80
                   host: authentik-server.authentik.svc.cluster.local
   # grafana (via infra-gateway)
-  #grafana-gateway:
-  #  gateway:
-  #    selector: infra-gateway
-  #  servers:
-  #    - port:
-  #        number: 443
-  #        name: grafana-https
-  #        protocol: HTTPS
-  #      hosts:
-  #        - 'grafana.minikube.where-ever.net'
-  #  VirtualServices:
-  #    - name: grafana-virtual-service
-  #      hosts:
-  #        - "grafana.minikube.where-ever.net"
-  #      http:
-  #        - match:
-  #          - uri:
-  #              prefix: /
-  #          route:
-  #            - destination:
-  #                port:
-  #                  number: 80
-  #                host: kube-prometheus-stack-grafana
+  grafana-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: grafana-https
+          protocol: HTTPS
+        hosts:
+          - 'grafana.minikube.where-ever.net'
+    VirtualServices:
+      - name: grafana-virtual-service
+        hosts:
+          - "grafana.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: kube-prometheus-stack-grafana.monitoring.svc.cluster.local
   ## alertmanager (via infra-gateway)
   alertmanager-gateway:
     gateway:
