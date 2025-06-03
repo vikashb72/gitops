@@ -89,31 +89,34 @@ gateways:
                     number: 80
                   host: argocd-server.argocd.svc.cluster.local
   # prometheus (via infra-gateway)
-  #prometheus-gateway:
-  #  namespace: monitoring
-  #  gateway:
-  #    selector: infra-gateway
-  #  servers:
-  #    - port:
-  #        number: 443
-  #        name: prometheus-https
-  #        protocol: HTTPS
-  #      hosts:
-  #        - 'prometheus.minikube.where-ever.net'
-  #  VirtualServices:
-  #    - name: prometheus-virtual-service
-  #      namespace: monitoring
-  #      hosts:
-  #        - "prometheus.minikube.where-ever.net"
-  #      http:
-  #        - match:
-  #          - uri:
-  #              prefix: /
-  #          route:
-  #            - destination:
-  #                port:
-  #                  number: 9090
-  #                host: kube-prometheus-stack-prometheus.monitoring.svc.cluster.local
+  prometheus-gateway:
+    namespace: monitoring
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: prometheus-https
+          protocol: HTTPS
+        hosts:
+          - 'prometheus.minikube.where-ever.net'
+    VirtualServices:
+      - name: prometheus-virtual-service
+        namespace: monitoring
+        CustomAuthorizationPolicy: true
+        hosts:
+          - "prometheus.minikube.where-ever.net"
+        http:
+          - match:
+              - uri:
+                  regex: ^\/[^\.]+.*
+              - uri:
+                  prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 9090
+                  host: kube-prometheus-stack-prometheus.monitoring.svc.cluster.local
   # authentik (via infra-gateway)
   authentik-gateway:
     namespace: authentik
