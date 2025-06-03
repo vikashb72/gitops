@@ -1,0 +1,23 @@
+{{- range $key, $value := .Values.gateways }}
+{{- if not .disabled }}
+{{- if $value.VirtualServices }}
+{{- range $value.VirtualServices }}
+{{- if .DestinationRule }}
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: {{ .name | replace "virtual-service" "destination-rule" }}
+  namespace: {{ default "istio-system" $.Values.schema.istioNamespace }}
+spec:
+  host: {{ .DestinationRule.host }}
+{{- if .DestinationRule.tls }}
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+{{- end }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
