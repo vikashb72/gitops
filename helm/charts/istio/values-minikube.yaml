@@ -102,20 +102,20 @@ infraGateway:
     annotations:
       metallb.universe.tf/address-pool: default
 
-  #volumes:
-  #  - name: own-ca-bundle
-  #    configMap:
-  #      name: own-ca-bundle
-  #      defaultMode: 0644
-  #      optional: false
-  #      items:
-  #      - key: own-ca-bundle.pem
-  #        path: ca-certificates.crt
+  volumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+        - key: own-ca-bundle.pem
+          path: ca-certificates.crt
 
-  #volumeMounts:
-  #  - mountPath: /etc/ssl/certs/
-  #    name: own-ca-bundle
-  #    readOnly: true
+  volumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
 
 kiali-server:
   external_services:
