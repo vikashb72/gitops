@@ -14,10 +14,14 @@ spec:
         number: {{ .port.number }}
         name: {{ .port.name }}
         protocol: {{ .port.protocol }}
-{{- if or (eq .port.protocol "HTTPS") (eq .port.protocol "TLS") }}
+{{- if eq .port.protocol "HTTPS" }}
       tls:
+{{- if .port.tlsMode }}
+        mode: {{ default "SIMPLE" .port.tlsMode }}
+{{- else }}
         mode: {{ default "SIMPLE" .port.tlsMode }}
         credentialName: {{ $value.gateway.selector }}-{{ $key }}-{{ .port.name }}-gw-tls
+{{- end }}
 {{- end }}
       hosts:
 {{- range .hosts }}

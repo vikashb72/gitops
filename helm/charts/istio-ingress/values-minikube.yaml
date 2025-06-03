@@ -218,9 +218,9 @@ gateways:
       - port:
           number: 443
           name: vault-https
-          protocol: TLS
-          #protocol: HTTPS
-          #tlsMode: PASSTHROUGH
+          #protocol: TLS
+          protocol: HTTPS
+          tlsMode: PASSTHROUGH
         hosts:
           - 'vault.minikube.where-ever.net'
     VirtualServices:
@@ -235,6 +235,8 @@ gateways:
             route:
               - destination:
                   host: vault-ui.vault-system.svc.cluster.local
+                  port:
+                    number: 8200
         #http:
         #  - match:
         #    - uri:
