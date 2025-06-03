@@ -35,7 +35,7 @@ gateways:
 
   # echoserver (via app-gateway)
   echoserver-gateway:
-    namespace: echoserver
+    namespace: istio-ingress
     gateway:
       selector: app-gateway
     servers:
@@ -47,18 +47,21 @@ gateways:
           - 'echoserver.minikube.where-ever.net'
     VirtualServices:
       - name: echoserver-virtual-service
-        namespace: echoserver
+        namespace: istio-ingress
+        CustomAuthorizationPolicy: true
         hosts:
           - "echoserver.minikube.where-ever.net"
         http:
           - match:
-            - uri:
-                prefix: /
+              - uri:
+                  regex: ^\/[^\.]+.*
+              - uri:
+                  prefix: /
             route:
               - destination:
+                  host: echoserver.echoserver.svc.cluster.local
                   port:
                     number: 80
-                  host: echoserver.echoserver.svc.cluster.local
   # argocd (via infra-gateway)
   argocd-gateway:
     namespace: argocd
