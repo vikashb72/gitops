@@ -238,10 +238,6 @@ gateways:
                   port:
                     number: 8200
                   host: vault-ui.vault-system.svc.cluster.local
-            headers:
-              request:
-                set:
-                  X-Forwarded-Proto: https
   ## goldilocks (via infra-gateway)
   #goldilocks-gateway:
   #  gateway:
