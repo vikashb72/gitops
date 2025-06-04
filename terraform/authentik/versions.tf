@@ -15,6 +15,8 @@ terraform {
       source  = "goauthentik/authentik"
       version = "2025.4.0"
     }
+
   }
+
   backend "azurerm" {}
 }
