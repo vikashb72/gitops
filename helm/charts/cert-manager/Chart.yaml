@@ -9,5 +9,8 @@ dependencies:
     version: v0.17.1
     repository: https://charts.jetstack.io
   #- name: cert-manager-csi-driver
-  #  version: v0.10.2
+  #  version: v0.10.3
+  #  repository: https://charts.jetstack.io
+  #- name: cert-manager-istio-csr
+  #  version: v0.14.1
   #  repository: https://charts.jetstack.io
