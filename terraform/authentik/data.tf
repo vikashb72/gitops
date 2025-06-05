@@ -21,3 +21,12 @@ data "authentik_property_mapping_provider_scope" "scope-openid" {
 data "authentik_certificate_key_pair" "wherever" {
   name = "Authentik-where-ever"
 }
+
+data "authentik_group" "admins" {
+  name = "authentik Admins"
+}
+
+data "authentik_user" "vikashb" {
+  username = "vikashb"
+}
+
