@@ -16,3 +16,10 @@ resource "authentik_application" "httpbin" {
 resource "authentik_group" "httpbin_admins" {
   name = "Httpbin Access"
 }
+
+# The policy binding ensures that members of the Httpbin Access group have access to the application
+resource "authentik_policy_binding" "httpbin_access" {
+  target = authentik_application.httpbin.uuid
+  group  = authentik_group.httpbin_admins.id
+  order  = 0
+}

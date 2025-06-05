@@ -38,3 +38,10 @@ resource "authentik_group" "argocd_editors" {
 resource "authentik_group" "argocd_viewers" {
   name = "ArgoCD Viewers"
 }
+
+# The policy binding ensures that members of the ArgoCD Admins group have access to the application
+resource "authentik_policy_binding" "argocd_access" {
+  target = authentik_application.argocd.uuid
+  group  = authentik_group.argocd_admins.id
+  order  = 0
+}

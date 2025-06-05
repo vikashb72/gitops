@@ -34,3 +34,10 @@ resource "authentik_group" "grafana_editors" {
 resource "authentik_group" "grafana_viewers" {
   name = "Grafana Viewers"
 }
+
+# The policy binding ensures that members of the Grafana Admins group have access to the application
+resource "authentik_policy_binding" "grafana_access" {
+  target = authentik_application.grafana.uuid
+  group  = authentik_group.grafana_admins.id
+  order  = 0
+}
