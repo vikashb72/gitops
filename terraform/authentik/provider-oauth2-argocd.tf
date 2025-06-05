@@ -1,5 +1,5 @@
 resource "authentik_provider_oauth2" "argocd" {
-  name = "Argocd"
+  name = "Argocd Outh2 Provider"
 
   client_id = var.argocd_client_id
 
@@ -7,8 +7,11 @@ resource "authentik_provider_oauth2" "argocd" {
 
   authorization_flow = data.authentik_flow.default-provider-authorization-implicit-consent.id
 
-  invalidation_flow     = "default-provider-invalidation-flow"
+  invalidation_flow  = data.authentik_flow.default-provider-invalidation-flow.id
+
   allowed_redirect_uris = var.argocd_redirect_uris
+
+  signing_key = data.authentik_certificate_key_pair.wherever.id
 
   property_mappings = [
     data.authentik_property_mapping_provider_scope.scope-email.id,
@@ -20,6 +23,7 @@ resource "authentik_provider_oauth2" "argocd" {
 resource "authentik_application" "argocd" {
   name              = "ArgoCD"
   slug              = "argocd"
+  meta_launch_url   = var.argocd_launch_url
   protocol_provider = authentik_provider_oauth2.argocd.id
 }
 
