@@ -27,38 +27,10 @@ variable "environment" {
   type = string
 }
 
-variable "grafana_redirect_uris" {
-  type = list(any)
+variable "oauth2_providers" {
+    type = list(any)
 }
 
-variable "grafana_launch_url" {
-  type = string
-}
-
-variable "grafana_client_id" {
-  type = string
-}
-
-variable "grafana_client_secret" {
-  type = string
-}
-
-variable "argocd_redirect_uris" {
-  type = list(any)
-}
-
-variable "argocd_launch_url" {
-  type = string
-}
-
-variable "argocd_client_id" {
-  type = string
-}
-
-variable "argocd_client_secret" {
-  type = string
-}
-
-variable "httpbin_url" {
-  type = string
+variable "proxy_providers" {
+    type = list(any)
 }
