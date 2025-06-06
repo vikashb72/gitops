@@ -18,7 +18,7 @@ data "authentik_property_mapping_provider_scope" "scope-openid" {
   name = "authentik default OAuth Mapping: OpenID 'openid'"
 }
 
-data "authentik_certificate_key_pair" "wherever" {
+data "authentik_certificate_key_pair" "signing_key" {
   name = "Authentik-where-ever"
 }
 
