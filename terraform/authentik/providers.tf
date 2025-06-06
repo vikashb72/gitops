@@ -20,3 +20,7 @@ provider "authentik" {
   token    = var.authentik_token
   insecure = false
 }
+
+provider "null" {
+  # Configuration options
+}
