@@ -15,6 +15,10 @@ resource "authentik_application" "proxy_applications" {
   name              = each.value.name
   slug              = each.value.name
   protocol_provider = authentik_provider_proxy.proxy_providers[each.key].id
+
+  depends_on = [
+    authentik_provider_proxy.proxy_providers
+  ]
 }
 
 resource "authentik_group" "proxy_groups" {
@@ -30,4 +34,9 @@ resource "authentik_policy_binding" "proxy_access" {
   target = authentik_application.proxy_applications[each.value.pname].uuid
   group  = authentik_group.proxy_groups[each.key].id
   order  = each.value.idx
+
+  depends_on = [
+    authentik_application.proxy_applications,
+    authentik_group.proxy_groups
+  ]
 }

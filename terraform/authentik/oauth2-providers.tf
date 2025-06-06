@@ -27,12 +27,20 @@ resource "authentik_application" "applications" {
   slug              = each.key
   meta_launch_url   = each.value.launch_url
   protocol_provider = authentik_provider_oauth2.providers[each.key].id
+
+  depends_on = [
+    authentik_provider_oauth2.providers
+  ]
 }
 
 resource "authentik_group" "groups" {
   for_each = local.oauth2Groups
 
   name  = each.value.group
+
+  depends_on = [
+    authentik_provider_oauth2.providers
+  ]
 }
 
 # The policy binding ensures that members of the groups have access to the application
@@ -42,4 +50,8 @@ resource "authentik_policy_binding" "policy_binding" {
   target = authentik_application.applications[each.value.pname].uuid
   group  = authentik_group.groups[each.key].id
   order  = each.value.idx
+
+  depends_on = [
+    authentik_group.groups
+  ]
 }
