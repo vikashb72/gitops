@@ -29,4 +29,3 @@ data "authentik_group" "admins" {
 data "authentik_user" "vikashb" {
   username = "vikashb"
 }
-
