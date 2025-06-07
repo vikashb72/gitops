@@ -1,0 +1,28 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: redis-certmanager-cert
+  namespace: redis
+spec:
+  commonName: "*.redis.svc.cluster.local"
+  dnsNames:
+    - "127.0.0.1"
+    - "localhost"
+    - "redis"
+    - "redis-headless.redis.svc.cluster.local"
+    - "*.redis-headless.redis.svc.cluster.local"
+    - "*.redis.redis.svc.cluster.local"
+    - "redis-master.redis.svc.cluster.local"
+    - "*.redis-master.redis.svc.cluster.local"
+    - "redis-headless.redis"
+    - "*.redis-headless.redis"
+    - "*.redis.redis"
+    - "redis-master.redis"
+    - "*.redis-master.redis"
+  secretName: redis-tls
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
