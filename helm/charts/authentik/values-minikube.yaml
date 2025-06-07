@@ -67,6 +67,27 @@ authentik:
             name: authentik-secrets
             key: AUTHENTIK_EMAIL__FROM
 
+    volumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+      - mountPath: /certs
+        name: authentik-tls
+        readOnly: true
+
+    volumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+      - name: authentik-tls
+        secret:
+          secretName: authentik-tls
+
     #envFrom:
     #  - secretRef:
     #      name: authentik-secrets
@@ -87,6 +108,9 @@ authentik:
     #envFrom:
     #  - secretRef:
     #      name: authentik-secrets
+
+    #volumeMounts:
+    #volumes:
   
     service:
       labels: {}
@@ -118,6 +142,9 @@ authentik:
     #envFrom:
     #  - secretRef:
     #      name: authentik-secrets
+
+    #volumeMounts:
+    #volumes:
   
   geoip:
     enabled: false
