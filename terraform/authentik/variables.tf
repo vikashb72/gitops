@@ -27,6 +27,22 @@ variable "environment" {
   type = string
 }
 
+variable "vault_address" {
+  type = string
+}
+
+variable "vault_token" {
+  type = string
+}
+
+variable "akv_name" {
+  type = string
+}
+
+variable "akv_rg" {
+  type = string
+}
+
 variable "oauth2_providers" {
     type = list(any)
 }
