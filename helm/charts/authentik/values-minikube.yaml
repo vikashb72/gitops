@@ -87,6 +87,13 @@ authentik:
       - name: authentik-tls
         secret:
           secretName: authentik-tls
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: tls.crt
+            path: authentik-tls.crt
+          - key: tls.key
+            path: authentik-tls.key
 
     #envFrom:
     #  - secretRef:
