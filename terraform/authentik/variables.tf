@@ -34,3 +34,7 @@ variable "oauth2_providers" {
 variable "proxy_providers" {
     type = list(any)
 }
+
+variable "users" {
+    type = list(any)
+}
