@@ -6,8 +6,7 @@ oauth2_providers = [
   {
     key            = "argocd",
     name           = "ArgoCD",
-    client_id      = "REPLACE ME",
-    client_secret  = "REPLACE ME",
+    secret_name    = "minikube/argocd/authentik-client",
     groups         = ["ArgoCD Admins", "ArgoCD Viewers" ],
     launch_url     = "https://argocd.minikube.where-ever.net",
     redirect_uris  = [
@@ -28,8 +27,7 @@ oauth2_providers = [
   {
     key            = "grafana"
     name           = "Grafana",
-    client_id      = "REPLACE ME",
-    client_secret  = "REPLACE ME",
+    secret_name    = "minikube/grafana/authentik-client",
     groups         = ["Grafana Admins", "Grafana Editors", "Grafana Viewers"],
     launch_url     = "https://grafana.minikube.where-ever.net",
     redirect_uris  = [
