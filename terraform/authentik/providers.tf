@@ -24,3 +24,9 @@ provider "authentik" {
 provider "null" {
   # Configuration options
 }
+
+provider "vault" {
+  # Configuration options
+  address = var.vault_address
+  token   = var.vault_token
+}
