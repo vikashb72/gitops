@@ -23,7 +23,7 @@ data "authentik_property_mapping_provider_scope" "scope-openid" {
 }
 
 data "authentik_certificate_key_pair" "signing_key" {
-  name = "Authentik-where-ever"
+  name = "authentik-tls"
 }
 
 data "authentik_group" "admins" {
