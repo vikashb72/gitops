@@ -44,6 +44,11 @@ argocdManaged:
     targetNamespace: redis
     sources:
       - path: helm/charts/redis
+  valkey:
+    name: valkey
+    targetNamespace: valkey
+    sources:
+      - path: helm/charts/valkey
   strimzi-kafka-operator:
     name: strimzi-kafka-operator
     targetNamespace: kafka-system
