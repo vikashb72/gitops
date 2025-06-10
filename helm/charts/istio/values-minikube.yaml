@@ -35,6 +35,9 @@ istiod:
 
     logAsJson: false
 
+    proxy:
+      logLevel: debug
+
     logging:
       level: "default:debug"
 
