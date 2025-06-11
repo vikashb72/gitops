@@ -94,7 +94,13 @@ proxy_providers  = [
 # data.authentik_group.admins.id f146c8e3-dc15-4b6d-a573-56ea7756ed8a
 # argocd-ArgoCD-Admins           c74c0d75-4da2-440f-ba59-82a39e6a7ddd
 # grafana-Grafana-Admins         83d1dbf8-45ea-49c2-afcf-d45de225d24c
-# httpbin-httpbin-Access         166987f6-4bc9-424b-8401-f5898d809198
+# alertmanager Access            a8ca4a36-38cf-4154-bd5a-253de73c908e
+# echoserver Access              fa972771-a3df-43b0-8004-280e950496b4
+# goldilocks Access              b2aab3c5-ccab-4796-8859-928f5c64cb90
+# homepage Access                dd923778-aec0-4902-a4c4-e3615288cf89
+# httpbin Access                 166987f6-4bc9-424b-8401-f5898d809198
+# prometheus Access              38d249bf-679b-427e-b1da-6f5f07919ffd
+# vault Access                   539f019a-8c38-4c8a-9758-c50438848939
 
 users = [
   {
@@ -105,7 +111,13 @@ users = [
       "f146c8e3-dc15-4b6d-a573-56ea7756ed8a",
       "c74c0d75-4da2-440f-ba59-82a39e6a7ddd",
       "83d1dbf8-45ea-49c2-afcf-d45de225d24c",
-      "166987f6-4bc9-424b-8401-f5898d809198"
+      "166987f6-4bc9-424b-8401-f5898d809198",
+      "a8ca4a36-38cf-4154-bd5a-253de73c908e",
+      "fa972771-a3df-43b0-8004-280e950496b4",
+      "b2aab3c5-ccab-4796-8859-928f5c64cb90",
+      "dd923778-aec0-4902-a4c4-e3615288cf89",
+      "38d249bf-679b-427e-b1da-6f5f07919ffd",
+      "539f019a-8c38-4c8a-9758-c50438848939"
     ]
   },
   {
