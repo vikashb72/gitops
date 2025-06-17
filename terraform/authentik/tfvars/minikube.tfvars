@@ -1,6 +1,6 @@
 environment        = "minikube"
 authentik_url      = "https://authentik.minikube.where-ever.net"
-service_connection = "5dc4989a-c9bb-4464-b459-0d5050ee467a"
+service_connection = "2210ed4b-d589-48f8-9f45-24439b5f5e82"
 
 oauth2_providers = [
   {
@@ -91,16 +91,19 @@ proxy_providers  = [
   }
 ]
 
-# data.authentik_group.admins.id 2a25abf6-30a0-4ee0-993b-85e9e6c4c959
-# argocd-ArgoCD-Admins           f1b95697-7d3e-4aae-9055-4d9efcfc0fb4
-# grafana-Grafana-Admins         c75f543f-69f5-42e9-91e1-585aecb3cbb0
-# alertmanager Access            14fb6b41-6d73-40d2-9fe7-501eb4a1d15d
-# echoserver Access              28b62318-a9e9-4e61-872d-6c91bb67041f
-# goldilocks Access              9767bc3a-fa62-495f-8745-08bda8db3250
-# homepage Access                9df554fa-85a0-47f6-90c5-d60c29c0efab
-# httpbin Access                 d8363fd1-c544-4127-b97b-410a7a44fbfe
-# prometheus Access              49724385-60df-4bac-8a98-69ee44e22f98
-# vault Access                   0a0bb670-cec6-4622-aa8c-24ed84830237
+# admin_group = "7184b4f4-c031-4f94-8123-15a6524a809d"
+# "ArgoCD Admins" = "d340c1a6-454c-4b8d-9121-f69d8da0a654"
+# "ArgoCD Viewers" = "96fffed7-c5ef-4617-a927-a53d40cbb9ce"
+# "Grafana Admins" = "800dfba6-6d61-4a03-b9ad-7400f4aa6916"
+# "Grafana Editors" = "1f9da5b7-2f5c-46a1-8646-1d05d747c4b7"
+# "Grafana Viewers" = "2e0a680b-4963-428e-9c88-301b529a2004"
+# "alertmanager Access" = "c95bba94-1c3c-4a13-bd68-d50b198aaae5"
+# "echoserver Access" = "05a208c7-d4b2-4740-8bd0-c75c48667448"
+# "goldilocks Access" = "cfc24377-75d8-4ee8-a7b2-c5c4d5aaf8b1"
+# "homepage Access" = "90716734-0f9b-43cc-940b-9206cb0f453d"
+# "httpbin Access" = "b9dd6360-584f-4602-bfbc-79faa2c0f755"
+# "prometheus Access" = "fa70baa4-d1f0-40d9-9572-2812268e42b5"
+# "vault Access" = "013682bc-168f-4163-9fb9-bff1c6513317"
 
 users = [
   {
@@ -108,22 +111,16 @@ users = [
     name      = "Vikash Badal"
     email     = "vikash.badal@minikube.where-ever.net"
     groups    =  [
-      "2a25abf6-30a0-4ee0-993b-85e9e6c4c959",
-      "f1b95697-7d3e-4aae-9055-4d9efcfc0fb4",
-      "c75f543f-69f5-42e9-91e1-585aecb3cbb0",
-      "d8363fd1-c544-4127-b97b-410a7a44fbfe",
-      "14fb6b41-6d73-40d2-9fe7-501eb4a1d15d",
-      "28b62318-a9e9-4e61-872d-6c91bb67041f",
-      "9767bc3a-fa62-495f-8745-08bda8db3250",
-      "9df554fa-85a0-47f6-90c5-d60c29c0efab",
-      "49724385-60df-4bac-8a98-69ee44e22f98",
-      "0a0bb670-cec6-4622-aa8c-24ed84830237"
+      "7184b4f4-c031-4f94-8123-15a6524a809d",
+      "d340c1a6-454c-4b8d-9121-f69d8da0a654",
+      "800dfba6-6d61-4a03-b9ad-7400f4aa6916",
+      "c95bba94-1c3c-4a13-bd68-d50b198aaae5",
+      "05a208c7-d4b2-4740-8bd0-c75c48667448",
+      "cfc24377-75d8-4ee8-a7b2-c5c4d5aaf8b1",
+      "90716734-0f9b-43cc-940b-9206cb0f453d",
+      "b9dd6360-584f-4602-bfbc-79faa2c0f755",
+      "fa70baa4-d1f0-40d9-9572-2812268e42b5",
+      "013682bc-168f-4163-9fb9-bff1c6513317"
     ]
-  },
-  {
-    username  = "httpbin.user"
-    name      = "httpbin User"
-    email     = "httpbin.user@minikube.where-ever.net"
-    groups    =  [ "d8363fd1-c544-4127-b97b-410a7a44fbfe" ]
   }
 ]
