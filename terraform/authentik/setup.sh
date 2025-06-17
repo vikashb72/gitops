@@ -8,7 +8,7 @@ export CLIENT_ID=$(az ad sp list --display-name sp-terraform-cli \
 export CLIENT_SECRET=$(az keyvault secret show --vault-name kv-home-where-ever \
      --query value -o tsv --name Provisioning-Client-Secret)
 export TENANT_ID=$(az account show | jq -r '.tenantId')
-export TF_STORAGE_ACCOUNT_NAME="st${ENVIRONMENT}{$PROJECT}${DEPARTMENT}${ORGANISATION}01"
+export TF_STORAGE_ACCOUNT_NAME="st${ENVIRONMENT}${PROJECT}${DEPARTMENT}${ORGANISATION}01"
 export TF_STORAGE_ACCOUNT_RGRP="rg-${ENVIRONMENT}-${PROJECT}-${DEPARTMENT}-${ORGANISATION}-za"
 export CONTAINER_NAME="tfstate-${ENVIRONMENT}-${PROJECT}-${DEPARTMENT}-${ORGANISATION}"
 export CONTAINER_KEY_NAME="authentik.tfstate"

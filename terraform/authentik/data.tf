@@ -29,7 +29,3 @@ data "authentik_certificate_key_pair" "signing_key" {
 data "authentik_group" "admins" {
   name = "authentik Admins"
 }
-
-data "authentik_user" "vikashb" {
-  username = "vikashb"
-}
