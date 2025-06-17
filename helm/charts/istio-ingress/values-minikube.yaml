@@ -263,29 +263,29 @@ gateways:
   #                  number: 80
   #                host: goldilocks-dashboard.goldilocks-system.svc.cluster.local
   ## mailhog (via infra-gateway)
-  #mailhog-gateway:
-  #  gateway:
-  #    selector: infra-gateway
-  #  servers:
-  #    - port:
-  #        number: 443
-  #        name: mailhog-https
-  #        protocol: HTTPS
-  #      hosts:
-  #        - 'mailhog.minikube.where-ever.net'
-  #  VirtualServices:
-  #    - name: mailhog-virtual-service
-  #      hosts:
-  #        - "mailhog.minikube.where-ever.net"
-  #      http:
-  #        - match:
-  #          - uri:
-  #              prefix: /
-  #          route:
-  #            - destination:
-  #                port:
-  #                  number: 8025
-  #                host: mailhog.dev-tools.svc.cluster.local
+  mailhog-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: mailhog-https
+          protocol: HTTPS
+        hosts:
+          - 'mailhog.minikube.where-ever.net'
+    VirtualServices:
+      - name: mailhog-virtual-service
+        hosts:
+          - "mailhog.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 8025
+                  host: mailhog.dev-tools.svc.cluster.local
   # homepage (via infra-gateway)
   #homepage-gateway:
   #  gateway:
