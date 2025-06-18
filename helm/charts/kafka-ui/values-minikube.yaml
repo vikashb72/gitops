@@ -26,14 +26,21 @@ kafka-ui:
     config: {}
   
   probes:
-    useHttpsScheme: false
+    useHttpsScheme: true
   
   service:
     type: ClusterIP
     port: 80
     # loadBalancerIP: 10.11.12.13
   
-  env: {}
+  env:
+    KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL: SSL
+    KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION: /ssl/kafka/kafka.truststore.jks
+    #KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: '' # DISABLE COMMON NAME VERIFICATION
+
+    #KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL: SASL_SSL
+    #KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM: SCRAM-SHA-512
+    #KAFKA_CLUSTERS_0_PROPERTIES_PROTOCOL: SASL
   
   initContainers: {}
   
