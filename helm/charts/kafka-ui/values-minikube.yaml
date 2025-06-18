@@ -20,7 +20,7 @@ kafka-ui:
     {}
     # keyName: config.yml
     # name: configMapName
-  existingSecret: ""
+  existingSecret: "kafka-user"
   envs:
     secret: {}
     config: {}
@@ -35,16 +35,14 @@ kafka-ui:
   
   env:
     - name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
-      value: SSL
+      value: SAS_SSL
     - name: KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION
       value: /ssl/kafka/kafka.truststore.jks
+    - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
+      value: SCRAM-SHA-512
 
-  #  # DISABLE COMMON NAME VERIFICATION
   #  # KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: '' 
-  #  # KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL: SASL_SSL
-  #  # KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM: SCRAM-SHA-512
-  #  # KAFKA_CLUSTERS_0_PROPERTIES_PROTOCOL: SASL
-  #
+  
   initContainers: {}
   
   volumeMounts:
