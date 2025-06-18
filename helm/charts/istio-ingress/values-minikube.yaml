@@ -287,26 +287,26 @@ gateways:
                     number: 8025
                   host: mailhog.dev-tools.svc.cluster.local
   # homepage (via infra-gateway)
-  #homepage-gateway:
-  #  gateway:
-  #    selector: infra-gateway
-  #  servers:
-  #    - port:
-  #        number: 443
-  #        name: homepage-https
-  #        protocol: HTTPS
-  #      hosts:
-  #        - 'homepage.minikube.where-ever.net'
-  #  VirtualServices:
-  #    - name: homepage-virtual-service
-  #      hosts:
-  #        - "homepage.minikube.where-ever.net"
-  #      http:
-  #        - match:
-  #          - uri:
-  #              prefix: /
-  #          route:
-  #            - destination:
-  #                port:
-  #                  number: 3000
-  #                host: homepage.homepage.svc.cluster.local
+  homepage-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: homepage-https
+          protocol: HTTPS
+        hosts:
+          - 'homepage.minikube.where-ever.net'
+    VirtualServices:
+      - name: homepage-virtual-service
+        hosts:
+          - "homepage.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 3000
+                  host: homepage.homepage.svc.cluster.local
