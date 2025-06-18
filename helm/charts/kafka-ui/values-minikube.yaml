@@ -8,7 +8,7 @@ kafka-ui:
   yamlApplicationConfig:
     kafka:
       clusters:
-        - name: yaml
+        - name: kafka-cluster
           bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system.svc.cluster.local:9091
     # auth:
     #   type: disabled
