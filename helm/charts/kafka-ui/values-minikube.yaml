@@ -12,7 +12,8 @@ kafka-ui:
     kafka:
       clusters:
         - name: kafka-cluster
-          bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system.svc.cluster.local:9093
+          #bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system.svc.cluster.local:9093
+          bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system.svc.cluster.local:9091
     # auth:
     #   type: disabled
     # management:
@@ -39,14 +40,14 @@ kafka-ui:
   env:
     - name: KAFKA_CLUSTERS_0_NAME
       value: "kafka-cluster"
-    - name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
-      value: SSL
-      #value: SASL_PLAINTEXT
-      #value: SASL_SSL
-    - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
-      value: SCRAM-SHA-512
-    - name: KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION
-      value: /ssl/kafka/kafka.truststore.jks
+    #- name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
+    #  value: SSL
+    #  #value: SASL_PLAINTEXT
+    #  #value: SASL_SSL
+    #- name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
+    #  value: SCRAM-SHA-512
+    #- name: KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION
+    #  value: /ssl/kafka/kafka.truststore.jks
 
   #  # KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: '' 
   
