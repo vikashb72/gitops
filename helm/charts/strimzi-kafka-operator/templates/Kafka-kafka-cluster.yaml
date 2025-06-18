@@ -51,16 +51,19 @@ spec:
       initialDelaySeconds: 30
       timeoutSeconds: 10
     listeners:
+      - name: plain
+        port: 9091
+        type: internal
 {{- if .Values.schema.tls }}
       - name: tls
         port: 9093
         type: internal
         tls: true
 {{- else }}
-{{- end }}
       - name: plain
         port: 9092
         type: internal
+{{- end }}
 {{- if .Values.schema.auth }}
         authentication:
           type: scram-sha-512
