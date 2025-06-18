@@ -239,29 +239,29 @@ gateways:
                     number: 8200
                   host: vault-ui.vault-system.svc.cluster.local
   ## goldilocks (via infra-gateway)
-  #goldilocks-gateway:
-  #  gateway:
-  #    selector: infra-gateway
-  #  servers:
-  #    - port:
-  #        number: 443
-  #        name: goldilocks-https
-  #        protocol: HTTPS
-  #      hosts:
-  #        - 'goldilocks.minikube.where-ever.net'
-  #  VirtualServices:
-  #    - name: goldilocks-virtual-service
-  #      hosts:
-  #        - "goldilocks.minikube.where-ever.net"
-  #      http:
-  #        - match:
-  #          - uri:
-  #              prefix: /
-  #          route:
-  #            - destination:
-  #                port:
-  #                  number: 80
-  #                host: goldilocks-dashboard.goldilocks-system.svc.cluster.local
+  goldilocks-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: goldilocks-https
+          protocol: HTTPS
+        hosts:
+          - 'goldilocks.minikube.where-ever.net'
+    VirtualServices:
+      - name: goldilocks-virtual-service
+        hosts:
+          - "goldilocks.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: goldilocks-dashboard.goldilocks-system.svc.cluster.local
   ## mailhog (via infra-gateway)
   mailhog-gateway:
     gateway:
