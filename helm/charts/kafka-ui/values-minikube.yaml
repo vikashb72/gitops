@@ -37,6 +37,17 @@ kafka-ui:
   
   initContainers: {}
   
-  volumeMounts: {}
+  volumeMounts:
+    - mountPath: /ssl/kafka/
+      name: own-ca-bundle
+      readOnly: true
   
-  volumes: {}
+  volumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+          - key: bundle.jks
+            path: kafka.truststore.jks
