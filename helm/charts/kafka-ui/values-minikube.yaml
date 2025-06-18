@@ -1,3 +1,6 @@
+schema:
+  env: minikube
+
 kafka-ui:
   replicaCount: 1
   
