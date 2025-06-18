@@ -24,7 +24,8 @@ kafka-ui:
     {}
     # keyName: config.yml
     # name: configMapName
-  existingSecret: "kafka-user"
+  existingSecret: ""
+  #existingSecret: "kafka-user"
   envs:
     secret: {}
     config: {}
