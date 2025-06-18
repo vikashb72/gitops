@@ -1,0 +1,42 @@
+kafka-ui:
+  replicaCount: 1
+  
+  serviceAccount:
+    create: true
+  
+  existingConfigMap: ""
+  yamlApplicationConfig:
+    kafka:
+      clusters:
+        - name: yaml
+          bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system.svc.cluster.local:9091
+    # auth:
+    #   type: disabled
+    # management:
+    #   health:
+    #     ldap:
+    #       enabled: false
+  yamlApplicationConfigConfigMap:
+    {}
+    # keyName: config.yml
+    # name: configMapName
+  existingSecret: ""
+  envs:
+    secret: {}
+    config: {}
+  
+  probes:
+    useHttpsScheme: false
+  
+  service:
+    type: ClusterIP
+    port: 80
+    # loadBalancerIP: 10.11.12.13
+  
+  env: {}
+  
+  initContainers: {}
+  
+  volumeMounts: {}
+  
+  volumes: {}
