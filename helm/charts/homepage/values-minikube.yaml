@@ -42,7 +42,8 @@ services:
       icon: prometheus
       widgets:
         type: prometheus 
-        url: https://prometheus.minikube.where-ever.net/
+        url: https://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local/
+        #url: https://prometheus.minikube.where-ever.net/
     goldilocks:
       href: https://goldilocks.minikube.where-ever.net/
       icon: https://192.168.0.20:41443/static/images/favicon.ico
