@@ -9,7 +9,7 @@ kafka-ui:
     kafka:
       clusters:
         - name: kafka-cluster
-          bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system.svc.cluster.local:9091
+          bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system.svc.cluster.local:9093
     # auth:
     #   type: disabled
     # management:
