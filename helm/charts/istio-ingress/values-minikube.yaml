@@ -310,3 +310,27 @@ gateways:
                   port:
                     number: 3000
                   host: homepage.homepage.svc.cluster.local
+  # kafka-ui (via infra-gateway)
+  kafka-ui-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: kafka-ui-https
+          protocol: HTTPS
+        hosts:
+          - 'kafka-ui.minikube.where-ever.net'
+    VirtualServices:
+      - name: kafka-ui-virtual-service
+        hosts:
+          - "kafka-ui.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: kafka-ui.kafka-ui.svc.cluster.local
