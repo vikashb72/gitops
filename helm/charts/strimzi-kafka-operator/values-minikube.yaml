@@ -85,6 +85,7 @@ users:
           - Read
           - Write
   - name: kafka-ui
+    topics:
       - name: test.topic.1
         operations:
           - Describe
