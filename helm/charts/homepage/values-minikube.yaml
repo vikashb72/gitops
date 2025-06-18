@@ -42,7 +42,7 @@ services:
       icon: prometheus
       widgets:
         type: prometheus 
-        url: https://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local/
+        url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
         #url: https://prometheus.minikube.where-ever.net/
     goldilocks:
       href: https://goldilocks.minikube.where-ever.net/
