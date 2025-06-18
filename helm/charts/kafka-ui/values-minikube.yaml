@@ -43,6 +43,8 @@ kafka-ui:
       value: "kafka-cluster"
     - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
       value: "kafka-cluster-kafka-bootstrap.kafka-system:9092"
+    - name: DYNAMIC_CONFIG_ENABLED
+      value: 'true'
     #- name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
     #  value: SSL
     #  #value: SASL_PLAINTEXT
@@ -56,17 +58,17 @@ kafka-ui:
   
   initContainers: {}
   
-  volumeMounts:
-    - mountPath: /ssl/kafka/
-      name: own-ca-bundle
-      readOnly: true
-  
-  volumes:
-    - name: own-ca-bundle
-      configMap:
-        name: own-ca-bundle
-        defaultMode: 0644
-        optional: false
-        items:
-          - key: bundle.jks
-            path: kafka.truststore.jks
+  #volumeMounts:
+  #  - mountPath: /ssl/kafka/
+  #    name: own-ca-bundle
+  #    readOnly: true
+  #
+  #volumes:
+  #  - name: own-ca-bundle
+  #    configMap:
+  #      name: own-ca-bundle
+  #      defaultMode: 0644
+  #      optional: false
+  #      items:
+  #        - key: bundle.jks
+  #          path: kafka.truststore.jks
