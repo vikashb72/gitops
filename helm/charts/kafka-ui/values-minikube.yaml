@@ -25,8 +25,8 @@ kafka-ui:
     {}
     # keyName: config.yml
     # name: configMapName
-  #existingSecret: ""
-  existingSecret: "kafka-user"
+  existingSecret: ""
+  #existingSecret: "kafka-user"
   envs:
     secret: {}
     config: {}
@@ -47,12 +47,12 @@ kafka-ui:
       #value: "kafka-cluster-kafka-bootstrap.kafka-system:9092"
     - name: DYNAMIC_CONFIG_ENABLED
       value: 'true'
-    - name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
-      value: SASL_PLAINTEXT
+    #- name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
+    #  value: SASL_PLAINTEXT
     #  #value: SSL
     #  #value: SASL_SSL
-    - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
-      value: SCRAM-SHA-512
+    #- name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
+    #  value: SCRAM-SHA-512
     #- name: KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION
     #  value: /ssl/kafka/kafka.truststore.jks
 
