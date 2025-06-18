@@ -57,10 +57,10 @@ spec:
         type: internal
         tls: true
 {{- else }}
+{{- end }}
       - name: plain
         port: 9092
         type: internal
-{{- end }}
 {{- if .Values.schema.auth }}
         authentication:
           type: scram-sha-512
