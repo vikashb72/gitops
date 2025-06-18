@@ -18,6 +18,7 @@ spec:
   entityOperator:
     topicOperator: {}
     userOperator: {}
+  cruiseControl: {}
   kafka:
     config:
       default.replication.factor: 3
