@@ -59,6 +59,11 @@ argocdManaged:
     targetNamespace: homepage
     sources:
       - path: helm/charts/homepage
+  kafka-ui:
+    name: kafka-ui
+    targetNamespace: kafka-ui
+    sources:
+      - path: helm/charts/kafka-ui
 #  keda:
 #    disable: true
 #    name: keda
