@@ -52,7 +52,7 @@ spec:
       timeoutSeconds: 10
     listeners:
       - name: plain
-        port: 9091
+        port: 9092
         type: internal
 {{- if .Values.schema.tls }}
       - name: tls
@@ -61,7 +61,7 @@ spec:
         tls: true
 {{- else }}
       - name: plain
-        port: 9092
+        port: 9094
         type: internal
 {{- end }}
 {{- if .Values.schema.auth }}
