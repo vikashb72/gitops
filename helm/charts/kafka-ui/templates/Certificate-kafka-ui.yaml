@@ -15,8 +15,8 @@ spec:
     pkcs12:
       create: true
       passwordSecretRef:
-        name: kafka-ui-tls-keystore
-        key: password
+        name: kafka-ui-secrets
+        key: KAFKA_CLUSTERS_0_PROPERTIES_SSL_KEYSTORE_PASSWORD
   #privateKey:
   #  algorithm: RSA
   #  size: 2048
