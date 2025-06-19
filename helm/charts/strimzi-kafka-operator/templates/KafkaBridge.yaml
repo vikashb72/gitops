@@ -9,3 +9,8 @@ spec:
   http:
     port: 8080
   enableMetrics: true
+  tls: 
+    trustedCertificates:
+      - secretName: kafka-cluster-cluster-ca-cert
+        certificate: ca.crt
+
