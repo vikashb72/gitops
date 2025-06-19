@@ -62,8 +62,8 @@ topics:
   - name: test.topic.1
     retention: 7200000
     size: 52428800
-    partitions: 1
-    replicas: 1
+    partitions: 3
+    replicas: 3
   - name: test.topic.2
     size: 52428800
     partitions: 3
