@@ -10,18 +10,18 @@ metadata:
    # strimzi.io/use-connector-resources: "true"
 spec:
   version: 3.8.0
-  replicas: 1
+  replicas: 3
   bootstrapServers: {{ .Values.cluster.name }}-kafka-bootstrap:9093
   tls:
     trustedCertificates:
       - secretName: kafka-cluster-cluster-ca-cert
         certificate: ca.crt
-  #metricsConfig:
-  #  type: jmxPrometheusExporter
-  #  valueFrom:
-  #    configMapKeyRef:
-  #      name: connect-metrics
-  #      key: metrics-config.yml
+  metricsConfig:
+    type: jmxPrometheusExporter
+    valueFrom:
+      configMapKeyRef:
+        name: connect-metrics
+        key: metrics-config.yml
   authentication:
     type: scram-sha-512
     username: kafkauser-connect-user
@@ -29,7 +29,7 @@ spec:
       secretName: kafkauser-connect-user
       password: password
   config:
-    group.id: connect-cluster
+    group.id: kafka-connect-cluster
     offset.storage.topic: connect-cluster-offsets
     config.storage.topic: connect-cluster-configs
     status.storage.topic: connect-cluster-status
