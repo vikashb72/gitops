@@ -29,7 +29,8 @@ spec:
       unclean.leader.election.enable: false
 {{- if .Values.schema.auth }}
     authorization:
-      type: simple
+      #type: simple
+      type: opa
 {{- end }}
     jvmOptions:
       -Xms: {{ .Values.cluster.kafka.jvmOptions.xms }}
@@ -41,6 +42,9 @@ spec:
       type: inline
       loggers:
         kafka.root.logger.level: INFO
+        log4j.logger.io.strimzi: "DEBUG"
+        log4j.logger.kafka: "DEBUG"
+        log4j.logger.org.apache.kafka: "DEBUG"
 {{- with .Values.cluster.kafka.resources }}
     resources:
 {{- toYaml . | nindent 6 }}
@@ -63,7 +67,7 @@ spec:
         tls: true
 {{- else }}
       - name: plain
-        port: 9094
+        port: 9093
         type: internal
 {{- end }}
 {{- if .Values.schema.auth }}
@@ -120,12 +124,12 @@ spec:
           labels:
             kafka-metrics: 'true'
 
-  #cruiseControl:
-  #  config:
-  #    webserver.security.enable: false
-  #  metricsConfig:
-  #    type: jmxPrometheusExporter
-  #    valueFrom:
-  #      configMapKeyRef:
-  #        name: kafka-metrics
-  #        key: cruise-control-metrics.yml
+  cruiseControl:
+    config:
+      webserver.security.enable: false
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: cruise-control-metrics.yml
