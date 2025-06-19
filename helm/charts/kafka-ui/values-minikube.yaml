@@ -44,30 +44,28 @@ kafka-ui:
       value: "kafka-cluster-kafka-bootstrap.kafka-system:9093"
     - name: DYNAMIC_CONFIG_ENABLED
       value: 'true'
-    #- name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
-    #  value: SASL_PLAINTEXT
-    #  #value: SSL
-    #  #value: SASL_SSL
-    #- name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
-    #  value: SCRAM-SHA-512
-    #- name: KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION
-    #  value: /ssl/kafka/kafka.truststore.jks
+    - name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
+      value: SSL # alt:  SASL_PLAINTEXT
+    - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
+      value: SCRAM-SHA-512
+    - name: KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION
+      value: /ssl/kafka/kafka.truststore.jks
 
   #  # KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: '' 
   
   initContainers: {}
   
-  #volumeMounts:
-  #  - mountPath: /ssl/kafka/
-  #    name: own-ca-bundle
-  #    readOnly: true
-  #
-  #volumes:
-  #  - name: own-ca-bundle
-  #    configMap:
-  #      name: own-ca-bundle
-  #      defaultMode: 0644
-  #      optional: false
-  #      items:
-  #        - key: bundle.jks
-  #          path: kafka.truststore.jks
+  volumeMounts:
+    - mountPath: /ssl/kafka/
+      name: own-ca-bundle
+      readOnly: true
+  
+  volumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+          - key: bundle.jks
+            path: kafka.truststore.jks
