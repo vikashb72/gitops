@@ -13,4 +13,11 @@ spec:
     trustedCertificates:
       - secretName: kafka-cluster-cluster-ca-cert
         certificate: ca.crt
+  authentication: 
+    type: scram-sha-512
+    username: kafka-bridge-user
+    passwordSecret:
+      secretName: kafka-bridge-user
+      password: password
+
 

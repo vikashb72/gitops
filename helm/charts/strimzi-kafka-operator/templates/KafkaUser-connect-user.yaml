@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:
-  name: kafka-connect-user
+  name: kafkauser-connect-user
   namespace: {{ $.Release.Namespace }}
   labels:
     strimzi.io/cluster: {{ $.Values.cluster.name }}

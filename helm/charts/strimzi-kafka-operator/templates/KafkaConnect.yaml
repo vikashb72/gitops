@@ -23,9 +23,9 @@ spec:
         key: metrics-config.yml
   authentication:
     type: scram-sha-512
-    username: connect-user
+    username: kafkauser-connect-user
     passwordSecret:
-      secretName: {{ .Values.cluster.name }}-connect-user
+      secretName: kafkauser-connect-user
       password: password
   config:
     group.id: connect-cluster
