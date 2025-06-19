@@ -1,0 +1,10 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: kafka-bridge-user
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    strimzi.io/cluster: {{ $.Values.cluster.name }}
+spec:
+  authentication:
+    type: scram-sha-512
