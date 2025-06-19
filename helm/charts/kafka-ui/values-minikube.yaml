@@ -12,7 +12,7 @@ kafka-ui:
     kafka:
       clusters:
         - name: kafka-cluster
-          bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system.svc.cluster.local:9092
+          bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system.svc.cluster.local:9093
       # auth:
       #   type: disabled
       management:
@@ -41,7 +41,7 @@ kafka-ui:
     - name: KAFKA_CLUSTERS_0_NAME
       value: "kafka-cluster"
     - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
-      value: "kafka-cluster-kafka-bootstrap.kafka-system:9092"
+      value: "kafka-cluster-kafka-bootstrap.kafka-system:9093"
     - name: DYNAMIC_CONFIG_ENABLED
       value: 'true'
     #- name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
