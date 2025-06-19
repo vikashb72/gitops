@@ -9,6 +9,9 @@ kafbat-ui:
        clusters:
          - name: kafka-cluster
            bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system:9093
+           properties:
+             security.protocol: SASL_SSL
+             sasl.mechanism: SCRAM-SHA-512        
      auth:
        type: disabled
      management:
