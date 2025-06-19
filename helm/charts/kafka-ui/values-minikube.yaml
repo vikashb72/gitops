@@ -52,10 +52,10 @@ kafka-ui:
         defaultMode: 0644
         optional: false
         items:
-          #- key: bundle.jks
-          #  path: kafka.truststore.jks
+          - key: bundle.jks
+            path: kafka.truststore.jks
           - key: bundle.p12
             path: kafka.truststore.p12
-   - name: kafka-ui-tls
-     secret:
-       secretName: kafka-ui-tls
+    - name: kafka-ui-tls
+      secret:
+        secretName: kafka-ui-tls
