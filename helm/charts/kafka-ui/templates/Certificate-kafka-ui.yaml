@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kafka-ui-certmanager-cert
+  namespace: kafka-ui
+spec:
+  commonName: "*.kafka-ui.svc.cluster.local"
+  dnsNames:
+    - "127.0.0.1"
+    - "localhost"
+    - "kafka-ui"
+    - "*.kafka-ui.svc.cluster.local"
+  secretName: kafka-ui-tls
+  keystores:
+    pkcs12:
+      create: true
+      passwordSecretRef:
+        name: kafka-ui-tls-keystore
+        key: password
+  #privateKey:
+  #  algorithm: RSA
+  #  size: 2048
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
