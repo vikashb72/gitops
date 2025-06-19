@@ -34,12 +34,16 @@ kafka-ui:
     - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
       value: SCRAM-SHA-512
     - name: KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION
-      value: /ssl/kafka/kafka.truststore.jks
+      value: /ssl/kafka/kafka.truststore.p12
+      #value: /ssl/kafka/kafka.truststore.jks
   
   volumeMounts:
     - mountPath: /ssl/kafka/
       name: own-ca-bundle
       readOnly: true
+    - name: kafka-ui-tls
+      readOnly: true
+      mountPath: /ssl/key/
 
   volumes:
     - name: own-ca-bundle
@@ -50,3 +54,8 @@ kafka-ui:
         items:
           - key: bundle.jks
             path: kafka.truststore.jks
+          - key: bundle.p12
+            path: kafka.truststore.p12
+   - name: kafka-ui-tls
+     secret:
+       secretName: kafka-ui-tls
