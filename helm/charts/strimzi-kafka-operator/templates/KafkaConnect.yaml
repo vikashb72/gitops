@@ -2,15 +2,16 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
   name: kafka-connect-cluster
+  namespace: {{ .Release.Namespace }}
   annotations:
 #  # use-connector-resources configures this KafkaConnect
 #  # to use KafkaConnector resources to avoid
 #  # needing to call the Connect REST API directly
-    strimzi.io/use-connector-resources: "true"
+   # strimzi.io/use-connector-resources: "true"
 spec:
   version: 3.8.0
   replicas: 1
-  bootstrapServers: kafka-cluster-kafka-bootstrap:9093
+  bootstrapServers: {{ .Values.cluster.name }}-kafka-bootstrap:9093
   tls:
     trustedCertificates:
       - secretName: kafka-cluster-cluster-ca-cert
