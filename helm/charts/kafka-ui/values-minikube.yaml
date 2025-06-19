@@ -33,6 +33,8 @@ kafka-ui:
       value: SSL # alt:  SASL_PLAINTEXT
     - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
       value: SCRAM-SHA-512
+    - name: KAFKA_CLUSTERS_0_PROPERTIES_SSL_KEYSTORE_LOCATION
+      value: /ssl/key/keystore.p12
     - name: KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION
       value: /ssl/kafka/kafka.truststore.p12
       #value: /ssl/kafka/kafka.truststore.jks
