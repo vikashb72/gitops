@@ -1,0 +1,7 @@
+apiVersion: v2
+name: kafbat-ui
+version: 1.0.0
+dependencies:
+  - name: kafbat-ui
+    version: 1.5.0
+    repository: https://kafbat.github.io/helm-charts
