@@ -14,13 +14,13 @@ spec:
   tls:
     trustedCertificates:
       - secretName: kafka-cluster-cluster-ca-cert
-        pattern: "*.crt"
-  metricsConfig:
-    type: jmxPrometheusExporter
-    valueFrom:
-      configMapKeyRef:
-        name: connect-metrics
-        key: metrics-config.yml
+        certificate: ca.crt
+  #metricsConfig:
+  #  type: jmxPrometheusExporter
+  #  valueFrom:
+  #    configMapKeyRef:
+  #      name: connect-metrics
+  #      key: metrics-config.yml
   authentication:
     type: scram-sha-512
     username: kafkauser-connect-user
