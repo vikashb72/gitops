@@ -29,8 +29,7 @@ spec:
       unclean.leader.election.enable: false
 {{- if .Values.schema.auth }}
     authorization:
-      #type: simple
-      type: opa
+      type: simple
 {{- end }}
     jvmOptions:
       -Xms: {{ .Values.cluster.kafka.jvmOptions.xms }}
