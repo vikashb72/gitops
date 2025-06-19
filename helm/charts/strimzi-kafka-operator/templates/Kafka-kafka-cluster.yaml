@@ -55,10 +55,10 @@ spec:
       initialDelaySeconds: 30
       timeoutSeconds: 10
     listeners:
-      - name: plain
-        port: 9092
-        type: internal
-        tls: false
+      #- name: plain
+      #  port: 9092
+      #  type: internal
+      #  tls: false
 {{- if .Values.schema.tls }}
       - name: tls
         port: 9093
@@ -66,7 +66,7 @@ spec:
         tls: true
 {{- else }}
       - name: plain
-        port: 9093
+        port: 9092
         type: internal
 {{- end }}
 {{- if .Values.schema.auth }}
