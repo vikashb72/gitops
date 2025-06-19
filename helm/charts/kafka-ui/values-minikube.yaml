@@ -1,42 +1,24 @@
 schema:
   env: minikube
 
-kafka-ui:
+kafbat-ui:
   replicaCount: 1
   
-  serviceAccount:
-    create: true
-  
-  existingConfigMap: ""
   yamlApplicationConfig:
-    kafka:
-      clusters:
-        - name: kafka-cluster
-          bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system.svc.cluster.local:9093
-      # auth:
-      #   type: disabled
-      management:
-        health:
-          ldap:
-            enabled: false
-  yamlApplicationConfigConfigMap:
-    {}
-    # keyName: config.yml
-    # name: configMapName
-  #existingSecret: ""
-  existingSecret: "kafka-ui-user"
+     kafka:
+       clusters:
+         - name: kafka-cluster
+           bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system:9093
+     auth:
+       type: disabled
+     management:
+       health:
+         ldap:
+           enabled: false
+  existingSecret: "kafbat-ui-secrets"
   envs:
     secret: {}
     config: {}
-  
-  probes:
-    useHttpsScheme: true
-  
-  service:
-    type: ClusterIP
-    port: 80
-    # loadBalancerIP: 10.11.12.13
-  
   env:
     - name: KAFKA_CLUSTERS_0_NAME
       value: "kafka-cluster"
@@ -50,16 +32,12 @@ kafka-ui:
       value: SCRAM-SHA-512
     - name: KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION
       value: /ssl/kafka/kafka.truststore.jks
-
-  #  # KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: '' 
-  
-  initContainers: {}
   
   volumeMounts:
     - mountPath: /ssl/kafka/
       name: own-ca-bundle
       readOnly: true
-  
+
   volumes:
     - name: own-ca-bundle
       configMap:
