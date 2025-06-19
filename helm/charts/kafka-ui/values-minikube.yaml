@@ -1,7 +1,7 @@
 schema:
   env: minikube
 
-kafbat-ui:
+kafka-ui:
   replicaCount: 1
   
   yamlApplicationConfig:
