@@ -15,7 +15,7 @@ kafbat-ui:
        health:
          ldap:
            enabled: false
-  existingSecret: "kakfa-ui-secrets"
+  existingSecret: "kafbat-ui-secrets"
   envs:
     secret: {}
     config: {}

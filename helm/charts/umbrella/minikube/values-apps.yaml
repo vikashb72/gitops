@@ -59,6 +59,12 @@ argocdManaged:
     targetNamespace: homepage
     sources:
       - path: helm/charts/homepage
+  kafbat-ui:
+    name: kafbat-ui
+    targetNamespace: kafbat-ui
+    sources:
+      - path: helm/charts/kafbat-ui
+    
   #kafka-ui:
   #  name: kafka-ui
   #  targetNamespace: kafka-system
