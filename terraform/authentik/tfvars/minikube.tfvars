@@ -36,6 +36,19 @@ oauth2_providers = [
         "url"           = "https://grafana.minikube.where-ever.net/login/generic_oauth"
       }
     ]
+  },
+  {
+    key            = "kafka-ui"
+    name           = "Kafka UI",
+    secret_name    = "minikube/kafka-ui/authentik-client",
+    groups         = ["Kafka UI Admins", "Kafka UI Viewers"],
+    launch_url     = "https://kafka-ui.minikube.where-ever.net",
+    redirect_uris  = [
+      {
+        "matching_mode" = "strict",
+        "url"           = "http://localhost:8080/login/oauth2/code/goauthentic"
+      }
+    ]
   }
 ]
 
