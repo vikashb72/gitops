@@ -86,14 +86,61 @@ users:
           - Write
   - name: kafka-ui
     topics:
-      - name: test.topic.1
+      - name: "*"
         operations:
-          - Describe
           - Read
-      - name: test.topic.2
+          - Write
+          - Delete
+          - Alter
+          - Describe
+          - All
+          - IdempotentWrite
+          - ClusterAction
+          - Create
+          - AlterConfigs
+          - DescribeConfigs
+    groups:
+      - name: "*"
         operations:
-          - Describe
           - Read
+          - Write
+          - Delete
+          - Alter
+          - Describe
+          - All
+          - IdempotentWrite
+          - ClusterAction
+          - Create
+          - AlterConfigs
+          - DescribeConfigs
+    clusters:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          - Delete
+          - Alter
+          - Describe
+          - All
+          - IdempotentWrite
+          - ClusterAction
+          - Create
+          - AlterConfigs
+          - DescribeConfigs
+    transactionalIds:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          - Delete
+          - Alter
+          - Describe
+          - All
+          - IdempotentWrite
+          - ClusterAction
+          - Create
+          - AlterConfigs
+          - DescribeConfigs
   - name: topic-1-read
     topics:
       - name: test.topic.1

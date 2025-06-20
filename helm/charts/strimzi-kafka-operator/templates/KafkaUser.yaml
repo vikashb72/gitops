@@ -24,5 +24,38 @@ spec:
           - {{ . }}
 {{- end }}        
 {{- end }}
+{{- range $group := .groups }}
+      - resource:
+          type: group
+          name: "{{ $group.name }}"
+          patternType: literal
+        host: "*"
+        operations:
+{{- range $group.operations }}
+          - {{ . }}
+{{- end }}        
+{{- end }}
+{{- range $cluster := .clusters }}
+      - resource:
+          type: cluster
+          name: "{{ $cluster.name }}"
+          patternType: literal
+        host: "*"
+        operations:
+{{- range $cluster.operations }}
+          - {{ . }}
+{{- end }}        
+{{- end }}
+{{- range $transactionalId := .transactionalIds }}
+      - resource:
+          type: transactionalId
+          name: "{{ $transactionalId.name }}"
+          patternType: literal
+        host: "*"
+        operations:
+{{- range $transactionalId.operations }}
+          - {{ . }}
+{{- end }}        
+{{- end }}
 ---
 {{- end }}
