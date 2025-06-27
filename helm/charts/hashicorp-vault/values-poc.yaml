@@ -1,0 +1,147 @@
+schema:
+  env: poc
+  bootstrap: false
+  domain: where-ever.net
+  skipCM: false
+
+vault:
+  global:
+    enabled: true
+    namespace: "vault-system"
+    tlsDisable: false
+    serverTelemetry:
+      prometheusOperator: true
+
+  injector:
+    enabled: true
+    metrics:
+      enabled: true
+
+  server:
+    enabled: true
+
+    dataStorage:
+      storageClass: nfs-client
+
+    extraSecretEnvironmentVars:
+      - envName: AZURE_CLIENT_ID
+        secretName: hvault-config
+        secretKey: AZURE_CLIENT_ID
+      - envName: AZURE_CLIENT_SECRET
+        secretName: hvault-config
+        secretKey: AZURE_CLIENT_SECRET
+      - envName: AZURE_TENANT_ID
+        secretName: hvault-config
+        secretKey: AZURE_TENANT_ID
+      - envName: SUBSCRIPTION_ID
+        secretName: hvault-config
+        secretKey: SUBSCRIPTION_ID
+      - envName: VAULT_AZUREKEYVAULT_KEY_NAME
+        secretName: hvault-config
+        secretKey: VAULT_AZUREKEYVAULT_KEY_NAME
+      - envName: VAULT_AZUREKEYVAULT_VAULT_NAME
+        secretName: hvault-config
+        secretKey: VAULT_AZUREKEYVAULT_VAULT_NAME
+
+    extraEnvironmentVars:
+      VAULT_CACERT: /vault/userconfig/vault-tls/ca.crt
+      VAULT_TLSCERT: /vault/userconfig/vault-tls/tls.crt
+      VAULT_TLSKEY: /vault/userconfig/vault-tls/tls.key
+
+    volumes:
+      - name: userconfig-vault-tls
+        secret:
+         defaultMode: 420
+         secretName: vault-tls
+
+    volumeMounts:
+      - mountPath: /vault/userconfig/vault-tls
+        name: userconfig-vault-tls
+        readOnly: true
+
+    auditStorage:
+      enabled: false
+
+    dev:
+      enabled: false
+
+    standalone:
+      enabled: false
+
+    affinity: ""
+
+    ha:
+      enabled: true
+      replicas: 3
+      raft:
+        enabled: true
+        setNodeId: true
+        config: |
+          cluster_name = "vault-integrated-storage"
+          ui = true
+          listener "tcp" {
+             tls_disable = 0
+             address = "[::]:8200"
+             cluster_address = "[::]:8201"
+             tls_cert_file = "/vault/userconfig/vault-tls/tls.crt"
+             tls_key_file  = "/vault/userconfig/vault-tls/tls.key"
+             tls_client_ca_file = "/vault/userconfig/vault-tls/ca.crt"
+             #telemetry {
+             #    unauthenticated_metrics_access = "true"
+             #}
+          }
+          storage "raft" {
+             path = "/vault/data"
+             retry_join {
+                 leader_api_addr = "https://vault-cluster.vault-system.svc.cluster.local:8200"
+             }
+          }
+          seal "azurekeyvault" {
+            #tenant_id      = ""       # env:AZURE_TENANT_ID
+            #client_id      = ""       # env:AZURE_CLIENT_ID
+            #client_secret  = ""       # env:AZURE_CLIENT_SECRET
+            #vault_name     = ""       # env:VAULT_AZUREKEYVAULT_VAULT_NAME
+            #key_name       = ""       # env:VAULT_AZUREKEYVAULT_KEY_NAME
+          }
+          telemetry {
+            disable_hostname = true
+            prometheus_retention_time = "12h"
+          }
+          disable_mlock = true
+          service_registration "kubernetes" {}
+
+  ui:
+    enabled: true
+    serviceType: LoadBalancer
+    loadBalancerIP: 192.168.67.242
+
+  csi:
+    # https://github.com/kubernetes-sigs/secrets-store-csi-driver#install-the-secrets-store-csi-driver
+    enabled: true
+
+  serverTelemetry:
+    serviceMonitor:
+      enabled: true
+      selectors:
+        release: kube-prometheus-stack
+
+    prometheusRules:
+      # The Prometheus operator *must* be installed before enabling this
+      enabled: false
+      selectors:
+        release: kube-prometheus-stack
+      rules:
+        - alert: vault-HighResponseTime
+          annotations:
+            message: The response time of Vault is over 500ms on average over the last 5 minutes.
+          expr: vault_core_handle_request{quantile="0.5", namespace="mynamespace"} > 500
+          for: 5m
+          labels:
+            severity: warning
+        - alert: vault-HighResponseTime
+          annotations:
+            message: The response time of Vault is over 1s on average over the last 5 minutes.
+          expr: vault_core_handle_request{quantile="0.5", namespace="mynamespace"} > 1000
+          for: 5m
+          labels:
+            severity: critical
