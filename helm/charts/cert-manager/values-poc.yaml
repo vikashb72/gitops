@@ -1,0 +1,52 @@
+schema:
+  env: poc
+  bootstrap: false
+  caBundle: true
+  skipES: false
+
+cert-manager:
+  crds:
+    enabled: true
+
+  namespace: cert-manager
+
+  prometheus:
+    # NB: you can not enable both PodMonitor and ServiceMonitor
+    servicemonitor:
+      enabled: true
+      namespace: cert-manager
+      #prometheusInstance: default
+      labels:
+        release: kube-prometheus-stack
+
+    podmonitor:
+      enabled: false
+
+trust-manager:
+  crds:
+    enabled: true
+    keep: true
+  
+  namespace: "cert-manager"
+
+  secretTargets:
+    enabled: false
+    authorizedSecretsAll: false
+    authorizedSecrets: []
+
+  app:
+    trust:
+      namespace: cert-manager
+
+    webhook:
+      tls:
+        approverPolicy:
+          enabled: false
+          certManagerNamespace: "cert-manager"
+
+    metrics:
+      service:
+        enabled: true
+        servicemonitor:
+          enabled: false
+          labels: {}

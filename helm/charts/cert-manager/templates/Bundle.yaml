@@ -1,3 +1,5 @@
+{{- if not .Values.schema.bootstrap }}
+{{- if .Values.schema.caBundle }}
 apiVersion: trust.cert-manager.io/v1alpha1
 kind: Bundle
 metadata:
@@ -9,8 +11,8 @@ spec:
         name: "reference-tls"
         key: "ca.crt"
     - secret:
-        name: "root-ca"
-        key: "ca.crt"
+        name: "offline-root-ca"
+        key: "rootCA.crt"
     - configMap:
         name: "kube-root-ca.crt"
         key: "ca.crt"
@@ -22,3 +24,5 @@ spec:
         key: "bundle.jks"
       pkcs12:
         key: "bundle.p12"
+{{- end }}
+{{- end }}

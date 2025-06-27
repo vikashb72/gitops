@@ -1,0 +1,36 @@
+{{- if not .Values.schema.skipCM }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-certmanager-cert
+  namespace: vault-system
+spec:
+  commonName: "vault-ui.vault-system.svc.cluster.local"
+  dnsNames:
+    - "vault-active.vault-system.svc.cluster.local"
+    - "*.vault-internal"
+    - "*.vault-system"
+    - "*.vault-system.svc"
+    - "*.vault-system.svc.cluster"
+    - "*.vault-system.svc.cluster.local"
+    - "*.vault-internal.svc"
+    - "*.vault-internal.svc.cluster"
+    - "*.vault-internal.svc.cluster.local"
+    - "127.0.0.1"
+    - "localhost"
+    - "vault-ui.{{ .Values.schema.env }}.{{ .Values.schema.domain }}"
+    - "vault.{{ .Values.schema.env }}.{{ .Values.schema.domain }}"
+  ipAddresses:
+    - "127.0.0.1"
+{{- if and (eq .Values.vault.ui.serviceType "LoadBalancer")
+           (ne .Values.vault.ui.loadBalancerIP "") }}
+    - {{ .Values.vault.ui.loadBalancerIP | quote }}
+{{- end }}
+  secretName: vault-tls
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
+{{- end }}
