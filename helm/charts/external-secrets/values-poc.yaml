@@ -47,8 +47,8 @@ schema:
       version: "v2"
       caProvider:
         type: Secret
-        name: vault-tls
-        key: ca.crt
+        name: offline-root-ca
+        key: rootCA.crt
         namespace: external-secrets
       auth:
         kubernetes:

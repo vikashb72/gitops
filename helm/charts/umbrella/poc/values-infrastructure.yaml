@@ -1,0 +1,95 @@
+schema:
+  env: poc
+  bootstrap: false
+  hvault:
+    external:
+      addr: https://192.168.0.4:8443
+  metadata:
+    namespace: argocd
+    finalisers: resources-finalizer.argocd.argoproj.io
+  annotations:
+    syncwave: "100"
+  spec:
+    project: poc-infrastructure
+    repoURL: https://github.com/vikashb72/gitops.git
+    targetRevision: HEAD
+    destination:
+      server: https://kubernetes.default.svc
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+argocdManaged:
+  umbrella-chart-infrastructure:
+    name: umbrella-chart-infrastructure
+    namespace: argocd
+    syncwave: "1"
+    sources:
+      - path: helm/charts/umbrella/poc
+        helm:
+          valueFiles:
+            - values-infrastructure.yaml
+    automated:
+      allowEmpty: true
+  argocd:
+    name: argocd
+    namespace: argocd
+    targetNamespace: argocd
+    syncwave: "1"
+    sources:
+      - path: helm/charts/argocd
+  #external-secrets:
+  #  name: external-secrets
+  #  targetNamespace: external-secrets
+  #  syncwave: "2"
+  #  sources:
+  #    - path: helm/charts/external-secrets
+  #    #- path: hooks/external-secrets
+  #    #  noHelmValues: true
+  #hashicorp-vault:
+  #  name: vault
+  #  targetNamespace: vault-system
+  #  syncwave: "3"
+  #  sources:
+  #    - path: helm/charts/hashicorp-vault
+  #  ignoreDifferences: true 
+  #  ignoreDifferencesConfig:
+  #    - group: admissionregistration.k8s.io
+  #      kind: MutatingWebhookConfiguration
+  #      jqPathExpressions:
+  #        - .webhooks[]?.clientConfig.caBundle
+  #cert-manager:
+  #  name: cert-manager
+  #  targetNamespace: cert-manager
+  #  syncwave: "4"
+  #  sources:
+  #    - path: helm/charts/cert-manager
+  #reloader:
+  #  name: reloader
+  #  targetNamespace: reloader
+  #  sources:
+  #    - path: helm/charts/reloader
+  #authentik:
+  #  name: authentik
+  #  targetNamespace: authentik
+  #  sources:
+  #    - path: helm/charts/authentik
+#  #secrets-store-csi-driver:
+#  #  name: secrets-store-csi-driver
+#  #  targetNamespace: kube-system
+#  #  syncwave: "1"
+#  #  sources:
+#  #    - path: helm/charts/secrets-store-csi-driver
+#  keycloak:
+#    name: keycloak
+#    targetNamespace: keycloak
+#    syncwave: "5"
+#    sources:
+#      - path: helm/charts/keycloak
+#  knative-operator:
+#    name: knative-operator
+#    targetNamespace: knative-operator
+#    syncwave: "6"
+#    sources:
+#      - path: helm/charts/knative-operator

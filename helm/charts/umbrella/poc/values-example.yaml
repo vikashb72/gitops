@@ -1,0 +1,69 @@
+schema:
+  env: example
+  bootstrap: false
+  hvault:
+    external:
+      addr: https://192.168.0.4:8443
+  metadata:
+    namespace: argocd
+    finalisers: resources-finalizer.argocd.argoproj.io
+  annotations:
+    syncwave: "100"
+  spec:
+    project: minikube-core
+    repoURL: https://github.com/vikashb72/gitops.git
+    targetRevision: HEAD
+    destination:
+      server: https://kubernetes.default.svc
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+argocdManaged:
+  documentation:
+    disable: false    # default
+    name: chart-name
+    namespace: overwrite-namespace
+    disableFinalisers: false
+    finaliser: resources-finalizer.argocd.argoproj.io
+    syncwave: "0"
+    sources:
+      - repoURL: url1
+        targetRevision: HEAD
+        chart: chartname
+        noHelmValues: true
+      - repoURL: url2
+        targetRevision: HEAD
+        path: path/to/chart
+        noHelmValues: false
+        envFile: true
+        helm:
+          valueFiles:
+            - file1
+            - file2
+          values:
+            global:
+              domain: minikube.home.where-ever.za.net
+            env: minikube
+          valuesObject:
+            global:
+              domain: minikube.home.where-ever.za.net
+            env: minikube
+          parameters:
+            - name: env
+              value: minikube
+        targetNamespace: target-namespace
+        disableAutomated: false
+        automated:
+          prune: true
+          selfHeal: true
+          allowEmpty: true
+        syncOptions:
+          ServerSideApply: true
+    ignoreDifferences: true
+    ignoreDifferencesConfig:
+      - group: admissionregistration.k8s.io
+        kind: ValidatingWebhookConfiguration
+        jqPathExpressions:
+          - .webhooks[]?.failurePolicy

@@ -1,0 +1,104 @@
+schema:
+  env: poc
+  hvault:
+    external:
+      addr: https://192.168.0.4:8443
+  metadata:
+    namespace: argocd
+    finalisers: resources-finalizer.argocd.argoproj.io
+  annotations:
+    syncwave: "100"
+  spec:
+    project: poc-applications
+    repoURL: https://github.com/vikashb72/gitops.git
+    targetRevision: HEAD
+    destination:
+      server: https://kubernetes.default.svc
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+argocdManaged:
+  umbrella-chart-apps:
+    name: umbrella-chart-apps
+    sources:
+      - path: helm/charts/umbrella/poc
+        helm:
+          valueFiles:
+            - values-apps.yaml
+    automated:
+      allowEmpty: true
+#  echoserver:
+#    name: echoserver
+#    targetNamespace: echoserver
+#    sources:
+#      - path: helm/charts/echoserver
+#  httpbin:
+#    name: httpbin
+#    targetNamespace: httpbin
+#    sources:
+#      - path: helm/charts/httpbin
+#  redis:
+#    name: redis
+#    targetNamespace: redis
+#    sources:
+#      - path: helm/charts/redis
+#  valkey:
+#    name: valkey
+#    targetNamespace: valkey
+#    sources:
+#      - path: helm/charts/valkey
+#  strimzi-kafka-operator:
+#    name: strimzi-kafka-operator
+#    targetNamespace: kafka-system
+#    sources:
+#      - path: helm/charts/strimzi-kafka-operator
+#  homepage:
+#    name: homepage
+#    targetNamespace: homepage
+#    sources:
+#      - path: helm/charts/homepage
+#  kafka-ui:
+#    name: kafka-ui
+#    #targetNamespace: kafka-system
+#    targetNamespace: kafka-ui
+#    sources:
+#      - path: helm/charts/kafka-ui
+#  keda:
+#    disable: true
+#    name: keda
+#    targetNamespace: keda
+#    sources:
+#      - path: helm/charts/keda
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    disableAutomated: false
+#    automated: {}
+#    syncOptions:
+#      ServerSideApply: true
+#  gha-runner-controller:
+#    disable: true
+#    name: gha-runner-controller
+#    targetNamespace: gha-controller
+#    sources:
+#      - path: helm/charts/gha-runner-controller
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    disableAutomated: false
+#    automated: {}
+#    syncOptions:
+#      ServerSideApply: true
+#  gha-runner-scale-set:
+#    disable: true
+#    name: gha-runner-scale-set
+#    targetNamespace: gha-runners
+#    sources:
+#      - path: helm/charts/gha-runner-scale-set
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    disableAutomated: false
+#    automated: {}

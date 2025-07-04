@@ -1,0 +1,58 @@
+schema:
+  env: poc
+  bootstrap: false
+  hvault:
+    external:
+      addr: https://192.168.0.4:8443
+  metadata:
+    namespace: argocd
+    finalisers: resources-finalizer.argocd.argoproj.io
+  annotations:
+    syncwave: "100"
+  spec:
+    project: poc-dev-tools
+    repoURL: https://github.com/vikashb72/gitops.git
+    targetRevision: HEAD
+    destination:
+      server: https://kubernetes.default.svc
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+argocdManaged:
+  umbrella-chart-in-cluster-storage:
+    name: umbrella-chart-dev-tools
+    namespace: argocd
+    syncwave: "1"
+    sources:
+      - path: helm/charts/umbrella/poc
+        helm:
+          valueFiles:
+            - values-dev-tools.yaml
+    automated:
+      allowEmpty: true
+  netshoot:
+    name: netshoot
+    targetNamespace: dev-tools
+    syncwave: "5"
+    sources:
+      - path: helm/charts/netshoot
+    syncOptions:
+      ServerSideApply: true
+  #mailpit:
+  #  name: mailpit
+  #  targetNamespace: dev-tools
+  #  syncwave: "5"
+  #  sources:
+  #    - path: helm/charts/mailpit
+  #  syncOptions:
+  #    ServerSideApply: true
+  #mailhog:
+  #  name: mailhog
+  #  targetNamespace: dev-tools
+  #  syncwave: "5"
+  #  sources:
+  #    - path: helm/charts/mailhog
+  #  syncOptions:
+  #    ServerSideApply: true
