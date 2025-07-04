@@ -42,19 +42,19 @@ vault:
         secretKey: VAULT_AZUREKEYVAULT_VAULT_NAME
 
     extraEnvironmentVars:
-      VAULT_CACERT: /vault/userconfig/hvault-config/ca.crt
-      VAULT_TLSCERT: /vault/userconfig/hvault-config/tls.crt
-      VAULT_TLSKEY: /vault/userconfig/hvault-config/tls.key
+      VAULT_CACERT: /vault/userconfig/vault-tls/ca.crt
+      VAULT_TLSCERT: /vault/userconfig/vault-tls/tls.crt
+      VAULT_TLSKEY: /vault/userconfig/vault-tls/tls.key
 
     volumes:
-      - name: userconfig-hvault-config
+      - name: userconfig-vault-tls
         secret:
          defaultMode: 420
-         secretName: hvault-config
+         secretName: vault-tls
 
     volumeMounts:
-      - mountPath: /vault/userconfig/hvault-config
-        name: userconfig-hvault-config
+      - mountPath: /vault/userconfig/vault-tls
+        name: userconfig-vault-tls
         readOnly: true
 
     auditStorage:
@@ -81,9 +81,9 @@ vault:
              tls_disable = 0
              address = "[::]:8200"
              cluster_address = "[::]:8201"
-             tls_cert_file = "/vault/userconfig/hvault-config/tls.crt"
-             tls_key_file  = "/vault/userconfig/hvault-config/tls.key"
-             tls_client_ca_file = "/vault/userconfig/hvault-config/ca.crt"
+             tls_cert_file = "/vault/userconfig/vault-tls/tls.crt"
+             tls_key_file  = "/vault/userconfig/vault-tls/tls.key"
+             tls_client_ca_file = "/vault/userconfig/vault-tls/ca.crt"
              #telemetry {
              #    unauthenticated_metrics_access = "true"
              #}
