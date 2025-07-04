@@ -83,7 +83,8 @@ function createVaultTLS() {
     mkdir -p "${WORKDIR}" || exit
     cd "${WORKDIR}" || exit
 
-    local VAULT_LB_IP=$(dig +short "vault.${EVT}.${DOMAIN}")
+    local VAULT_LB_IP=$(dig +short "vault.${EVT}.${DOMAIN}" | \
+        grep -v ${DOMAIN})
     local VAULT_UI_IP=$(dig +short "vault-ui.${EVT}.${DOMAIN}" | \
         grep -v ${DOMAIN})
 
