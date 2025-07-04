@@ -1,8 +1,7 @@
 goldilocks:
   dashboard:
     service:
-      type: LoadBalancer
-      loadBalancerIP: 192.168.49.241
+      type: ClusterIP
 #    resources:
 #      requests:
 #        cpu: 15m

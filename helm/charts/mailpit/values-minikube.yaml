@@ -46,11 +46,11 @@ mailpit:
     http:
       #type: ClusterIP
       type: LoadBalancer
-      loadBalancerIP: "192.168.49.239"
+      loadBalancerIP: "192.168.49.198"
     smtp:
       #type: ClusterIP
       type: LoadBalancer
-      loadBalancerIP: "192.168.49.238"
+      loadBalancerIP: "192.168.49.197"
   
   ingress:
     enabled: false

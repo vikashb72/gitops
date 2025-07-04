@@ -8,7 +8,7 @@ mailhog:
       port: 1025
   
   service:
-    loadBalancerIP: "192.168.49.237"
+    loadBalancerIP: "192.168.49.195"
     type: LoadBalancer
     #type: ClusterIP
   
