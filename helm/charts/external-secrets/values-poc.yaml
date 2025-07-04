@@ -73,21 +73,14 @@ schema:
         - localkey: ca.crt
           remotekey: "k8s-poc-eso-external-vault"
           remoteproperty: ca.crt
-
-    vault-tls:
+    offline-root-ca:
       namespace: *schema-namespace
       refresh: 1h
-      store: external-vault-backend
+      store: k8s-vault-backend
       properties:
-        - localkey: ca.crt
-          remotekey: "kv/poc/vault/tls"
-          remoteproperty: ca.crt
-        - localkey: tls.crt
-          remotekey: "kv/poc/vault/tls"
-          remoteproperty: tls.crt
-        - localkey: tls.key
-          remotekey: "kv/poc/vault/tls"
-          remoteproperty: tls.key
+        - localkey: rootCA.crt
+          remotekey: "kv/infrastructure/offline-root-ca"
+          remoteproperty: rootCA.crt
 
 external-secrets:
   namespaceOverride: *schema-namespace
