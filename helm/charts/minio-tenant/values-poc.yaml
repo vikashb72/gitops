@@ -1,0 +1,66 @@
+schema:
+  env: poc
+
+tenant:
+  tenant:
+    name: poc
+    certificate:
+      requestAutoCert: false
+      externalCertSecret:
+        - name: poc-minio-tenant-tls
+          type: cert-manager.io/v1
+          #type: kubernetes.io/tls
+    configuration:
+      name: minio-admin-credentials
+    configSecret:
+      name: minio-admin-credentials
+      accessKey: ""
+      secretKey: ""
+      existingSecret: true
+    pools:
+      # For standalone mode, supply 1. For distributed mode, supply 4 or more.
+      - servers: 4
+        name: pool-0
+        volumesPerServer: 1
+        size: 16Gi
+        storageClassName: nfs-client
+    mountPath: /export
+    subPath: /data
+    metrics:
+      enabled: true
+      port: 9000
+      protocol: http
+    features:
+      # if true <bucket>.minio.default.svc.cluster.local
+      bucketDNS: false 
+      domains: { }
+      enableSFTP: false
+    buckets: 
+      - name: loki-admin
+        objectLock: false
+      - name: loki-chunk
+        objectLock: false
+      - name: loki-ruler
+        objectLock: false
+      - name: tempo-traces
+        objectLock: false
+      - name: tempo-admin
+        objectLock: false
+    users:
+      - name: minio-loki-credentials
+      - name: minio-tempo-credentials
+    podManagementPolicy: Parallel
+    exposeServices:
+      minio: false
+      console: false
+    # Directs the Operator to add the Tenant's metric scrape configuration 
+    # to an existing Kubernetes Prometheus deployment 
+    # managed by the Prometheus Operator.
+    prometheusOperator: false
+    logging: { }
+    env: [ ]
+  ingress:
+    api:
+      enabled: false
+    console:
+      enabled: false
