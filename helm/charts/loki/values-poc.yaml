@@ -1,0 +1,205 @@
+schema:
+  env: poc
+  namespace: loki-system
+  loki:
+    logfmt:
+      namespace:
+        - alloy-system
+        - argocd
+        - cert-manager
+        - echoserver
+        - external-secrets
+        - goldilocks-system
+        - httpbin
+        - keycloak
+        - knative-operator
+        - kube-flannel
+        - kube-node-lease
+        - kube-public
+        - kube-system
+        - kubernetes-dashboard
+        - loki-system
+        - metallb-system
+        - minio-operator
+        - minio-tenant
+        - monitoring
+        - nfs-provisioning
+        - opentelemetry-system
+        - promtail-system
+        - tempo-system
+        - vault-system
+        - vpa-system
+    json: {}
+    #  namespace:
+    #    - gloo-mesh
+
+loki:
+  global:
+    # scope: admin-api, backend, bloom-builder, bloom-gateway, bloom-planner,
+    #        compactor, distributor, index-gateway, ingester, 
+    #        overrides-exporter, pattern-ingester, querier, query-frontend, 
+    #        query-scheduler, read, ruler, write.
+    extraArgs:
+      - '-config.expand-env=true'
+    extraEnvFrom:
+      - secretRef:
+          name: loki-minio-credentials
+    extraEnv: []
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+
+  auth_enabled: false
+
+  loki:
+    auth_enabled: false
+    server:
+      http_server_read_timeout: 300s  # default 600s (too long ?)
+      http_server_write_timeout: 300s  # default 600s (too long ?)
+    schemaConfig:
+      configs:
+        - from: "2024-10-25"
+          store: tsdb
+          object_store: s3
+          schema: v13
+          index:
+            prefix: loki_index_
+            period: 24h
+    ingester:
+      chunk_encoding: snappy
+    querier:
+      max_concurrent: 4
+    pattern_ingester:
+      enabled: true
+    limits_config:
+      allow_structured_metadata: true
+      volume_enabled: true
+      retention_period: 96h
+      ingestion_rate_mb: 16
+      ingestion_burst_size_mb: 24
+      max_line_size_truncate: true
+    storage:
+      bucketNames:
+        chunks: loki-chunk
+        ruler: loki-ruler
+        admin: loki-admin
+      type: s3
+      s3:
+        endpoint: "${endpoint}"
+        region: null
+        secretAccessKey: "${secretKey}"
+        accessKeyId: "${accessKey}"
+        s3ForcePathStyle: true
+        #insecure: true
+        http_config: {}
+        #  insecure_skip_verify: true
+    rulerConfig:
+      storage:
+        type: local
+        local:
+          directory: /var/loki/rulestorage
+      rule_path: "/var/loki/rules-temp"
+      ring:
+        kvstore:
+          store: inmemory
+      alertmanager_url: http://kube-prometheus-alertmanager.monitoring:9093
+      enable_alertmanager_v2: true
+
+  deploymentMode: Distributed
+
+  ruler:
+    enabled: true
+    maxUnavailable: 2
+    replicas: 3
+    alertmanager_url: http://kube-prometheus-stack-alertmanager.monitoring:9093
+    enable_alertmanager_v2: true
+    enable_api: true
+    extraVolumeMounts:
+      - name: rules
+        mountPath: "/var/loki/rulestorage/test"
+    extraVolumes:
+      - name: rules
+        configMap:
+          name: loki-alerting-rules
+
+  ingester:
+    replicas: 3 # To ensure data durability with replication
+    zoneAwareReplication:
+       enabled: false
+
+  querier:
+    replicas: 3 # Improve query performance via parallelism
+    maxUnavailable: 2
+
+  queryFrontend:
+    replicas: 2
+    maxUnavailable: 1
+
+  queryScheduler:
+    replicas: 2
+
+  distributor:
+    replicas: 3
+    maxUnavailable: 2
+
+  compactor:
+    replicas: 1
+
+  indexGateway:
+    replicas: 2
+    maxUnavailable: 1
+
+  bloomPlanner:
+    replicas: 0
+  bloomBuilder:
+    replicas: 0
+  bloomGateway:
+    replicas: 0
+
+  backend:
+     replicas: 0
+  read:
+     replicas: 0
+  write:
+     replicas: 0
+
+  singleBinary:
+     replicas: 0
+
+  minio:
+    enabled: false
+
+  gateway:
+    service:
+      type: LoadBalancer
+
+  monitoring:
+    dashboards:
+      enabled: false
+
+    rules:
+      enabled: true
+      alerting: true
+      additionalGroups:
+       - name: additional-loki-rules
+         rules:
+           - record: job:loki_request_duration_seconds_bucket:sum_rate
+             expr: sum(rate(loki_request_duration_seconds_bucket[1m])) by (le, job)
+           - record: job_route:loki_request_duration_seconds_bucket:sum_rate
+             expr: sum(rate(loki_request_duration_seconds_bucket[1m])) by (le, job, route)
+           - record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
+             expr: sum(rate(container_cpu_usage_seconds_total[1m])) by (node, namespace, pod, container)
+    selfMonitoring:
+      enabled: false
+    grafanaAgent:
+      installOperator: false
