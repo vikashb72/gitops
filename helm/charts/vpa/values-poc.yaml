@@ -1,0 +1,38 @@
+vpa:
+  recommender:
+    enabled: true
+
+    podMonitor:
+      enabled: true
+      labels:
+        release: kube-prometheus-stack
+
+    extraArgs:
+      v: "4"
+      pod-recommendation-min-cpu-millicores: 15
+      pod-recommendation-min-memory-mb: 100
+      prometheus-address: |
+        http://kube-prometheus-stack-prometheus.monitoring:9090
+      storage: prometheus
+      history-length: 30d
+      history-resolution: 15m
+      prometheus-cadvisor-job-name: kubelet
+      container-namespace-label: namespace
+      container-name-label: container
+      container-pod-name-label: pod
+      metric-for-pod-labels:  kube_pod_labels{job="kube-state-metrics"}[30d]
+      pod-namespace-label: namespace
+      pod-name-label: pod
+  
+  updater:
+    enabled: false
+    podMonitor:
+      enabled: true
+      labels:
+        release: kube-prometheus-stack
+  
+  admissionController:
+    enabled: false
+  
+  metrics-server:
+    enabled: false
