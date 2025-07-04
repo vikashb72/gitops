@@ -1,6 +1,8 @@
 schema:
   env: minikube
   bootstrap: false
+  caBundle: true
+  skipES: false
 
 cert-manager:
   crds:
