@@ -1,0 +1,4 @@
+apiVersion: v2
+name: kafka-rest
+version: 1.0.0
+description: kafka rest
