@@ -742,6 +742,11 @@ VAULT_STATUS=$(kubectl -n vault-system exec -it vault-0 -- vault status \
 if [ "${VAULT_STATUS}" -ne 2 ]; then
     # Init
     initVault
+    kubectl -n vault-system cp ${ROOT_CRT} \
+        vault-0:/tmp/root_ca.crt
+    kubectl -n vault-system exec -it vault-0 -- \
+        vault kv put kv/infrastructure/offline-root-ca \
+           rootCA.crt=@/tmp/root_ca.crt
 fi
 
 kubectl -n vault-system exec -it vault-0 -- \
@@ -763,6 +768,7 @@ fi
 
 kubectl -n cert-manager get secret offline-root-ca
 if [ $? -ne 0 ]; then
+    # Will be managed by ES, this is to get the cluster up
     kubectl -n cert-manager create secret generic offline-root-ca \
         --from-file=rootCA.crt=${ROOT_CRT}
 fi
@@ -803,8 +809,13 @@ fi
 # check clusterissuer status
 kubectl get clusterissuers.cert-manager.io 
 
+# ---------------------------------------------------------------------------- #
+# Hashicorp vault with cert from cert-manager
+# ---------------------------------------------------------------------------- #
 kubectl -n vault-system get secret  vault-tls | grep 'kubernetes.io/tls'
 if [ $? -ne 0 ]; then
+    # Delete old secret
+    kubectl -n vault-system delete secret vault-tls
     # Use cert-manager to generate vault cert
     helm upgrade -i -n vault-system vault \
     "${CHARTS_REPO_BASE}/hashicorp-vault" \
@@ -839,6 +850,12 @@ if [ "${INSTALLED}" -eq "0" ]; then
         --from-literal=tenantId="${AZURE_TENANT_ID}" \
         --from-literal=vaultUrl="${VAULT_AZUREKEYVAULT_VAULT_NAME}"
     
+    kubectl -n external-secrets get secret offline-root-ca
+    if [ $? -ne 0 ]; then
+        kubectl -n external-secrets create secret generic offline-root-ca \
+            --from-file=rootCA.crt=${ROOT_CRT}
+    fi
+
     installChart -d "${CHARTS_REPO_BASE}/external-secrets" \
         -c external-secrets \
         -n external-secrets \
@@ -848,75 +865,177 @@ if [ "${INSTALLED}" -eq "0" ]; then
         -l "app.kubernetes.io/instance=external-secrets" \
         -u true
 fi
-#vix # argocd
-#vix # ---------------------------------------------------------------------------- #
-#vix # get argocd admin password
-#vix ARGOPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
-#vix     kv/minikube/argocd/admin-password \
-#vix     | jq -r '.data.data.bcrypt')
-#vix 
-#vix installChart -d "${CHARTS_REPO_BASE}/argocd" \
-#vix     -c argocd \
-#vix     -n argocd \
-#vix     -s schema.bootstrap=true \
-#vix     -s argo-cd.configs.secret.argocdServerAdminPassword=${ARGOPASS} \
-#vix     -l "app.kubernetes.io/instance=argocd" \
-#vix     -u true
-#vix 
-#vix helm template ${CHARTS_REPO_BASE}/umbrella/minikube \
-#vix     -f ${CHARTS_REPO_BASE}/umbrella/minikube/values-infrastructure.yaml \
-#vix     | kubectl -n argocd apply -f -
-#vix 
-#vix for app in in-cluster-storage monitoring apps networking dev-tools
-#vix do
-#vix     helm template ${CHARTS_REPO_BASE}/umbrella/minikube \
-#vix         -f ${CHARTS_REPO_BASE}/umbrella/minikube/values-${app}.yaml \
-#vix         | kubectl -n argocd apply -f -
-#vix         sleep 10
-#vix done
-#vix 
-#vix # ---------------------------------------------------------------------------- #
-#vix # Set passwords
-#vix # ---------------------------------------------------------------------------- #
-#vix GRAFANAPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
-#vix     kv/minikube/grafana/admin \
-#vix     | jq -r '.data.data.GF_SECURITY_ADMIN_PASSWORD')
-#vix 
-#vix kubectl wait -n monitoring pods \
-#vix     -l app.kubernetes.io/name=grafana \
-#vix     --for condition=Ready \
-#vix     --timeout=180s
-#vix 
-#vix kubectl wait deployment -n monitoring kube-prometheus-stack-grafana \
-#vix      --for condition=Available=True --timeout=90s
-#vix 
+# ---------------------------------------------------------------------------- #
+# argocd
+# ---------------------------------------------------------------------------- #
+# get argocd admin password
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/argocd/admin-password
+if [ $? -ne 0 ]; then
+   PASS=$(openssl rand 16 | sha512sum | base64 -w 0 | head -c 24)
+   BCRYPT=$(argocd account bcrypt --password $PASS)
+   vault kv put -address $EXTERNAL_VAULT_ADDR \
+      kv/${EVT}/argocd/admin-password bcrypt=${BCRYPT} password=${PASS}
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/argocd/redis
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/argocd/redis auth="$(openssl rand -base64 16)"
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/argocd/authentik-client
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/argocd/authentik-client \
+        id="$(openssl rand 256 | sha512sum | base64 -w 0 | head -c 40)" \
+        secret="$(openssl rand 256 | sha512sum | base64 -w 0 | head -c 128)"
+fi
+
+ARGOPASS=$(vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/argocd/admin-password \
+    | jq -r '.data.data.bcrypt')
+
+installChart -d "${CHARTS_REPO_BASE}/argocd" \
+    -c argocd \
+    -n argocd \
+    -s schema.bootstrap=true \
+    -s argo-cd.configs.secret.argocdServerAdminPassword=${ARGOPASS} \
+    -l "app.kubernetes.io/instance=argocd" \
+    -u true
+ 
+# ---------------------------------------------------------------------------- #
+# Set passwords
+# ---------------------------------------------------------------------------- #
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/authentik/secrets
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/authentik/secrets \
+      AUTHENTIK_BOOTSTRAP_PASSWORD="$(openssl rand 64 | sha512sum | base64 -w 0 | head -c 32)",
+      AUTHENTIK_BOOTSTRAP_TOKEN="$(openssl rand 64 | sha512sum | base64 -w 0 | head -c 32)",
+      AUTHENTIK_EMAIL__FROM="authentik@${EVT}.where-ever.net",
+      AUTHENTIK_EMAIL__HOST= "mailhog.dev-tools.svc.cluster.local",
+      AUTHENTIK_EMAIL__PASSWORD= "",
+      AUTHENTIK_EMAIL__PORT= "1025",
+      AUTHENTIK_EMAIL__USERNAME= "vikashb@${EVT}.where-ever.net",
+      AUTHENTIK_EMAIL__USE_SSL= "false",
+      AUTHENTIK_EMAIL__USE_TLS= "false",
+      AUTHENTIK_POSTGRESQL__ADMIN_PASSWORD= "$(openssl rand -base64 16)",
+      AUTHENTIK_POSTGRESQL__PASSWORD= "$(openssl rand -base64 16)",
+      AUTHENTIK_REDIS__PASSWORD= "$(openssl rand -base64 16)",
+      AUTHENTIK_SECRET_KEY= "$(openssl rand -base64 32)",
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/grafana/admin
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/grafana/admin \
+    GF_SECURITY_ADMIN_PASSWORD="$(openssl rand 64 | sha512sum | base64 -w 0 | head -c 24)" \
+    GF_SECURITY_ADMIN_USER="admin"
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/grafana/authentik-client
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/grafana/authentik-client \
+        id="$(openssl rand 256 | sha512sum | base64 -w 0 | head -c 40)" \
+        secret="$(openssl rand 256 | sha512sum | base64 -w 0 | head -c 128)"
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/grafana/smtp
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/grafana/smtp \
+      GF_SMTP_ENABLED="true" \
+      GF_SMTP_FROM_ADDRESS="monitor@${EVT}.where-ever.net" \
+      GF_SMTP_HOST="desktop.home.where-ever.za.net:587" \
+      GF_SMTP_PASSWORD="$(openssl rand -base64 32)" \
+      GF_SMTP_STARTTLS_POLICY="MandatoryStartTLS" \
+      GF_SMTP_USER="vmail"
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/kafka-ui/authentik-client
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/kafka-ui/authentik-client \
+        id="$(openssl rand 256 | sha512sum | base64 -w 0 | head -c 40)" \
+        secret="$(openssl rand 256 | sha512sum | base64 -w 0 | head -c 128)"
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/minio/admin-credentials
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/minio/admin-credentials \
+        rootPassword="$(openssl rand -base64 24)" \
+        rootUser="minio-admin"
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/loki/minio-credentials-incluster
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/loki/minio-credentials-incluster \
+    accessKey="loki" \
+    endpoint="https://${EVT}-hl.minio-tenant:9000/" \
+    secretKey="$(openssl rand -base64 24)"
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/tempo/minio-credentials-incluster
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/tempo/minio-credentials-incluster \
+    accessKey="tempo" \
+    endpoint="${EVT}-hl.minio-tenant:9000" \
+    secretKey="$(openssl rand -base64 24)"
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/kafka/cluster/ca
+
+if [ $? -ne 0 ]; then
+    createKafkaCA
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/redis/password
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/redis/password \
+      password="$(openssl rand -base64 16)"
+fi
+
+vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
+    kv/${EVT}/valkey/password
+
+if [ $? -ne 0 ]; then
+    vault kv put kv/${EVT}/valkey/password \
+      password="$(openssl rand -base64 16)"
+fi
 #vix kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods \
 #vix     | grep grafana | awk '{ print $1 }') -- \
 #vix     grafana cli  admin reset-admin-password $GRAFANAPASS
 #vix 
 #vix 
-#vix #
-#vix mkdir /tmp/minio-tenant
-#vix 
-#vix kubectl wait -n minio-tenant pods \
-#vix     -l "v1.min.io/tenant=minikube" \
-#vix     --for condition=Ready \
-#vix     --timeout=180s
-#vix 
-#vix while true
-#vix do
-#vix     kubectl -n minio-tenant get secrets minikube-minio-tenant-tls && break 
-#vix     sleep 2
-#vix done
-#vix 
-#vix kubectl -n minio-tenant get secrets minikube-minio-tenant-tls \
+#vix kubectl -n minio-tenant get secrets ${EVT}-minio-tenant-tls \
 #vix     -o=jsonpath='{.data.ca\.crt}' \
-#vix     | base64 -d > /tmp/minio-tenant/ca.crt
-#vix 
-#vix kubectl create secret generic operator-ca-tls-minio-tenant \
-#vix      --from-file=/tmp/minio-tenant/ca.crt -n minio-operator
-#vix 
-#vix rm -r /tmp/minio-tenant
-#vix 
-#vix kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
-#vix     kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
+ 
+# ----------------------------------------------------------------------- #
+# Install umbrella charts
+# ----------------------------------------------------------------------- #
+for app in in-cluster-storage monitoring apps networking dev-tools \
+           infrastructure
+do
+    helm template ${CHARTS_REPO_BASE}/umbrella/${EVT} \
+        -f ${CHARTS_REPO_BASE}/umbrella/${EVT}/values-${app}.yaml \
+        | kubectl -n argocd apply -f -
+        sleep 10
+done
