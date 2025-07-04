@@ -1020,13 +1020,6 @@ if [ $? -ne 0 ]; then
     vault kv put kv/${EVT}/valkey/password \
       password="$(openssl rand -base64 16)"
 fi
-#vix kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods \
-#vix     | grep grafana | awk '{ print $1 }') -- \
-#vix     grafana cli  admin reset-admin-password $GRAFANAPASS
-#vix 
-#vix 
-#vix kubectl -n minio-tenant get secrets ${EVT}-minio-tenant-tls \
-#vix     -o=jsonpath='{.data.ca\.crt}' \
  
 # ----------------------------------------------------------------------- #
 # Install umbrella charts
@@ -1039,3 +1032,11 @@ do
         | kubectl -n argocd apply -f -
         sleep 10
 done
+
+#vix kubectl -n monitoring exec -it  $(kubectl -n monitoring get pods \
+#vix     | grep grafana | awk '{ print $1 }') -- \
+#vix     grafana cli  admin reset-admin-password $GRAFANAPASS
+#vix 
+#vix 
+#vix kubectl -n minio-tenant get secrets ${EVT}-minio-tenant-tls \
+#vix     -o=jsonpath='{.data.ca\.crt}' \
