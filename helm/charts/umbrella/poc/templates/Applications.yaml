@@ -1,0 +1,119 @@
+{{- range $app := .Values.argocdManaged -}}
+  {{- if not .disable }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  namespace: {{ default $.Values.schema.metadata.namespace .namespace }}
+    {{- if not .disableFinalisers }}
+  finalizers:
+    - {{ default $.Values.schema.metadata.finalisers .finaliser }}
+    {{- end }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{ default $.Values.schema.annotations.syncwave .syncwave }}"
+spec:
+  project: {{ default $.Values.schema.spec.project .project }}
+  sources:
+    {{- range .sources }}
+    - repoURL: {{ default $.Values.schema.spec.repoURL .repoURL }}
+      {{- if .path }}
+      path: {{ .path }}
+      {{- end }}
+      {{- if .chart }}
+      chart: {{ .chart }}
+      {{- end }}
+      targetRevision: {{ default $.Values.schema.spec.targetRevision .targetRevision }}
+      {{- if not .noHelmValues }}
+        {{- if or 
+                  (and (.helm) (.helm.valueFiles))
+                  (and (.helm) (.helm.values))
+                  (and (.helm) (.helm.valuesObject))
+                  (and (.helm) (.helm.parameters))
+        }}
+      helm:
+          {{- if and (.helm) (.helm.valueFiles) }}
+        valueFiles:
+            {{- range .helm.valueFiles }}
+          - {{ . }}
+            {{- end }}
+          {{- else }}
+        valueFiles:
+          - values-{{ $.Values.schema.env }}.yaml
+          {{- end }}
+          {{- if and (.helm) (.helm.values) }}
+        values: |
+{{ .helm.values | toYaml | indent 10 }}
+          {{- end }}
+          {{- if and (.helm) (.helm.valuesObject) }}
+        valuesObject:
+{{ .helm.valuesObject | toYaml | indent 10 }}
+          {{- end }}
+          {{- if or (and (.helm) (.helm.parameters)) ($.Values.schema.bootstrap) }}
+        parameters:
+            {{- if $.Values.schema.bootstrap }}
+          - name: "schema.bootstrap"
+            value: true
+            {{- end }}
+            {{- if and (.helm) (.helm.parameters) }}
+{{ .helm.parameters | toYaml | indent 10 }}
+            {{- end }}
+          {{- end }}
+        {{- else }}
+      helm:
+        valueFiles:
+          - values-{{ $.Values.schema.env }}.yaml
+          {{- if $.Values.schema.bootstrap }}
+        parameters:
+          - name: "schema.bootstrap"
+            value: true
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  destination:
+    server: {{ $.Values.schema.spec.destination.server }}
+    namespace: {{ default $.Values.schema.metadata.namespace .targetNamespace }}
+  syncPolicy:
+    automated:
+    {{- if and (.automated) (.automated.prune) }}
+      prune: {{ .automated.prune }}
+    {{- else }}
+      prune: {{ $.Values.schema.spec.automated.prune }}
+    {{- end }}
+    {{- if and (.automated) (.automated.selfHeal) }}
+      selfHeal: {{ .automated.selfHeal }}
+    {{- else }}
+      selfHeal: {{ $.Values.schema.spec.automated.selfHeal }}
+    {{- end }}
+    {{- if and (.automated) (.automated.allowEmpty) }}
+      allowEmpty: {{ .automated.allowEmpty }}
+    {{- else }}
+      allowEmpty: {{ $.Values.schema.spec.automated.allowEmpty }}
+    {{- end }}
+    syncOptions:
+      - CreateNamespace=true
+    {{- if .syncOptions }}
+      {{- if .syncOptions.ServerSideApply }}
+      - ServerSideApply=true
+      {{- end }}
+    {{- end }}
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+    {{- if .ignoreDifferences }}
+  ignoreDifferences:
+      {{- range .ignoreDifferencesConfig }}
+    - group: {{ .group }}
+      kind: {{ .kind }}
+      jqPathExpressions:
+        {{- range .jqPathExpressions }}
+        - {{ . }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+---
+  {{- end }}
+{{- end }}

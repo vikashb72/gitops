@@ -1,0 +1,86 @@
+schema:
+  env: poc
+  bootstrap: false
+  hvault:
+    external:
+      addr: https://192.168.0.4:8443
+  metadata:
+    namespace: argocd
+    finalisers: resources-finalizer.argocd.argoproj.io
+  annotations:
+    syncwave: "100"
+  spec:
+    project: poc-monitoring
+    repoURL: https://github.com/vikashb72/gitops.git
+    targetRevision: HEAD
+    destination:
+      server: https://kubernetes.default.svc
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+argocdManaged:
+  umbrella-chart-monitoring:
+    name: umbrella-chart-monitoring
+    namespace: argocd
+    syncwave: "1"
+    sources:
+      - path: helm/charts/umbrella/poc
+        helm:
+          valueFiles:
+            - values-monitoring.yaml
+    automated:
+      allowEmpty: true
+  #kube-prometheus-stack:
+  #  name: kube-prometheus-stack
+  #  targetNamespace: monitoring
+  #  syncwave: "7"
+  #  sources:
+  #    - path: helm/charts/kube-prometheus-stack
+  #  syncOptions:
+  #    ServerSideApply: true
+  #loki:
+  #  name: loki
+  #  targetNamespace: loki-system
+  #  syncwave: "8"
+  #  sources:
+  #    - path: helm/charts/loki
+  #  syncOptions:
+  #    ServerSideApply: true
+  #tempo-distributed:
+  #  name: tempo-distributed
+  #  targetNamespace: tempo-system
+  #  syncwave: "10"
+  #  sources:
+  #    - path: helm/charts/tempo-distributed
+  #  syncOptions:
+  #    ServerSideApply: true
+  #alloy:
+  #  name: alloy
+  #  targetNamespace: alloy-system
+  #  syncwave: "10"
+  #  sources:
+  #    - path: helm/charts/alloy
+  #  syncOptions:
+  #    ServerSideApply: true
+  #opentelemetry-collector:
+  #  name: opentelemetry-collector
+  #  targetNamespace: opentelemetry-system
+  #  syncwave: "10"
+  #  sources:
+  #    - path: helm/charts/opentelemetry-collector
+  #  syncOptions:
+  #    ServerSideApply: true
+  #vpa:
+  #  name: vpa
+  #  targetNamespace: vpa-system
+  #  syncwave: "11"
+  #  sources:
+  #    - path: helm/charts/vpa
+  #goldilocks:
+  #  name: goldilocks
+  #  targetNamespace: goldilocks-system
+  #  syncwave: "12"
+  #  sources:
+  #    - path: helm/charts/goldilocks
