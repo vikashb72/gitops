@@ -92,7 +92,7 @@ gloo-ee:
             perConnectionBufferLimitBytes: 4294967295
         service:
           #type: "LoadBalancer"
-          #loadBalancerIP: 192.168.49.249
+          #loadBalancerIP: 192.168.49.239
           extraAnnotations:
             metallb.universe.tf/address-pool: default
 

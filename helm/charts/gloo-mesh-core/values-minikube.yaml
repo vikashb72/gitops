@@ -69,7 +69,7 @@ gloo-platform:
     serviceType: LoadBalancer
     serviceOverrides:
       spec:
-        loadBalancerIP: "192.168.49.199"
+        loadBalancerIP: "192.168.49.239"
     annotations:
       #metallb.universe.tf/address-pool: default
       #service.beta.kubernetes.io/azure-load-balancer-internal: "true"

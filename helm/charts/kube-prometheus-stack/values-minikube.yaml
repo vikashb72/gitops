@@ -77,8 +77,6 @@ kube-prometheus-stack:
 
     service:
       type: ClusterIP
-      #type: LoadBalancer
-      #loadBalancerIP: 192.168.49.245
 
     ## Configuration for Alertmanager service
     alertmanagerSpec:
@@ -341,8 +339,6 @@ kube-prometheus-stack:
 
     service:
       enabled: true
-      #type: LoadBalancer
-      #loadBalancerIP: 192.168.49.246
 
     serviceMonitor:
       enabled: true
@@ -810,10 +806,6 @@ kube-prometheus-stack:
     enabled: true
 
     service:
-      #type: LoadBalancer
-
-      #loadBalancerIP: 192.168.49.244
-
       ipDualStack:
         enabled: false
 

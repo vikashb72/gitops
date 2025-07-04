@@ -44,7 +44,7 @@ keycloak:
   service:
     #type: ClusterIP
     type: LoadBalancer
-    loadBalancerIP: 192.168.49.196
+    loadBalancerIP: 192.168.49.236
 
     annotations: {}
 
