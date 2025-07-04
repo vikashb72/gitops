@@ -35,7 +35,7 @@ schema:
       caProvider:
         type: Secret
         name: external-hashicorp-vault-token
-        key: ca.crt
+        key: rootCA.crt
         namespace: *schema-namespace
 
     k8s-vault-backend:
