@@ -20,6 +20,17 @@ CONTAINER_KEY_NAME="authentik.tfstate"
 
 ./setup.sh
 
+terraform init -backend-config=storage_account_name=$TF_STORAGE_ACCOUNT_NAME \
+    -backend-config=container_name=$CONTAINER_NAME \
+    -backend-config=key=$CONTAINER_KEY_NAME \
+    -backend-config=resource_group_name=$TF_STORAGE_ACCOUNT_RGRP \
+    -backend-config=subscription_id=$SUBSCRIPTION_ID \
+    -backend-config=tenant_id=$TENANT_ID \
+    -backend-config=client_id=$CLIENT_ID \
+    -backend-config=client_secret=$CLIENT_SECRET \
+    -reconfigure \
+    -upgrade
+
 # get pk from https://authentik.tld/api/v3/outposts/instances/?ordering=name&page=1&page_size=20&search=
 
 terraform plan \

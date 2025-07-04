@@ -1,6 +1,6 @@
 environment        = "minikube"
 authentik_url      = "https://authentik.minikube.where-ever.net"
-service_connection = "2210ed4b-d589-48f8-9f45-24439b5f5e82"
+service_connection = "4b095741-015e-4c15-af64-29de06476ab6"
 
 oauth2_providers = [
   {
@@ -104,19 +104,25 @@ proxy_providers  = [
   }
 ]
 
-# admin_group = "7184b4f4-c031-4f94-8123-15a6524a809d"
-# "ArgoCD Admins" = "d340c1a6-454c-4b8d-9121-f69d8da0a654"
-# "ArgoCD Viewers" = "96fffed7-c5ef-4617-a927-a53d40cbb9ce"
-# "Grafana Admins" = "800dfba6-6d61-4a03-b9ad-7400f4aa6916"
-# "Grafana Editors" = "1f9da5b7-2f5c-46a1-8646-1d05d747c4b7"
-# "Grafana Viewers" = "2e0a680b-4963-428e-9c88-301b529a2004"
-# "alertmanager Access" = "c95bba94-1c3c-4a13-bd68-d50b198aaae5"
-# "echoserver Access" = "05a208c7-d4b2-4740-8bd0-c75c48667448"
-# "goldilocks Access" = "cfc24377-75d8-4ee8-a7b2-c5c4d5aaf8b1"
-# "homepage Access" = "90716734-0f9b-43cc-940b-9206cb0f453d"
-# "httpbin Access" = "b9dd6360-584f-4602-bfbc-79faa2c0f755"
-# "prometheus Access" = "fa70baa4-d1f0-40d9-9572-2812268e42b5"
-# "vault Access" = "013682bc-168f-4163-9fb9-bff1c6513317"
+#admin_group = "e882e9f6-d601-44f8-a924-14642ae2b67e"
+#oauth2_groups = {
+#  "ArgoCD Admins" = "5d81a8f7-4ada-4610-9ff4-21739a4d2547"
+#  "ArgoCD Viewers" = "41c883e1-4072-4e75-b84a-eb34a5a0b6c8"
+#  "Grafana Admins" = "30bd8d1d-7576-483a-8ac4-d525348c6c62"
+#  "Grafana Editors" = "da159ef9-6987-4c8c-8709-4ee5e88fe76b"
+#  "Grafana Viewers" = "4984a2d3-367f-414c-b768-c6c8145f4833"
+#  "Kafka UI Admins" = "adca96c3-ca82-497f-a855-87ba2715c7a2"
+#  "Kafka UI Viewers" = "354435f6-3ba2-48ee-b657-a4f6c3beca29"
+#}
+#proxy_groups = {
+#  "alertmanager Access" = "fe66de68-dde7-4e67-922e-d75be2f407b5"
+#  "echoserver Access" = "c5150350-9fee-45bd-a178-9cc90010d424"
+#  "goldilocks Access" = "52966147-06e4-468a-93df-2e97ccdb6839"
+#  "homepage Access" = "e7ec37a2-b754-44cd-8ac3-ce163b431394"
+#  "httpbin Access" = "d5dc5a55-6dbd-490a-af54-fb59d616d6b6"
+#  "prometheus Access" = "08e80714-471e-43be-a032-08a8366acaa8"
+#  "vault Access" = "464b947a-1a0e-4a1f-8910-9e9c6481bd38"
+#}
 
 users = [
   {
@@ -124,16 +130,17 @@ users = [
     name      = "Vikash Badal"
     email     = "vikash.badal@minikube.where-ever.net"
     groups    =  [
-      "7184b4f4-c031-4f94-8123-15a6524a809d",
-      "d340c1a6-454c-4b8d-9121-f69d8da0a654",
-      "800dfba6-6d61-4a03-b9ad-7400f4aa6916",
-      "c95bba94-1c3c-4a13-bd68-d50b198aaae5",
-      "05a208c7-d4b2-4740-8bd0-c75c48667448",
-      "cfc24377-75d8-4ee8-a7b2-c5c4d5aaf8b1",
-      "90716734-0f9b-43cc-940b-9206cb0f453d",
-      "b9dd6360-584f-4602-bfbc-79faa2c0f755",
-      "fa70baa4-d1f0-40d9-9572-2812268e42b5",
-      "013682bc-168f-4163-9fb9-bff1c6513317"
+        "e882e9f6-d601-44f8-a924-14642ae2b67e",
+        "5d81a8f7-4ada-4610-9ff4-21739a4d2547",
+        "30bd8d1d-7576-483a-8ac4-d525348c6c62",
+        "adca96c3-ca82-497f-a855-87ba2715c7a2",
+        "fe66de68-dde7-4e67-922e-d75be2f407b5",
+        "c5150350-9fee-45bd-a178-9cc90010d424",
+        "52966147-06e4-468a-93df-2e97ccdb6839",
+        "e7ec37a2-b754-44cd-8ac3-ce163b431394",
+        "d5dc5a55-6dbd-490a-af54-fb59d616d6b6",
+        "08e80714-471e-43be-a032-08a8366acaa8",
+        "464b947a-1a0e-4a1f-8910-9e9c6481bd38"
     ]
   }
 ]
