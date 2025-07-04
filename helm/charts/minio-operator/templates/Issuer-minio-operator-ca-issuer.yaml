@@ -10,7 +10,7 @@ spec:
     path: pki/sign/generate-cert-role
     caBundleSecretRef:
       name: offline-root-ca
-      key: rootCA.ca
+      key: rootCA.crt
     auth:
       kubernetes:
         mountPath: /v1/auth/kubernetes
