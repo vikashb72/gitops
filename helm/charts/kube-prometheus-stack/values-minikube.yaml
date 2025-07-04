@@ -295,7 +295,7 @@ kube-prometheus-stack:
       enabled: true
       type: pvc
       storageClassName: nfs-client
-      size: 16Gi
+      size: 32Gi
       lookupVolumeName: true
 
       accessModes:

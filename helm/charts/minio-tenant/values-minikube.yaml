@@ -22,7 +22,7 @@ tenant:
       - servers: 4
         name: pool-0
         volumesPerServer: 1
-        size: 16Gi
+        size: 32Gi
         storageClassName: nfs-client
     mountPath: /export
     subPath: /data

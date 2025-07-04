@@ -29,6 +29,16 @@ argocdManaged:
             - values-apps.yaml
     automated:
       allowEmpty: true
+  strimzi-kafka-operator:
+    name: strimzi-kafka-operator
+    targetNamespace: kafka-system
+    sources:
+      - path: helm/charts/strimzi-kafka-operator
+  kafka-ui:
+    name: kafka-ui
+    targetNamespace: kafka-ui
+    sources:
+      - path: helm/charts/kafka-ui
 #  echoserver:
 #    name: echoserver
 #    targetNamespace: echoserver
@@ -49,22 +59,11 @@ argocdManaged:
 #    targetNamespace: valkey
 #    sources:
 #      - path: helm/charts/valkey
-#  strimzi-kafka-operator:
-#    name: strimzi-kafka-operator
-#    targetNamespace: kafka-system
-#    sources:
-#      - path: helm/charts/strimzi-kafka-operator
 #  homepage:
 #    name: homepage
 #    targetNamespace: homepage
 #    sources:
 #      - path: helm/charts/homepage
-#  kafka-ui:
-#    name: kafka-ui
-#    #targetNamespace: kafka-system
-#    targetNamespace: kafka-ui
-#    sources:
-#      - path: helm/charts/kafka-ui
 #  keda:
 #    disable: true
 #    name: keda

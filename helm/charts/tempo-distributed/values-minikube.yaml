@@ -27,7 +27,7 @@ tempo-distributed:
     persistence:
       enabled: false
       inMemory: false
-      size: 8Gi
+      size: 32Gi
       storageClassName: nfs-client
 
     # Adds the appProtocol field to the ingester service. 
