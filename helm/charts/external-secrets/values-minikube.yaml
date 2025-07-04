@@ -47,7 +47,8 @@ schema:
       version: "v2"
       caProvider:
         type: Secret
-        name: vault-tls
+        name: offline-root-ca
+        key: rootCA.crt
         key: ca.crt
         namespace: external-secrets
       auth:
@@ -73,21 +74,14 @@ schema:
         - localkey: ca.crt
           remotekey: "k8s-minikube-eso-external-vault"
           remoteproperty: ca.crt
-
-    vault-tls:
+    offline-root-ca:
       namespace: *schema-namespace
       refresh: 1h
-      store: external-vault-backend
+      store: k8s-vault-backend
       properties:
-        - localkey: ca.crt
-          remotekey: "kv/minikube/vault/tls"
-          remoteproperty: ca.crt
-        - localkey: tls.crt
-          remotekey: "kv/minikube/vault/tls"
-          remoteproperty: tls.crt
-        - localkey: tls.key
-          remotekey: "kv/minikube/vault/tls"
-          remoteproperty: tls.key
+        - localkey: rootCA.crt
+          remotekey: "kv/infrastructure/offline-root-ca"
+          remoteproperty: rootCA.crt
 
 external-secrets:
   namespaceOverride: *schema-namespace
