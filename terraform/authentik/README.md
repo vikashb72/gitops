@@ -33,6 +33,17 @@ terraform init -backend-config=storage_account_name=$TF_STORAGE_ACCOUNT_NAME \
 
 # get pk from https://authentik.tld/api/v3/outposts/instances/?ordering=name&page=1&page_size=20&search=
 
+
+terraform import -var-file="tfvars/minikube.tfvars" \
+    -var="tenant_id=${TENANT_ID}" \
+    -var="subscription_id=${SUBSCRIPTION_ID}" \
+    -var="storage_account=$TF_STORAGE_ACCOUNT_NAME" \
+    -var="vault_address=${EXTERNAL_VAULT_ADDR}" \
+    -var="vault_token=$ROOT_TOKEN" \
+    -var="akv_name=kv-home-where-ever" \
+    -var="akv_rg=rg-home-where-ever" \
+    authentik_outpost.embedded_outpost $OUTPOST_ID
+
 terraform plan \
   -var-file="tfvars/${ENVIRONMENT}.tfvars" \
   -var="tenant_id=${TENANT_ID}" \
