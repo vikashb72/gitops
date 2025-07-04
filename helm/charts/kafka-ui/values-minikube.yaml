@@ -18,22 +18,22 @@ kafka-ui:
           properties:
             security.protocol: SASL_SSL
             sasl.mechanism: SCRAM-SHA-512        
-    auth:
-      type: OAUTH2
-      oauth2:
-        client:
-          goauthentic:
-            provider: goauthentic
-            scope: [ 'openid', 'profile', 'email' ]
-            client-name: authentik
-            issuer-uri: https://authentik.minikube.where-ever.net/application/o/kafka-ui/
-            user-name-attribute: email
-            redirect-uri: http://localhost:8080/login/oauth2/code/goauthentic
-            authorization-grant-type: authorization_code
-            custom-params:
-              type: oauth
-              roles-field: groups
-              logoutUrl: https://authentik.minikube.where-ever.net/application/o/kafka-ui/end-session/
+    #auth:
+    #  type: OAUTH2
+    #  oauth2:
+    #    client:
+    #      goauthentic:
+    #        provider: goauthentic
+    #        scope: [ 'openid', 'profile', 'email' ]
+    #        client-name: authentik
+    #        issuer-uri: https://authentik.minikube.where-ever.net/application/o/kafka-ui/
+    #        user-name-attribute: email
+    #        redirect-uri: http://localhost:8080/login/oauth2/code/goauthentic
+    #        authorization-grant-type: authorization_code
+    #        custom-params:
+    #          type: oauth
+    #          roles-field: groups
+    #          logoutUrl: https://authentik.minikube.where-ever.net/application/o/kafka-ui/end-session/
 
     management:
       health:
