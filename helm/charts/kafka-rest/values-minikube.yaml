@@ -1,5 +1,6 @@
 schema:
   env: minikube
+  hostname: kafka-rest.minikube.where-ever.net
 
 # Default values for kafka-rest.
 # This is a YAML-formatted file.
