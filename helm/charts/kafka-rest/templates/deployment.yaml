@@ -54,9 +54,9 @@ spec:
             - name: KAFKA_REST_CLIENT_SASL_KERBEROS_SERVICE_NAME
               value: kafka
             {{- end }}
-          envFrom:
-            - secretRef:
-                name: kafka-rest-secrets
+          #envFrom:
+          #  - secretRef:
+          #      name: kafka-rest-secrets
           ports:
             - name: tcp
               containerPort: {{ .Values.port }}
@@ -90,12 +90,12 @@ spec:
             mountPath: /etc/kafka-rest
           - name: config2
             mountPath: /etc/kafka
-          - mountPath: /ssl/kafka/
-            name: own-ca-bundle
+          - name: own-ca-bundle
+            mountPath: /ssl/kafka/
             readOnly: true
           - name: kafka-rest-tls
-            readOnly: true
             mountPath: /ssl/key/
+            readOnly: true
           {{- if .Values.kerberos.enabled }}
           - name: krb5
             mountPath: /etc/krb5.conf
