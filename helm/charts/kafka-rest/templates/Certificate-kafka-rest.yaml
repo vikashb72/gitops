@@ -16,7 +16,7 @@ spec:
       create: true
       passwordSecretRef:
         name: kafka-rest-secrets
-        key: KAFKA_CLUSTERS_0_PROPERTIES_SSL_KEYSTORE_PASSWORD
+        key: KAFKA_REST_CLIENT_SSL_KEYSTORE_PASSWORD
   #privateKey:
   #  algorithm: RSA
   #  size: 2048
