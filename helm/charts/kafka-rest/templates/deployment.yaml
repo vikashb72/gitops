@@ -41,11 +41,11 @@ spec:
             - name: KAFKAREST_HEAP_OPTS
               value: "{{ .Values.heapOpts }}"
             - name: KAFKA_REST_CLIENT_SECURITY_PROTOCOL
-              value: SASL_SSL
+              value: "SASL_SSL"
             - name: KAFKA_REST_CLIENT_SASL_MECHANISM
-              value: SCRAM-SHA-512
-            - name: KAFKA_REST_CLIENT_SASL_KERBEROS_SERVICE_NAME
-              value: kafka
+              value: "SCRAM-SHA-512"
+            #- name: KAFKA_REST_CLIENT_SASL_KERBEROS_SERVICE_NAME
+            #  value: kafka
             - name: KAFKA_REST_LISTENERS
               value: 8082
             - name: KAFKA_REST_CLIENT_SSL_TRUSTSTORE_LOCATION
