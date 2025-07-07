@@ -108,6 +108,12 @@ users:
         operations:
           - Describe
           - Write
+      - name: faust-test-app-__assignor-__leader
+        operations:
+          - Describe
+          - Write
+          - Create
+          - Read
   - name: kafka-ui
     topics:
       - name: "*"
