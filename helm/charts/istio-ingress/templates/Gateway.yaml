@@ -14,6 +14,10 @@ spec:
         number: {{ .port.number }}
         name: {{ .port.name }}
         protocol: {{ .port.protocol }}
+{{- if and (eq .port.protocol "HTTP") .httpsRedirect }}
+      tls:
+        httpsRedirect: true
+{{- end }}
 {{- if eq .port.protocol "HTTPS" }}
       tls:
 {{- if .port.tlsMode }}

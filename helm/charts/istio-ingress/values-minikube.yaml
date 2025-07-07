@@ -340,6 +340,13 @@ gateways:
       selector: infra-gateway
     servers:
       - port:
+          number: 80
+          name: kafka-rest-http
+          protocol: HTTP
+        hosts:
+          - 'kafka-rest.minikube.where-ever.net'
+        httpsRedirect: true
+      - port:
           number: 443
           name: kafka-rest-https
           protocol: HTTPS
