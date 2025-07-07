@@ -54,9 +54,9 @@ spec:
             - name: KAFKA_REST_CLIENT_SASL_KERBEROS_SERVICE_NAME
               value: kafka
             {{- end }}
-          #envFrom:
-          #  - secretRef:
-          #      name: kafka-rest-secrets
+          envFrom:
+            - secretRef:
+                name: kafka-rest-secrets
           ports:
             - name: tcp
               containerPort: {{ .Values.port }}
