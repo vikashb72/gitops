@@ -40,18 +40,23 @@ spec:
               value: {{ include "kafka-rest.schema-registry.url" . | quote }}
             - name: KAFKAREST_HEAP_OPTS
               value: "{{ .Values.heapOpts }}"
-            {{- if .Values.kerberos.enabled }}
             - name: KAFKA_REST_CLIENT_SECURITY_PROTOCOL
-              value: SASL_PLAINTEXT
+              value: SASL_SSL
             - name: KAFKA_REST_CLIENT_SASL_MECHANISM
-              value: GSSAPI
+              value: SCRAM-SHA-512
             - name: KAFKA_REST_CLIENT_SASL_KERBEROS_SERVICE_NAME
               value: kafka
             - name: KAFKA_REST_LISTENERS
               value: 8082
-            - name: KAFKA_REST_CLIENT_SASL_JAAS_CONFIG
-              value: com.sun.security.auth.module.Krb5LoginModule required useKeyTab=true storeKey=true keyTab="/keytabs/{{ .Values.kerberos.serviceName }}.keytab" principal="{{ .Values.kerberos.serviceName }}@{{ .Values.kerberos.domain }}";
+            - name: KAFKA_REST_CLIENT_SSL_TRUSTSTORE_LOCATION
+              value: /ssl/kafka/kafka.truststore.p12
+            - name: KAFKA_REST_CLIENT_SSL_KEYSTORE_LOCATION
+              value: /ssl/key/keystore.p12
+            {{- if .Values.kerberos.enabled }}
             {{- end }}
+          envFrom:
+            - secretRef:
+                name: kafka-rest-secrets
           ports:
             - name: tcp
               containerPort: {{ .Values.port }}
@@ -85,6 +90,12 @@ spec:
             mountPath: /etc/kafka-rest
           - name: config2
             mountPath: /etc/kafka
+          - mountPath: /ssl/kafka/
+            name: own-ca-bundle
+            readOnly: true
+          - name: kafka-rest-tls
+            readOnly: true
+            mountPath: /ssl/key/
           {{- if .Values.kerberos.enabled }}
           - name: krb5
             mountPath: /etc/krb5.conf
@@ -104,6 +115,19 @@ spec:
         emptyDir: {}
       - name: config2
         emptyDir: {}
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: bundle.jks
+              path: kafka.truststore.jks
+            - key: bundle.p12
+              path: kafka.truststore.p12
+      - name: kafka-rest-tls
+        secret:
+          secretName: kafka-rest-tls
       {{- if .Values.kerberos.enabled }}
       - name: krb5
         configMap:

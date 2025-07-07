@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kafka-ui-certmanager-cert
+  namespace: kafka-rest
+spec:
+  commonName: "*.kafka-rest.svc.cluster.local"
+  dnsNames:
+    - "127.0.0.1"
+    - "localhost"
+    - "kafka-rest"
+    - "*.kafka-rest.svc.cluster.local"
+  secretName: kafka-rest-tls
+  keystores:
+    pkcs12:
+      create: true
+      passwordSecretRef:
+        name: kafka-rest-secrets
+        key: KAFKA_CLUSTERS_0_PROPERTIES_SSL_KEYSTORE_PASSWORD
+  #privateKey:
+  #  algorithm: RSA
+  #  size: 2048
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
