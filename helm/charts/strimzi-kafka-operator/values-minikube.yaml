@@ -31,12 +31,12 @@ cluster:
     replicas: 3
 
     external_listener:
-      enabled: false
+      enabled: true
 
       annotations:
         - "metallb.universe.tf/address-pool: default"
-        - 'service.beta.kubernetes.io/azure-load-balancer-internal: "true"'
-        - 'service.beta.kubernetes.io/azure-load-balancer-internal-subnet: snet-home-za01-workload01'
+      #  - 'service.beta.kubernetes.io/azure-load-balancer-internal: "true"'
+      #  - 'service.beta.kubernetes.io/azure-load-balancer-internal-subnet: snet-home-za01-workload01'
       type: loadbalancer
       port: 9094
       tls: true
