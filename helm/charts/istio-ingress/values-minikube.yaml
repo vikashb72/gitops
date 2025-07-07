@@ -335,7 +335,7 @@ gateways:
                     number: 80
                   host: kafka-ui.kafka-ui.svc.cluster.local
   # kafka-rest (via infra-gateway)
-  kafka-ui-gateway:
+  kafka-rest-gateway:
     gateway:
       selector: infra-gateway
     servers:
@@ -357,3 +357,4 @@ gateways:
               - destination:
                   port:
                     number: 8082
+                  host: kafka-rest-service.kafka-rest.svc.cluster.local
