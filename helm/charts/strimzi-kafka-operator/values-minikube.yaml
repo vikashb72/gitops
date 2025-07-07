@@ -84,6 +84,30 @@ users:
           - Describe
           - Read
           - Write
+  - name: topic-1-read
+    topics:
+      - name: test.topic.1
+        operations:
+          - Describe
+          - Read
+  - name: topic-1-write
+    topics:
+      - name: test.topic.1
+        operations:
+          - Describe
+          - Write
+  - name: topic-2-read
+    topics:
+      - name: test.topic.2
+        operations:
+          - Describe
+          - Read
+  - name: topic-2-write
+    topics:
+      - name: test.topic.2
+        operations:
+          - Describe
+          - Write
   - name: kafka-ui
     topics:
       - name: "*"
@@ -141,27 +165,60 @@ users:
           - Create
           - AlterConfigs
           - DescribeConfigs
-  - name: topic-1-read
+  - name: kafka-rest
     topics:
-      - name: test.topic.1
+      - name: "*"
         operations:
-          - Describe
           - Read
-  - name: topic-1-write
-    topics:
-      - name: test.topic.1
-        operations:
-          - Describe
           - Write
-  - name: topic-2-read
-    topics:
-      - name: test.topic.2
-        operations:
+          #- Delete
+          - Alter
           - Describe
+          #- All
+          #- IdempotentWrite
+          #- ClusterAction
+          #- Create
+          #- AlterConfigs
+          #- DescribeConfigs
+    groups:
+      - name: "*"
+        operations:
           - Read
-  - name: topic-2-write
-    topics:
-      - name: test.topic.2
-        operations:
-          - Describe
           - Write
+          #- Delete
+          - Alter
+          - Describe
+          #- All
+          #- IdempotentWrite
+          #- ClusterAction
+          #- Create
+          #- AlterConfigs
+          #- DescribeConfigs
+    clusters:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          #- Delete
+          #- Alter
+          - Describe
+          #- All
+          #- IdempotentWrite
+          #- ClusterAction
+          #- Create
+          #- AlterConfigs
+          #- DescribeConfigs
+    transactionalIds:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          #- Delete
+          #- Alter
+          - Describe
+          #- All
+          #- IdempotentWrite
+          #- ClusterAction
+          #- Create
+          #- AlterConfigs
+          #- DescribeConfigs
