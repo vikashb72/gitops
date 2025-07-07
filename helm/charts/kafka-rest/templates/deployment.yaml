@@ -44,8 +44,8 @@ spec:
               value: "SASL_SSL"
             - name: KAFKA_REST_CLIENT_SASL_MECHANISM
               value: "SCRAM-SHA-512"
-            #- name: KAFKA_REST_LISTENERS
-            #  value: 8082
+            - name: KAFKA_REST_LISTENERS
+              value: 8082
             #- name: KAFKA_REST_CLIENT_SSL_TRUSTSTORE_LOCATION
             #  value: "/ssl/kafka/kafka.truststore.p12"
             #- name: KAFKA_REST_CLIENT_SSL_KEYSTORE_LOCATION
