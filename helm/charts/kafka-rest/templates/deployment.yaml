@@ -40,8 +40,8 @@ spec:
               value: {{ include "kafka-rest.schema-registry.url" . | quote }}
             - name: KAFKAREST_HEAP_OPTS
               value: "{{ .Values.heapOpts }}"
-            #- name: KAFKA_REST_CLIENT_SECURITY_PROTOCOL
-            #  value: "SASL_SSL"
+            - name: KAFKA_REST_CLIENT_SECURITY_PROTOCOL
+              value: "SASL_SSL"
             #- name: KAFKA_REST_CLIENT_SASL_MECHANISM
             #  value: "SCRAM-SHA-512"
             #- name: KAFKA_REST_LISTENERS
