@@ -40,18 +40,20 @@ spec:
               value: {{ include "kafka-rest.schema-registry.url" . | quote }}
             - name: KAFKAREST_HEAP_OPTS
               value: "{{ .Values.heapOpts }}"
-            - name: KAFKA_REST_CLIENT_SECURITY_PROTOCOL
-              value: "SASL_SSL"
-            - name: KAFKA_REST_CLIENT_SASL_MECHANISM
-              value: "SCRAM-SHA-512"
-            #- name: KAFKA_REST_CLIENT_SASL_KERBEROS_SERVICE_NAME
-            #  value: kafka
-            - name: KAFKA_REST_LISTENERS
-              value: 8082
-            - name: KAFKA_REST_CLIENT_SSL_TRUSTSTORE_LOCATION
-              value: "/ssl/kafka/kafka.truststore.p12"
-            - name: KAFKA_REST_CLIENT_SSL_KEYSTORE_LOCATION
-              value: "/ssl/key/keystore.p12"
+            #- name: KAFKA_REST_CLIENT_SECURITY_PROTOCOL
+            #  value: "SASL_SSL"
+            #- name: KAFKA_REST_CLIENT_SASL_MECHANISM
+            #  value: "SCRAM-SHA-512"
+            #- name: KAFKA_REST_LISTENERS
+            #  value: 8082
+            #- name: KAFKA_REST_CLIENT_SSL_TRUSTSTORE_LOCATION
+            #  value: "/ssl/kafka/kafka.truststore.p12"
+            #- name: KAFKA_REST_CLIENT_SSL_KEYSTORE_LOCATION
+            #  value: "/ssl/key/keystore.p12"
+            {{- if .Values.kerberos.enabled }}
+            - name: KAFKA_REST_CLIENT_SASL_KERBEROS_SERVICE_NAME
+              value: kafka
+            {{- end }}
           envFrom:
             - secretRef:
                 name: kafka-rest-secrets
