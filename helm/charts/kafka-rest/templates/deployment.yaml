@@ -49,11 +49,9 @@ spec:
             - name: KAFKA_REST_LISTENERS
               value: 8082
             - name: KAFKA_REST_CLIENT_SSL_TRUSTSTORE_LOCATION
-              value: /ssl/kafka/kafka.truststore.p12
+              value: "/ssl/kafka/kafka.truststore.p12"
             - name: KAFKA_REST_CLIENT_SSL_KEYSTORE_LOCATION
-              value: /ssl/key/keystore.p12
-            {{- if .Values.kerberos.enabled }}
-            {{- end }}
+              value: "/ssl/key/keystore.p12"
           envFrom:
             - secretRef:
                 name: kafka-rest-secrets

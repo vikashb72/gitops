@@ -36,7 +36,7 @@ kafka:
   ## If true, kafka was installed under the same umbrella
   enabled: false
   ## If outside or custom kafka a bootstrap server is required
-  bootstrapServers: PLAINTEXT://kafka-cluster-kafka-bootstrap.kafka-system:9092
+  bootstrapServers: SSL://kafka-cluster-kafka-bootstrap.kafka-system:9093
   replicaCount: 3
 
 ## Kafka Broker Kerberos
