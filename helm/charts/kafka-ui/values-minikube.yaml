@@ -40,79 +40,64 @@ kafka-ui:
         ldap:
           enabled: false
 
-    rbac:
-      default-role: "readonly"
-      roles:
-        - name: "readonly"
-          clusters:
-            - "*"
-          subjects:
-            - provider: oauth
-              type: role
-              value: "Kafka UI Viewers"
-
-          permissions:
-            - resource: clusterconfig
-              actions: [ "view" ]
-
-            - resource: topic
-              value: ".*"
-              actions:
-                - VIEW
-                - MESSAGES_READ
-                - ANALYSIS_VIEW
-
-            - resource: consumer
-              value: ".*"
-              actions: [ view ]
-
-            - resource: schema
-              value: ".*"
-              actions: [ view ]
-
-            - resource: connect
-              value: ".*"
-              actions: [ view ]
-
-            - resource: acl
-              actions: [ view ]
-
-        - name: "admins"
-          clusters:
-            - ".*"
-          subjects:
-            - provider: oauth
-              type: role
-              value: "Kafka UI Admins"
-
-          permissions:
-            - resource: applicationconfig
-              actions: all
-
-            - resource: clusterconfig
-              actions: all
-
-            - resource: topic
-              value: ".*"
-              actions: all
-
-            - resource: consumer
-              value: ".*"
-              actions: all
-
-            - resource: schema
-              value: ".*"
-              actions: all
-
-            - resource: connect
-              value: ".*"
-              actions: all
-
-            - resource: ksql
-              actions: all
-
-            - resource: acl
-              actions: [ view ]
+    #rbac:
+    #  default-role: "readonly"
+    #  roles:
+    #    - name: "readonly"
+    #      clusters:
+    #        - "*"
+    #      subjects:
+    #        - provider: oauth
+    #          type: role
+    #          value: "Kafka UI Viewers"
+    #      permissions:
+    #        - resource: clusterconfig
+    #          actions: [ "view" ]
+    #        - resource: topic
+    #          value: ".*"
+    #          actions:
+    #            - VIEW
+    #            - MESSAGES_READ
+    #            - ANALYSIS_VIEW
+    #        - resource: consumer
+    #          value: ".*"
+    #          actions: [ view ]
+    #        - resource: schema
+    #          value: ".*"
+    #          actions: [ view ]
+    #        - resource: connect
+    #          value: ".*"
+    #          actions: [ view ]
+    #        - resource: acl
+    #          actions: [ view ]
+    #    - name: "admins"
+    #      clusters:
+    #        - ".*"
+    #      subjects:
+    #        - provider: oauth
+    #          type: role
+    #          value: "Kafka UI Admins"
+    #      permissions:
+    #        - resource: applicationconfig
+    #          actions: all
+    #        - resource: clusterconfig
+    #          actions: all
+    #        - resource: topic
+    #          value: ".*"
+    #          actions: all
+    #        - resource: consumer
+    #          value: ".*"
+    #          actions: all
+    #        - resource: schema
+    #          value: ".*"
+    #          actions: all
+    #        - resource: connect
+    #          value: ".*"
+    #          actions: all
+    #        - resource: ksql
+    #          actions: all
+    #        - resource: acl
+    #          actions: [ view ]
 
   existingSecret: "kafka-ui-secrets"
   envs:
