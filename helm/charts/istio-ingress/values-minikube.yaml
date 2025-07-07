@@ -334,3 +334,26 @@ gateways:
                   port:
                     number: 80
                   host: kafka-ui.kafka-ui.svc.cluster.local
+  # kafka-rest (via infra-gateway)
+  kafka-ui-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: kafka-rest-https
+          protocol: HTTPS
+        hosts:
+          - 'kafka-rest.minikube.where-ever.net'
+    VirtualServices:
+      - name: kafka-rest-virtual-service
+        hosts:
+          - "kafka-rest.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 8082
