@@ -19,9 +19,9 @@ fullnameOverride: ""
 
 ## Service
 service:
-   type: LoadBalancer
-   annotations:
-     - 'metallb.universe.tf/address-pool: default'
+   type: ClusterIP
+   #annotations:
+   #  - 'metallb.universe.tf/address-pool: default'
 
 ## Kafka REST 
 replicaCount: 1
