@@ -22,7 +22,7 @@ fleet:
     # Add extra annotations to the migration Job
     migrationJobAnnotations:
     tls:
-      enabled: true
+      enabled: false
       # Set to true if you need a separate secret for just TLS data.
       # Useful with cert-manager and similar deployments.
       uniqueTLSSecret: false
