@@ -155,8 +155,8 @@ fleet:
     address: fleetdm-redis-headless:6379
     database: "0"
     usePassword: true
-    #secretName: access-secrets
-    secretName: fleetdm-redis
+    secretName: access-secrets
+    #secretName: fleetdm-redis
     passwordKey: redis-password
   
   ## Section: Environment Variables
@@ -192,3 +192,6 @@ fleet:
   
   redis:
     enabled: true
+    auth:
+      existingSecret: "access-secrets"
+      existingSecretPasswordKey: "redis-password"
