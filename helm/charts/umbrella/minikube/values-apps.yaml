@@ -69,6 +69,11 @@ argocdManaged:
     targetNamespace: kafka-rest
     sources:
       - path: helm/charts/kafka-rest
+  mysql:
+    name: mysql
+    targetNamespace: mysql
+    sources:
+      - path: helm/charts/mysql
 #  keda:
 #    disable: true
 #    name: keda
