@@ -44,9 +44,9 @@ mysql:
   tls:
     enabled: true
     existingSecret: "mysql-tls"
-    certFilename: tls.crt
-    certKeyFilename: tls.key
-    certCAFilename: ""
+    certFilename: "tls.crt"
+    certKeyFilename: "tls.key"
+    certCAFilename: "ca.crt"
     ca: ""
     cert: ""
     key: ""
