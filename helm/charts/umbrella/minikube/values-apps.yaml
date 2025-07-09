@@ -75,6 +75,7 @@ argocdManaged:
     sources:
       - path: helm/charts/mysql
   fleetdm:
+    disable: true
     name: fleetdm
     targetNamespace: fleetdm
     sources:

@@ -129,8 +129,7 @@ fleet:
   # All of the connection settings for MySQL
   database:
     # Name of the Secret resource containing MySQL password and TLS secrets
-    #secretName: access-secrets
-    secretName: fleetdm-mysql
+    secretName: access-secrets
     passwordKey: mysql-password
     #address: mysql.mysql.svc.cluster.local:3306
     address: fleetdm-mysql:3306
