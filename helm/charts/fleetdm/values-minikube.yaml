@@ -1,0 +1,198 @@
+fleetdm:
+  ## Section: Kubernetes
+  # All settings related to how Fleet is deployed in Kubernetes
+  hostName: fleet.fleetdm.svc.cluster.local
+  replicas: 3 # The number of Fleet instances to deploy
+  ingress:
+    enabled: false
+
+  ## Section: Fleet
+  # All of the settings relating to configuring the Fleet server
+  fleet:
+    # Will also be the targetPort for the service
+    listenPort: 8080
+    # Name of the Secret resource storing S3 bucket and optionally TLS secrets
+    secretName: fleet
+    # Whether or not to run `fleet db prepare` to run SQL migrations before starting Fleet
+    autoApplySQLMigrations: true
+    # Add extra annotations to the migration Job
+    migrationJobAnnotations:
+    tls:
+      enabled: true
+      # Set to true if you need a separate secret for just TLS data.
+      # Useful with cert-manager and similar deployments.
+      uniqueTLSSecret: false
+      secretName: fleet-tls
+      compatibility: modern
+      certSecretKey: tls.crt
+      keySecretKey: tls.key
+    auth:
+      bcryptCost: 12
+      saltKeySize: 24
+    app:
+      tokenKeySize: 24
+      inviteTokenValidityPeriod: 120h # 5 days
+    session:
+      keySize: 64
+      duration: 2160h # 90 days
+    logging:
+      debug: false
+      json: false
+      disableBanner: false
+    mdm:
+      windows:
+        wstepIdentityCertKey: ""
+        wstepIdentityKeyKey: ""
+    carving:
+      s3:
+        bucketName: ""
+        prefix: ""
+        accessKeyID: ""
+        secretKey: s3-bucket
+        endpointURL: ""
+        forceS3PathStyle: false
+        stsAssumeRoleARN: ""
+    softwareInstallers:
+      s3:
+        bucketName: ""
+        prefix: ""
+        accessKeyID: ""
+        secretKey: software-installers
+        endpointURL: ""
+        forceS3PathStyle: false
+        stsAssumeRoleARN: ""
+    license:
+      secretName: ""
+      licenseKey: license-key
+    extraVolumes: []
+    extraVolumeMounts: []
+
+  osquery:
+    secretName: osquery
+    logging:
+      filesystem:
+        statusLogFile: osquery_status # will be placed in the /logs volume
+        resultLogFile: osquery_result # will be placed in the /logs volume
+        enableRotation: false
+        enableCompression: false
+        volumeSize: 20Gi # the maximum size of the volume
+  
+      # To configure the AWS Firehose logger, change the values below
+      firehose:
+        region: ""
+        accessKeyID: ""
+        secretKey: firehose
+        stsAssumeRoleARN: ""
+        statusStream: ""
+        resultStream: ""
+  
+      # To configure the AWS Kinesis logger, change the values below
+      kinesis:
+        region: ""
+        accessKeyID: ""
+        secretKey: kinesis
+        stsAssumeRoleARN: ""
+        statusStream: ""
+        resultStream: ""
+  
+      # To configure the AWS Lambda logger, change the values below
+      lambda:
+        region: ""
+        accessKeyID: ""
+        secretKey: lambda
+        stsAssumeRoleARN: ""
+        statusFunction: ""
+        resultFunction: ""
+  
+      # To configure the GCP PubSub logger, change the values below
+      pubsub:
+        project: ""
+        statusTopic: ""
+        resultTopic: ""
+  
+  ## Section: database
+  # All of the connection settings for MySQL
+  database:
+    # Name of the Secret resource containing MySQL password and TLS secrets
+    secretName: access-secrets
+    passwordKey: mysql-password
+    address: mysql.mysql.svc.cluster.local:3306
+    database: fleet
+    username: fleet
+    maxOpenConns: 50
+    maxIdleConns: 50
+    connMaxLifetime: 0
+    tls:
+      enabled: false
+      ## Commented options below are optional.  Uncomment to use.
+      # caCertKey: ca.cert
+      ## Client certificates require both the certKey and keyKey
+      # certKey: client.cert
+      # keyKey: client.key
+      config: ""
+      serverName: ""
+  
+  ## Section: database_read_replica:
+  # All of the connection settings for MySQL read replica
+  # Commented options are optional. Uncomment to use.
+  # database_read_replica:
+  #  # Name of the Secret resource containing MySQL password and TLS secrets
+  #  address: 127.0.0.1:3306
+  #  database: fleet
+  #  username: fleet-ro
+  #  ## Password configuration. Pick whether you'd like to load from secret or from an accessible mount path.
+  #  ## Added from Secret
+  #  secretName: mysql-ro
+  #  passwordKey: mysql-ro-password
+  #  ## Added from Mount Path
+  #  passwordPath: /path/to/password
+  #  maxOpenConns: 50
+  #  maxIdleConns: 50
+  #  connMaxLifetime: 0
+  #  tls:
+  #    enabled: false
+  #    ## Commented options below are optional.  Uncomment to use.
+  #    # caCertKey: ca.cert
+  #    ## Client certificates require both the certKey and keyKey
+  #    # certKey: client.cert
+  #    # keyKey: client.key
+  #    config: ""
+  #    serverName: ""
+  
+  ## Section: cache
+  # All of the connection settings for Redis
+  cache:
+    address: redis.redis.svc.cluster.local:6379
+    database: "0"
+    usePassword: true
+    secretName: access-secrets
+    passwordKey: redis-password
+  
+  ## Section: Environment Variables
+  # All of the environment variables that can be set for Fleet
+  environments:
+    # MDM Settings
+    # The following environment variable is required if you are using
+    # Fleet's macOS MDM features.  In a production environment, it is recommended that
+    # you store this private key in a secret and use envsFrom to reference the secret below.
+    # For more information, check out the docs: https://fleetdm.com/docs/configuration/fleet-server-configuration#server-private-key
+    FLEET_SERVER_PRIVATE_KEY: ""
+  
+  ## Section: Environment Variables from Secrets/CMs
+  # envsFrom:
+  # - name: MY_ENV_NAME_1
+  #   valueFrom:
+  #     configMapKeyRef:
+  #       name: cm-name
+  #       key: cm-key-name
+  # - name: MY_ENV_NAME_2
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: secret-name
+  #       key: secret-key-name
+  
+  mysql:
+    enabled: true
+  
+  redis:
+    enabled: true
