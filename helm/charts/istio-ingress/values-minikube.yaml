@@ -386,6 +386,9 @@ gateways:
           - 'fleet.minikube.where-ever.net'
     VirtualServices:
       - name: fleet-virtual-service
+        DestinationRule:
+          host: fleetdm-service.fleetdm.svc.cluster.local
+          tls: true
         hosts:
           - "fleet.minikube.where-ever.net"
         http:
