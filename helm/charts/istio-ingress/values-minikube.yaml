@@ -365,3 +365,35 @@ gateways:
                   port:
                     number: 8082
                   host: kafka-rest-service.kafka-rest.svc.cluster.local
+
+  # fleet (via infra-gateway)
+  fleet-gateway:
+    gateway:
+      selector: fleet-gateway
+    servers:
+      - port:
+          number: 80
+          name: fleet-http
+          protocol: HTTP
+        hosts:
+          - 'fleet.minikube.where-ever.net'
+        httpsRedirect: true
+      - port:
+          number: 443
+          name: fleet-https
+          protocol: HTTPS
+        hosts:
+          - 'fleet.minikube.where-ever.net'
+    VirtualServices:
+      - name: fleet-virtual-service
+        hosts:
+          - "fleet.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 8080
+                  host: fleetdm-service.fleetdm.svc.cluster.local
