@@ -9,7 +9,7 @@ mysql:
     enabled: false
   ## @param architecture MySQL architecture (`standalone` or `replication`)
   ##
-  architecture: replication
+  architecture: standalone
   auth:
     ## @param auth.rootPassword Password for the `root` user. Ignored if existing secret is provided
     createDatabase: true
@@ -63,29 +63,7 @@ mysql:
   ## @section MySQL Primary parameters
   ##
   primary:
-    ## @param primary.name Name of the primary database (eg primary, master, leader, ...)
-    ##
     name: primary
-    ## @param primary.command Override default container command on MySQL Primary container(s) (useful when using custom images)
-    ##
-    command: []
-    ## @param primary.args Override default container args on MySQL Primary container(s) (useful when using custom images)
-    ##
-    args: []
-    ## @param primary.lifecycleHooks for the MySQL Primary container(s) to automate configuration before or after startup
-    ##
-    lifecycleHooks: {}
-    ## @param primary.automountServiceAccountToken Mount Service Account token in pod
-    ##
-    automountServiceAccountToken: false
-    ## @param primary.hostAliases Deployment pod host aliases
-    ## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
-    ##
-    hostAliases: []
-    ## @param primary.enableMySQLX Enable mysqlx port
-    ## ref: https://dev.mysql.com/doc/dev/mysql-server/latest/mysqlx_protocol_xplugin.html
-    ##
-    enableMySQLX: false
     ## @param primary.configuration [string] Configure MySQL Primary with a custom my.cnf file
     ## ref: https://mysql.com/kb/en/mysql/configuring-mysql-with-mycnf/#example-of-configuration-file
     ##
@@ -155,6 +133,7 @@ mysql:
       - mountPath: /etc/ssl/certs/
         name: own-ca-bundle
         readOnly: true
+
   secondary:
     name: secondary
     replicaCount: 1
@@ -196,6 +175,7 @@ mysql:
       port={{ .Values.secondary.containerPorts.mysql }}
       socket=/opt/bitnami/mysql/tmp/mysql.sock
       pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+    ##
     resourcesPreset: "small"
     persistence:
       enabled: true
