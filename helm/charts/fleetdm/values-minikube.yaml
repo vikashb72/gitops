@@ -16,13 +16,13 @@ fleet:
     listenPort: 8080
     # Name of the Secret resource storing S3 bucket and optionally TLS secrets
     #secretName: fleet
-    secretName: ""
+    secretName: "fleet-tls"
     # Whether or not to run `fleet db prepare` to run SQL migrations before starting Fleet
     autoApplySQLMigrations: true
     # Add extra annotations to the migration Job
     migrationJobAnnotations:
     tls:
-      enabled: false
+      enabled: true
       # Set to true if you need a separate secret for just TLS data.
       # Useful with cert-manager and similar deployments.
       uniqueTLSSecret: false
@@ -68,8 +68,19 @@ fleet:
     license:
       secretName: ""
       licenseKey: license-key
-    extraVolumes: []
-    extraVolumeMounts: []
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
 
   osquery:
     secretName: osquery
@@ -137,33 +148,6 @@ fleet:
       # keyKey: client.key
       config: ""
       serverName: ""
-  
-  ## Section: database_read_replica:
-  # All of the connection settings for MySQL read replica
-  # Commented options are optional. Uncomment to use.
-  # database_read_replica:
-  #  # Name of the Secret resource containing MySQL password and TLS secrets
-  #  address: 127.0.0.1:3306
-  #  database: fleet
-  #  username: fleet-ro
-  #  ## Password configuration. Pick whether you'd like to load from secret or from an accessible mount path.
-  #  ## Added from Secret
-  #  secretName: mysql-ro
-  #  passwordKey: mysql-ro-password
-  #  ## Added from Mount Path
-  #  passwordPath: /path/to/password
-  #  maxOpenConns: 50
-  #  maxIdleConns: 50
-  #  connMaxLifetime: 0
-  #  tls:
-  #    enabled: false
-  #    ## Commented options below are optional.  Uncomment to use.
-  #    # caCertKey: ca.cert
-  #    ## Client certificates require both the certKey and keyKey
-  #    # certKey: client.cert
-  #    # keyKey: client.key
-  #    config: ""
-  #    serverName: ""
   
   ## Section: cache
   # All of the connection settings for Redis
