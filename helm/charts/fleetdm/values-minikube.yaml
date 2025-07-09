@@ -184,6 +184,11 @@ fleet:
   
   mysql:
     enabled: true
+    auth:
+      createDatabase: true
+      database: "fleet"
+      username: "fleet"
+      existingSecret: "fleetdm-mysql"
   
   redis:
     enabled: true
