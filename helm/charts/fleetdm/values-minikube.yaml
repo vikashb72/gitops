@@ -1,5 +1,6 @@
 schema:
   env: minikube
+  hostname: fleet.minikube.where-ever.net
 
 fleet:
   ## Section: Kubernetes

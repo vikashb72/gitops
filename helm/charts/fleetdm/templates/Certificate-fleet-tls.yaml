@@ -6,13 +6,14 @@ metadata:
 spec:
   commonName: fleetdm-service.fleetdm.svc.cluster.local
   dnsNames:
-    -  "*.fleetdm.svc.cluster.local"
-    -  "fleetdm-mysql"
-    -  "fleetdm-mysql-headless"
-    -  "fleetdm-redis-headless"
-    -  "fleetdm-redis-master"
-    -  "fleetdm-redis-replicas"
-    -  "fleetdm-service"
+    - "*.fleetdm.svc.cluster.local"
+    - "fleetdm-mysql"
+    - "fleetdm-mysql-headless"
+    - "fleetdm-redis-headless"
+    - "fleetdm-redis-master"
+    - "fleetdm-redis-replicas"
+    - "fleetdm-service"
+    - "{{ .Values.schema.hostname }}"
   ipAddresses:
     - "127.0.0.1"
   secretName: fleet-tls
