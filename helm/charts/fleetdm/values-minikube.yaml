@@ -1,3 +1,6 @@
+schema:
+  env: minikube
+
 fleet:
   ## Section: Kubernetes
   # All settings related to how Fleet is deployed in Kubernetes
