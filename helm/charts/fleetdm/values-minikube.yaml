@@ -188,7 +188,7 @@ fleet:
       createDatabase: true
       database: "fleet"
       username: "fleet"
-      existingSecret: "fleetdm-mysql"
+      existingSecret: "access-secrets"
   
   redis:
     enabled: true
