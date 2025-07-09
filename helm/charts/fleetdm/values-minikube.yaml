@@ -15,7 +15,8 @@ fleet:
     # Will also be the targetPort for the service
     listenPort: 8080
     # Name of the Secret resource storing S3 bucket and optionally TLS secrets
-    secretName: fleet
+    #secretName: fleet
+    secretName: ""
     # Whether or not to run `fleet db prepare` to run SQL migrations before starting Fleet
     autoApplySQLMigrations: true
     # Add extra annotations to the migration Job
