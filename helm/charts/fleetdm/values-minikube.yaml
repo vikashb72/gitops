@@ -154,7 +154,7 @@ fleet:
   cache:
     address: fleetdm-redis-headless:6379
     database: "0"
-    usePassword: true
+    usePassword: false
     #secretName: access-secrets
     secretName: fleetdm-redis
     passwordKey: redis-password
