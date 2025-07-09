@@ -13,7 +13,7 @@ mysql:
   auth:
     ## @param auth.rootPassword Password for the `root` user. Ignored if existing secret is provided
     createDatabase: true
-    database: "fleet_dm"
+    database: "fleet"
     username: "fleet"
     replicationUser: replicator
     replicationPassword: ""
