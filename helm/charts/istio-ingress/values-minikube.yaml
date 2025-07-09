@@ -221,14 +221,14 @@ gateways:
           protocol: HTTPS
           #tlsMode: PASSTHROUGH
         hosts:
-          - 'vault.minikube.where-ever.net'
+          - 'vault-ui.minikube.where-ever.net'
     VirtualServices:
       - name: vault-virtual-service
         DestinationRule:
           host: vault-ui.vault-system.svc.cluster.local
           tls: true
         hosts:
-          - "vault.minikube.where-ever.net"
+          - "vault-ui.minikube.where-ever.net"
         http:
           - match:
             - uri:
