@@ -1,0 +1,32 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: mysql-certmanager-cert
+  namespace: mysql
+spec:
+  commonName: mysql.mysql.svc.cluster.local
+  dnsNames:
+    -  "*.mysql"
+    -  "*.mysql.svc"
+    -  "*.mysql.svc.cluster.local"
+    -  "*.mysql-primary"
+    -  "*.mysql-primary.mysql"
+    -  "*.mysql-primary.mysql.svc"
+    -  "*.mysql-primary.mysql.svc.cluster.local"
+    -  "*.mysql-secondary"
+    -  "*.mysql-secondary.mysql"
+    -  "*.mysql-secondary.mysql.svc"
+    -  "*.mysql-secondary.mysql.svc.cluster.local"
+    -  "*.mysql-headless"
+    -  "*.mysql-headless.mysql"
+    -  "*.mysql-headless.mysql.svc"
+    -  "*.mysql-headless.mysql.svc.cluster.local"
+  ipAddresses:
+    - "127.0.0.1"
+  secretName: mysql-tls
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
