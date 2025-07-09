@@ -117,9 +117,11 @@ fleet:
   # All of the connection settings for MySQL
   database:
     # Name of the Secret resource containing MySQL password and TLS secrets
-    secretName: access-secrets
+    #secretName: access-secrets
+    secretName: fleetdm-mysql
     passwordKey: mysql-password
-    address: mysql.mysql.svc.cluster.local:3306
+    #address: mysql.mysql.svc.cluster.local:3306
+    address: fleetdm-mysql:3306
     database: fleet
     username: fleet
     maxOpenConns: 50
@@ -165,10 +167,11 @@ fleet:
   ## Section: cache
   # All of the connection settings for Redis
   cache:
-    address: redis.redis.svc.cluster.local:6379
+    address: fleetdm-redis-headless:6379
     database: "0"
     usePassword: true
-    secretName: access-secrets
+    #secretName: access-secrets
+    secretName: fleetdm-redis
     passwordKey: redis-password
   
   ## Section: Environment Variables
