@@ -1,4 +1,4 @@
-fleetdm:
+fleet:
   ## Section: Kubernetes
   # All settings related to how Fleet is deployed in Kubernetes
   hostName: fleet.fleetdm.svc.cluster.local

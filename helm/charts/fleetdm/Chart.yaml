@@ -2,6 +2,6 @@ apiVersion: v2
 name: fleetdm
 version: 1.0.0
 dependencies:
-  - name: fleetdm
+  - name: fleet
     version: v6.6.8
     repository: https://fleetdm.github.io/fleet/charts
