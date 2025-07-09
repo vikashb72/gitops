@@ -1,0 +1,24 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: fleet-certmanager-cert
+  namespace: fleetdm
+spec:
+  commonName: fleetdm-service.fleetdm.svc.cluster.local
+  dnsNames:
+    -  "*.fleetdm.svc.cluster.local"
+    -  "fleetdm-mysql"
+    -  "fleetdm-mysql-headless"
+    -  "fleetdm-redis-headless"
+    -  "fleetdm-redis-master"
+    -  "fleetdm-redis-replicas"
+    -  "fleetdm-service"
+  ipAddresses:
+    - "127.0.0.1"
+  secretName: fleet-tls
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
