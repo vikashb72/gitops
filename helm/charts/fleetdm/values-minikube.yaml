@@ -85,13 +85,17 @@ fleet:
 
   osquery:
     secretName: osquery
+    result_log_plugin: kafkarest
+    status_log_plugin: kafkarest
     logging:
-      filesystem:
-        statusLogFile: osquery_status # will be placed in the /logs volume
-        resultLogFile: osquery_result # will be placed in the /logs volume
-        enableRotation: false
-        enableCompression: false
-        volumeSize: 20Gi # the maximum size of the volume
+      statusPlugin: kafkarest
+      resultPlugin: kafkarest
+      #filesystem:
+      #  statusLogFile: osquery_status # will be placed in the /logs volume
+      #  resultLogFile: osquery_result # will be placed in the /logs volume
+      #  enableRotation: false
+      #  enableCompression: false
+      #  volumeSize: 20Gi # the maximum size of the volume
   
       # To configure the AWS Firehose logger, change the values below
       firehose:
@@ -168,6 +172,10 @@ fleet:
     # you store this private key in a secret and use envsFrom to reference the secret below.
     # For more information, check out the docs: https://fleetdm.com/docs/configuration/fleet-server-configuration#server-private-key
     FLEET_SERVER_PRIVATE_KEY: ""
+    FLEET_KAFKAREST_PROXYHOST: "http://kafka-rest-service.kafka-rest:8082"
+    FLEET_KAFKAREST_RESULT_TOPIC: osquery-result
+    FLEET_KAFKAREST_STATUS_TOPIC: osquery-status
+    FLEET_KAFKAREST_CONTENT_TYPE_VALUE: "application/vnd.kafka.json.v2+json"
   
   ## Section: Environment Variables from Secrets/CMs
   # envsFrom:
