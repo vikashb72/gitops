@@ -249,11 +249,10 @@ function initVaultPKI() {
     mkdir -p "${WORKDIR}" || exit
     cd "${WORKDIR}" || exit
 
-    local SSL_O="OIS NTT"
     local UPPER_EVT=$(echo $EVT | tr '[:lower:]' '[:upper:]')
     kubectl -n vault-system exec -it vault-0 -- \
         vault secrets enable \
-            -description="${UPPER_EVT} ${SSL_O} Intermediate CA (2025)" \
+            -description="${UPPER_EVT} Intermediate CA (2025)" \
             -max-lease-ttl=87600h  \
             -default-lease-ttl=87600h pki
 
