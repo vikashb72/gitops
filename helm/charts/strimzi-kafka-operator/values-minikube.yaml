@@ -68,6 +68,12 @@ topics:
     size: 52428800
     partitions: 3
     replicas: 3
+  - name: osquery-result
+    size: 52428800
+    partitions: 3
+  - name: osquery-status
+    size: 52428800
+    partitions: 3
 
 users:
   - name: topic-admin
