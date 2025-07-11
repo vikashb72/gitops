@@ -225,6 +225,7 @@ argo-cd:
         - argocd-server.argocd.svc
         - argocd-server.argocd.svc.cluster
         - argocd-server.argocd.svc.cluster.local
+        - argocd.k3s.where-ever.net
         - localhost
       issuer:
         group: cert-manager.io
