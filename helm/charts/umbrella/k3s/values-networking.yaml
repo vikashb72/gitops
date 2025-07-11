@@ -32,31 +32,25 @@ argocdManaged:
             - values-networking.yaml
     automated:
       allowEmpty: true
-#  istio:
-#    name: istio
-#    targetNamespace: istio-system
-#    syncwave: "2"
-#    sources:
-#      - path: helm/charts/istio
-#        helm:
-#          parameters:
-#            - name: profile
-#              value: ambient
-#    ignoreDifferences: true 
-#    ignoreDifferencesConfig:
-#      - group: admissionregistration.k8s.io
-#        kind: ValidatingWebhookConfiguration
-#        jqPathExpressions:
-#          - .webhooks[]?.failurePolicy
-#  istio-ingress:
-#    name: istio-ingress
-#    targetNamespace: istio-ingress
-#    syncwave: "3"
-#    sources:
-#      - path: helm/charts/istio-ingress
-#  #ingress-gateways:
-#  #  name: ingress-gateways
-#  #  targetNamespace: ingress-gateways
-#  #  syncwave: "3"
-#  #  sources:
-#  #    - path: helm/charts/ingress
+  istio:
+    name: istio
+    targetNamespace: istio-system
+    syncwave: "2"
+    sources:
+      - path: helm/charts/istio
+        helm:
+          parameters:
+            - name: profile
+              value: ambient
+    ignoreDifferences: true 
+    ignoreDifferencesConfig:
+      - group: admissionregistration.k8s.io
+        kind: ValidatingWebhookConfiguration
+        jqPathExpressions:
+          - .webhooks[]?.failurePolicy
+  istio-ingress:
+    name: istio-ingress
+    targetNamespace: istio-ingress
+    syncwave: "3"
+    sources:
+      - path: helm/charts/istio-ingress
