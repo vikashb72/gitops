@@ -1,0 +1,404 @@
+schema:
+  env: k3s
+  istioNamespace: istio-system
+
+gateways:
+  # argocd (via infra-gateway)
+  argocd-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: argocd-https
+          protocol: HTTPS
+        hosts:
+          - 'argocd.k3s.where-ever.net'
+    VirtualServices:
+      - name: argocd-virtual-service
+        DestinationRule:
+          host: argocd-server.argocd.svc.cluster.local
+          tls: true
+        hosts:
+          - "argocd.k3s.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 443
+                  host: argocd-server.argocd.svc.cluster.local
+  # vault (via infra-gateway)
+  vault-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: vault-https
+          protocol: HTTPS
+          #tlsMode: PASSTHROUGH
+        hosts:
+          - 'vault-ui.k3s.where-ever.net'
+    VirtualServices:
+      - name: vault-virtual-service
+        DestinationRule:
+          host: vault-ui.vault-system.svc.cluster.local
+          tls: true
+        hosts:
+          - "vault-ui.k3s.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 8200
+                  host: vault-ui.vault-system.svc.cluster.local
+  # httpbin (via app-gateway)
+  #httpbin-gateway:
+  #  gateway:
+  #    selector: app-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: httpbin-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'httpbin.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: httpbin-virtual-service
+  #      CustomAuthorizationPolicy: true
+  #      hosts:
+  #        - "httpbin.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                regex: ^\/[^\.]+.*
+  #            - uri:
+  #                exact: /
+  #          route:
+  #            - destination:
+  #                host: httpbin.httpbin.svc.cluster.local
+  #                port:
+  #                  number: 8000
+
+  ## echoserver (via app-gateway)
+  #echoserver-gateway:
+  #  gateway:
+  #    selector: app-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: echoserver-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'echoserver.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: echoserver-virtual-service
+  #      CustomAuthorizationPolicy: true
+  #      hosts:
+  #        - "echoserver.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                regex: ^\/[^\.]+.*
+  #            - uri:
+  #                prefix: /
+  #          route:
+  #            - destination:
+  #                host: echoserver.echoserver.svc.cluster.local
+  #                port:
+  #                  number: 80
+  ## prometheus (via infra-gateway)
+  #prometheus-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: prometheus-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'prometheus.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: prometheus-virtual-service
+  #      CustomAuthorizationPolicy: true
+  #      hosts:
+  #        - "prometheus.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                regex: ^\/[^\.]+.*
+  #            - uri:
+  #                prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 9090
+  #                host: kube-prometheus-stack-prometheus.monitoring.svc.cluster.local
+  ## authentik (via infra-gateway)
+  #authentik-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: authentik-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'authentik.k3s.where-ever.net'
+  #        - 'auth.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: authentik-virtual-service
+  #      hosts:
+  #        - "authentik.k3s.where-ever.net"
+  #        - "auth.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 80
+  #                host: authentik-server.authentik.svc.cluster.local
+  ## grafana (via infra-gateway)
+  #grafana-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: grafana-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'grafana.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: grafana-virtual-service
+  #      hosts:
+  #        - "grafana.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 80
+  #                host: kube-prometheus-stack-grafana.monitoring.svc.cluster.local
+  ### alertmanager (via infra-gateway)
+  #alertmanager-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: alertmanager-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'alertmanager.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: alertmanager-virtual-service
+  #      CustomAuthorizationPolicy: true
+  #      hosts:
+  #        - "alertmanager.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                regex: ^\/[^\.]+.*
+  #            - uri:
+  #                prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 9093
+  #                host: alertmanager-operated.monitoring.svc.cluster.local
+  ### loki (via infra-gateway)
+  ##loki-gateway:
+  ##  gateway:
+  ##    selector: infra-gateway
+  ##  servers:
+  ##    - port:
+  ##        number: 443
+  ##        name: loki-https
+  ##        protocol: HTTPS
+  ##      hosts:
+  ##        - 'loki.k3s.where-ever.net'
+  ##  VirtualServices:
+  ##    - name: loki-virtual-service
+  ##      hosts:
+  ##        - "loki.k3s.where-ever.net"
+  ##      http:
+  ##        - match:
+  ##          - uri:
+  ##              prefix: /
+  ##          route:
+  ##            - destination:
+  ##                port:
+  ##                  number: 80
+  ##                host: loki-gateway.loki-system.svc.cluster.local
+  ### goldilocks (via infra-gateway)
+  #goldilocks-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: goldilocks-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'goldilocks.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: goldilocks-virtual-service
+  #      hosts:
+  #        - "goldilocks.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 80
+  #                host: goldilocks-dashboard.goldilocks-system.svc.cluster.local
+  ### mailhog (via infra-gateway)
+  #mailhog-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: mailhog-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'mailhog.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: mailhog-virtual-service
+  #      hosts:
+  #        - "mailhog.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 8025
+  #                host: mailhog.dev-tools.svc.cluster.local
+  ## homepage (via infra-gateway)
+  #homepage-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: homepage-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'homepage.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: homepage-virtual-service
+  #      hosts:
+  #        - "homepage.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 3000
+  #                host: homepage.homepage.svc.cluster.local
+  ## kafka-ui (via infra-gateway)
+  #kafka-ui-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: kafka-ui-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'kafka-ui.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: kafka-ui-virtual-service
+  #      hosts:
+  #        - "kafka-ui.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 80
+  #                host: kafka-ui.kafka-ui.svc.cluster.local
+  ## kafka-rest (via infra-gateway)
+  #kafka-rest-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 80
+  #        name: kafka-rest-http
+  #        protocol: HTTP
+  #      hosts:
+  #        - 'kafka-rest.k3s.where-ever.net'
+  #      httpsRedirect: true
+  #    - port:
+  #        number: 443
+  #        name: kafka-rest-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'kafka-rest.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: kafka-rest-virtual-service
+  #      hosts:
+  #        - "kafka-rest.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 8082
+  #                host: kafka-rest-service.kafka-rest.svc.cluster.local
+  ## fleet (via infra-gateway)
+  #fleet-gateway:
+  #  gateway:
+  #    selector: fleet-gateway
+  #  servers:
+  #    - port:
+  #        number: 80
+  #        name: fleet-http
+  #        protocol: HTTP
+  #      hosts:
+  #        - 'fleet.k3s.where-ever.net'
+  #      httpsRedirect: true
+  #    - port:
+  #        number: 443
+  #        name: fleet-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'fleet.k3s.where-ever.net'
+  #  VirtualServices:
+  #    - name: fleet-virtual-service
+  #      DestinationRule:
+  #        host: fleetdm-service.fleetdm.svc.cluster.local
+  #        tls: true
+  #      hosts:
+  #        - "fleet.k3s.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 8080
+  #                host: fleetdm-service.fleetdm.svc.cluster.local
