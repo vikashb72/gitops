@@ -1,0 +1,24 @@
+mailhog:
+  containerPort:
+    http:
+      name: http
+      port: 8025
+    smtp:
+      name: tcp-smtp
+      port: 1025
+  
+  service:
+    loadBalancerIP: "192.168.49.235"
+    type: LoadBalancer
+    #type: ClusterIP
+  
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+  
+  auth:
+    enabled: false
+  
+  outgoingSMTP:
+    enabled: false
