@@ -29,11 +29,11 @@ argocdManaged:
             - values-apps.yaml
     automated:
       allowEmpty: true
-  echoserver:
-    name: echoserver
-    targetNamespace: echoserver
-    sources:
-      - path: helm/charts/echoserver
+#  echoserver:
+#    name: echoserver
+#    targetNamespace: echoserver
+#    sources:
+#      - path: helm/charts/echoserver
 #  httpbin:
 #    name: httpbin
 #    targetNamespace: httpbin
