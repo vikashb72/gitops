@@ -1,0 +1,236 @@
+schema:
+  env: k3s
+  auth: true
+  tls: true
+
+strimzi-kafka-operator:
+  replicas: 1
+
+  dashboards:
+    enabled: true
+    namespace: monitoring
+
+cluster:
+  name: "kafka-cluster"
+
+  kafka:
+    clusterCa:
+      generateCertificateAuthority: false
+
+    clientsCa:
+      generateCertificateAuthority: false
+
+    version: 3.8.0
+
+    metadataVersion: "3.8"
+
+    jvmOptions:
+      xms: 256m
+      xmx: 256m
+
+    replicas: 3
+
+    external_listener:
+      enabled: false
+
+      annotations:
+        - "metallb.universe.tf/address-pool: default"
+      #  - 'service.beta.kubernetes.io/azure-load-balancer-internal: "true"'
+      #  - 'service.beta.kubernetes.io/azure-load-balancer-internal-subnet: snet-home-za01-workload01'
+      type: loadbalancer
+      port: 9094
+      tls: true
+
+  kraft:
+    replicas: 3
+
+    roles:
+      - broker
+      - controller
+
+    storage:
+      type: jbod
+
+      volumes:
+       - id: 0
+         type: persistent-claim
+         class: nfs-client
+         size: 32Gi
+         deleteClaim: true
+
+topics:
+  - name: test.topic.1
+    retention: 7200000
+    size: 52428800
+    partitions: 3
+    replicas: 3
+  - name: test.topic.2
+    size: 52428800
+    partitions: 3
+    replicas: 3
+  - name: osquery-result
+    size: 52428800
+    partitions: 3
+  - name: osquery-status
+    size: 52428800
+    partitions: 3
+
+users:
+  - name: topic-admin
+    topics:
+      - name: test.topic.1
+        operations:
+          - Create
+          - Describe
+          - Read
+          - Write
+      - name: test.topic.2
+        operations:
+          - Create
+          - Describe
+          - Read
+          - Write
+  - name: topic-1-read
+    topics:
+      - name: test.topic.1
+        operations:
+          - Describe
+          - Read
+  - name: topic-1-write
+    topics:
+      - name: test.topic.1
+        operations:
+          - Describe
+          - Write
+  - name: topic-2-read
+    topics:
+      - name: test.topic.2
+        operations:
+          - Describe
+          - Read
+  - name: topic-2-write
+    topics:
+      - name: test.topic.2
+        operations:
+          - Describe
+          - Write
+      - name: faust-test-app-__assignor-__leader
+        operations:
+          - Describe
+          - Write
+          - Create
+          - Read
+  - name: kafka-ui
+    topics:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          - Delete
+          - Alter
+          - Describe
+          - All
+          - IdempotentWrite
+          - ClusterAction
+          - Create
+          - AlterConfigs
+          - DescribeConfigs
+    groups:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          - Delete
+          - Alter
+          - Describe
+          - All
+          - IdempotentWrite
+          - ClusterAction
+          - Create
+          - AlterConfigs
+          - DescribeConfigs
+    clusters:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          - Delete
+          - Alter
+          - Describe
+          - All
+          - IdempotentWrite
+          - ClusterAction
+          - Create
+          - AlterConfigs
+          - DescribeConfigs
+    transactionalIds:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          - Delete
+          - Alter
+          - Describe
+          - All
+          - IdempotentWrite
+          - ClusterAction
+          - Create
+          - AlterConfigs
+          - DescribeConfigs
+  - name: kafka-rest
+    topics:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          #- Delete
+          - Alter
+          - Describe
+          #- All
+          #- IdempotentWrite
+          #- ClusterAction
+          #- Create
+          #- AlterConfigs
+          #- DescribeConfigs
+    groups:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          #- Delete
+          - Alter
+          - Describe
+          #- All
+          #- IdempotentWrite
+          #- ClusterAction
+          #- Create
+          #- AlterConfigs
+          #- DescribeConfigs
+    clusters:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          #- Delete
+          #- Alter
+          - Describe
+          #- All
+          #- IdempotentWrite
+          #- ClusterAction
+          #- Create
+          #- AlterConfigs
+          #- DescribeConfigs
+    transactionalIds:
+      - name: "*"
+        operations:
+          - Read
+          - Write
+          #- Delete
+          #- Alter
+          - Describe
+          #- All
+          #- IdempotentWrite
+          #- ClusterAction
+          #- Create
+          #- AlterConfigs
+          #- DescribeConfigs
