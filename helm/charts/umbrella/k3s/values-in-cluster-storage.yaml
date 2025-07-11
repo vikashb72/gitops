@@ -1,0 +1,50 @@
+schema:
+  env: k3s
+  bootstrap: false
+  hvault:
+    external:
+      addr: https://192.168.0.4:8443
+  metadata:
+    namespace: argocd
+    finalisers: resources-finalizer.argocd.argoproj.io
+  annotations:
+    syncwave: "100"
+  spec:
+    project: k3s-in-cluster-storage
+    repoURL: https://github.com/vikashb72/gitops.git
+    targetRevision: HEAD
+    destination:
+      server: https://kubernetes.default.svc
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+argocdManaged:
+  umbrella-chart-in-cluster-storage:
+    name: umbrella-chart-in-cluster-storage
+    namespace: argocd
+    syncwave: "1"
+    sources:
+      - path: helm/charts/umbrella/k3s
+        helm:
+          valueFiles:
+            - values-in-cluster-storage.yaml
+    automated:
+      allowEmpty: true
+#  minio-operator:
+#    name: minio-operator
+#    targetNamespace: minio-operator
+#    syncwave: "5"
+#    sources:
+#      - path: helm/charts/minio-operator
+#    syncOptions:
+#      ServerSideApply: true
+#  minio-tenant:
+#    name: minio-tenant
+#    targetNamespace: minio-tenant
+#    syncwave: "6"
+#    sources:
+#      - path: helm/charts/minio-tenant
+#    syncOptions:
+#      ServerSideApply: true

@@ -1,0 +1,62 @@
+schema:
+  env: k3s
+  bootstrap: false
+  hvault:
+    external:
+      addr: https://192.168.0.4:8443
+  metadata:
+    namespace: argocd
+    finalisers: resources-finalizer.argocd.argoproj.io
+  annotations:
+    syncwave: "100"
+  spec:
+    project: k3s-networking
+    repoURL: https://github.com/vikashb72/gitops.git
+    targetRevision: HEAD
+    destination:
+      server: https://kubernetes.default.svc
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+
+argocdManaged:
+  umbrella-chart-networking:
+    name: umbrella-chart-networking
+    namespace: argocd
+    syncwave: "1"
+    sources:
+      - path: helm/charts/umbrella/k3s
+        helm:
+          valueFiles:
+            - values-networking.yaml
+    automated:
+      allowEmpty: true
+#  istio:
+#    name: istio
+#    targetNamespace: istio-system
+#    syncwave: "2"
+#    sources:
+#      - path: helm/charts/istio
+#        helm:
+#          parameters:
+#            - name: profile
+#              value: ambient
+#    ignoreDifferences: true 
+#    ignoreDifferencesConfig:
+#      - group: admissionregistration.k8s.io
+#        kind: ValidatingWebhookConfiguration
+#        jqPathExpressions:
+#          - .webhooks[]?.failurePolicy
+#  istio-ingress:
+#    name: istio-ingress
+#    targetNamespace: istio-ingress
+#    syncwave: "3"
+#    sources:
+#      - path: helm/charts/istio-ingress
+#  #ingress-gateways:
+#  #  name: ingress-gateways
+#  #  targetNamespace: ingress-gateways
+#  #  syncwave: "3"
+#  #  sources:
+#  #    - path: helm/charts/ingress
