@@ -156,7 +156,7 @@ fleet:
   ## Section: cache
   # All of the connection settings for Redis
   cache:
-    address: fleetdm-redis-headless:6379
+    address: fleetdm-redis-master:6379
     database: "0"
     usePassword: true
     secretName: access-secrets
