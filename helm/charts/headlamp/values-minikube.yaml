@@ -1,0 +1,136 @@
+headlamp:
+  replicaCount: 1
+  
+  config:
+    inCluster: true
+    # -- base url path at which headlamp should run
+    baseURL: ""
+    oidc:
+      # Option 1:
+      # @param config.oidc.secret - OIDC secret configuration
+      # If you want to use an existing secret, set create to false and provide the name of the secret.
+      # If you want to create a new secret, set create to true and provide the name of the secret.
+      # Also provide the values for clientID, clientSecret, issuerURL, and scopes.
+      # Example:
+      # config:
+      #   oidc:
+      #     secret:
+      #       create: true
+      #       name: oidc
+      secret:
+        # -- Generate OIDC secret. If true, will generate a secret using .config.oidc.
+        create: false
+        # -- Name of the OIDC secret.
+        name: oidc
+  
+      # Option 2:
+      # config:
+      #   oidc:
+      #     clientID: "clientID"
+      #     clientSecret: "clientSecret"
+      #     issuerURL: "issuerURL"
+      #     scopes: "scopes"
+  
+      # -- OIDC client ID
+      clientID: ""
+      # -- OIDC client secret
+      clientSecret: ""
+      # -- OIDC issuer URL
+      issuerURL: ""
+      # -- OIDC scopes to be used
+      scopes: ""
+  
+      # -- OIDC client to be used during token validation
+      validatorClientID: ""
+      # -- OIDC Issuer URL to be used during token validation
+      validatorIssuerURL: ""
+      # -- Use 'access_token' instead of 'id_token' when authenticating using OIDC
+      useAccessToken: false
+  
+      # Option 3:
+      # @param config.oidc - External OIDC secret configuration
+      # If you want to use an external secret for OIDC configuration, enable this option.
+      # Provide the name of the secret to use.
+      # Example:
+      # config:
+      #   oidc:
+      #     secret:
+      #       create: false
+      #     externalSecret:
+      #       enabled: true
+      #       name: oidc
+      externalSecret:
+        enabled: false
+        name: ""
+    # -- directory to look for plugins
+    pluginsDir: "/headlamp/plugins"
+    watchPlugins: false
+    # Extra arguments that can be given to the container. See charts/headlamp/README.md for more information.
+    extraArgs: []
+  
+  # -- An optional list of environment variables
+  # env:
+  #   - name: KUBERNETES_SERVICE_HOST
+  #     value: "localhost"
+  #   - name: KUBERNETES_SERVICE_PORT
+  #     value: "6443"
+  
+  serviceAccount:
+    create: true
+    annotations: {}
+  
+  clusterRoleBinding:
+    create: true
+    clusterRoleName: cluster-admin
+    annotations: {}
+  
+  service:
+    type: ClusterIP
+    port: 80
+    loadBalancerIP: ""
+  
+  # -- Headlamp containers volume mounts
+  volumeMounts: []
+  
+  # -- Headlamp pod's volumes
+  volumes: []
+  
+  persistentVolumeClaim:
+    enabled: false
+    accessModes: ReadWriteOnce
+    size: "16Gi"
+    # -- storageClassName for the persistent volume claim.
+    storageClassName: "nfs-client"
+  
+  ingress:
+    enabled: false
+  
+  resources: {}
+  
+  # Plugin Manager Sidecar Container Configuration
+  pluginsManager:
+    # -- Enable plugin manager
+    enabled: false
+    # -- Plugin configuration file name
+    configFile: "plugin.yml"
+    # -- Plugin configuration content in YAML format. This is required if plugins.enabled is true.
+    configContent: ""
+    # -- Base node image to use
+    baseImage: node:lts-alpine
+    # -- Headlamp plugin package version to install
+    version: latest
+  
+  # -- Additional Kubernetes manifests to be deployed. Include the manifest as nested YAML.
+  extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: my-config
+  #   data:
+  #     key: value
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: my-config-too
+  #   data:
+  #     key: value
