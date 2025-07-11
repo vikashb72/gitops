@@ -1,0 +1,182 @@
+schema:
+  env: k3s
+
+valkey:
+  global:
+    defaultStorageClass: longhorn
+    storageClass: longhorn
+
+  diagnosticMode:
+    enabled: false
+
+  image:
+    debug: false
+
+  architecture: replication
+
+  auth:
+    enabled: true
+    sentinel: true
+    existingSecret: "valkey-password"
+    existingSecretPasswordKey: "password"
+      
+  commonConfiguration: |
+    maxmemory-policy allkeys-lru
+    maxmemory 32mb
+    repl-backlog-size 2mb
+    appendonly yes
+    save ""
+    aclfile /opt/bitnami/valkey/etc/users.acl
+
+  primary:
+    replicaCount: 3
+    resourcesPreset: "nano" 			# nano, micro, small, medium
+
+    persistence: 
+      enabled: false
+
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
+
+      - name: valkey-users-acl
+        secret:
+          secretName: valkey-users-acl
+
+  replica:
+    resourcesPreset: "nano"
+    replicaCount: 3
+
+    persistence:
+      enabled: false
+
+    autoscaling:
+      enabled: false
+
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+
+      - name: valkey-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/valkey/etc/users.acl"
+
+  sentinel:
+    enabled: true
+
+    image:
+      debug: false
+
+    resourcesPreset: "nano"
+
+    persistence:
+      enabled: false
+
+    service:
+      type: ClusterIP
+      loadBalancerIP: ""
+
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
+
+      - name: valkey-users-acl
+        secret:
+          secretName: valkey-users-acl
+
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+
+      - name: valkey-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/valkey/etc/users.acl"
+
+  tls:
+    enabled: true
+    authClients: false
+    existingSecret: valkey-tls
+    certFilename: tls.crt
+    certKeyFilename: tls.key
+    certCAFilename: ca.crt
+
+  metrics:
+    enabled: true
+
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+
+      - name: valkey-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/valkey/etc/users.acl"
+
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring
+
+      additionalLabels:
+        release: kube-prometheus-stack
+
+    podMonitor:
+      enabled: true
+      namespace: monitoring
+
+      additionalLabels:
+        release: kube-prometheus-stack
+
+    prometheusRule:
+      enabled: true
+      namespace: monitoring
+
+      rules:
+        - alert: ValkeyDown
+          expr: valkey_up{service="{{ template "common.names.fullname" . }}-metrics"} == 0
+          for: 2m
+          labels:
+            severity: error
+          annotations:
+            summary: Valkey&reg; instance {{ "{{ $labels.instance }}" }} down
+            description: Valkey&reg; instance {{ "{{ $labels.instance }}" }} is down
+        - alert: ValkeyMemoryHigh
+          expr: >
+            valkey_memory_used_bytes{service="{{ template "common.names.fullname" . }}-metrics"} * 100
+            /
+            valkey_memory_max_bytes{service="{{ template "common.names.fullname" . }}-metrics"}
+            > 90
+          for: 2m
+          labels:
+            severity: error
+          annotations:
+            summary: Valkey&reg; instance {{ "{{ $labels.instance }}" }} is using too much memory
+            description: |
+              Valkey&reg; instance {{ "{{ $labels.instance }}" }} is using {{ "{{ $value }}" }}% of its available memory.
+        - alert: ValkeyKeyEviction
+          expr: |
+            increase(valkey_evicted_keys_total{service="{{ template "common.names.fullname" . }}-metrics"}[5m]) > 0
+          for: 1s
+          labels:
+            severity: error
+          annotations:
+            summary: Valkey&reg; instance {{ "{{ $labels.instance }}" }} has evicted keys
+            description: |
+              Valkey&reg; instance {{ "{{ $labels.instance }}" }} has evicted {{ "{{ $value }}" }} keys in the last 5 minutes.
+      
