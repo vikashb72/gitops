@@ -57,7 +57,7 @@ argo-cd:
             id: authentik
 
     params:
-      server.insecure: true
+      server.insecure: false
       reposerver.parallelism.limit: 0
       server.disable.auth: false
 
