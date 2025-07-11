@@ -1,0 +1,170 @@
+schema:
+  env: k3s
+
+redis:
+  global:
+    defaultStorageClass: longhorn
+    storageClass: longhorn
+
+  image:
+    debug: false
+
+  architecture: replication
+
+  auth:
+    enabled: true
+    sentinel: true
+    existingSecret: "redis-password"
+    existingSecretPasswordKey: "password"
+    acl:
+      enabled: false
+      sentinel: false
+      # this does not work, using mount aclfile /opt/bitnami/redis/etc/users.acl
+      users: [ ]
+      # users:
+      #   - username: "my-user"
+      #     password: "mypassword"
+      #     enabled: "on"
+      #     commands: "+@all"
+      #     keys: "~*"
+      #     channels: "&*"
+      
+  commonConfiguration: |
+    maxmemory-policy allkeys-lru
+    maxmemory 32mb
+    repl-backlog-size 2mb
+    appendonly yes
+    save ""
+    aclfile /opt/bitnami/redis/etc/users.acl
+
+  master:
+    count: 3
+    resourcesPreset: "nano" 			# nano, micro, small, medium
+    persistence: 
+      enabled: false
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
+      - name: redis-users-acl
+        secret:
+          secretName: redis-users-acl
+
+  replica:
+    resourcesPreset: "nano"
+    replicaCount: 3
+    persistence:
+      enabled: false
+    externalMaster:
+      enabled: false
+    autoscaling:
+      enabled: false
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+      - name: redis-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/redis/etc/users.acl"
+
+  sentinel:
+    enabled: true
+    resourcesPreset: "nano"
+    persistence:
+      enabled: false
+    externalMaster:
+      enabled: false
+    service:
+      type: ClusterIP
+      loadBalancerIP: ""
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
+      - name: redis-users-acl
+        secret:
+          secretName: redis-users-acl
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+      - name: redis-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/redis/etc/users.acl"
+
+  tls:
+    enabled: true
+    authClients: false
+    existingSecret: redis-tls
+    certFilename: tls.crt
+    certKeyFilename: tls.key
+    certCAFilename: ca.crt
+
+  metrics:
+    enabled: true
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+      - name: redis-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/redis/etc/users.acl"
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring
+      additionalLabels:
+        release: kube-prometheus-stack
+    podMonitor:
+      enabled: true
+      namespace: monitoring
+      additionalLabels:
+        release: kube-prometheus-stack
+    prometheusRule:
+      enabled: true
+      namespace: monitoring
+      rules:
+        - alert: RedisDown
+          expr: redis_up{service="{{ template "common.names.fullname" . }}-metrics"} == 0
+          for: 2m
+          labels:
+            severity: error
+          annotations:
+            summary: Redis&reg; instance {{ "{{ $labels.instance }}" }} down
+            description: Redis&reg; instance {{ "{{ $labels.instance }}" }} is down
+        - alert: RedisMemoryHigh
+          expr: >
+            redis_memory_used_bytes{service="{{ template "common.names.fullname" . }}-metrics"} * 100
+            /
+            redis_memory_max_bytes{service="{{ template "common.names.fullname" . }}-metrics"}
+            > 90
+          for: 2m
+          labels:
+            severity: error
+          annotations:
+            summary: Redis&reg; instance {{ "{{ $labels.instance }}" }} is using too much memory
+            description: |
+              Redis&reg; instance {{ "{{ $labels.instance }}" }} is using {{ "{{ $value }}" }}% of its available memory.
+        - alert: RedisKeyEviction
+          expr: |
+            increase(redis_evicted_keys_total{service="{{ template "common.names.fullname" . }}-metrics"}[5m]) > 0
+          for: 1s
+          labels:
+            severity: error
+          annotations:
+            summary: Redis&reg; instance {{ "{{ $labels.instance }}" }} has evicted keys
+            description: |
+              Redis&reg; instance {{ "{{ $labels.instance }}" }} has evicted {{ "{{ $value }}" }} keys in the last 5 minutes.
+      
