@@ -1,0 +1,127 @@
+etcd:
+  global:
+    defaultStorageClass: "nfs-client"
+
+  clusterDomain: cluster.local
+
+  diagnosticMode:
+    enabled: false
+
+  auth:
+    rbac:
+      create: true
+      ## @param auth.rbac.allowNoneAuthentication Allow to use etcd without configuring RBAC authentication
+      ##
+      allowNoneAuthentication: true
+      ## @param auth.rbac.existingSecret Name of the existing secret containing credentials for the root user
+      existingSecret: ""
+      ## @param auth.rbac.existingSecretPasswordKey Name of key containing password to be retrieved from the existing secret
+      existingSecretPasswordKey: ""
+
+    ## Authentication token
+    token:
+      enabled: true
+      type: jwt
+      privateKey:
+        filename: jwt-token.pem
+        existingSecret: ""
+      signMethod: RS256
+      ttl: 10m
+    client:
+      secureTransport: false
+      useAutoTLS: false
+      existingSecret: ""
+      enableAuthentication: false
+      certFilename: cert.pem
+      certKeyFilename: key.pem
+      caFilename: ""
+
+    peer:
+      secureTransport: false
+      useAutoTLS: false
+      existingSecret: ""
+      enableAuthentication: false
+      certFilename: cert.pem
+      certKeyFilename: key.pem
+      caFilename: ""
+
+  configuration: ""
+  existingConfigmap: ""
+  ## @param extraEnvVars [array] Extra environment variables to be set on etcd container
+  ## e.g:
+  ## extraEnvVars:
+  ##   - name: FOO
+  ##     value: "bar"
+  ##
+  extraEnvVars: []
+  ## @param extraEnvVarsSecret Name of existing Secret containing extra env vars
+  ##
+  extraEnvVarsSecret: ""
+  replicaCount: 1
+  resourcesPreset: "micro"
+  extraVolumes: []
+  extraVolumeMounts: []
+
+  service:
+    type: ClusterIP
+    enabled: true
+    loadBalancerIP: ""
+    loadBalancerClass: ""
+    annotations: {}
+
+  persistence:
+    enabled: true
+    storageClass: "nfs-client"
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+
+  metrics:
+    enabled: false
+    useSeparateEndpoint: false
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "{{ .Values.metrics.useSeparateEndpoint | ternary .Values.containerPorts.metrics .Values.containerPorts.client }}"
+    podMonitor:
+      enabled: false
+      namespace: monitoring
+      additionalLabels: {}
+      ## tlsConfig:
+      ##   ca:
+      ##     secret:
+      ##       name: existingSecretName
+      ##
+      tlsConfig: {}
+    prometheusRule:
+      enabled: false
+      namespace: ""
+      additionalLabels: {}
+      ## @param metrics.prometheusRule.rules Prometheus Rule definitions
+      # - alert: ETCD has no leader
+      #   annotations:
+      #     summary: "ETCD has no leader"
+      #     description: "pod {{`{{`}} $labels.pod {{`}}`}} state error, can't connect leader"
+      #   for: 1m
+      #   expr: etcd_server_has_leader == 0
+      #   labels:
+      #     severity: critical
+      #     group: PaaS
+      ##
+      rules: []
+  
+  disasterRecovery:
+    enabled: false
+
+  serviceAccount:
+    create: true
+    automountServiceAccountToken: false
+  
+  preUpgradeJob:
+    enabled: true
+    annotations: {}
+    podLabels: {}
+    podAnnotations: {}
+  
+  ## @section Defragmentation parameters
+  defrag:
+    enabled: false

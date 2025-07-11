@@ -1,0 +1,7 @@
+apiVersion: v2
+name: etcd
+version: 1.0.0
+dependencies:
+  - name: etcd
+    version: 12.0.8
+    repository: https://charts.bitnami.com/bitnami
