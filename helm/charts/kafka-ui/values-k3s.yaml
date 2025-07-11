@@ -1,0 +1,144 @@
+schema:
+  env: k3s
+
+kafka-ui:
+  replicaCount: 1
+  
+  yamlApplicationConfig:
+    logging:
+      level:
+        #org.springframework.security: TRACE
+        io.kafbat.ui.service.rbac: TRACE
+        io.kafbat.ui.service.rbac.extractor: TRACE
+
+    kafka:
+      clusters:
+        - name: kafka-cluster
+          bootstrapServers: kafka-cluster-kafka-bootstrap.kafka-system:9093
+          properties:
+            security.protocol: SASL_SSL
+            sasl.mechanism: SCRAM-SHA-512        
+    #auth:
+    #  type: OAUTH2
+    #  oauth2:
+    #    client:
+    #      goauthentic:
+    #        provider: goauthentic
+    #        scope: [ 'openid', 'profile', 'email' ]
+    #        client-name: authentik
+    #        issuer-uri: https://authentik.k3s.where-ever.net/application/o/kafka-ui/
+    #        user-name-attribute: email
+    #        redirect-uri: http://localhost:8080/login/oauth2/code/goauthentic
+    #        authorization-grant-type: authorization_code
+    #        custom-params:
+    #          type: oauth
+    #          roles-field: groups
+    #          logoutUrl: https://authentik.k3s.where-ever.net/application/o/kafka-ui/end-session/
+
+    management:
+      health:
+        ldap:
+          enabled: false
+
+    #rbac:
+    #  default-role: "readonly"
+    #  roles:
+    #    - name: "readonly"
+    #      clusters:
+    #        - "*"
+    #      subjects:
+    #        - provider: oauth
+    #          type: role
+    #          value: "Kafka UI Viewers"
+    #      permissions:
+    #        - resource: clusterconfig
+    #          actions: [ "view" ]
+    #        - resource: topic
+    #          value: ".*"
+    #          actions:
+    #            - VIEW
+    #            - MESSAGES_READ
+    #            - ANALYSIS_VIEW
+    #        - resource: consumer
+    #          value: ".*"
+    #          actions: [ view ]
+    #        - resource: schema
+    #          value: ".*"
+    #          actions: [ view ]
+    #        - resource: connect
+    #          value: ".*"
+    #          actions: [ view ]
+    #        - resource: acl
+    #          actions: [ view ]
+    #    - name: "admins"
+    #      clusters:
+    #        - ".*"
+    #      subjects:
+    #        - provider: oauth
+    #          type: role
+    #          value: "Kafka UI Admins"
+    #      permissions:
+    #        - resource: applicationconfig
+    #          actions: all
+    #        - resource: clusterconfig
+    #          actions: all
+    #        - resource: topic
+    #          value: ".*"
+    #          actions: all
+    #        - resource: consumer
+    #          value: ".*"
+    #          actions: all
+    #        - resource: schema
+    #          value: ".*"
+    #          actions: all
+    #        - resource: connect
+    #          value: ".*"
+    #          actions: all
+    #        - resource: ksql
+    #          actions: all
+    #        - resource: acl
+    #          actions: [ view ]
+
+  existingSecret: "kafka-ui-secrets"
+  envs:
+    secret: {}
+    config: {}
+  env:
+    - name: KAFKA_CLUSTERS_0_NAME
+      value: "kafka-cluster"
+    - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+      value: "kafka-cluster-kafka-bootstrap.kafka-system:9093"
+    - name: DYNAMIC_CONFIG_ENABLED
+      value: 'true'
+    - name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
+      value: SASL_SSL #SSL # alt:  SASL_PLAINTEXT
+    - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
+      value: SCRAM-SHA-512
+    - name: KAFKA_CLUSTERS_0_PROPERTIES_SSL_KEYSTORE_LOCATION
+      value: /ssl/key/keystore.p12
+    - name: KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION
+      value: /ssl/kafka/kafka.truststore.p12
+      #value: /ssl/kafka/kafka.truststore.jks
+  
+  volumeMounts:
+    - mountPath: /ssl/kafka/
+      name: own-ca-bundle
+      readOnly: true
+    - name: kafka-ui-tls
+      readOnly: true
+      mountPath: /ssl/key/
+
+  volumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+          - key: bundle.jks
+            path: kafka.truststore.jks
+          - key: bundle.p12
+            path: kafka.truststore.p12
+    - name: kafka-ui-tls
+      secret:
+        secretName: kafka-ui-tls
