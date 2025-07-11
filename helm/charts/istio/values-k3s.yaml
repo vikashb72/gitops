@@ -1,0 +1,179 @@
+base:
+  global:
+    istioNamespace: istio-system
+
+base:
+  base:
+    enableCRDTemplates: true
+
+  profile: ambient
+
+  defaultRevision: "default"
+
+istiod:
+  profile: ambient
+
+  cni:
+    enabled: false
+
+  istiodRemote:
+    enabled: false
+
+  telemetry:
+    enabled: true
+
+    v2:
+      enabled: true
+
+      prometheus:
+        enabled: true
+
+  revision: ""
+
+  global:
+    istioNamespace: istio-system
+
+    logAsJson: false
+
+    proxy:
+      logLevel: debug
+
+    logging:
+      level: "default:debug"
+
+    omitSidecarInjectorConfigMap: false
+
+  meshConfig:
+    enablePrometheusMerge: true
+    extensionProviders:
+      - name: authentik
+        envoyExtAuthzHttp:
+          headersToDownstreamOnAllow:
+            - cookie
+          headersToUpstreamOnAllow:
+            - set-cookie
+            - x-authentik-*
+          includeRequestHeadersInCheck:
+            - cookie
+          pathPrefix: /outpost.goauthentik.io/auth/envoy
+          service: authentik-server.authentik.svc.cluster.local
+          port: 80
+
+  volumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+        - key: own-ca-bundle.pem
+          path: ca-certificates.crt
+
+  volumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
+
+cni:
+  profile: ambient
+
+  ambient:
+    enabled: true
+
+ztunnel:
+  profile: ambient
+
+fleetGateway:
+  name: "fleet-gateway"
+  profile: ambient
+
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 192.168.0.47
+    annotations:
+      metallb.universe.tf/address-pool: default
+
+  volumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+        - key: own-ca-bundle.pem
+          path: ca-certificates.crt
+
+  volumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
+
+appGateway:
+  name: "app-gateway"
+  profile: ambient
+
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 192.168.0.48
+    annotations:
+      metallb.universe.tf/address-pool: default
+
+  volumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+        - key: own-ca-bundle.pem
+          path: ca-certificates.crt
+
+  volumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
+
+infraGateway:
+  name: "infra-gateway"
+  profile: ambient
+
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 192.168.0.49
+    annotations:
+      metallb.universe.tf/address-pool: default
+
+  volumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+        - key: own-ca-bundle.pem
+          path: ca-certificates.crt
+
+  volumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
+
+kiali-server:
+  external_services:
+    custom_dashboards:
+      enabled: true
+  identity: {}
+    #cert_file:
+    #private_key_file:
+  
+  login_token:
+    signing_key: ""
+  
+  server:
+    port: 20001
+    #node_port:
+    observability:
+      metrics:
+        enabled: true
+        port: 9090
+    web_root: ""
