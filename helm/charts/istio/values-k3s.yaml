@@ -14,7 +14,7 @@ istiod:
   profile: ambient
 
   cni:
-    enabled: true
+    enabled: false
 
   istiodRemote:
     enabled: false
@@ -75,6 +75,13 @@ istiod:
       readOnly: true
 
 cni:
+  global:
+    platform: k3s
+
+  cniConfDir: /var/lib/rancher/k3s/agent/etc/cni/net.d
+
+  cniBinDir: /var/lib/rancher/k3s/data/current/bin/
+
   profile: ambient
 
   ambient:
