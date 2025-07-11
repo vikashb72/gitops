@@ -1,0 +1,222 @@
+schema:
+  env: k3s
+
+authentik:
+  global:
+    env:
+      - name: AUTHENTIK_ERROR_REPORTING__ENABLED
+        value: "false"
+      - name: AUTHENTIK_SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_SECRET_KEY
+      - name: AUTHENTIK_POSTGRESQL__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_POSTGRESQL__PASSWORD
+      - name: AUTHENTIK_REDIS__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_REDIS__PASSWORD
+      - name: AUTHENTIK_BOOTSTRAP_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_BOOTSTRAP_PASSWORD
+      - name: AUTHENTIK_BOOTSTRAP_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_BOOTSTRAP_TOKEN
+      - name: AUTHENTIK_EMAIL__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__PASSWORD
+      - name: AUTHENTIK_EMAIL__USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__USERNAME
+      - name: AUTHENTIK_EMAIL__HOST
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__HOST
+      - name: AUTHENTIK_EMAIL__PORT
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__PORT
+      - name: AUTHENTIK_EMAIL__USE_TLS
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__USE_TLS
+      - name: AUTHENTIK_EMAIL__USE_SSL
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__USE_SSL
+      - name: AUTHENTIK_EMAIL__FROM
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: AUTHENTIK_EMAIL__FROM
+
+    volumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+      - mountPath: /certs
+        name: authentik-tls
+        readOnly: true
+
+    volumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+      - name: authentik-tls
+        secret:
+          secretName: authentik-tls
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: tls.crt
+            path: authentik-tls.crt
+          - key: tls.key
+            path: authentik-tls.key
+
+    #envFrom:
+    #  - secretRef:
+    #      name: authentik-secrets
+  
+  ## Authentik configuration
+  authentik:
+    error_reporting:
+      enabled: false
+      send_pii: false
+
+  blueprints:
+    configMaps: []
+    secrets: []
+  
+  
+  ## authentik server
+  server:
+    #envFrom:
+    #  - secretRef:
+    #      name: authentik-secrets
+
+    #volumeMounts:
+    #volumes:
+  
+    service:
+      labels: {}
+      type: ClusterIP
+      loadBalancerIP: ""
+  
+    ## authentik server metrics service configuration
+    metrics:
+      enabled: true
+
+      serviceMonitor:
+        enabled: true
+
+        selector: {}
+          # prometheus: kube-prometheus
+
+        namespace: "monitoring"
+
+        labels:
+          release: kube-prometheus-stack
+  
+    ingress:
+      enabled: false
+  
+  ## authentik worker
+  worker:
+    replicas: 1
+
+    #envFrom:
+    #  - secretRef:
+    #      name: authentik-secrets
+
+    #volumeMounts:
+    #volumes:
+  
+  geoip:
+    enabled: false
+  
+  prometheus:
+    rules:
+      enabled: true
+
+      namespace: "monitoring"
+
+      selector: {}
+        # prometheus: kube-prometheus
+  
+      labels:
+        release: kube-prometheus-stack
+  
+  
+  postgresql:
+    enabled: true
+
+    auth:
+      username: authentik
+      database: authentik
+      existingSecret: "authentik-secrets"
+      secretKeys:
+        adminPasswordKey: "AUTHENTIK_POSTGRESQL__ADMIN_PASSWORD"
+        userPasswordKey: "AUTHENTIK_POSTGRESQL__PASSWORD"
+
+    primary:
+      extendedConfiguration: |
+        max_connections = 500
+
+      resourcesPreset: "nano"
+
+      persistence:
+        enabled: true
+        storageClass: nfs-client
+        size: 4Gi
+        accessModes:
+          - ReadWriteOnce
+  
+  redis:
+    enabled: true
+
+    architecture: standalone
+
+    auth:
+      enabled: true
+      existingSecret: "authentik-secrets"
+      existingSecretPasswordKey: "AUTHENTIK_REDIS__PASSWORD"
+
+    master:
+      resourcesPreset: "nano"
+
+    replica:
+      resourcesPreset: "nano"
+
+    sentinel:
+      resourcesPreset: "nano"
+
+    metrics:
+      resourcesPreset: "nano"
+
+    volumePermissions:
+      resourcesPreset: "nano"
+
+    sysctl:
+      resourcesPreset: "nano"
