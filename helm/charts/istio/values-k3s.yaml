@@ -14,7 +14,7 @@ istiod:
   profile: ambient
 
   cni:
-    enabled: false
+    enabled: true
 
   istiodRemote:
     enabled: false
