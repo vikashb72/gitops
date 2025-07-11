@@ -1,0 +1,73 @@
+schema:
+  env: k3s
+
+homepage:
+  service:
+    type: ClusterIP
+  allowed_hosts: homepage.k3s.where-ever.net
+
+services:
+  Infrastructure:
+    argocd:
+      href: https://argocd.k3s.where-ever.net/
+      icon: argo-cd
+      #widget:
+      #  type: argocd
+      #  url: https://argocd.k3s.where-ever.net/
+      #  key: argocdapikey
+    authentik:
+      href: https://authentik.k3s.where-ever.net/
+      icon: authentik
+      #widget:
+      #  type: authentik
+      #  url: https://authentik.k3s.where-ever.net/
+      #  key: api_token
+    vault:
+      href: https://vault.k3s.where-ever.net/
+      icon: hashicorp-vault
+  Monitoring:
+    grafana:
+      href: https://grafana.k3s.where-ever.net/
+      icon: grafana
+      #widget:
+      #  type: grafana
+      #  url: https://grafana.k3s.where-ever.net/
+      #  username: username
+      #  password: password
+    alertmanager:
+      href: https://alertmanager.k3s.where-ever.net/
+      icon: alertmanager
+    prometheus:
+      href: https://prometheus.k3s.where-ever.net/
+      icon: prometheus
+      widgets:
+        type: prometheus 
+        url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
+        #url: https://prometheus.k3s.where-ever.net/
+    goldilocks:
+      href: https://goldilocks.k3s.where-ever.net/
+      icon: https://goldilocks.k3s.where-ever.net/static/images/favicon.ico
+  devtools:
+    mailhog:
+      href: https://mailhog.k3s.where-ever.net/
+      icon: mailhog
+
+#  widgets.yaml: |
+#    - kubernetes:
+#        cluster:
+#          show: true
+#          cpu: true
+#          memory: true
+#          showLabel: true
+#          label: "cluster"
+#        nodes:
+#          show: true
+#          cpu: true
+#          memory: true
+#          showLabel: true
+#    - resources:
+#        backend: resources
+#        expanded: true
+#        cpu: true
+#        memory: true
+#        network: default
