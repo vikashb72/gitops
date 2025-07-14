@@ -60,16 +60,16 @@ argocdManaged:
 #    targetNamespace: homepage
 #    sources:
 #      - path: helm/charts/homepage
-#  kafka-ui:
-#    name: kafka-ui
-#    targetNamespace: kafka-ui
-#    sources:
-#      - path: helm/charts/kafka-ui
-#  kafka-rest:
-#    name: kafka-rest
-#    targetNamespace: kafka-rest
-#    sources:
-#      - path: helm/charts/kafka-rest
+  kafka-ui:
+    name: kafka-ui
+    targetNamespace: kafka-ui
+    sources:
+      - path: helm/charts/kafka-ui
+  kafka-rest:
+    name: kafka-rest
+    targetNamespace: kafka-rest
+    sources:
+      - path: helm/charts/kafka-rest
 #  mysql:
 #    name: mysql
 #    targetNamespace: mysql
