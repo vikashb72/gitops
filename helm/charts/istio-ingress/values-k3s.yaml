@@ -58,6 +58,32 @@ gateways:
                   port:
                     number: 8200
                   host: vault-ui.vault-system.svc.cluster.local
+  # longhord-ui (via infra-gateway)
+  longhorn-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: longhorn-https
+          protocol: HTTPS
+          #tlsMode: PASSTHROUGH
+        hosts:
+          - 'longhorn.k3s.where-ever.net'
+    VirtualServices:
+      - name: vault-virtual-service
+        hosts:
+          - "longhorn.k3s.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: longhorn-frontend.longhorn-system.svc.cluster.local
+
   # httpbin (via app-gateway)
   #httpbin-gateway:
   #  gateway:
