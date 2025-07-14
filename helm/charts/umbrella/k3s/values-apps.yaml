@@ -50,7 +50,6 @@ argocdManaged:
 #    sources:
 #      - path: helm/charts/valkey
   strimzi-kafka-operator:
-    disable: true
     name: strimzi-kafka-operator
     targetNamespace: kafka-system
     sources:
