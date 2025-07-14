@@ -41,6 +41,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   minio-tenant:
+    disable: true
     name: minio-tenant
     targetNamespace: minio-tenant
     syncwave: "6"
