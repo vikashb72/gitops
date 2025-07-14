@@ -55,7 +55,7 @@ cluster:
        - id: 0
          type: persistent-claim
          class: nfs-client
-         size: 32Gi
+         size: 16Gi
          deleteClaim: true
 
 topics:
