@@ -1,0 +1,296 @@
+schema:
+  env: k3s
+  namespace: tempo-system
+
+tempo-distributed:
+  global:
+    storageClass: longhorn
+  
+  tempo:
+    memberlist:
+      # -- Adds the appProtocol field to the memberlist service. 
+      # This allows memberlist to work with istio protocol selection.
+      #  Set the optional service protocol. Ex: "tcp", "http" or "https".
+      appProtocol: null
+
+  # Configuration for the ingester
+  ingester:
+    replicas: 3
+
+    extraArgs:
+      - '-config.expand-env=true'
+
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+
+    persistence:
+      enabled: false
+      inMemory: false
+      size: 16Gi
+      storageClassName: longhorn
+
+    # Adds the appProtocol field to the ingester service. 
+    # This allows ingester to work with istio protocol selection
+    appProtocol:
+      grpc: null
+
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+  
+  # Configuration for the metrics-generator
+  metricsGenerator:
+    enabled: true
+
+    #storage:
+    #  remote_write:
+    #    - url: http://monitoring-kube-prometheus-prometheus.monitoring:9090/api/v1/write
+    #      send_exemplars: true
+
+    extraArgs:
+      - '-config.expand-env=true'
+
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+  
+  # Configuration for the distributor
+  distributor:
+    replicas: 1
+
+    extraArgs:
+      - '-config.expand-env=true'
+
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+
+    appProtocol:
+      grpc: null
+
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+  
+  # Configuration for the compactor
+  compactor:
+    replicas: 1
+
+    extraArgs:
+      - '-config.expand-env=true'
+
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+  
+  querier:
+    replicas: 1
+
+    extraArgs:
+      - '-config.expand-env=true'
+
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+
+    appProtocol:
+      grpc: grpc
+
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+  
+  # Configuration for the query-frontend
+  queryFrontend:
+    query:
+      enabled: false
+
+      extraArgs:
+        - '-config.expand-env=true'
+
+      extraEnvFrom:
+        - secretRef:
+            name: tempo-minio-credentials
+
+      extraVolumes:
+        - name: own-ca-bundle
+          configMap:
+            name: own-ca-bundle
+            defaultMode: 0644
+            optional: false
+            items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
+
+      extraVolumeMounts:
+        - mountPath: /etc/ssl/certs/
+          name: own-ca-bundle
+          readOnly: true
+
+    replicas: 1
+
+    extraArgs:
+      - '-config.expand-env=true'
+
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+
+    appProtocol:
+      grpc: grpc
+
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+  
+  multitenancyEnabled: false
+  
+  traces:
+    jaeger:
+      grpc:
+        enabled: true
+        receiverConfig: {}
+
+    otlp:
+      grpc:
+        enabled: true
+        receiverConfig: {}
+
+    kafka: {}
+  
+  storage:
+    trace:
+      backend: s3
+      s3:
+        bucket: tempo-traces
+        endpoint: "${endpoint}"
+        access_key: "${accessKey}"
+        secret_key: "${secretKey}"
+        #insecure: true
+
+    admin:
+      backend: s3
+  
+  metaMonitoring:
+    serviceMonitor:
+      enabled: false
+
+    grafanaAgent:
+      enabled: false
+  
+  prometheusRule:
+    enabled: true
+    namespace: null
+    groups: []
+
+  minio:
+    enabled: false
+  
+  gateway:
+    enabled: true
+
+    extraArgs:
+      - '-config.expand-env=true'
+
+    extraEnvFrom:
+      - secretRef:
+          name: tempo-minio-credentials
+
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+
+    affinity: |-
+      podAntiAffinity: {}
+  
+  enterprise:
+    enabled: false
+
+  provisioner:
+    enabled: false
