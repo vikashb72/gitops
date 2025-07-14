@@ -49,11 +49,11 @@ argocdManaged:
 #    targetNamespace: valkey
 #    sources:
 #      - path: helm/charts/valkey
-#  strimzi-kafka-operator:
-#    name: strimzi-kafka-operator
-#    targetNamespace: kafka-system
-#    sources:
-#      - path: helm/charts/strimzi-kafka-operator
+  strimzi-kafka-operator:
+    name: strimzi-kafka-operator
+    targetNamespace: kafka-system
+    sources:
+      - path: helm/charts/strimzi-kafka-operator
 #  homepage:
 #    name: homepage
 #    targetNamespace: homepage
