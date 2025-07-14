@@ -71,7 +71,7 @@ gateways:
         hosts:
           - 'longhorn.k3s.where-ever.net'
     VirtualServices:
-      - name: vault-virtual-service
+      - name: longhorn-virtual-service
         hosts:
           - "longhorn.k3s.where-ever.net"
         http:
