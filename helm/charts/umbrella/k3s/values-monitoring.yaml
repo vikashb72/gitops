@@ -32,14 +32,14 @@ argocdManaged:
             - values-monitoring.yaml
     automated:
       allowEmpty: true
-#  kube-prometheus-stack:
-#    name: kube-prometheus-stack
-#    targetNamespace: monitoring
-#    syncwave: "7"
-#    sources:
-#      - path: helm/charts/kube-prometheus-stack
-#    syncOptions:
-#      ServerSideApply: true
+  kube-prometheus-stack:
+    name: kube-prometheus-stack
+    targetNamespace: monitoring
+    syncwave: "7"
+    sources:
+      - path: helm/charts/kube-prometheus-stack
+    syncOptions:
+      ServerSideApply: true
 #  loki:
 #    name: loki
 #    targetNamespace: loki-system
