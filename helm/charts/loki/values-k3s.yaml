@@ -1,5 +1,5 @@
 schema:
-  env: minikube
+  env: k3s
   namespace: loki-system
   loki:
     logfmt:
