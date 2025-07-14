@@ -83,7 +83,31 @@ gateways:
                   port:
                     number: 80
                   host: longhorn-frontend.longhorn-system.svc.cluster.local
-
+  # mailhog-ui (via infra-gateway)
+  mailhog-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: mailhog-https
+          protocol: HTTPS
+          #tlsMode: PASSTHROUGH
+        hosts:
+          - 'mailhog.k3s.where-ever.net'
+    VirtualServices:
+      - name: longhorn-virtual-service
+        hosts:
+          - "mailhog.k3s.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 8025
+                  host: mailhog.dev-tools.svc.cluster.local
   # httpbin (via app-gateway)
   #httpbin-gateway:
   #  gateway:
