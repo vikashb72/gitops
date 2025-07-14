@@ -22,7 +22,7 @@ tenant:
       - servers: 4
         name: pool-0
         volumesPerServer: 1
-        size: 32Gi
+        size: 16Gi
         storageClassName: longhorn
     mountPath: /export
     subPath: /data
