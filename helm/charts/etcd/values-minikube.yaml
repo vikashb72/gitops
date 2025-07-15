@@ -32,19 +32,19 @@ etcd:
       signMethod: RS256
       ttl: 10m
     client:
-      secureTransport: false
+      secureTransport: true
       useAutoTLS: false
       existingSecret: "etcd-client-tls"
-      enableAuthentication: false
+      enableAuthentication: true
       certFilename: tls.crt
       certKeyFilename: tls.key
       caFilename: "ca.crt"
 
     peer:
-      secureTransport: false
+      secureTransport: true
       useAutoTLS: false
       existingSecret: "etcd-server-tls"
-      enableAuthentication: false
+      enableAuthentication: true
       certFilename: tls.crt
       certKeyFilename: tls.key
       caFilename: "ca.crt"
