@@ -419,9 +419,9 @@ gateways:
       #    - etcd.minikube.where-ever.net
     VirtualServices:
       - name: etcd-virtual-service
-        #DestinationRule:
-        #  host: etcd-service.fleetdm.svc.cluster.local
-        #  tls: true
+        DestinationRule:
+          host: etcd.etcd.svc.cluster.local
+          tls: true
         hosts:
           - "etcd.minikube.where-ever.net"
         http:
