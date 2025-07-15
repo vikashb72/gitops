@@ -25,8 +25,8 @@ etcd:
     client:
       ## @param auth.client.secureTransport Switch to encrypt client-to-server communications using TLS certificates
       ##
-      secureTransport: true
-      useAutoTLS: true
+      secureTransport: false
+      useAutoTLS: false
       #existingSecret: "etcd-client-tls"
       #enableAuthentication: false
       #certFilename: "tls.crt"
@@ -37,8 +37,8 @@ etcd:
     peer:
       ## @param auth.peer.secureTransport Switch to encrypt server-to-server communications using TLS certificates
       ##
-      secureTransport: true
-      useAutoTLS: true
+      secureTransport: false
+      useAutoTLS: false
       #existingSecret: "etcd-server-tls"
       #enableAuthentication: false
       #certFilename: tls.crt
