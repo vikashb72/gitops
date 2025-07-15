@@ -914,19 +914,19 @@ vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
 
 if [ $? -ne 0 ]; then
     vault kv put kv/${EVT}/authentik/secrets \
-      AUTHENTIK_BOOTSTRAP_PASSWORD="$(openssl rand 64 | sha512sum | base64 -w 0 | head -c 32)",
-      AUTHENTIK_BOOTSTRAP_TOKEN="$(openssl rand 64 | sha512sum | base64 -w 0 | head -c 32)",
-      AUTHENTIK_EMAIL__FROM="authentik@${EVT}.where-ever.net",
-      AUTHENTIK_EMAIL__HOST= "mailhog.dev-tools.svc.cluster.local",
-      AUTHENTIK_EMAIL__PASSWORD= "",
-      AUTHENTIK_EMAIL__PORT= "1025",
-      AUTHENTIK_EMAIL__USERNAME= "vikashb@${EVT}.where-ever.net",
-      AUTHENTIK_EMAIL__USE_SSL= "false",
-      AUTHENTIK_EMAIL__USE_TLS= "false",
-      AUTHENTIK_POSTGRESQL__ADMIN_PASSWORD= "$(openssl rand -base64 16)",
-      AUTHENTIK_POSTGRESQL__PASSWORD= "$(openssl rand -base64 16)",
-      AUTHENTIK_REDIS__PASSWORD= "$(openssl rand -base64 16)",
-      AUTHENTIK_SECRET_KEY= "$(openssl rand -base64 32)",
+      AUTHENTIK_BOOTSTRAP_PASSWORD="$(openssl rand 64 | sha512sum | base64 -w 0 | head -c 32)" \
+      AUTHENTIK_BOOTSTRAP_TOKEN="$(openssl rand 64 | sha512sum | base64 -w 0 | head -c 32)" \
+      AUTHENTIK_EMAIL__FROM="authentik@${EVT}.where-ever.net" \
+      AUTHENTIK_EMAIL__HOST= "mailhog.dev-tools.svc.cluster.local" \
+      AUTHENTIK_EMAIL__PASSWORD= "" \
+      AUTHENTIK_EMAIL__PORT= "1025" \
+      AUTHENTIK_EMAIL__USERNAME= "vikashb@${EVT}.where-ever.net" \
+      AUTHENTIK_EMAIL__USE_SSL= "false" \
+      AUTHENTIK_EMAIL__USE_TLS= "false" \
+      AUTHENTIK_POSTGRESQL__ADMIN_PASSWORD= "$(openssl rand -base64 16)" \
+      AUTHENTIK_POSTGRESQL__PASSWORD= "$(openssl rand -base64 16)" \
+      AUTHENTIK_REDIS__PASSWORD= "$(openssl rand -base64 16)" \
+      AUTHENTIK_SECRET_KEY= "$(openssl rand -base64 32)"
 fi
 
 vault kv get -address $EXTERNAL_VAULT_ADDR -format json \
