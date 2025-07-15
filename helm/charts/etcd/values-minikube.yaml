@@ -25,25 +25,25 @@ etcd:
     client:
       ## @param auth.client.secureTransport Switch to encrypt client-to-server communications using TLS certificates
       ##
-      secureTransport: false
+      secureTransport: true
       useAutoTLS: false
-      #existingSecret: "etcd-client-tls"
-      #enableAuthentication: false
-      #certFilename: "tls.crt"
-      #certKeyFilename: "tls.key"
-      #caFilename: "ca.crt"
+      existingSecret: "etcd-client-tls"
+      enableAuthentication: false
+      certFilename: "tls.crt"
+      certKeyFilename: "tls.key"
+      caFilename: "ca.crt"
 
     ## TLS authentication for server-to-server communications
     peer:
       ## @param auth.peer.secureTransport Switch to encrypt server-to-server communications using TLS certificates
       ##
-      secureTransport: false
+      secureTransport: true
       useAutoTLS: false
-      #existingSecret: "etcd-server-tls"
-      #enableAuthentication: false
-      #certFilename: tls.crt
-      #certKeyFilename: tls.key
-      #caFilename: "ca.crt"
+      existingSecret: "etcd-server-tls"
+      enableAuthentication: false
+      certFilename: tls.crt
+      certKeyFilename: tls.key
+      caFilename: "ca.crt"
 
   logLevel: "info"
   configuration: ""
