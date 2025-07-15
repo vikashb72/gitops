@@ -34,20 +34,20 @@ etcd:
     client:
       secureTransport: false
       useAutoTLS: false
-      existingSecret: ""
+      existingSecret: "etcd-client-tls"
       enableAuthentication: false
-      certFilename: cert.pem
-      certKeyFilename: key.pem
-      caFilename: ""
+      certFilename: tls.crt
+      certKeyFilename: tls.key
+      caFilename: "ca.crt"
 
     peer:
       secureTransport: false
       useAutoTLS: false
-      existingSecret: ""
+      existingSecret: "etcd-server-tls"
       enableAuthentication: false
-      certFilename: cert.pem
-      certKeyFilename: key.pem
-      caFilename: ""
+      certFilename: tls.crt
+      certKeyFilename: tls.key
+      caFilename: "ca.crt"
 
   configuration: ""
   existingConfigmap: ""
@@ -63,8 +63,19 @@ etcd:
   extraEnvVarsSecret: ""
   replicaCount: 3
   resourcesPreset: "micro"
-  extraVolumes: []
-  extraVolumeMounts: []
+  extraVolumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+  extraVolumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
 
   service:
     type: ClusterIP
