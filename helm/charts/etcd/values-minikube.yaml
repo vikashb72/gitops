@@ -1,3 +1,6 @@
+schema:
+  env: minikube
+  hostname: etcd.minikube.where-ever.net
 etcd:
   global:
     defaultStorageClass: "nfs-client"
