@@ -403,17 +403,33 @@ gateways:
   # etcd gateway (via infra-gateway)
   etcd-gateway:
     gateway:
-      selector: fleet-gateway
+      selector: infra-gateway
     servers:
       - port:
-          number: 2379
-          name: etcd-2379
-          protocol: TCP
+          number: 443
+          name: etcd-https
+          protocol: HTTPS
         hosts:
           - etcd.minikube.where-ever.net
-      - port:
-          number: 2380
-          name: etcd-2380
-          protocol: TCP
+      #- port:
+      #    number: 2380
+      #    name: etcd-2380
+      #    protocol: TCP
+      #  hosts:
+      #    - etcd.minikube.where-ever.net
+    VirtualServices:
+      - name: etcd-virtual-service
+        #DestinationRule:
+        #  host: etcd-service.fleetdm.svc.cluster.local
+        #  tls: true
         hosts:
-          - etcd.minikube.where-ever.net
+          - "etcd.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 2379
+                  host: etcd.etcd.svc.cluster.local
