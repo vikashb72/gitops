@@ -33,3 +33,6 @@ spec:
     - localhost
   ipAddresses:
     - 127.0.0.1
+  usages:
+    - server auth
+    - client auth
