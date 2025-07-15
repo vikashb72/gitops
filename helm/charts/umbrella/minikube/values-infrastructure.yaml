@@ -76,7 +76,6 @@ argocdManaged:
     sources:
       - path: helm/charts/authentik
   etcd:
-    disable: true
     name: etcd
     targetNamespace: etcd
     sources:
