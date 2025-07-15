@@ -117,7 +117,7 @@ etcd:
     automountServiceAccountToken: false
   
   preUpgradeJob:
-    enabled: true
+    enabled: false
     annotations: {}
     podLabels: {}
     podAnnotations: {}
