@@ -400,3 +400,20 @@ gateways:
                   port:
                     number: 8080
                   host: fleetdm-service.fleetdm.svc.cluster.local
+  # etcd gateway (via infra-gateway)
+  etcd-gateway:
+    gateway:
+      selector: fleet-gateway
+    servers:
+      - port:
+          number: 2379
+          name: etcd-2379
+          protocol: TCP
+        hosts:
+          - etcd.minikube.where-ever.net
+      - port:
+          number: 2380
+          name: etcd-2380
+          protocol: TCP
+        hosts:
+          - etcd.minikube.where-ever.net
