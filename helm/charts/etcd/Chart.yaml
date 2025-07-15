@@ -3,5 +3,5 @@ name: etcd
 version: 1.0.0
 dependencies:
   - name: etcd
-    version: 12.0.8
+    version: 12.0.9
     repository: https://charts.bitnami.com/bitnami

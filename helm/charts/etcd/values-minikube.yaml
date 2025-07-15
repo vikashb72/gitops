@@ -1,47 +1,40 @@
-schema:
-  env: minikube
-  hostname: etcd.minikube.where-ever.net
-
 etcd:
   global:
     defaultStorageClass: "nfs-client"
 
-  clusterDomain: cluster.local
-
   diagnosticMode:
     enabled: false
+  image:
+    debug: false
 
+  ## Authentication parameters
   auth:
     rbac:
-      create: true
-      ## @param auth.rbac.allowNoneAuthentication Allow to use etcd without configuring RBAC authentication
-      ##
+      create: false
       allowNoneAuthentication: true
-      ## @param auth.rbac.existingSecret Name of the existing secret containing credentials for the root user
       existingSecret: "etcd-secrets"
-      ## @param auth.rbac.existingSecretPasswordKey Name of key containing password to be retrieved from the existing secret
       existingSecretPasswordKey: "etcd-root-password"
 
     ## Authentication token
     token:
       enabled: false
-      type: jwt
-      privateKey:
-        filename: jwt-token.pem
-        existingSecret: ""
-      signMethod: RS256
-      ttl: 10m
+
     client:
-      secureTransport: true
+      ## @param auth.client.secureTransport Switch to encrypt client-to-server communications using TLS certificates
+      ##
+      secureTransport: false
       useAutoTLS: false
       existingSecret: "etcd-client-tls"
       enableAuthentication: false
-      certFilename: tls.crt
-      certKeyFilename: tls.key
+      certFilename: "tls.crt"
+      certKeyFilename: "tls.key"
       caFilename: "ca.crt"
 
+    ## TLS authentication for server-to-server communications
     peer:
-      secureTransport: false
+      ## @param auth.peer.secureTransport Switch to encrypt server-to-server communications using TLS certificates
+      ##
+      secureTransport: true
       useAutoTLS: false
       existingSecret: "etcd-server-tls"
       enableAuthentication: false
@@ -49,6 +42,7 @@ etcd:
       certKeyFilename: tls.key
       caFilename: "ca.crt"
 
+  logLevel: "info"
   configuration: ""
   existingConfigmap: ""
   ## @param extraEnvVars [array] Extra environment variables to be set on etcd container
@@ -58,11 +52,29 @@ etcd:
   ##     value: "bar"
   ##
   extraEnvVars: []
+  ## @param extraEnvVarsCM Name of existing ConfigMap containing extra env vars
+  ##
+  extraEnvVarsCM: ""
   ## @param extraEnvVarsSecret Name of existing Secret containing extra env vars
   ##
   extraEnvVarsSecret: ""
+  ## @param command [array] Default container command (useful when using custom images)
+  ##
   replicaCount: 3
+
   resourcesPreset: "micro"
+  resources: {}
+
+  ## @param customLivenessProbe [object] Override default liveness probe
+  ##
+  customLivenessProbe: {}
+  ## @param customReadinessProbe [object] Override default readiness probe
+  ##
+  customReadinessProbe: {}
+  ## @param customStartupProbe [object] Override default startup probe
+  ##
+  customStartupProbe: {}
+
   extraVolumes:
     - name: own-ca-bundle
       configMap:
@@ -72,6 +84,7 @@ etcd:
         items:
           - key: own-ca-bundle.pem
             path: ca-certificates.crt
+
   extraVolumeMounts:
     - mountPath: /etc/ssl/certs/
       name: own-ca-bundle
@@ -80,33 +93,32 @@ etcd:
   service:
     type: ClusterIP
     enabled: true
+    clusterIP: ""
     loadBalancerIP: ""
-    loadBalancerClass: ""
-    annotations: {}
-
+    loadBalancerSourceRanges: []
   persistence:
     enabled: true
     storageClass: "nfs-client"
     accessModes:
       - ReadWriteOnce
     size: 8Gi
+  
+  networkPolicy:
+    ## @param networkPolicy.enabled Enable creation of NetworkPolicy resources
+    ##
+    enabled: false
 
   metrics:
+    ## @param metrics.enabled Expose etcd metrics
+    ##
     enabled: true
-    useSeparateEndpoint: false
-    podAnnotations:
-      prometheus.io/scrape: "true"
-      prometheus.io/port: "{{ .Values.metrics.useSeparateEndpoint | ternary .Values.containerPorts.metrics .Values.containerPorts.client }}"
     podMonitor:
       enabled: false
       namespace: monitoring
-      additionalLabels: {}
-      ## tlsConfig:
-      ##   ca:
-      ##     secret:
-      ##       name: existingSecretName
-      ##
+      interval: 30s
+      scheme: http
       tlsConfig: {}
+
     prometheusRule:
       enabled: false
       namespace: ""
@@ -124,19 +136,19 @@ etcd:
       ##
       rules: []
   
+  startFromSnapshot:
+    enabled: false
+
   disasterRecovery:
     enabled: false
 
   serviceAccount:
     create: true
+    name: ""
     automountServiceAccountToken: false
   
   preUpgradeJob:
     enabled: true
-    annotations: {}
-    podLabels: {}
-    podAnnotations: {}
-  
-  ## @section Defragmentation parameters
+
   defrag:
     enabled: false
