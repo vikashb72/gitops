@@ -34,6 +34,7 @@ spec:
     - localhost
   ipAddresses:
     - 127.0.0.1
+    - {{ .Values.schema.ip }}
   usages:
     - server auth
     - client auth
