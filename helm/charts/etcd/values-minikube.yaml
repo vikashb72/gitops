@@ -151,7 +151,7 @@ etcd:
     automountServiceAccountToken: false
   
   preUpgradeJob:
-    enabled: true
+    enabled: false
 
   defrag:
     enabled: false
