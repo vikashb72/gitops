@@ -30,11 +30,13 @@ argocdManaged:
     automated:
       allowEmpty: true
   echoserver:
+    disable: true
     name: echoserver
     targetNamespace: echoserver
     sources:
       - path: helm/charts/echoserver
   httpbin:
+    disable: true
     name: httpbin
     targetNamespace: httpbin
     sources:
@@ -45,6 +47,7 @@ argocdManaged:
     sources:
       - path: helm/charts/redis
   valkey:
+    disable: true
     name: valkey
     targetNamespace: valkey
     sources:
@@ -70,11 +73,13 @@ argocdManaged:
     sources:
       - path: helm/charts/kafka-rest
   mysql:
+    disable: true
     name: mysql
     targetNamespace: mysql
     sources:
       - path: helm/charts/mysql
   fleetdm:
+    disable: true
     name: fleetdm
     targetNamespace: fleetdm
     sources:

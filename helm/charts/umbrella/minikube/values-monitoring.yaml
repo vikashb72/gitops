@@ -48,16 +48,8 @@ argocdManaged:
       - path: helm/charts/loki
     syncOptions:
       ServerSideApply: true
-  # EOL 03/2026
-  #promtail:
-  #  name: promtail
-  #  targetNamespace: promtail-system
-  #  syncwave: "9"
-  #  sources:
-  #    - path: helm/charts/promtail
-  #  syncOptions:
-  #    ServerSideApply: true
   tempo-distributed:
+    disable: true
     name: tempo-distributed
     targetNamespace: tempo-system
     syncwave: "10"
@@ -66,6 +58,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   alloy:
+    disable: true
     name: alloy
     targetNamespace: alloy-system
     syncwave: "10"
@@ -74,6 +67,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   opentelemetry-collector:
+    disable: true
     name: opentelemetry-collector
     targetNamespace: opentelemetry-system
     syncwave: "10"

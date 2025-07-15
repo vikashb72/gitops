@@ -81,12 +81,6 @@ argocdManaged:
 #  #  syncwave: "1"
 #  #  sources:
 #  #    - path: helm/charts/secrets-store-csi-driver
-#  keycloak:
-#    name: keycloak
-#    targetNamespace: keycloak
-#    syncwave: "5"
-#    sources:
-#      - path: helm/charts/keycloak
 #  knative-operator:
 #    name: knative-operator
 #    targetNamespace: knative-operator
