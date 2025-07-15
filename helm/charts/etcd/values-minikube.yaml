@@ -94,7 +94,8 @@ etcd:
       readOnly: true
 
   service:
-    type: ClusterIP
+    #type: ClusterIP
+    type: LoadBalancer
     enabled: true
     clusterIP: ""
     loadBalancerIP: ""
