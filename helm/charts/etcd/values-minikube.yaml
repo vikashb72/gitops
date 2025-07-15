@@ -13,7 +13,7 @@ etcd:
   ## Authentication parameters
   auth:
     rbac:
-      create: false
+      create: true
       allowNoneAuthentication: true
       existingSecret: "etcd-secrets"
       existingSecretPasswordKey: "etcd-root-password"
