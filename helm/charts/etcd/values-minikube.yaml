@@ -33,7 +33,7 @@ etcd:
       ttl: 10m
     client:
       secureTransport: true
-      useAutoTLS: false
+      useAutoTLS: true
       existingSecret: "etcd-client-tls"
       enableAuthentication: true
       certFilename: tls.crt
@@ -42,7 +42,7 @@ etcd:
 
     peer:
       secureTransport: true
-      useAutoTLS: false
+      useAutoTLS: true
       existingSecret: "etcd-server-tls"
       enableAuthentication: true
       certFilename: tls.crt
