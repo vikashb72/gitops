@@ -406,22 +406,21 @@ gateways:
       selector: infra-gateway
     servers:
       - port:
-          number: 443
-          name: etcd-https
-          protocol: HTTPS
+          #number: 443
+          #name: etcd-https
+          #protocol: HTTPS
+          number: 2379
+          name: etcd-tcp
+          protocol: TCP
         hosts:
           - etcd.minikube.where-ever.net
     VirtualServices:
       - name: etcd-virtual-service
-        #DestinationRule:
-        #  host: etcd.etcd.svc.cluster.local
-        #  tls: true
         hosts:
           - "etcd.minikube.where-ever.net"
-        http:
+        tcp:
           - match:
-            - uri:
-                prefix: /
+              - port: 2379
             route:
               - destination:
                   port:

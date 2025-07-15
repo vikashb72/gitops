@@ -14,6 +14,10 @@ spec:
 {{- end }}
   gateways:
     - {{ $key }}
+{{- with $VirtualService.tcp }}
+  tcp:
+   {{- toYaml . | nindent 4 }}
+{{- end }}
 {{- with $VirtualService.http }}
   http:
 {{- if $VirtualService.CustomAuthorizationPolicy }}
