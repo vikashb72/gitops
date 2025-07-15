@@ -36,3 +36,5 @@ spec:
   usages:
     - server auth
     - client auth
+    - signing
+    - key encipherment
