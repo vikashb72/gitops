@@ -77,7 +77,7 @@ etcd:
     size: 8Gi
 
   metrics:
-    enabled: false
+    enabled: true
     useSeparateEndpoint: false
     podAnnotations:
       prometheus.io/scrape: "true"
