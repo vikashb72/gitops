@@ -406,9 +406,6 @@ gateways:
       selector: infra-gateway
     servers:
       - port:
-          #number: 443
-          #name: etcd-https
-          #protocol: HTTPS
           number: 2379
           name: etcd-tcp
           protocol: TCP

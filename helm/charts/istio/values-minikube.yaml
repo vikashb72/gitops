@@ -142,6 +142,23 @@ infraGateway:
     loadBalancerIP: 192.168.49.252
     annotations:
       metallb.universe.tf/address-pool: default
+    ports:
+      - name: status-port
+        port: 15021
+        protocol: TCP
+        targetPort: 15021
+      - name: http2
+        port: 80
+        protocol: TCP
+        targetPort: 80
+      - name: https
+        port: 443
+        protocol: TCP
+        targetPort: 443
+      - name: etcd
+        port: 2379
+        protocol: TCP
+        targetPort: 2379
 
   volumes:
     - name: own-ca-bundle
