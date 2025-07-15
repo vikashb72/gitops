@@ -29,6 +29,7 @@ spec:
     - etcd-2.etcd.default.svc
     - etcd-2.etcd.default.svc.cluster.local
     - {{ .Values.schema.hostname }}
+    - etcd-headless.etcd.svc.cluster.local
     - "*.etcd-headless.etcd.svc.cluster.local"
     - localhost
   ipAddresses:
