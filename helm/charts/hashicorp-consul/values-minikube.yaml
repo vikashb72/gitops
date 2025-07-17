@@ -1,3 +1,6 @@
+schema:
+  env: minikube
+
 consul:
   global:
     enabled: true
@@ -6,6 +9,8 @@ consul:
   
     logJSON: false
   
+    datacenter: minikube
+
     secretsBackend:
       vault:
         enabled: false
@@ -31,70 +36,8 @@ consul:
   
     # Configure ACLs.
     acls:
-      # If true, the Helm chart will automatically manage ACL tokens and policies
-      # for all Consul and consul-k8s-control-plane components.
-      # This requires Consul >= 1.4.
-      manageSystemACLs: false
+      manageSystemACLs: true
   
-      # Override global log verbosity level. One of "trace", "debug", "info", "warn", or "error".
-      # @type: string
-      logLevel: ""
-  
-      # A Kubernetes or Vault secret containing the bootstrap token to use for creating policies and
-      # tokens for all Consul and consul-k8s-control-plane components. If `secretName` and `secretKey`
-      # are unset, a default secret name and secret key are used. If the secret is populated, then
-      # we will skip ACL bootstrapping of the servers and will only initialize ACLs for the Consul
-      # clients and consul-k8s-control-plane system components.
-      # If the secret is empty, then we will bootstrap ACLs on the Consul servers, and write the
-      # bootstrap token to this secret. If ACLs are already bootstrapped on the servers, then the
-      # secret must contain the bootstrap token.
-      bootstrapToken:
-        # The name of the Kubernetes or Vault secret that holds the bootstrap token.
-        # If unset, this defaults to `{{ global.name }}-bootstrap-acl-token`.
-        secretName: null
-        # The key within the Kubernetes or Vault secret that holds the bootstrap token.
-        # If unset, this defaults to `token`.
-        secretKey: null
-  
-      # If true, an ACL token will be created that can be used in secondary
-      # datacenters for replication. This should only be set to true in the
-      # primary datacenter since the replication token must be created from that
-      # datacenter.
-      # In secondary datacenters, the secret needs to be imported from the primary
-      # datacenter and referenced via `global.acls.replicationToken`.
-      createReplicationToken: false
-  
-      # replicationToken references a secret containing the replication ACL token.
-      # This token will be used by secondary datacenters to perform ACL replication
-      # and create ACL tokens and policies.
-      # This value is ignored if `bootstrapToken` is also set.
-      replicationToken:
-        # The name of the Kubernetes or Vault secret that holds the replication token.
-        # @type: string
-        secretName: null
-        # The key within the Kubernetes or Vault secret that holds the replication token.
-        # @type: string
-        secretKey: null
-  
-      # The resource requests (CPU, memory, etc.) for the server-acl-init and server-acl-init-cleanup pods.
-      # This should be a YAML map corresponding to a Kubernetes
-      # [`ResourceRequirements``](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#resourcerequirements-v1-core)
-      # object.
-      #
-      # Example:
-      #
-      # ```yaml
-      # resources:
-      #   requests:
-      #     memory: '200Mi'
-      #     cpu: '100m'
-      #   limits:
-      #     memory: '200Mi'
-      #     cpu: '100m'
-      # ```
-      #
-      # @recurse: false
-      # @type: map
       resources:
         requests:
           memory: "50Mi"
@@ -175,19 +118,22 @@ consul:
     cloud:
       enabled: false
   
-    #
-    # Example:
-    #
-    # ```yaml
-    # trustedCAs: [
-    #   |
-    #   -----BEGIN CERTIFICATE-----
-    #   MIIC7jCCApSgAwIBAgIRAIq2zQEVexqxvtxP6J0bXAwwCgYIKoZIzj0EAwIwgbkx
-    #   ...
-    # ]
-    # ```
-    # @type: array<string>
-    trustedCAs: []
+    trustedCAs: [
+        |
+        -----BEGIN CERTIFICATE-----
+        MIIB5TCCAYugAwIBAgIQcAQz8xHcIAJYlklLVLQAUDAKBggqhkjOPQQDAjBQMQsw
+        CQYDVQQGEwJaQTEYMBYGA1UEChMPV2hlcmUtZXZlciBIb21lMScwJQYDVQQDEx5X
+        aGVyZS1ldmVyIEhvbWUgUm9vdCBDQSAoMjAyNSkwIBcNMjUwMTI0MDg0ODE0WhgP
+        MjA1NTAxMTcwODQ4MTRaMFAxCzAJBgNVBAYTAlpBMRgwFgYDVQQKEw9XaGVyZS1l
+        dmVyIEhvbWUxJzAlBgNVBAMTHldoZXJlLWV2ZXIgSG9tZSBSb290IENBICgyMDI1
+        KTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABAVuDgS5oJh2QLiL9K5xdGWTOFZI
+        qJ6g3NwTDci7SOAFr0PRQqj9qsH9IWkIU/0Td4Q/K2kx5gtDumVmS1Xw6ySjRTBD
+        MA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEDMB0GA1UdDgQWBBRe
+        E/ehBwe41b0EzoVFkMgAOaW07TAKBggqhkjOPQQDAgNIADBFAiEAzbvwR4ZK5Ryc
+        92+bPx0nEQh5Bvwp/x1/lXLsqJgGk3YCIF007aY1cb1qtXo+Yi7T1TramOPNsvbX
+        STuhExnRnQ2d
+        -----END CERTIFICATE-----
+    ]
   
   # Server, when enabled, configures a server cluster to run. This should
   # be disabled if you plan on connecting to a Consul cluster external to
