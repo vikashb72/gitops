@@ -365,7 +365,6 @@ gateways:
                   port:
                     number: 8082
                   host: kafka-rest-service.kafka-rest.svc.cluster.local
-
   # fleet (via infra-gateway)
   fleet-gateway:
     gateway:
@@ -423,3 +422,34 @@ gateways:
                   port:
                     number: 2379
                   host: etcd.etcd.svc.cluster.local
+  # consul-ui (via infra-gateway)
+  consul-ui-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 80
+          name: consul-ui-http
+          protocol: HTTP
+        hosts:
+          - 'consul.minikube.where-ever.net'
+        httpsRedirect: true
+      - port:
+          number: 443
+          name: consul-ui-https
+          protocol: HTTPS
+        hosts:
+          - 'consul.minikube.where-ever.net'
+    VirtualServices:
+      - name: consul-ui-virtual-service
+        hosts:
+          - "consul.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: consul-consul-ui.consul.svc.cluster.local
