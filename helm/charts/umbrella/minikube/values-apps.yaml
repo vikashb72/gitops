@@ -84,6 +84,11 @@ argocdManaged:
     targetNamespace: fleetdm
     sources:
       - path: helm/charts/fleetdm
+  consul:
+    name: consul
+    targetNamespace: consul
+    sources:
+      - path: helm/charts/consul
 #  keda:
 #    disable: true
 #    name: keda
