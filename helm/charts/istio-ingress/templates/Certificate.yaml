@@ -18,6 +18,10 @@ spec:
   issuerRef:
     name: vault-cert-issuer
     kind: ClusterIssuer
+  usages:
+    - server auth
+    - digital signature
+    - key encipherment
 ---
 {{- end }}
 {{- end }}
