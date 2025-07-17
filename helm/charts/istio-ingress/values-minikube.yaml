@@ -4,60 +4,59 @@ schema:
 
 gateways:
   # httpbin (via app-gateway)
-  httpbin-gateway:
-    gateway:
-      selector: app-gateway
-    servers:
-      - port:
-          number: 443
-          name: httpbin-https
-          protocol: HTTPS
-        hosts:
-          - 'httpbin.minikube.where-ever.net'
-    VirtualServices:
-      - name: httpbin-virtual-service
-        CustomAuthorizationPolicy: true
-        hosts:
-          - "httpbin.minikube.where-ever.net"
-        http:
-          - match:
-              - uri:
-                  regex: ^\/[^\.]+.*
-              - uri:
-                  exact: /
-            route:
-              - destination:
-                  host: httpbin.httpbin.svc.cluster.local
-                  port:
-                    number: 8000
-
-  # echoserver (via app-gateway)
-  echoserver-gateway:
-    gateway:
-      selector: app-gateway
-    servers:
-      - port:
-          number: 443
-          name: echoserver-https
-          protocol: HTTPS
-        hosts:
-          - 'echoserver.minikube.where-ever.net'
-    VirtualServices:
-      - name: echoserver-virtual-service
-        CustomAuthorizationPolicy: true
-        hosts:
-          - "echoserver.minikube.where-ever.net"
-        http:
-          - match:
-              - uri:
-                  regex: ^\/[^\.]+.*
-              - uri:
-                  prefix: /
-            route:
-              - destination:
-                  host: echoserver.echoserver.svc.cluster.local
-                  port:
-                    number: 80
+  #httpbin-gateway:
+  #  gateway:
+  #    selector: app-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: httpbin-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'httpbin.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: httpbin-virtual-service
+  #      CustomAuthorizationPolicy: true
+  #      hosts:
+  #        - "httpbin.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                regex: ^\/[^\.]+.*
+  #            - uri:
+  #                exact: /
+  #          route:
+  #            - destination:
+  #                host: httpbin.httpbin.svc.cluster.local
+  #                port:
+  #                  number: 8000
+  ## echoserver (via app-gateway)
+  #echoserver-gateway:
+  #  gateway:
+  #    selector: app-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: echoserver-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'echoserver.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: echoserver-virtual-service
+  #      CustomAuthorizationPolicy: true
+  #      hosts:
+  #        - "echoserver.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                regex: ^\/[^\.]+.*
+  #            - uri:
+  #                prefix: /
+  #          route:
+  #            - destination:
+  #                host: echoserver.echoserver.svc.cluster.local
+  #                port:
+  #                  number: 80
   # argocd (via infra-gateway)
   argocd-gateway:
     gateway:
@@ -366,63 +365,63 @@ gateways:
                     number: 8082
                   host: kafka-rest-service.kafka-rest.svc.cluster.local
   # fleet (via infra-gateway)
-  fleet-gateway:
-    gateway:
-      selector: fleet-gateway
-    servers:
-      - port:
-          number: 80
-          name: fleet-http
-          protocol: HTTP
-        hosts:
-          - 'fleet.minikube.where-ever.net'
-        httpsRedirect: true
-      - port:
-          number: 443
-          name: fleet-https
-          protocol: HTTPS
-        hosts:
-          - 'fleet.minikube.where-ever.net'
-    VirtualServices:
-      - name: fleet-virtual-service
-        DestinationRule:
-          host: fleetdm-service.fleetdm.svc.cluster.local
-          tls: true
-        hosts:
-          - "fleet.minikube.where-ever.net"
-        http:
-          - match:
-            - uri:
-                prefix: /
-            route:
-              - destination:
-                  port:
-                    number: 8080
-                  host: fleetdm-service.fleetdm.svc.cluster.local
-  # etcd gateway (via infra-gateway)
-  etcd-gateway:
-    gateway:
-      selector: infra-gateway
-    servers:
-      - port:
-          number: 2379
-          name: etcd-tcp
-          protocol: TCP
-        hosts:
-          - etcd.minikube.where-ever.net
-    VirtualServices:
-      - name: etcd-virtual-service
-        hosts:
-          - "etcd.minikube.where-ever.net"
-        tcp:
-          - match:
-              - port: 2379
-            route:
-              - destination:
-                  port:
-                    number: 2379
-                  host: etcd.etcd.svc.cluster.local
-  # consul-ui (via infra-gateway)
+  #fleet-gateway:
+  #  gateway:
+  #    selector: fleet-gateway
+  #  servers:
+  #    - port:
+  #        number: 80
+  #        name: fleet-http
+  #        protocol: HTTP
+  #      hosts:
+  #        - 'fleet.minikube.where-ever.net'
+  #      httpsRedirect: true
+  #    - port:
+  #        number: 443
+  #        name: fleet-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'fleet.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: fleet-virtual-service
+  #      DestinationRule:
+  #        host: fleetdm-service.fleetdm.svc.cluster.local
+  #        tls: true
+  #      hosts:
+  #        - "fleet.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 8080
+  #                host: fleetdm-service.fleetdm.svc.cluster.local
+  ## etcd gateway (via infra-gateway)
+  #etcd-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 2379
+  #        name: etcd-tcp
+  #        protocol: TCP
+  #      hosts:
+  #        - etcd.minikube.where-ever.net
+  #  VirtualServices:
+  #    - name: etcd-virtual-service
+  #      hosts:
+  #        - "etcd.minikube.where-ever.net"
+  #      tcp:
+  #        - match:
+  #            - port: 2379
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 2379
+  #                host: etcd.etcd.svc.cluster.local
+  ## consul-ui (via infra-gateway)
   consul-ui-gateway:
     gateway:
       selector: infra-gateway
