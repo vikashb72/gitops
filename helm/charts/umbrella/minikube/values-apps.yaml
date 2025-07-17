@@ -88,7 +88,7 @@ argocdManaged:
     name: consul
     targetNamespace: consul
     sources:
-      - path: helm/charts/consul
+      - path: helm/charts/hashicorp-consul
 #  keda:
 #    disable: true
 #    name: keda
