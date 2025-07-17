@@ -12,10 +12,18 @@ vault:
 
   injector:
     enabled: true
+
     metrics:
       enabled: true
 
+    #annotations:
+    #  secret.reloader.stakater.com/auto: "true"
+
   server:
+    statefulSet:
+      annotations:
+        secret.reloader.stakater.com/auto: "true"
+
     enabled: true
 
     dataStorage:
