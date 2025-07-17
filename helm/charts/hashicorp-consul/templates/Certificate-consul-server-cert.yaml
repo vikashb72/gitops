@@ -1,0 +1,26 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: consul-certmanager-cert
+  namespace: consul
+spec:
+  commonName: "*.consul.svc.cluster.local"
+  dnsNames:
+    - "localhost"
+    - "consul-consul-server"
+    - "consul-consul-server.consul"
+    - "consul-consul-server.consul.svc"
+    - "consul-consul-server.consul.svc.cluster"
+    - "consul-consul-server.consul.svc.cluster.local"
+    - "consul-consul-ui"
+    - "consul-consul-ui.consul"
+    - "consul-consul-ui.consul.svc"
+    - "consul-consul-ui.consul.svc.cluster"
+    - "consul-consul-ui.consul.svc.cluster.local"
+  secretName: consul-server-cert
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
