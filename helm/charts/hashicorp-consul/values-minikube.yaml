@@ -360,7 +360,7 @@ consul:
   
     # Configures metrics for Consul service mesh
     metrics:
-      enabled: true
+      enabled: false
   
       # Configures consul agent metrics. Only applicable if
       # `global.metrics.enabled` is true.
@@ -530,7 +530,7 @@ consul:
     enabled: true
   
     metrics:
-      enabled: true
+      enabled: false
       provider: "prometheus"
   
       # baseURL is the URL of the prometheus server, usually the service URL.
@@ -546,7 +546,7 @@ consul:
     enabled: false
   
   connectInject:
-    enabled: true
+    enabled: false
   
     replicas: 1
   
