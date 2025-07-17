@@ -118,22 +118,22 @@ consul:
     cloud:
       enabled: false
   
-    trustedCAs: [
-        |
-        -----BEGIN CERTIFICATE-----
-        MIIB5TCCAYugAwIBAgIQcAQz8xHcIAJYlklLVLQAUDAKBggqhkjOPQQDAjBQMQsw
-        CQYDVQQGEwJaQTEYMBYGA1UEChMPV2hlcmUtZXZlciBIb21lMScwJQYDVQQDEx5X
-        aGVyZS1ldmVyIEhvbWUgUm9vdCBDQSAoMjAyNSkwIBcNMjUwMTI0MDg0ODE0WhgP
-        MjA1NTAxMTcwODQ4MTRaMFAxCzAJBgNVBAYTAlpBMRgwFgYDVQQKEw9XaGVyZS1l
-        dmVyIEhvbWUxJzAlBgNVBAMTHldoZXJlLWV2ZXIgSG9tZSBSb290IENBICgyMDI1
-        KTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABAVuDgS5oJh2QLiL9K5xdGWTOFZI
-        qJ6g3NwTDci7SOAFr0PRQqj9qsH9IWkIU/0Td4Q/K2kx5gtDumVmS1Xw6ySjRTBD
-        MA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEDMB0GA1UdDgQWBBRe
-        E/ehBwe41b0EzoVFkMgAOaW07TAKBggqhkjOPQQDAgNIADBFAiEAzbvwR4ZK5Ryc
-        92+bPx0nEQh5Bvwp/x1/lXLsqJgGk3YCIF007aY1cb1qtXo+Yi7T1TramOPNsvbX
-        STuhExnRnQ2d
-        -----END CERTIFICATE-----
-    ]
+    trustedCAs: []
+    #    |
+    #    -----BEGIN CERTIFICATE-----
+    #    MIIB5TCCAYugAwIBAgIQcAQz8xHcIAJYlklLVLQAUDAKBggqhkjOPQQDAjBQMQsw
+    #    CQYDVQQGEwJaQTEYMBYGA1UEChMPV2hlcmUtZXZlciBIb21lMScwJQYDVQQDEx5X
+    #    aGVyZS1ldmVyIEhvbWUgUm9vdCBDQSAoMjAyNSkwIBcNMjUwMTI0MDg0ODE0WhgP
+    #    MjA1NTAxMTcwODQ4MTRaMFAxCzAJBgNVBAYTAlpBMRgwFgYDVQQKEw9XaGVyZS1l
+    #    dmVyIEhvbWUxJzAlBgNVBAMTHldoZXJlLWV2ZXIgSG9tZSBSb290IENBICgyMDI1
+    #    KTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABAVuDgS5oJh2QLiL9K5xdGWTOFZI
+    #    qJ6g3NwTDci7SOAFr0PRQqj9qsH9IWkIU/0Td4Q/K2kx5gtDumVmS1Xw6ySjRTBD
+    #    MA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEDMB0GA1UdDgQWBBRe
+    #    E/ehBwe41b0EzoVFkMgAOaW07TAKBggqhkjOPQQDAgNIADBFAiEAzbvwR4ZK5Ryc
+    #    92+bPx0nEQh5Bvwp/x1/lXLsqJgGk3YCIF007aY1cb1qtXo+Yi7T1TramOPNsvbX
+    #    STuhExnRnQ2d
+    #    -----END CERTIFICATE-----
+    #]
   
   # Server, when enabled, configures a server cluster to run. This should
   # be disabled if you plan on connecting to a Consul cluster external to
