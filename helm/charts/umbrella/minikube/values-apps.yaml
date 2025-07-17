@@ -29,66 +29,66 @@ argocdManaged:
             - values-apps.yaml
     automated:
       allowEmpty: true
-  echoserver:
-    disable: true
-    name: echoserver
-    targetNamespace: echoserver
-    sources:
-      - path: helm/charts/echoserver
-  httpbin:
-    disable: true
-    name: httpbin
-    targetNamespace: httpbin
-    sources:
-      - path: helm/charts/httpbin
-  redis:
-    name: redis
-    targetNamespace: redis
-    sources:
-      - path: helm/charts/redis
-  valkey:
-    disable: true
-    name: valkey
-    targetNamespace: valkey
-    sources:
-      - path: helm/charts/valkey
-  strimzi-kafka-operator:
-    name: strimzi-kafka-operator
-    targetNamespace: kafka-system
-    sources:
-      - path: helm/charts/strimzi-kafka-operator
-  homepage:
-    name: homepage
-    targetNamespace: homepage
-    sources:
-      - path: helm/charts/homepage
-  kafka-ui:
-    name: kafka-ui
-    targetNamespace: kafka-ui
-    sources:
-      - path: helm/charts/kafka-ui
-  kafka-rest:
-    name: kafka-rest
-    targetNamespace: kafka-rest
-    sources:
-      - path: helm/charts/kafka-rest
-  mysql:
-    disable: true
-    name: mysql
-    targetNamespace: mysql
-    sources:
-      - path: helm/charts/mysql
-  fleetdm:
-    disable: true
-    name: fleetdm
-    targetNamespace: fleetdm
-    sources:
-      - path: helm/charts/fleetdm
-  consul:
-    name: consul
-    targetNamespace: consul
-    sources:
-      - path: helm/charts/hashicorp-consul
+  #echoserver:
+  #  disable: true
+  #  name: echoserver
+  #  targetNamespace: echoserver
+  #  sources:
+  #    - path: helm/charts/echoserver
+  #httpbin:
+  #  disable: true
+  #  name: httpbin
+  #  targetNamespace: httpbin
+  #  sources:
+  #    - path: helm/charts/httpbin
+  #redis:
+  #  name: redis
+  #  targetNamespace: redis
+  #  sources:
+  #    - path: helm/charts/redis
+  #valkey:
+  #  disable: true
+  #  name: valkey
+  #  targetNamespace: valkey
+  #  sources:
+  #    - path: helm/charts/valkey
+  #strimzi-kafka-operator:
+  #  name: strimzi-kafka-operator
+  #  targetNamespace: kafka-system
+  #  sources:
+  #    - path: helm/charts/strimzi-kafka-operator
+  #homepage:
+  #  name: homepage
+  #  targetNamespace: homepage
+  #  sources:
+  #    - path: helm/charts/homepage
+  #kafka-ui:
+  #  name: kafka-ui
+  #  targetNamespace: kafka-ui
+  #  sources:
+  #    - path: helm/charts/kafka-ui
+  #kafka-rest:
+  #  name: kafka-rest
+  #  targetNamespace: kafka-rest
+  #  sources:
+  #    - path: helm/charts/kafka-rest
+  #mysql:
+  #  disable: true
+  #  name: mysql
+  #  targetNamespace: mysql
+  #  sources:
+  #    - path: helm/charts/mysql
+  #fleetdm:
+  #  disable: true
+  #  name: fleetdm
+  #  targetNamespace: fleetdm
+  #  sources:
+  #    - path: helm/charts/fleetdm
+  #consul:
+  #  name: consul
+  #  targetNamespace: consul
+  #  sources:
+  #    - path: helm/charts/hashicorp-consul
 #  keda:
 #    disable: true
 #    name: keda

@@ -75,11 +75,11 @@ argocdManaged:
     targetNamespace: authentik
     sources:
       - path: helm/charts/authentik
-  etcd:
-    name: etcd
-    targetNamespace: etcd
-    sources:
-      - path: helm/charts/etcd
+  #etcd:
+  #  name: etcd
+  #  targetNamespace: etcd
+  #  sources:
+  #    - path: helm/charts/etcd
 #  #secrets-store-csi-driver:
 #  #  name: secrets-store-csi-driver
 #  #  targetNamespace: kube-system
