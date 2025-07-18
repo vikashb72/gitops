@@ -1,6 +1,6 @@
 environment        = "minikube"
 authentik_url      = "https://authentik.minikube.where-ever.net"
-service_connection = "4b095741-015e-4c15-af64-29de06476ab6"
+service_connection = "120cbb17-f3a4-42ac-bcf2-80c93caeb4ba"
 
 oauth2_providers = [
   {
@@ -53,20 +53,20 @@ oauth2_providers = [
 ]
 
 proxy_providers  = [
-  {
-    key           = "httpbin",
-    name          = "httpbin",
-    mode          = "forward_single",
-    external_host = "https://httpbin.minikube.where-ever.net/",
-    groups        = ["httpbin Access"]
-  },
-  {
-    key           = "echoserver",
-    name          = "echoserver",
-    mode          = "forward_single",
-    external_host = "https://echoserver.minikube.where-ever.net/",
-    groups        = ["echoserver Access"]
-  },
+  #{
+  #  key           = "httpbin",
+  #  name          = "httpbin",
+  #  mode          = "forward_single",
+  #  external_host = "https://httpbin.minikube.where-ever.net/",
+  #  groups        = ["httpbin Access"]
+  #},
+  #{
+  #  key           = "echoserver",
+  #  name          = "echoserver",
+  #  mode          = "forward_single",
+  #  external_host = "https://echoserver.minikube.where-ever.net/",
+  #  groups        = ["echoserver Access"]
+  #},
   {
     key           = "prometheus",
     name          = "prometheus",
@@ -85,7 +85,7 @@ proxy_providers  = [
     key           = "vault",
     name          = "vault",
     mode          = "forward_single",
-    external_host = "https://vault.minikube.where-ever.net/",
+    external_host = "https://vault-ui.minikube.where-ever.net/",
     groups        = ["vault Access"]
   },
   {
@@ -104,24 +104,22 @@ proxy_providers  = [
   }
 ]
 
-#admin_group = "e882e9f6-d601-44f8-a924-14642ae2b67e"
+#admin_group = "736d56b6-f86c-4b90-8e29-b1f9feed563f"
 #oauth2_groups = {
-#  "ArgoCD Admins" = "5d81a8f7-4ada-4610-9ff4-21739a4d2547"
-#  "ArgoCD Viewers" = "41c883e1-4072-4e75-b84a-eb34a5a0b6c8"
-#  "Grafana Admins" = "30bd8d1d-7576-483a-8ac4-d525348c6c62"
-#  "Grafana Editors" = "da159ef9-6987-4c8c-8709-4ee5e88fe76b"
-#  "Grafana Viewers" = "4984a2d3-367f-414c-b768-c6c8145f4833"
-#  "Kafka UI Admins" = "adca96c3-ca82-497f-a855-87ba2715c7a2"
-#  "Kafka UI Viewers" = "354435f6-3ba2-48ee-b657-a4f6c3beca29"
+#  "ArgoCD Admins" = "a95aafb1-1b09-4596-92c1-29df26ecdc7b"
+#  "ArgoCD Viewers" = "09d51c4f-167f-4bb2-90e3-2e3bcc46b6e5"
+#  "Grafana Admins" = "d02c440d-ec34-443a-abff-c91bbdd3314c"
+#  "Grafana Editors" = "bdf96bca-5ab4-4095-8571-5a2bdf3504ac"
+#  "Grafana Viewers" = "bfc51dc1-e586-4051-ae3f-7fcbe0bfb022"
+#  "Kafka UI Admins" = "0ae2bb66-dc2a-487d-9c66-1413f82ac4cb"
+#  "Kafka UI Viewers" = "0e24ce25-2c31-4fd5-9039-ed08d5ec33a1"
 #}
 #proxy_groups = {
-#  "alertmanager Access" = "fe66de68-dde7-4e67-922e-d75be2f407b5"
-#  "echoserver Access" = "c5150350-9fee-45bd-a178-9cc90010d424"
-#  "goldilocks Access" = "52966147-06e4-468a-93df-2e97ccdb6839"
-#  "homepage Access" = "e7ec37a2-b754-44cd-8ac3-ce163b431394"
-#  "httpbin Access" = "d5dc5a55-6dbd-490a-af54-fb59d616d6b6"
-#  "prometheus Access" = "08e80714-471e-43be-a032-08a8366acaa8"
-#  "vault Access" = "464b947a-1a0e-4a1f-8910-9e9c6481bd38"
+#  "alertmanager Access" = "4fcec68f-238f-44dd-be74-19fd00f8792f"
+#  "goldilocks Access" = "280eb34e-3a8f-4659-bb1b-1a6efa5f0522"
+#  "homepage Access" = "5f121c79-8714-4a5b-94b3-ced0189b96e0"
+#  "prometheus Access" = "9e62d9a3-8351-400a-b8f6-620b3493ac2c"
+#  "vault Access" = "f621dc5c-20ed-49a9-8efc-890116b99770"
 #}
 
 users = [
@@ -130,17 +128,15 @@ users = [
     name      = "Vikash Badal"
     email     = "vikash.badal@minikube.where-ever.net"
     groups    =  [
-        "e882e9f6-d601-44f8-a924-14642ae2b67e",
-        "5d81a8f7-4ada-4610-9ff4-21739a4d2547",
-        "30bd8d1d-7576-483a-8ac4-d525348c6c62",
-        "adca96c3-ca82-497f-a855-87ba2715c7a2",
-        "fe66de68-dde7-4e67-922e-d75be2f407b5",
-        "c5150350-9fee-45bd-a178-9cc90010d424",
-        "52966147-06e4-468a-93df-2e97ccdb6839",
-        "e7ec37a2-b754-44cd-8ac3-ce163b431394",
-        "d5dc5a55-6dbd-490a-af54-fb59d616d6b6",
-        "08e80714-471e-43be-a032-08a8366acaa8",
-        "464b947a-1a0e-4a1f-8910-9e9c6481bd38"
+        "736d56b6-f86c-4b90-8e29-b1f9feed563f",
+        "a95aafb1-1b09-4596-92c1-29df26ecdc7b",
+        "d02c440d-ec34-443a-abff-c91bbdd3314c",
+        "0ae2bb66-dc2a-487d-9c66-1413f82ac4cb",
+        "4fcec68f-238f-44dd-be74-19fd00f8792f",
+        "280eb34e-3a8f-4659-bb1b-1a6efa5f0522",
+        "5f121c79-8714-4a5b-94b3-ced0189b96e0",
+        "9e62d9a3-8351-400a-b8f6-620b3493ac2c",
+        "f621dc5c-20ed-49a9-8efc-890116b99770"
     ]
   }
 ]

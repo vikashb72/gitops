@@ -11,7 +11,7 @@ export TENANT_ID=$(az account show | jq -r '.tenantId')
 export TF_STORAGE_ACCOUNT_NAME="st${ENVIRONMENT}${PROJECT}${DEPARTMENT}${ORGANISATION}01"
 export TF_STORAGE_ACCOUNT_RGRP="rg-${ENVIRONMENT}-${PROJECT}-${DEPARTMENT}-${ORGANISATION}-za"
 export CONTAINER_NAME="tfstate-${ENVIRONMENT}-${PROJECT}-${DEPARTMENT}-${ORGANISATION}"
-export CONTAINER_KEY_NAME="authentik.tfstate"
+export CONTAINER_KEY_NAME="minikube.authentik.tfstate"
 
 export TF_VAR_authentik_token=$(vault kv get -format json \
     kv/minikube/authentik/secrets \
