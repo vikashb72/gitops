@@ -15,6 +15,7 @@ Usage:
     -w Node (default 1)
     -r /path/to/helm/charts
     -k keyvaultType
+    -K KEY_VAULT_NAME
     -h Help
 EOT
    exit 2
@@ -532,13 +533,14 @@ EVT=""
 DELETE_PROFILE=""
 REPO_DIR="/tmp/gitops"
 CHARTS_REPO_BASE=${REPO_DIR}/helm/charts
-KEYVAULT_TYPE="azure"
+KEYVAULT_TYPE="vault"
 DOMAIN="where-ever.net"
+KEY_VAULT_NAME=""
 
 # ---------------------------------------------------------------------------- #
 # Process Args
 # ---------------------------------------------------------------------------- #
-while getopts c:e:m:n:N:v:w:r:k:dh opt
+while getopts c:e:m:n:N:v:w:r:k:K:dh opt
 do
     case $opt in
         c) CPU="${OPTARG}";;
@@ -551,6 +553,7 @@ do
         r) REPO_DIR="${OPTARG}";;
         d) DELETE_PROFILE="true";;
         k) KEYVAULT_TYPE="${OPTARG}";;
+        K) KEY_VAULT_NAME="${OPTARG}";;
         h) Usage;;
         *) Usage;;
     esac
@@ -569,6 +572,7 @@ ROOT_CRT=/usr/local/etc/step-ca/ca/certs/root_ca.crt
     && usage && exit 2
 
 [ -z "${STEPPATH}" ] && echo "Missing step-ca, cannot proceed" && exit 2
+[ -z "${KEY_VAULT_NAME}" ] && echo "Missing -K KEY_VAULT_NAME" && exit 2
 
 cd "${REPO_DIR}" || (echo "Chould not switch to ${REPO_DIR}" && exit 2)
 
@@ -628,7 +632,7 @@ CONFIGURED=$(kubectl -n metallb-system get cm config -o json | \
 
 if [ $? -ne 0 ]; then
     cat <<EOT
-Start IP: ${MINIKUBE_IP}24
+Start IP: ${MINIKUBE_IP}00
 End IP: ${MINIKUBE_IP}54
 EOT
     minikube --profile $EVT addons configure metallb
@@ -715,6 +719,7 @@ fi
 
 kubectl -n vault-system get secret vault-tls
 if [ $? -ne 0 ]; then
+    set -vx
     createVaultTLS
 fi
 
