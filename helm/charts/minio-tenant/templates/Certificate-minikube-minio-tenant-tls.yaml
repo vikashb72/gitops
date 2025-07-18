@@ -2,22 +2,22 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ .Values.schema.env }}-minio-tenant-certmanager-cert
-  namespace: minio-tenant
+  namespace: {{ $.Release.Namespace }}
 spec:
-  commonName: "*.{{ .Values.schema.env }}-hl.minio-tenant.svc.cluster.local"
+  commonName: "*.{{ .Values.schema.env }}-hl.{{ $.Release.Namespace }}.svc.cluster.local"
   dnsNames:
-    - minio.minio-tenant
-    - minio.minio-tenant.svc
-    - minio.minio-tenant.svc.cluster
-    - minio.minio-tenant.svc.cluster.local
-    - "*.{{ .Values.schema.env }}-hl.minio-tenant"
-    - "*.{{ .Values.schema.env }}-hl.minio-tenant.svc"
-    - "*.{{ .Values.schema.env }}-hl.minio-tenant.svc.cluster"
-    - "*.{{ .Values.schema.env }}-hl.minio-tenant.svc.cluster.local"
-    - "*.minio-tenant"
-    - "*.minio-tenant.svc"
-    - "*.minio-tenant.svc.cluster"
-    - "*.minio-tenant.svc.cluster.local"
+    - minio.{{ $.Release.Namespace }}
+    - minio.{{ $.Release.Namespace }}.svc
+    - minio.{{ $.Release.Namespace }}.svc.cluster
+    - minio.{{ $.Release.Namespace }}.svc.cluster.local
+    - "*.{{ .Values.schema.env }}-hl.{{ $.Release.Namespace }}"
+    - "*.{{ .Values.schema.env }}-hl.{{ $.Release.Namespace }}.svc"
+    - "*.{{ .Values.schema.env }}-hl.{{ $.Release.Namespace }}.svc.cluster"
+    - "*.{{ .Values.schema.env }}-hl.{{ $.Release.Namespace }}.svc.cluster.local"
+    - "*.{{ $.Release.Namespace }}"
+    - "*.{{ $.Release.Namespace }}.svc"
+    - "*.{{ $.Release.Namespace }}.svc.cluster"
+    - "*.{{ $.Release.Namespace }}.svc.cluster.local"
   secretName: {{ .Values.schema.env }}-minio-tenant-tls
   issuerRef:
     name: minio-tenant-ca-issuer

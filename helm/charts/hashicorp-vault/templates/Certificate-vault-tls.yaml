@@ -3,16 +3,16 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: vault-certmanager-cert
-  namespace: vault-system
+  namespace: {{ $.Release.Namespace }}
 spec:
-  commonName: "vault-ui.vault-system.svc.cluster.local"
+  commonName: "vault-ui.{{ $.Release.Namespace }}.svc.cluster.local"
   dnsNames:
-    - "vault-active.vault-system.svc.cluster.local"
+    - "vault-active.{{ $.Release.Namespace }}.svc.cluster.local"
     - "*.vault-internal"
-    - "*.vault-system"
-    - "*.vault-system.svc"
-    - "*.vault-system.svc.cluster"
-    - "*.vault-system.svc.cluster.local"
+    - "*.{{ $.Release.Namespace }}"
+    - "*.{{ $.Release.Namespace }}.svc"
+    - "*.{{ $.Release.Namespace }}.svc.cluster"
+    - "*.{{ $.Release.Namespace }}.svc.cluster.local"
     - "*.vault-internal.svc"
     - "*.vault-internal.svc.cluster"
     - "*.vault-internal.svc.cluster.local"

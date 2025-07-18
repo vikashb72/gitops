@@ -3,7 +3,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: minio-tenant-ca-issuer
-  namespace: minio-tenant
+  namespace: {{ $.Release.Namespace }}
 spec:
   vault:
     server: https://vault-active.vault-system.svc.cluster.local:8200

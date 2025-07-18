@@ -2,7 +2,7 @@
 #kind: KafkaConnect
 #metadata:
 #  name: kafka-connect-cluster
-#  namespace: {{ .Release.Namespace }}
+#  namespace: {{ $.Release.Namespace }}
 #  annotations:
 ##  # use-connector-resources configures this KafkaConnect
 ##  # to use KafkaConnector resources to avoid

@@ -3,7 +3,7 @@
 #kind: CronWorkflow
 #metadata:
 #  name: raft-snapshot-cron
-#  namespace: argocd
+#  namespace: {{ $.Release.Namespace }}
 #spec:
 #  serviceAccountName: argocd-application-controller
 #  schedule: "59 23 * * *"

@@ -2,14 +2,14 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: kafka-ui-certmanager-cert
-  namespace: kafka-ui
+  namespace: {{ $.Release.Namespace }}
 spec:
-  commonName: "*.kafka-ui.svc.cluster.local"
+  commonName: "*.{{ $.Release.Namespace }}.svc.cluster.local"
   dnsNames:
     - "127.0.0.1"
     - "localhost"
     - "kafka-ui"
-    - "*.kafka-ui.svc.cluster.local"
+    - "*.{{ $.Release.Namespace }}.svc.cluster.local"
   secretName: kafka-ui-tls
   keystores:
     pkcs12:

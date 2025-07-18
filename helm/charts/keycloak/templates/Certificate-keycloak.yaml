@@ -2,14 +2,14 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: keycloak-certmanager-cert
-  namespace: keycloak
+  namespace: {{ $.Release.Namespace }}
 spec:
-  commonName: "*.keycloak.svc.cluster.local"
+  commonName: "*.{{ $.Release.Namespace }}.svc.cluster.local"
   dnsNames:
-    - "*.keycloak"
-    - "*.keycloak.svc"
-    - "*.keycloak.svc.cluster"
-    - "*.keycloak.svc.cluster.local"
+    - "*.{{ $.Release.Namespace }}"
+    - "*.{{ $.Release.Namespace }}.svc"
+    - "*.{{ $.Release.Namespace }}.svc.cluster"
+    - "*.{{ $.Release.Namespace }}.svc.cluster.local"
   secretName: keycloak-tls
   issuerRef:
     name: vault-cert-issuer

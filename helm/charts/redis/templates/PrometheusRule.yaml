@@ -5,7 +5,7 @@ metadata:
     role: alert-rules
     app.kubernetes.io/name: redis
   name: redis-k8s-rules
-  namespace: monitoring
+  namespace: {{ $.Release.Namespace }}
 spec:
   groups:
   - name: redis

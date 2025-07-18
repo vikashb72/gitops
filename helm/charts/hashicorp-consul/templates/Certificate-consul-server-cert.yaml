@@ -2,21 +2,21 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: consul-certmanager-cert
-  namespace: consul
+  namespace: {{ $.Release.Namespace }}
 spec:
-  commonName: "*.consul.svc.cluster.local"
+  commonName: "*.{{ $.Release.Namespace }}.svc.cluster.local"
   dnsNames:
     - "localhost"
     - "consul-consul-server"
-    - "consul-consul-server.consul"
-    - "consul-consul-server.consul.svc"
-    - "consul-consul-server.consul.svc.cluster"
-    - "consul-consul-server.consul.svc.cluster.local"
+    - "consul-consul-server.{{ $.Release.Namespace }}"
+    - "consul-consul-server.{{ $.Release.Namespace }}.svc"
+    - "consul-consul-server.{{ $.Release.Namespace }}.svc.cluster"
+    - "consul-consul-server.{{ $.Release.Namespace }}.svc.cluster.local"
     - "consul-consul-ui"
-    - "consul-consul-ui.consul"
-    - "consul-consul-ui.consul.svc"
-    - "consul-consul-ui.consul.svc.cluster"
-    - "consul-consul-ui.consul.svc.cluster.local"
+    - "consul-consul-ui.{{ $.Release.Namespace }}"
+    - "consul-consul-ui.{{ $.Release.Namespace }}.svc"
+    - "consul-consul-ui.{{ $.Release.Namespace }}.svc.cluster"
+    - "consul-consul-ui.{{ $.Release.Namespace }}.svc.cluster.local"
   secretName: consul-server-cert
   privateKey:
     algorithm: RSA

@@ -2,23 +2,23 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: valkey-certmanager-cert
-  namespace: valkey
+  namespace: {{ $.Release.Namespace }}
 spec:
-  commonName: "*.valkey.svc.cluster.local"
+  commonName: "*.{{ $.Release.Namespace }}.svc.cluster.local"
   dnsNames:
     - "127.0.0.1"
     - "localhost"
     - "valkey"
-    - "valkey-headless.valkey.svc.cluster.local"
-    - "*.valkey-headless.valkey.svc.cluster.local"
-    - "*.valkey.valkey.svc.cluster.local"
-    - "valkey-primary.valkey.svc.cluster.local"
-    - "*.valkey-primary.valkey.svc.cluster.local"
-    - "valkey-headless.valkey"
-    - "*.valkey-headless.valkey"
-    - "*.valkey.valkey"
-    - "valkey-primary.valkey"
-    - "*.valkey-primary.valkey"
+    - "valkey-headless.{{ $.Release.Namespace }}.svc.cluster.local"
+    - "*.valkey-headless.{{ $.Release.Namespace }}.svc.cluster.local"
+    - "*.valkey.{{ $.Release.Namespace }}.svc.cluster.local"
+    - "valkey-primary.{{ $.Release.Namespace }}.svc.cluster.local"
+    - "*.valkey-primary.{{ $.Release.Namespace }}.svc.cluster.local"
+    - "valkey-headless.{{ $.Release.Namespace }}"
+    - "*.valkey-headless.{{ $.Release.Namespace }}"
+    - "*.valkey.{{ $.Release.Namespace }}"
+    - "valkey-primary.{{ $.Release.Namespace }}"
+    - "*.valkey-primary.{{ $.Release.Namespace }}"
   secretName: valkey-tls
   privateKey:
     algorithm: RSA

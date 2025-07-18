@@ -3,14 +3,14 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: reference-certmanager-cert
-  namespace: cert-manager
+  namespace: {{ $.Release.Namespace }}
 spec:
-  commonName: "reference.cert-manager.svc.cluster.local"
+  commonName: "reference.{{ $.Release.Namespace }}.svc.cluster.local"
   dnsNames:
-    - "reference.cert-manager"
-    - "reference.cert-manager.svc"
-    - "reference.cert-manager.svc.cluster"
-    - "reference.cert-manager.svc.cluster.local"
+    - "reference.{{ $.Release.Namespace }}"
+    - "reference.{{ $.Release.Namespace }}.svc"
+    - "reference.{{ $.Release.Namespace }}.svc.cluster"
+    - "reference.{{ $.Release.Namespace }}.svc.cluster.local"
   secretName: reference-tls
   issuerRef:
     name: vault-cert-issuer

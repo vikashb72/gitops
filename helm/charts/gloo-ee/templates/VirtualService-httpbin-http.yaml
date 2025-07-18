@@ -2,7 +2,7 @@ apiVersion: gateway.solo.io/v1
 kind: VirtualService
 metadata:
   name: httpbin-http
-  namespace: gloo-system
+  namespace: {{ $.Release.Namespace }}
 spec:
   virtualHost:
     domains:

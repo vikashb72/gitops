@@ -2,18 +2,18 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: mailpit-certmanager-cert
-  namespace: dev-tools
+  namespace: {{ $.Release.Namespace }}
 spec:
-  commonName: "mailpit.dev-tools.svc.cluster.local"
+  commonName: "mailpit.{{ $.Release.Namespace }}.svc.cluster.local"
   dnsNames:
-    - "mailpit-http.dev-tools"
-    - "mailpit-http.dev-tools.svc"
-    - "mailpit-http.dev-tools.svc.cluster"
-    - "mailpit-http.dev-tools.svc.cluster.local"
-    - "mailpit-smtp.dev-tools"
-    - "mailpit-smtp.dev-tools.svc"
-    - "mailpit-smtp.dev-tools.svc.cluster"
-    - "mailpit-smtp.dev-tools.svc.cluster.local"
+    - "mailpit-http.{{ $.Release.Namespace }}"
+    - "mailpit-http.{{ $.Release.Namespace }}.svc"
+    - "mailpit-http.{{ $.Release.Namespace }}.svc.cluster"
+    - "mailpit-http.{{ $.Release.Namespace }}.svc.cluster.local"
+    - "mailpit-smtp.{{ $.Release.Namespace }}"
+    - "mailpit-smtp.{{ $.Release.Namespace }}.svc"
+    - "mailpit-smtp.{{ $.Release.Namespace }}.svc.cluster"
+    - "mailpit-smtp.{{ $.Release.Namespace }}.svc.cluster.local"
   secretName: dev-tools-tls
   issuerRef:
     name: vault-cert-issuer

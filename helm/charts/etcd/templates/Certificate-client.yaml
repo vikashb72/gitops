@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: etcd-client
-  namespace: etcd
+  namespace: {{ $.Release.Namespace }}
 spec:
   secretName: etcd-client-tls
   issuerRef:
@@ -12,24 +12,24 @@ spec:
   dnsNames:
     - etcd
     - etcd.etcd
-    - etcd.etcd.svc.cluster.local
+    - etcd.{{ $.Release.Namespace }}.svc.cluster.local
     - etcd-0
     - etcd-0.etcd
-    - etcd-0.etcd.etcd
-    - etcd-0.etcd.etcd.svc
-    - etcd-0.etcd.etcd.svc.cluster.local
+    - etcd-0.etcd.{{ $.Release.Namespace }}
+    - etcd-0.etcd.{{ $.Release.Namespace }}.svc
+    - etcd-0.etcd.{{ $.Release.Namespace }}.svc.cluster.local
     - etcd-1
     - etcd-1.etcd
-    - etcd-1.etcd.etcd
-    - etcd-1.etcd.etcd.svc
-    - etcd-1.etcd.etcd.svc.cluster.local
+    - etcd-1.etcd.{{ $.Release.Namespace }}
+    - etcd-1.etcd.{{ $.Release.Namespace }}.svc
+    - etcd-1.etcd.{{ $.Release.Namespace }}.svc.cluster.local
     - etcd-2
     - etcd-2.etcd
-    - etcd-2.etcd.etcd
-    - etcd-2.etcd.etcd.svc
-    - etcd-2.etcd.etcd.svc.cluster.local
+    - etcd-2.etcd.{{ $.Release.Namespace }}
+    - etcd-2.etcd.{{ $.Release.Namespace }}.svc
+    - etcd-2.etcd.{{ $.Release.Namespace }}.svc.cluster.local
     - {{ .Values.schema.hostname }}
-    - etcd-headless.etcd.svc.cluster.local
+    - etcd-headless.{{ $.Release.Namespace }}.svc.cluster.local
     - "*.etcd-headless.etcd.svc.cluster.local"
     - localhost
   ipAddresses:

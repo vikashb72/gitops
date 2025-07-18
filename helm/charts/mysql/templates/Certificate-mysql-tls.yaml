@@ -2,25 +2,25 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: mysql-certmanager-cert
-  namespace: mysql
+  namespace: {{ $.Release.Namespace }}
 spec:
-  commonName: mysql.mysql.svc.cluster.local
+  commonName: mysql.{{ $.Release.Namespace }}.svc.cluster.local
   dnsNames:
-    -  "*.mysql"
-    -  "*.mysql.svc"
-    -  "*.mysql.svc.cluster.local"
+    -  "*.{{ $.Release.Namespace }}"
+    -  "*.{{ $.Release.Namespace }}.svc"
+    -  "*.{{ $.Release.Namespace }}.svc.cluster.local"
     -  "*.mysql-primary"
-    -  "*.mysql-primary.mysql"
-    -  "*.mysql-primary.mysql.svc"
-    -  "*.mysql-primary.mysql.svc.cluster.local"
+    -  "*.mysql-primary.{{ $.Release.Namespace }}"
+    -  "*.mysql-primary.{{ $.Release.Namespace }}.svc"
+    -  "*.mysql-primary.{{ $.Release.Namespace }}.svc.cluster.local"
     -  "*.mysql-secondary"
-    -  "*.mysql-secondary.mysql"
-    -  "*.mysql-secondary.mysql.svc"
-    -  "*.mysql-secondary.mysql.svc.cluster.local"
+    -  "*.mysql-secondary.{{ $.Release.Namespace }}"
+    -  "*.mysql-secondary.{{ $.Release.Namespace }}.svc"
+    -  "*.mysql-secondary.{{ $.Release.Namespace }}.svc.cluster.local"
     -  "*.mysql-headless"
-    -  "*.mysql-headless.mysql"
-    -  "*.mysql-headless.mysql.svc"
-    -  "*.mysql-headless.mysql.svc.cluster.local"
+    -  "*.mysql-headless.{{ $.Release.Namespace }}"
+    -  "*.mysql-headless.{{ $.Release.Namespace }}.svc"
+    -  "*.mysql-headless.{{ $.Release.Namespace }}.svc.cluster.local"
   ipAddresses:
     - "127.0.0.1"
   secretName: mysql-tls

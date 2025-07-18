@@ -2,14 +2,14 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: authentik-certmanager-cert
-  namespace: authentik
+  namespace: {{ $.Release.Namespace }}
 spec:
   commonName: "*.authentik.svc.cluster.local"
   dnsNames:
     - "127.0.0.1"
     - "localhost"
     - "authentik"
-    - "*.authentik.svc.cluster.local"
+    - "*.{{ $.Release.Namespace }}.svc.cluster.local"
   secretName: authentik-tls
   privateKey:
     algorithm: RSA
