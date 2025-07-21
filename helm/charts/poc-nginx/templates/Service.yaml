@@ -6,9 +6,9 @@ metadata:
   namespace: {{ $.Release.Namespace }}
 spec:
   ports:
-    - protocol: TCP
-      port: 8080
+    - port: 8080
       targetPort: 8080
+      name: http
   selector:
     app: {{ . }}
 ---
