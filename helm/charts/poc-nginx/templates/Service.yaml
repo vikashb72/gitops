@@ -7,7 +7,6 @@ metadata:
 spec:
   selector:
     app: {{ . }}
-  type: ClusterIP
   ports:
     - protocol: TCP
       port: 8080
