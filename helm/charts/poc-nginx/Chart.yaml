@@ -1,0 +1,4 @@
+apiVersion: v2
+name: poc
+description: poc Server
+version: 1.0.0

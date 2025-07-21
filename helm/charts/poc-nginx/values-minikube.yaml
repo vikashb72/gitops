@@ -1,0 +1,7 @@
+schema:
+  env: minikube
+  domain: minikube.where-ever.net
+  poc:
+    - poc02 
+    - poc03
+    - poc04 
