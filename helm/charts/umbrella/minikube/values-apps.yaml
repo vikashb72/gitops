@@ -89,6 +89,11 @@ argocdManaged:
   #  targetNamespace: consul
   #  sources:
   #    - path: helm/charts/hashicorp-consul
+  poc-nginx:
+    name: poc
+    targetNamespace: poc
+    sources:
+      - path: helm/charts/poc-nginx
 #  keda:
 #    disable: true
 #    name: keda
