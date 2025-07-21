@@ -23,12 +23,12 @@ spec:
           name: {{ . }}
           ports:
             - containerPort: 80
-          volumeMounts:
-            - name: nginx-{{ . }}-config
-              mountPath: /etc/nginx/conf.d
-      volumes:
-        - name: nginx-{{ . }}-config
-          configMap:
-            name: nginx-{{ . }}-config
+          #volumeMounts:
+          #  - name: nginx-{{ . }}-config
+          #    mountPath: /etc/nginx/conf.d
+      #volumes:
+      #  - name: nginx-{{ . }}-config
+      #    configMap:
+      #      name: nginx-{{ . }}-config
 ---
 {{- end }}
