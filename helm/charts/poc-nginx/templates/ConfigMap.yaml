@@ -2,16 +2,42 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: nginx-{{ . }}-config
+  name: nginx-{{ . }}-html
   namespace: {{ $.Release.Namespace }}
 data:
-  test.config: |
-    server {
-        listen       80;
-        location / {
-            return 200 'future home of {{ . }}.{{ $.Values.schema.domain }}';
-            add_header Content-Type text/plain;
-        }
-    }
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Welcome to the future home of {{ . }}.{{ $.Values.schema.domain }}</title>
+    <style>
+    html { color-scheme: light dark; }
+    body { width: 35em; margin: 0 auto;
+    font-family: Tahoma, Verdana, Arial, sans-serif; }
+    </style>
+    </head>
+    <body>
+    <h1>Welcome to future home of {{ . }}.{{ $.Values.schema.domain }}</h1>
+    working. Further configuration is required.</p>
+    </body>
+    </html>
+  50x.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Error</title>
+    <style>
+    html { color-scheme: light dark; }
+    body { width: 35em; margin: 0 auto;
+    font-family: Tahoma, Verdana, Arial, sans-serif; }
+    </style>
+    </head>
+    <body>
+    <h1>An error occurred.</h1>
+    <p>Sorry, the page you are looking for is currently unavailable.<br/>
+    Please try again later.</p>
+    <p><em>Faithfully yours, nginx.</em></p>
+    </body>
+    </html>
 ---
 {{- end }}

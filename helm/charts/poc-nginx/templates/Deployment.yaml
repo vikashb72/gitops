@@ -24,11 +24,11 @@ spec:
           ports:
             - containerPort: 80
           volumeMounts:
-            - name: nginx-{{ . }}-config
-              mountPath: /etc/nginx/conf.d
+            - name: nginx-{{ . }}-html
+              mountPath: /usr/share/nginx/html/
       volumes:
-        - name: nginx-{{ . }}-config
+        - name: nginx-{{ . }}-html
           configMap:
-            name: nginx-{{ . }}-config
+            name: nginx-{{ . }}-html
 ---
 {{- end }}
