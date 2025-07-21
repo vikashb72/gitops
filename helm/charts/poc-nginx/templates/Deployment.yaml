@@ -4,6 +4,8 @@ kind: Deployment
 metadata:
   name: {{ . }}
   namespace: {{ $.Release.Namespace }}
+  labels:
+    app: {{ . }}
 spec:
   replicas: 1
   selector:
