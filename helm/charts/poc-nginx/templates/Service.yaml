@@ -4,6 +4,9 @@ kind: Service
 metadata:
   name: {{ . }}
   namespace: {{ $.Release.Namespace }}
+  labels:
+    app: {{ . }}
+    service: {{ . }}
 spec:
   selector:
     app: {{ . }}
