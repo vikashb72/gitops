@@ -18,7 +18,6 @@ data:
     </head>
     <body>
     <h1>Welcome to future home of {{ . }}.{{ $.Values.schema.domain }}</h1>
-    working. Further configuration is required.</p>
     </body>
     </html>
   50x.html: |
@@ -36,7 +35,6 @@ data:
     <h1>An error occurred.</h1>
     <p>Sorry, the page you are looking for is currently unavailable.<br/>
     Please try again later.</p>
-    <p><em>Faithfully yours, nginx.</em></p>
     </body>
     </html>
 ---
