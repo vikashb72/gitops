@@ -4,16 +4,12 @@ kind: Service
 metadata:
   name: {{ . }}
   namespace: {{ $.Release.Namespace }}
-  labels:
-    app: {{ . }}
-    service: {{ . }}
 spec:
-  selector:
-    app: {{ . }}
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-      name: {{ . }}-http
+  selector:
+    app: {{ . }}
 ---
 {{- end }}
