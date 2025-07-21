@@ -90,7 +90,6 @@ argocdManaged:
   #  sources:
   #    - path: helm/charts/hashicorp-consul
   poc-nginx:
-    disable: true
     name: poc
     targetNamespace: poc
     sources:
