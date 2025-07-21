@@ -7,6 +7,7 @@ metadata:
 data:
   test.config: |
     server {
+        listen       80;
         location / {
             return 200 'future home of {{ . }}.{{ $.Values.schema.domain }}';
             add_header Content-Type text/plain;
