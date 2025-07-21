@@ -1,15 +1,15 @@
-{{- range $.Values.schema.poc }}
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ . }}
-  namespace: {{ $.Release.Namespace }}
-spec:
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080
-  selector:
-    app: {{ . }}
----
-{{- end }}
+#{{- range $.Values.schema.poc }}
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: {{ . }}
+#  namespace: {{ $.Release.Namespace }}
+#spec:
+#  ports:
+#    - protocol: TCP
+#      port: 8080
+#      targetPort: 8080
+#  selector:
+#    app: {{ . }}
+#---
+#{{- end }}

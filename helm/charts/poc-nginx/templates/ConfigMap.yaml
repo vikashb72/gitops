@@ -1,16 +1,16 @@
-{{- range $.Values.schema.poc }}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: nginx-{{ . }}-config
-  namespace: {{ $.Release.Namespace }}
-data:
-  test.config: |
-    server {
-        location / {
-            return 200 'future home of {{ . }}.{{ $.Values.schema.domain }}';
-            add_header Content-Type text/plain;
-        }
-    }
----
-{{- end }}
+#{{- range $.Values.schema.poc }}
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: nginx-{{ . }}-config
+#  namespace: {{ $.Release.Namespace }}
+#data:
+#  test.config: |
+#    server {
+#        location / {
+#            return 200 'future home of {{ . }}.{{ $.Values.schema.domain }}';
+#            add_header Content-Type text/plain;
+#        }
+#    }
+#---
+#{{- end }}

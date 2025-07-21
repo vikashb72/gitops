@@ -1,32 +1,32 @@
-{{- range $.Values.schema.poc }}
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ . }}
-  namespace: {{ $.Release.Namespace }}
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: {{ . }}
-  template:
-    metadata:
-      labels:
-        app: {{ . }}
-    spec:
-      serviceAccountName: {{ . }}
-      containers:
-        - image: nginx
-          imagePullPolicy: IfNotPresent
-          name: {{ . }}
-          ports:
-            - containerPort: 8080
-          volumeMounts:
-            - name: nginx-{{ . }}-config
-              mountPath: /etc/nginx/conf.d
-      volumes:
-        - name: nginx-{{ . }}-config
-          configMap:
-            name: nginx-{{ . }}-config
----
-{{- end }}
+#{{- range $.Values.schema.poc }}
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: {{ . }}
+#  namespace: {{ $.Release.Namespace }}
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: {{ . }}
+#  template:
+#    metadata:
+#      labels:
+#        app: {{ . }}
+#    spec:
+#      serviceAccountName: {{ . }}
+#      containers:
+#        - image: nginx
+#          imagePullPolicy: IfNotPresent
+#          name: {{ . }}
+#          ports:
+#            - containerPort: 8080
+#          volumeMounts:
+#            - name: nginx-{{ . }}-config
+#              mountPath: /etc/nginx/conf.d
+#      volumes:
+#        - name: nginx-{{ . }}-config
+#          configMap:
+#            name: nginx-{{ . }}-config
+#---
+#{{- end }}
