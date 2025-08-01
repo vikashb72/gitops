@@ -29,6 +29,20 @@ argocdManaged:
             - values-apps.yaml
     automated:
       allowEmpty: true
+  n8n:
+    name: n8n
+    targetNamespace: poc
+    sources:
+      - path: helm/charts/n8n
+      - repoURL: 8gears.container-registry.com/library
+        path: n8n
+        targetRevision: 1.0.10
+        helm:
+         valueFiles: 
+           - '$values/values-minikube.yaml'
+      - targetRevision: HEAD
+        ref: values
+        noHelmValues: true
   #echoserver:
   #  disable: true
   #  name: echoserver
@@ -94,19 +108,6 @@ argocdManaged:
   #  targetNamespace: poc
   #  sources:
   #    - path: helm/charts/poc-nginx
-  n8n:
-    name: n8n
-    targetNamespace: poc
-    sources:
-      - path: helm/charts/n8n
-      - repoURL: 8gears.container-registry.com/library/n8n
-        targetRevision: 1.0.10
-        helm:
-         valueFiles: 
-           - '$values/values-minikube.yaml'
-      - targetRevision: HEAD
-        ref: values
-        noHelmValues: true
 #  keda:
 #    disable: true
 #    name: keda
