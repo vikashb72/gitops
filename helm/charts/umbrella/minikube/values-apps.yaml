@@ -31,7 +31,7 @@ argocdManaged:
       allowEmpty: true
   n8n:
     name: n8n
-    targetNamespace: poc
+    targetNamespace: n8n-system
     sources:
       #- path: helm/charts/n8n
       - repoURL: 8gears.container-registry.com/library
