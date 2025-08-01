@@ -16,6 +16,9 @@ spec:
   sources:
     {{- range .sources }}
     - repoURL: {{ default $.Values.schema.spec.repoURL .repoURL }}
+      {{- if .ref }}
+      ref: {{ .ref }}
+      {{- end }}
       {{- if .path }}
       path: {{ .path }}
       {{- end }}

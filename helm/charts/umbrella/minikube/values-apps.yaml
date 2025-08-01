@@ -89,11 +89,24 @@ argocdManaged:
   #  targetNamespace: consul
   #  sources:
   #    - path: helm/charts/hashicorp-consul
-  poc-nginx:
-    name: poc
+  #poc-nginx:
+  #  name: poc
+  #  targetNamespace: poc
+  #  sources:
+  #    - path: helm/charts/poc-nginx
+  n8n:
+    name: n8n
     targetNamespace: poc
     sources:
-      - path: helm/charts/poc-nginx
+      - path: helm/charts/n8n
+      - repoURL: 8gears.container-registry.com/library/n8n
+        targetRevision: 1.0.10
+        helm:
+         valueFiles: 
+           - '$values/values-minikube.yaml'
+      - targetRevision: HEAD
+        ref: values
+        noHelmValues: true
 #  keda:
 #    disable: true
 #    name: keda
