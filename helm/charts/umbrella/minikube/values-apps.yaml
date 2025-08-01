@@ -37,6 +37,7 @@ argocdManaged:
       - repoURL: 8gears.container-registry.com/library
         chart: n8n
         targetRevision: 1.0.10
+        valueFiles: values.yaml
         helm:
           valuesObject:
             main:
