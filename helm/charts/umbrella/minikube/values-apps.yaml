@@ -53,6 +53,11 @@ argocdManaged:
       #- targetRevision: HEAD
       #  ref: values
       #  noHelmValues: true
+  cnpg:
+    name: cnpg
+    targetNamespace: cnpg-system
+    sources:
+      - path: helm/charts/cnpg
   #echoserver:
   #  disable: true
   #  name: echoserver
