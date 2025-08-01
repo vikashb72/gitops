@@ -3,7 +3,33 @@ schema:
   istioNamespace: istio-system
 
 gateways:
-  # httpbin (via app-gateway)
+  # n8n (via app-gateway)
+  n8n-gateway:
+    gateway:
+      selector: app-gateway
+    servers:
+      - port:
+          number: 443
+          name: n8n-https
+          protocol: HTTPS
+        hosts:
+          - 'n8n.minikube.where-ever.net'
+    VirtualServices:
+      - name: n8n-virtual-service
+        #CustomAuthorizationPolicy: true
+        hosts:
+          - "n8n.minikube.where-ever.net"
+        http:
+          - match:
+              - uri:
+                  regex: ^\/[^\.]+.*
+              - uri:
+                  exact: /
+            route:
+              - destination:
+                  host: n8n.n8n-system.svc.cluster.local
+                  port:
+                    number: 80
   #httpbin-gateway:
   #  gateway:
   #    selector: app-gateway
