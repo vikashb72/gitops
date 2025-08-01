@@ -33,16 +33,16 @@ argocdManaged:
     name: n8n
     targetNamespace: poc
     sources:
-      - path: helm/charts/n8n
+      #- path: helm/charts/n8n
       - repoURL: 8gears.container-registry.com/library
         path: n8n
         targetRevision: 1.0.10
-        helm:
-         valueFiles: 
-           - '$values/values-minikube.yaml'
-      - targetRevision: HEAD
-        ref: values
-        noHelmValues: true
+      #  helm:
+      #   valueFiles: 
+      #     - '$values/values-minikube.yaml'
+      #- targetRevision: HEAD
+      #  ref: values
+      #  noHelmValues: true
   #echoserver:
   #  disable: true
   #  name: echoserver
