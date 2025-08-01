@@ -34,8 +34,8 @@ argocdManaged:
     targetNamespace: poc
     sources:
       #- path: helm/charts/n8n
-      - repoURL: 8gears.container-registry.com/library
-        path: n8n
+      - repoURL: 8gears.container-registry.com/library/n8n
+        path: .
         targetRevision: 1.0.10
       #  helm:
       #   valueFiles: 
