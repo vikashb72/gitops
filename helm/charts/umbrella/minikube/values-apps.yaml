@@ -47,7 +47,7 @@ argocdManaged:
               extraVolumes: []
               extraVolumeMounts: []
             valkey:
-              enabled: false
+              enabled: true
       #   valueFiles: 
       #     - '$values/values-minikube.yaml'
       #- targetRevision: HEAD
