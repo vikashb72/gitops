@@ -58,6 +58,8 @@ argocdManaged:
     targetNamespace: cnpg-system
     sources:
       - path: helm/charts/cnpg
+    syncOptions:
+      ServerSideApply: true
   #echoserver:
   #  disable: true
   #  name: echoserver
