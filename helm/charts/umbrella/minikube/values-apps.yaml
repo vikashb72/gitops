@@ -73,6 +73,11 @@ argocdManaged:
                     secretKeyRef:
                       name: db-app
                       key: password
+                #N8N_ENCRYPTION_KEY:
+                #  valueFrom:
+                #    secretKeyRef:
+                #      name: app-password
+                #      key: password
               extraVolumeMounts: &extraVolumeMounts
                 - name: own-ca-bundle
                   configMap:
@@ -82,19 +87,19 @@ argocdManaged:
                     items:
                       - key: own-ca-bundle.pem
                         path: ca-certificates.crt
-                #- name: db-ca-cert
-                #  mountPath: /home/ssl/certs/postgresql
-                #  readOnly: true
+                - name: db-ca-cert
+                  mountPath: /home/ssl/certs/postgresql
+                  readOnly: true
               extraVolumes: &extraVolumes
                 - mountPath: /etc/ssl/certs/
                   name: own-ca-bundle
                   readOnly: true
-                #- name: db-ca-cert
-                #  secret:
-                #    secretName: db-ca
-                #    items:
-                #      - key: ca.crt
-                #        path: ca.crt
+                - name: db-ca-cert
+                  secret:
+                    secretName: psql-tls
+                    items:
+                      - key: ca.crt
+                        path: ca.crt
             worker:
               enabled: true
               extraEnv: *extraEnv
@@ -130,6 +135,9 @@ argocdManaged:
                   name: db
                 spec:
                   instances: 1
+                  certificates:
+                    serverTLSSecret: psql-tls
+                    serverCASecret: psql-tls
                   bootstrap:
                     initdb:
                       database: n8n
@@ -144,6 +152,7 @@ argocdManaged:
                       memory: "512Mi"
                   storage:
                     size: 1Gi
+                    storageClass: nfs-client
       #   valueFiles: 
       #     - '$values/values-minikube.yaml'
       #- targetRevision: HEAD
