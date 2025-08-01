@@ -22,10 +22,10 @@ dependencies:
     alias: infraGateway
     version: 1.26.0
     repository: https://istio-release.storage.googleapis.com/charts
-  - name: gateway
-    alias: fleetGateway
-    version: 1.26.0
-    repository: https://istio-release.storage.googleapis.com/charts
+  #- name: gateway
+  #  alias: fleetGateway
+  #  version: 1.26.0
+  #  repository: https://istio-release.storage.googleapis.com/charts
   #- name: gateway
   #  alias: externalIngress
   #  version: 1.26.0
