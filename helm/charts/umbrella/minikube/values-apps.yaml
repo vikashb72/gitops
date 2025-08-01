@@ -34,10 +34,18 @@ argocdManaged:
     targetNamespace: poc
     sources:
       #- path: helm/charts/n8n
-      - repoURL: 8gears.container-registry.com/library/n8n
-        path: .
+      - repoURL: 8gears.container-registry.com/library/
+        chart: n8n
         targetRevision: 1.0.10
-      #  helm:
+        helm:
+          valuesObject:
+            main:
+              secret: {}
+              extraEnv: {}
+              extraVolumes: []
+              extraVolumeMounts: []
+            valkey:
+              enabled: false
       #   valueFiles: 
       #     - '$values/values-minikube.yaml'
       #- targetRevision: HEAD
