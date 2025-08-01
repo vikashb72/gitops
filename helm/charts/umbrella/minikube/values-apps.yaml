@@ -129,6 +129,59 @@ argocdManaged:
 
             # cnpg DB cluster request
             extraManifests:
+              - apiVersion: apiVersion: external-secrets.io/v1beta1
+                kind: ExternalSecret
+                metadata:
+                  name: db-app
+                  namespace: {{ $.Release.Namespace }}
+                spec:
+                  refreshInterval: 4h
+                  secretStoreRef:
+                    name: external-vault-backend
+                    kind: ClusterSecretStore
+                  target:
+                    name: db-app
+                    creationPolicy: Owner
+                    deletionPolicy: "Retain"
+                  data:
+                    - secretKey: password
+                      remoteRef:
+                        conversionStrategy: Default
+                        decodingStrategy: None
+                        key: "kv/{{ .Values.schema.env }}/n8n/db-app"
+                        metadataPolicy: None
+                        property: password
+              - apiVersion: cert-manager.io/v1
+                kind: Certificate
+                metadata:
+                  name: psql-certmanager-cert
+                  namespace: n8n-system
+                spec:
+                  commonName: "*.n8n-system.svc.cluster.local"
+                  dnsNames:
+                    - db-lb.internal.mydomain.net
+                    - db-rw
+                    - db-rw.n8n-system
+                    - db-rw.n8n-system.svc
+                    - db-rw.n8n-system.svc.cluster
+                    - db-rw.n8n-system.svc.cluster.local
+                    - db-r
+                    - db-r.n8n-system
+                    - db-r.n8n-system.svc
+                    - db-r.n8n-system.svc.cluster
+                    - db-r.n8n-system.svc.cluster.local
+                    - db-ro
+                    - db-ro.n8n-system
+                    - db-ro.n8n-system.svc
+                    - db-ro.n8n-system.svc.cluster
+                    - db-ro.n8n-system.svc.cluster.local
+                  secretName: psql-tls
+                  privateKey:
+                    algorithm: RSA
+                    size: 2048
+                  issuerRef:
+                    name: vault-cert-issuer
+                    kind: ClusterIssuer
               - apiVersion: postgresql.cnpg.io/v1
                 kind: Cluster
                 metadata:
