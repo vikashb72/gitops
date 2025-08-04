@@ -149,6 +149,8 @@ argocdManaged:
                     name: db-n8n
                     creationPolicy: Owner
                     deletionPolicy: "Retain"
+                    template:
+                      type: kubernetes.io/basic-auth
                   data:
                     - secretKey: username
                       remoteRef:
@@ -208,7 +210,8 @@ argocdManaged:
                     initdb:
                       database: n8n
                       owner: n8n
-                      secret: db-n8n
+                      secret:
+                        name: db-n8n
                   postgresql:
                     parameters:
                       shared_buffers: "64MB"
