@@ -135,7 +135,8 @@ argocdManaged:
 
             # cnpg DB cluster request
             extraManifests:
-              - apiVersion: apiVersion: external-secrets.io/v1beta1
+              - |
+                apiVersion: apiVersion: external-secrets.io/v1beta1
                 kind: ExternalSecret
                 metadata:
                   name: db-app
@@ -157,7 +158,8 @@ argocdManaged:
                         key: "kv/{{ .Values.schema.env }}/n8n/db-app"
                         metadataPolicy: None
                         property: password
-              - apiVersion: cert-manager.io/v1
+              - |
+                apiVersion: cert-manager.io/v1
                 kind: Certificate
                 metadata:
                   name: psql-certmanager-cert
@@ -188,7 +190,8 @@ argocdManaged:
                   issuerRef:
                     name: vault-cert-issuer
                     kind: ClusterIssuer
-              - apiVersion: postgresql.cnpg.io/v1
+              - |
+                apiVersion: postgresql.cnpg.io/v1
                 kind: Cluster
                 metadata:
                   name: db
