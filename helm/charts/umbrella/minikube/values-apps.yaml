@@ -88,6 +88,8 @@ argocdManaged:
                     secretKeyRef:
                       name: db-n8n
                       key: N8N_ENCRYPTION_KEY
+                EXECUTIONS_MODE:
+                  value: "queue"
               extraVolumeMounts: &extraVolumeMounts
                 - mountPath: /etc/ssl/certs/
                   name: own-ca-bundle
