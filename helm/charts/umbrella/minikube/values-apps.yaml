@@ -93,19 +93,19 @@ argocdManaged:
                     items:
                       - key: own-ca-bundle.pem
                         path: ca-certificates.crt
-                - name: db-ca-cert
-                  mountPath: /home/ssl/certs/postgresql
-                  readOnly: true
+                #- name: db-ca-cert
+                #  mountPath: /home/ssl/certs/postgresql
+                #  readOnly: true
               extraVolumes: &extraVolumes
                 - mountPath: /etc/ssl/certs/
                   name: own-ca-bundle
                   readOnly: true
-                - name: db-ca-cert
-                  secret:
-                    secretName: psql-tls
-                    items:
-                      - key: ca.crt
-                        path: ca.crt
+                #- name: db-ca-cert
+                #  secret:
+                #    secretName: psql-tls
+                #    items:
+                #      - key: ca.crt
+                #        path: ca.crt
             worker:
               enabled: true
               extraEnv: *extraEnv
@@ -135,28 +135,28 @@ argocdManaged:
 
             # cnpg DB cluster request
             extraManifests:
-              - apiVersion: external-secrets.io/v1beta1
-                kind: ExternalSecret
-                metadata:
-                  name: db-app
-                  namespace: n8n-system
-                spec:
-                  refreshInterval: 4h
-                  secretStoreRef:
-                    name: external-vault-backend
-                    kind: ClusterSecretStore
-                  target:
-                    name: db-app
-                    creationPolicy: Owner
-                    deletionPolicy: "Retain"
-                  data:
-                    - secretKey: password
-                      remoteRef:
-                        conversionStrategy: Default
-                        decodingStrategy: None
-                        key: "kv/minikube/n8n/db-app"
-                        metadataPolicy: None
-                        property: password
+              #- apiVersion: external-secrets.io/v1beta1
+              #  kind: ExternalSecret
+              #  metadata:
+              #    name: db-app
+              #    namespace: n8n-system
+              #  spec:
+              #    refreshInterval: 4h
+              #    secretStoreRef:
+              #      name: external-vault-backend
+              #      kind: ClusterSecretStore
+              #    target:
+              #      name: db-app
+              #      creationPolicy: Owner
+              #      deletionPolicy: "Retain"
+              #    data:
+              #      - secretKey: password
+              #        remoteRef:
+              #          conversionStrategy: Default
+              #          decodingStrategy: None
+              #          key: "kv/minikube/n8n/db-app"
+              #          metadataPolicy: None
+              #          property: password
               - apiVersion: cert-manager.io/v1
                 kind: Certificate
                 metadata:
