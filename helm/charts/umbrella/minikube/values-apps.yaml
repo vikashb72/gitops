@@ -73,49 +73,49 @@ argocdManaged:
                       host: n8n-valkey-primary
                       port: 6379
               secret: {}
-              extraEnv: &extraEnv
-                DB_POSTGRESDB_PASSWORD:
-                  valueFrom:
-                    secretKeyRef:
-                      name: db-app
-                      key: password
-                #N8N_ENCRYPTION_KEY:
-                #  valueFrom:
-                #    secretKeyRef:
-                #      name: app-password
-                #      key: password
-              extraVolumeMounts: &extraVolumeMounts
-                - name: own-ca-bundle
-                  configMap:
-                    name: own-ca-bundle
-                    defaultMode: 0644
-                    optional: false
-                    items:
-                      - key: own-ca-bundle.pem
-                        path: ca-certificates.crt
-                #- name: db-ca-cert
-                #  mountPath: /home/ssl/certs/postgresql
-                #  readOnly: true
-              extraVolumes: &extraVolumes
-                - mountPath: /etc/ssl/certs/
-                  name: own-ca-bundle
-                  readOnly: true
-                #- name: db-ca-cert
-                #  secret:
-                #    secretName: psql-tls
-                #    items:
-                #      - key: ca.crt
-                #        path: ca.crt
+              #extraEnv: &extraEnv
+              #  DB_POSTGRESDB_PASSWORD:
+              #    valueFrom:
+              #      secretKeyRef:
+              #        name: db-app
+              #        key: password
+              #  #N8N_ENCRYPTION_KEY:
+              #  #  valueFrom:
+              #  #    secretKeyRef:
+              #  #      name: app-password
+              #  #      key: password
+              #extraVolumeMounts: &extraVolumeMounts
+              #  - name: own-ca-bundle
+              #    configMap:
+              #      name: own-ca-bundle
+              #      defaultMode: 0644
+              #      optional: false
+              #      items:
+              #        - key: own-ca-bundle.pem
+              #          path: ca-certificates.crt
+              #  #- name: db-ca-cert
+              #  #  mountPath: /home/ssl/certs/postgresql
+              #  #  readOnly: true
+              #extraVolumes: &extraVolumes
+              #  - mountPath: /etc/ssl/certs/
+              #    name: own-ca-bundle
+              #    readOnly: true
+              #  #- name: db-ca-cert
+              #  #  secret:
+              #  #    secretName: psql-tls
+              #  #    items:
+              #  #      - key: ca.crt
+              #  #        path: ca.crt
             worker:
               enabled: true
-              extraEnv: *extraEnv
-              extraVolumeMounts: *extraVolumeMounts
-              extraVolumes: *extraVolumes
+              #extraEnv: *extraEnv
+              #extraVolumeMounts: *extraVolumeMounts
+              #extraVolumes: *extraVolumes
             webhook:
               enabled: true
-              extraEnv: *extraEnv
-              extraVolumeMounts: *extraVolumeMounts
-              extraVolumes: *extraVolumes
+              #extraEnv: *extraEnv
+              #extraVolumeMounts: *extraVolumeMounts
+              #extraVolumes: *extraVolumes
 
             valkey:
               enabled: true
