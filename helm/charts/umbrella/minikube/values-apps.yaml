@@ -109,13 +109,13 @@ argocdManaged:
             worker:
               enabled: true
               extraEnv: *extraEnv
-              #extraVolumeMounts: *extraVolumeMounts
-              #extraVolumes: *extraVolumes
+              extraVolumeMounts: *extraVolumeMounts
+              extraVolumes: *extraVolumes
             webhook:
               enabled: true
               extraEnv: *extraEnv
-              #extraVolumeMounts: *extraVolumeMounts
-              #extraVolumes: *extraVolumes
+              extraVolumeMounts: *extraVolumeMounts
+              extraVolumes: *extraVolumes
 
             valkey:
               enabled: true
