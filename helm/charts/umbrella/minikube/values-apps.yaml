@@ -37,7 +37,6 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   n8n:
-    disable: true
     name: n8n
     targetNamespace: n8n-system
     sources:
