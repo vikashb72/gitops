@@ -40,7 +40,6 @@ argocdManaged:
     name: n8n
     targetNamespace: n8n-system
     sources:
-      #- path: helm/charts/n8n
       - repoURL: 8gears.container-registry.com/library
         chart: n8n
         targetRevision: 1.0.10
@@ -64,15 +63,15 @@ argocdManaged:
                       enabled: true
                       reject_Unauthorized: true
                       ca_file: "/home/ssl/certs/postgresql/ca.crt"
-               webhook_url: https://n8n.minikube.where-ever.net/
-               queue:
-                 health:
-                   check:
-                     active: true
-                 bull:
-                   redis:
-                     host: n8n-valkey-primary
-                     port: 6379
+                webhook_url: https://n8n.minikube.where-ever.net/
+                queue:
+                  health:
+                    check:
+                      active: true
+                  bull:
+                    redis:
+                      host: n8n-valkey-primary
+                      port: 6379
               secret: {}
               extraEnv: &extraEnv
                 DB_POSTGRESDB_PASSWORD:
