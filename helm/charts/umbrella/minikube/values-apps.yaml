@@ -139,7 +139,7 @@ argocdManaged:
                 kind: ExternalSecret
                 metadata:
                   name: db-app
-                  namespace: {{ $.Release.Namespace }}
+                  namespace: n8n-system
                 spec:
                   refreshInterval: 4h
                   secretStoreRef:
