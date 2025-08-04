@@ -154,7 +154,7 @@ argocdManaged:
                       remoteRef:
                         conversionStrategy: Default
                         decodingStrategy: None
-                        key: "kv/{{ .Values.schema.env }}/n8n/db-app"
+                        key: "kv/minikube/n8n/db-app"
                         metadataPolicy: None
                         property: password
             #  - apiVersion: cert-manager.io/v1
