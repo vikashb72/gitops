@@ -36,6 +36,13 @@ argocdManaged:
       - path: helm/charts/cnpg
     syncOptions:
       ServerSideApply: true
+  n8n:
+    name: n8n
+    targetNamespace: n8n-system
+    sources:
+      - path: helm/charts/n8n
+    syncOptions:
+      ServerSideApply: true
   #n8n:
   #  name: n8n
   #  targetNamespace: n8n-system
