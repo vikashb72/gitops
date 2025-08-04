@@ -47,6 +47,10 @@ argocdManaged:
           valueFiles:
             - values.yaml
           valuesObject:
+            scaling:
+              enable: true
+              webhook:
+                enabled: true
             main:
               config:
                 n8n:
