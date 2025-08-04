@@ -1,3 +1,6 @@
+schema:
+  env: minikube
+
 image:
   repository: n8nio/n8n
   pullPolicy: IfNotPresent
