@@ -149,8 +149,8 @@ argocdManaged:
                     name: db-n8n
                     creationPolicy: Owner
                     deletionPolicy: "Retain"
-                    template:
-                      type: kubernetes.io/basic-auth
+                    #template:
+                    #  type: kubernetes.io/basic-auth
                   data:
                     - secretKey: username
                       remoteRef:
