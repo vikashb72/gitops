@@ -56,7 +56,7 @@ argocdManaged:
                   postgresdb:
                     host: db-rw
                     user: n8n
-                    # password: password is read from cnpg db-app secretKeyRef
+                    # password: password is read from cnpg db-n8n secretKeyRef
                     pool:
                       size: 10
                     ssl:
@@ -77,7 +77,7 @@ argocdManaged:
                 DB_POSTGRESDB_PASSWORD:
                   valueFrom:
                     secretKeyRef:
-                      name: db-app
+                      name: db-n8n
                       key: password
                 #N8N_ENCRYPTION_KEY:
                 #  valueFrom:
@@ -138,7 +138,7 @@ argocdManaged:
               - apiVersion: external-secrets.io/v1beta1
                 kind: ExternalSecret
                 metadata:
-                  name: db-app
+                  name: db-n8n
                   namespace: n8n-system
                 spec:
                   refreshInterval: 4h
@@ -146,15 +146,22 @@ argocdManaged:
                     name: external-vault-backend
                     kind: ClusterSecretStore
                   target:
-                    name: db-app
+                    name: db-n8n
                     creationPolicy: Owner
                     deletionPolicy: "Retain"
                   data:
+                    - secretKey: username
+                      remoteRef:
+                        conversionStrategy: Default
+                        decodingStrategy: None
+                        key: "kv/minikube/n8n/db-n8n"
+                        metadataPolicy: None
+                        property: username
                     - secretKey: password
                       remoteRef:
                         conversionStrategy: Default
                         decodingStrategy: None
-                        key: "kv/minikube/n8n/db-app"
+                        key: "kv/minikube/n8n/db-n8n"
                         metadataPolicy: None
                         property: password
               - apiVersion: cert-manager.io/v1
@@ -201,6 +208,7 @@ argocdManaged:
                     initdb:
                       database: n8n
                       owner: n8n
+                      secret: db-n8n
                   postgresql:
                     parameters:
                       shared_buffers: "64MB"
