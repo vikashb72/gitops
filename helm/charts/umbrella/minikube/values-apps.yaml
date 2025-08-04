@@ -41,6 +41,15 @@ argocdManaged:
     targetNamespace: n8n-system
     sources:
       - path: helm/charts/n8n
+        noHelmValues: true
+      - repoURL: 8gears.container-registry.com/library
+        chart: n8n
+        targetRevision: 1.0.10
+        helm:
+          valueFiles:
+            - $values/values-minikube.yaml
+      - ref: values
+        noHelmValues: true
     syncOptions:
       ServerSideApply: true
   #n8n:
