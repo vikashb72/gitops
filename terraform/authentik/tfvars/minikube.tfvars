@@ -49,6 +49,23 @@ oauth2_providers = [
         "url"           = "http://localhost:8080/login/oauth2/code/goauthentic"
       }
     ]
+  },
+  {
+    key            = "oauth2-proxy"
+    name           = "OAuth2 Proxy",
+    secret_name    = "minikube/oauth2-proxy/authentik-client",
+    groups         = ["oauth2 proxy"],
+    launch_url     = "",
+    redirect_uris  = [
+      {
+        "matching_mode" = "strict",
+        "url"           = "http://oauth2-proxy.oauth2-proxy.svc.cluster.local/oauth2/callback"
+      },
+      {
+        "matching_mode" = "strict",
+        "url"           = "http://localhost/oauth2/callback"
+      }
+    ]
   }
 ]
 
@@ -113,6 +130,7 @@ proxy_providers  = [
 #  "Grafana Viewers" = "bfc51dc1-e586-4051-ae3f-7fcbe0bfb022"
 #  "Kafka UI Admins" = "0ae2bb66-dc2a-487d-9c66-1413f82ac4cb"
 #  "Kafka UI Viewers" = "0e24ce25-2c31-4fd5-9039-ed08d5ec33a1"
+#  "oauth2 proxy" = "2dac679a-3a9c-49ec-be27-58ecfd69546f"
 #}
 #proxy_groups = {
 #  "alertmanager Access" = "4fcec68f-238f-44dd-be74-19fd00f8792f"
@@ -136,7 +154,8 @@ users = [
         "280eb34e-3a8f-4659-bb1b-1a6efa5f0522",
         "5f121c79-8714-4a5b-94b3-ced0189b96e0",
         "9e62d9a3-8351-400a-b8f6-620b3493ac2c",
-        "f621dc5c-20ed-49a9-8efc-890116b99770"
+        "f621dc5c-20ed-49a9-8efc-890116b99770",
+        "2dac679a-3a9c-49ec-be27-58ecfd69546f"
     ]
   }
 ]
