@@ -75,6 +75,11 @@ argocdManaged:
     targetNamespace: authentik
     sources:
       - path: helm/charts/authentik
+  oauth2-proxy:
+    name: oauth2-proxy
+    targetNamespace: oauth2-proxy
+    sources:
+      - path: helm/charts/oauth2-proxy
   #etcd:
   #  name: etcd
   #  targetNamespace: etcd

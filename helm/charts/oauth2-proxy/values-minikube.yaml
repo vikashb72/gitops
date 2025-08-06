@@ -120,6 +120,7 @@ oauth2-proxy:
         items:
           - key: own-ca-bundle.pem
             path: ca-certificates.crt
+
   extraVolumeMounts:
     - mountPath: /etc/ssl/certs/
       name: own-ca-bundle

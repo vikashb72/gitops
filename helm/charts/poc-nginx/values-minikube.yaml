@@ -3,4 +3,4 @@ schema:
   domain: minikube.where-ever.net
   poc:
     - poc02 
-#    - poc03
+    - poc03
