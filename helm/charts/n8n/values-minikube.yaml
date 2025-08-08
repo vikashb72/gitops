@@ -77,8 +77,10 @@ main:
         secretKeyRef:
           name: db-n8n
           key: N8N_ENCRYPTION_KEY
+    N8N_PROXY_HOPS:
+      value: 1
     EXTERNAL_HOOK_FILES:
-      values: /data/backend.js
+      value: /data/backend.js
       #values: "/data/backend.js;/data/hook2.js"
 
   extraVolumeMounts: &extraVolumeMounts
