@@ -77,6 +77,9 @@ main:
         secretKeyRef:
           name: db-n8n
           key: N8N_ENCRYPTION_KEY
+    EXTERNAL_HOOK_FILES:
+      values: /data/backend.js
+      #values: "/data/backend.js;/data/hook2.js"
 
   extraVolumeMounts: &extraVolumeMounts
     - name: own-ca-bundle
@@ -90,6 +93,8 @@ main:
     - name: db-ca-cert
       mountPath: /home/ssl/certs/postgresql
       readOnly: true
+    - name: backend-hooks
+      mountPath: /data
   extraVolumes: &extraVolumes
     - mountPath: /etc/ssl/certs/
       name: own-ca-bundle
@@ -100,6 +105,10 @@ main:
         items:
           - key: ca.crt
             path: ca.crt
+    - name: backend-hooks
+      configMap:
+        name: backend-hooks
+
   # N8n Kubernetes specific settings
   #
   persistence:
