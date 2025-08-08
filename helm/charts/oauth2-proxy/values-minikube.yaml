@@ -42,10 +42,9 @@ oauth2-proxy:
       value: https://authentik.minikube.where-ever.net/application/o/userinfo/
     - name: AUTH2_PROXY_OIDC_JWKS_URL
       value: https://authentik.minikube.where-ever.net/application/o/oauth2-proxy/jwks/
+    - name: OAUTH2_PROXY_OIDC_JWKS_URL
+      value: https://authentik.minikube.where-ever.net/application/o/oauth2-proxy/jwks/
     #OAUTH2_PROXY_PASS_HOST_HEADER: false
-    #OAUTH2_PROXY_CLIENT_ID: ${OIDC_AUDIENCE}
-    #OAUTH2_PROXY_CLIENT_SECRET: client_secret
-    #OAUTH2_PROXY_COOKIE_SECRET: some_secret2
     #OAUTH2_PROXY_COOKIE_SECURE: false
     #OAUTH2_PROXY_SCOPE: "openid profile email"
     #OAUTH2_PROXY_COOKIE_REFRESH: 5m
@@ -53,11 +52,9 @@ oauth2-proxy:
     #OAUTH2_PROXY_INSECURE_OIDC_ALLOW_UNVERIFIED_EMAIL: 'true'
     #OAUTH2_PROXY_PROVIDER_DISPLAY_NAME: Authentik
     #OAUTH2_PROXY_SKIP_OIDC_DISCOVERY: 'true'
-    #OAUTH2_PROXY_OIDC_JWKS_URL: ${JWKS_URL} 
     #OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: 'true'
     #OAUTH2_PROXY_SKIP_JWT_BEARER_TOKENS: 'true'
     #OAUTH2_PROXY_PASS_ACCESS_TOKEN: 'true'
-
   
   envFrom: []
   # Load environment variables from a ConfigMap(s) and/or Secret(s)

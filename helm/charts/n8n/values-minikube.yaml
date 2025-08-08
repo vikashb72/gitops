@@ -70,13 +70,13 @@ main:
     DB_POSTGRESDB_PASSWORD:
       valueFrom:
         secretKeyRef:
-          name: db-app
+          name: db-n8n
           key: password
-    #N8N_ENCRYPTION_KEY:
-    #  valueFrom:
-    #    secretKeyRef:
-    #      name: app-password
-    #      key: password
+    N8N_ENCRYPTION_KEY:
+      valueFrom:
+        secretKeyRef:
+          name: db-n8n
+          key: N8N_ENCRYPTION_KEY
 
   extraVolumeMounts: &extraVolumeMounts
     - name: own-ca-bundle
