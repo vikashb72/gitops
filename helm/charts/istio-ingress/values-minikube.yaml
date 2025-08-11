@@ -16,7 +16,7 @@ gateways:
           - 'n8n.minikube.where-ever.net'
     VirtualServices:
       - name: n8n-virtual-service
-        #CustomAuthorizationPolicy: true
+        CustomAuthorizationPolicy: true
         hosts:
           - "n8n.minikube.where-ever.net"
         http:
