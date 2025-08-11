@@ -89,8 +89,72 @@ argocdManaged:
                     secretKeyRef:
                       name: db-n8n
                       key: N8N_ENCRYPTION_KEY
+                N8N_LICENSE_ACTIVATION_KEY:
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-n8n
+                      key: licence
                 EXECUTIONS_MODE:
                   value: "queue"
+                N8N_RUNNERS_ENABLED:
+                  value: true
+                OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS:
+                  value: true
+                N8N_PROXY_HOPS:
+                  value: 1
+                N8N_TEMPLATES_ENABLED:
+                  value: true
+                EXTERNAL_HOOK_FILES:
+                  value: /data/backend.js
+                  #values: "/data/backend.js;/data/backend-hook2.js"
+                #EXTERNAL_FRONTEND_HOOKS_URLS
+                #  values: "/data/frontend-hook1.js;/data/frontend-hook2.js"
+                N8N_PROXY_HOPS:
+                  value: 1
+                N8N_HIRING_BANNER_ENABLED:
+                  value: false
+                #N8N_PUBLIC_API_DISABLED:
+                #  value: true
+                #N8N_PROTOCOL:
+                #  value: https
+                #N8N_SSL_KEY:
+                #  valueFrom:
+                #    secretKeyRef:
+                #      name: n8n-tls
+                #      key: tls.key
+                #N8N_SSL_CERT:
+                #  valueFrom:
+                #    secretKeyRef:
+                #      name: n8n-tls
+                #      key: tls.crt
+                #N8N_SMTP_HOST:
+                #  value: mailhog.dev-tools.svc.cluster.local
+                #N8N_SMTP_PORT:
+                #  value: 1025
+                #N8N_SMTP_USER:
+                #  value:
+                #N8N_SMTP_PASS:
+                #  value:
+                #N8N_SMTP_SENDER:
+                #  value:
+                #N8N_SMTP_SSL:
+                #  value:  true
+                #N8N_SMTP_STARTTLS:
+                #  value:  true
+                #N8N_EXTERNAL_STORAGE_S3_HOST:
+                #  value:
+                #N8N_EXTERNAL_STORAGE_S3_BUCKET_NAME:
+                #  value:
+                #N8N_EXTERNAL_STORAGE_S3_BUCKET_REGION:
+                #  value:
+                #N8N_EXTERNAL_STORAGE_S3_ACCESS_KEY:
+                #  value:
+                #N8N_EXTERNAL_STORAGE_S3_ACCESS_SECRET:
+                #  value:
+                #N8N_EXTERNAL_STORAGE_S3_AUTH_AUTO_DETECT:
+                #  value:
+                #N8N_LOG_LEVEL:
+                #  value: info
               extraVolumeMounts: &extraVolumeMounts
                 - mountPath: /etc/ssl/certs/
                   name: own-ca-bundle
