@@ -36,6 +36,13 @@ argocdManaged:
       - path: helm/charts/cnpg
     syncOptions:
       ServerSideApply: true
+  kestra:
+    name: kestra
+    targetNamespace: kestra
+    sources:
+      - path: helm/charts/kestra
+    syncOptions:
+      ServerSideApply: true
   n8n:
     disable: true
     name: n8n
