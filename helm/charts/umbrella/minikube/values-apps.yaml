@@ -93,7 +93,7 @@ argocdManaged:
                   valueFrom:
                     secretKeyRef:
                       name: db-n8n
-                      key: licence
+                      key: N8N_LICENSE_ACTIVATION_KEY
                 EXECUTIONS_MODE:
                   value: "queue"
                 #vix N8N_RUNNERS_ENABLED:
@@ -162,6 +162,8 @@ argocdManaged:
                 - name: db-ca-cert
                   mountPath: /home/ssl/certs/postgresql
                   readOnly: true
+                - name: backend-hooks
+                  mountPath: /data/
               extraVolumes: &extraVolumes
                 - name: own-ca-bundle
                   configMap:
@@ -177,6 +179,9 @@ argocdManaged:
                     items:
                       - key: ca.crt
                         path: ca.crt
+                - name: backend-hooks
+                  configMap:
+                    name: backend-hooks
             worker:
               enabled: true
               extraEnv: *extraEnv
@@ -244,6 +249,13 @@ argocdManaged:
                         key: "kv/minikube/n8n/db-n8n"
                         metadataPolicy: None
                         property: N8N_ENCRYPTION_KEY
+                    - secretKey: N8N_LICENSE_ACTIVATION_KEY
+                      remoteRef:
+                        conversionStrategy: Default
+                        decodingStrategy: None
+                        key: "kv/minikube/n8n/db-n8n"
+                        metadataPolicy: None
+                        property: licence
               - apiVersion: cert-manager.io/v1
                 kind: Certificate
                 metadata:
@@ -301,6 +313,79 @@ argocdManaged:
                   storage:
                     size: 1Gi
                     storageClass: nfs-client
+              - apiVersion: v1
+                kind: ConfigMap
+                metadata:
+                  name: backend-hooks
+                  namespace: {{ $.Release.Namespace }}
+                data:
+                  authentik.js: |
+                    const { dirname, resolve } = require('path')
+                    const Layer = require('express/lib/router/layer')
+                    const basicAuth = require('basic-auth')
+                    const { issueCookie } = require(resolve(dirname(require.resolve('n8n')), 'auth/jwt'))
+                    
+                    const basicAuthCredentials = {
+                      username: process.env.N8N_BASIC_AUTH_USER,
+                      password: process.env.N8N_BASIC_AUTH_PASSWORD,
+                    }
+                    
+                    const ignoreAuthRegexp = /^\/(assets|healthz|webhook)/;
+                    
+                    module.exports = {
+                      n8n: {
+                        ready: [
+                          async function ({ app }, config) {
+                            await this.dbCollections.Settings.update(
+                              { key: 'userManagement.isInstanceOwnerSetUp' },
+                              { value: JSON.stringify(true) },
+                            )
+                    
+                            config.set('userManagement.isInstanceOwnerSetUp', true)
+                    
+                            const { stack } = app._router;
+                    
+                            if (basicAuthCredentials.username && basicAuthCredentials.password) {
+                              stack.unshift(new Layer('/', {
+                                strict: false,
+                                end: false
+                              }, async (req, res, next) => {
+                                if (ignoreAuthRegexp.test(req.url)) return next();
+                      
+                                const authorization = basicAuth(req);
+                                if (!authorization || authorization.name !== basicAuthCredentials.username || authorization.pass !== basicAuthCredentials.password) {
+                                  res.statusCode = 401
+                                  res.setHeader('WWW-Authenticate', 'Basic realm="n8n"')
+                                  res.end('Access denied')
+                                } else {
+                                  next()
+                                }
+                              }))
+                            }
+                    
+                            const index = stack.findIndex((l) => l.name === 'cookieParser')
+                            stack.splice(index + 1, 0, new Layer('/', {
+                              strict: false,
+                              end: false
+                            }, async (req, res, next) => {
+                              if (!req.cookies?.['n8n-auth']) {
+                                const owner = await this.dbCollections.User.findOneBy({
+                                  globalRole: {
+                                    name: 'owner',
+                                    scope: 'global',
+                                  },
+                                })
+                                issueCookie(res, owner)
+                              }
+                    
+                              next()
+                            }))
+                    
+                            console.log("UM Disabled")
+                          },
+                        ],
+                      },
+                    }
       #   valueFiles: 
       #     - '$values/values-minikube.yaml'
       #- targetRevision: HEAD
