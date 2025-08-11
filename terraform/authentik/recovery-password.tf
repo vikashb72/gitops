@@ -11,8 +11,8 @@ data "authentik_stage" "default-authentication-identification" {
 }
 
 resource "authentik_stage_identification" "recovery" {
-  name           = "recovery-authentification-identification"
-  user_fields    = ["username", "email"]
+  name        = "recovery-authentification-identification"
+  user_fields = ["username", "email"]
 }
 
 resource "authentik_stage_email" "recovery" {

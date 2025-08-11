@@ -2,15 +2,13 @@ resource "authentik_provider_oauth2" "providers" {
   for_each = { for p in var.oauth2_providers : p.name => p }
 
   name          = format("%s OAuth2 Provider", each.key)
-  #client_id     = each.value.client_id
-  #client_secret = each.value.client_secret
   client_id     = data.vault_kv_secret_v2.authentik_clients[each.value.name].data.id
   client_secret = data.vault_kv_secret_v2.authentik_clients[each.value.name].data.secret
 
   authentication_flow = data.authentik_flow.default-authentication-flow.id
-  authorization_flow = data.authentik_flow.default-provider-authorization-implicit-consent.id
+  authorization_flow  = data.authentik_flow.default-provider-authorization-implicit-consent.id
 
-  invalidation_flow  = data.authentik_flow.default-provider-invalidation-flow.id
+  invalidation_flow = data.authentik_flow.default-provider-invalidation-flow.id
 
   allowed_redirect_uris = each.value.redirect_uris
 
@@ -39,7 +37,7 @@ resource "authentik_application" "applications" {
 resource "authentik_group" "oauth2_groups" {
   for_each = local.oauth2Groups
 
-  name  = each.value.group
+  name = each.value.group
 
   depends_on = [
     authentik_provider_oauth2.providers

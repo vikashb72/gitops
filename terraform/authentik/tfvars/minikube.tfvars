@@ -69,6 +69,14 @@ oauth2_providers = [
   }
 ]
 
+saml_providers   = [
+  {
+    key           = "saml-test",
+    name          = "saml-test",
+    groups        = ["SAML Test Access"]
+  }
+]
+
 proxy_providers  = [
   #{
   #  key           = "httpbin",
@@ -89,35 +97,60 @@ proxy_providers  = [
     name          = "prometheus",
     mode          = "forward_single",
     external_host = "https://prometheus.minikube.where-ever.net/",
-    groups        = ["prometheus Access"]
+    groups        = ["prometheus Access"],
+    basic_auth_enabled = false,
+    basic_auth_password_attribute = null,
+    basic_auth_username_attribute = null,
   },
   {
     key           = "alertmanager",
     name          = "alertmanager",
     mode          = "forward_single",
     external_host = "https://alertmanager.minikube.where-ever.net/",
-    groups        = ["alertmanager Access"]
+    groups        = ["alertmanager Access"],
+    basic_auth_enabled = false,
+    basic_auth_password_attribute = null,
+    basic_auth_username_attribute = null,
   },
   {
     key           = "vault",
     name          = "vault",
     mode          = "forward_single",
     external_host = "https://vault-ui.minikube.where-ever.net/",
-    groups        = ["vault Access"]
+    groups        = ["vault Access"],
+    basic_auth_enabled = false,
+    basic_auth_password_attribute = null,
+    basic_auth_username_attribute = null,
   },
   {
     key           = "goldilocks",
     name          = "goldilocks",
     mode          = "forward_single",
     external_host = "https://goldilocks.minikube.where-ever.net/",
-    groups        = ["goldilocks Access"]
+    groups        = ["goldilocks Access"],
+    basic_auth_enabled = false,
+    basic_auth_password_attribute = null,
+    basic_auth_username_attribute = null,
   },
   {
     key           = "homepage",
     name          = "homepage",
     mode          = "forward_single",
     external_host = "https://homepage.minikube.where-ever.net/",
-    groups        = ["homepage Access"]
+    groups        = ["homepage Access"],
+    basic_auth_enabled = false,
+    basic_auth_password_attribute = null,
+    basic_auth_username_attribute = null,
+  },
+  {
+    key                = "n8n",
+    name               = "n8n",
+    mode               = "forward_single",
+    external_host      = "https://n8n.minikube.where-ever.net/",
+    groups             = ["n8n Access"],
+    basic_auth_enabled = true,
+    basic_auth_password_attribute = "password",
+    basic_auth_username_attribute = "username"
   }
 ]
 
@@ -136,8 +169,12 @@ proxy_providers  = [
 #  "alertmanager Access" = "4fcec68f-238f-44dd-be74-19fd00f8792f"
 #  "goldilocks Access" = "280eb34e-3a8f-4659-bb1b-1a6efa5f0522"
 #  "homepage Access" = "5f121c79-8714-4a5b-94b3-ced0189b96e0"
+#  "n8n Access" = "05a6cf84-e09a-42fe-8441-aea927693250"
 #  "prometheus Access" = "9e62d9a3-8351-400a-b8f6-620b3493ac2c"
 #  "vault Access" = "f621dc5c-20ed-49a9-8efc-890116b99770"
+#}
+#saml_groups = {
+#  "SAML Test Access" = "5a1136dc-8a57-4d9b-ac56-e93541174fca"
 #}
 
 users = [
@@ -155,7 +192,9 @@ users = [
         "5f121c79-8714-4a5b-94b3-ced0189b96e0",
         "9e62d9a3-8351-400a-b8f6-620b3493ac2c",
         "f621dc5c-20ed-49a9-8efc-890116b99770",
-        "2dac679a-3a9c-49ec-be27-58ecfd69546f"
+        "2dac679a-3a9c-49ec-be27-58ecfd69546f",
+        "05a6cf84-e09a-42fe-8441-aea927693250",
+        "5a1136dc-8a57-4d9b-ac56-e93541174fca"
     ]
   }
 ]

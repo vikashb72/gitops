@@ -29,3 +29,13 @@ data "authentik_certificate_key_pair" "signing_key" {
 data "authentik_group" "admins" {
   name = "authentik Admins"
 }
+
+# api/v3/propertymappings/provider/saml/
+data "authentik_property_mapping_provider_saml" "saml_property_mapping" {
+  managed_list = [
+    "goauthentik.io/providers/saml/email",
+    "goauthentik.io/providers/saml/groups",
+    "goauthentik.io/providers/saml/name",
+    "goauthentik.io/providers/saml/username"
+  ]
+}

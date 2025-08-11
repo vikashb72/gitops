@@ -4,9 +4,15 @@ resource "authentik_provider_proxy" "proxy_providers" {
   name = format("%s Istio Proxy Provider", each.key)
   mode = each.value.mode
 
-  external_host      = each.value.external_host
-  authorization_flow = data.authentik_flow.default-provider-authorization-implicit-consent.id
-  invalidation_flow  = data.authentik_flow.default-provider-invalidation-flow.id
+  external_host       = each.value.external_host
+  authorization_flow  = data.authentik_flow.default-provider-authorization-implicit-consent.id
+  invalidation_flow   = data.authentik_flow.default-provider-invalidation-flow.id
+  authentication_flow = data.authentik_flow.default-authentication-flow.id
+
+  basic_auth_enabled = each.value.basic_auth_enabled
+
+  basic_auth_password_attribute = each.value.basic_auth_password_attribute
+  basic_auth_username_attribute = each.value.basic_auth_username_attribute
 }
 
 resource "authentik_application" "proxy_applications" {
@@ -24,7 +30,7 @@ resource "authentik_application" "proxy_applications" {
 resource "authentik_group" "proxy_groups" {
   for_each = local.proxyGroups
 
-  name  = each.value.group
+  name = each.value.group
 }
 
 # The policy binding ensures that members of the group access to the application

@@ -44,13 +44,17 @@ variable "akv_rg" {
 }
 
 variable "oauth2_providers" {
-    type = list(any)
+  type = list(any)
+}
+
+variable "saml_providers" {
+  type = list(any)
 }
 
 variable "proxy_providers" {
-    type = list(any)
+  type = list(any)
 }
 
 variable "users" {
-    type = list(any)
+  type = list(any)
 }
