@@ -4,21 +4,21 @@ schema:
 
 gateways:
   # n8n (via app-gateway)
-  n8n-gateway:
+  kestra-gateway:
     gateway:
       selector: app-gateway
     servers:
       - port:
           number: 443
-          name: n8n-https
+          name: kestra-https
           protocol: HTTPS
         hosts:
-          - 'n8n.minikube.where-ever.net'
+          - 'kestra.minikube.where-ever.net'
     VirtualServices:
-      - name: n8n-virtual-service
-        CustomAuthorizationPolicy: true
+      - name: kestra-virtual-service
+        #CustomAuthorizationPolicy: true
         hosts:
-          - "n8n.minikube.where-ever.net"
+          - "kestra.minikube.where-ever.net"
         http:
           - match:
               - uri:
@@ -27,9 +27,36 @@ gateways:
                   exact: /
             route:
               - destination:
-                  host: n8n.n8n-system.svc.cluster.local
+                  host: kestra-service.kestra.svc.cluster.local
                   port:
                     number: 80
+  # n8n (via app-gateway)
+  #n8n-gateway:
+  #  gateway:
+  #    selector: app-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: n8n-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'n8n.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: n8n-virtual-service
+  #      CustomAuthorizationPolicy: true
+  #      hosts:
+  #        - "n8n.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                regex: ^\/[^\.]+.*
+  #            - uri:
+  #                exact: /
+  #          route:
+  #            - destination:
+  #                host: n8n.n8n-system.svc.cluster.local
+  #                port:
+  #                  number: 80
   #httpbin-gateway:
   #  gateway:
   #    selector: app-gateway
@@ -448,33 +475,33 @@ gateways:
   #                  number: 2379
   #                host: etcd.etcd.svc.cluster.local
   ## consul-ui (via infra-gateway)
-  consul-ui-gateway:
-    gateway:
-      selector: infra-gateway
-    servers:
-      - port:
-          number: 80
-          name: consul-ui-http
-          protocol: HTTP
-        hosts:
-          - 'consul.minikube.where-ever.net'
-        httpsRedirect: true
-      - port:
-          number: 443
-          name: consul-ui-https
-          protocol: HTTPS
-        hosts:
-          - 'consul.minikube.where-ever.net'
-    VirtualServices:
-      - name: consul-ui-virtual-service
-        hosts:
-          - "consul.minikube.where-ever.net"
-        http:
-          - match:
-            - uri:
-                prefix: /
-            route:
-              - destination:
-                  port:
-                    number: 80
-                  host: consul-consul-ui.consul.svc.cluster.local
+  #consul-ui-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 80
+  #        name: consul-ui-http
+  #        protocol: HTTP
+  #      hosts:
+  #        - 'consul.minikube.where-ever.net'
+  #      httpsRedirect: true
+  #    - port:
+  #        number: 443
+  #        name: consul-ui-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'consul.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: consul-ui-virtual-service
+  #      hosts:
+  #        - "consul.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 80
+  #                host: consul-consul-ui.consul.svc.cluster.local
