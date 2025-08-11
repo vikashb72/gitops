@@ -89,13 +89,13 @@ argocdManaged:
                     secretKeyRef:
                       name: db-n8n
                       key: N8N_ENCRYPTION_KEY
-                #vix N8N_LICENSE_ACTIVATION_KEY:
-                #vix   valueFrom:
-                #vix     secretKeyRef:
-                #vix       name: db-n8n
-                #vix       key: licence
-                #vix EXECUTIONS_MODE:
-                #vix   value: "queue"
+                N8N_LICENSE_ACTIVATION_KEY:
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-n8n
+                      key: licence
+                EXECUTIONS_MODE:
+                  value: "queue"
                 #vix N8N_RUNNERS_ENABLED:
                 #vix   value: true
                 #vix OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS:
