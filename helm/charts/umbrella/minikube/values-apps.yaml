@@ -319,72 +319,119 @@ argocdManaged:
                 data:
                   authentik.backend.js: |
                     const { dirname, resolve } = require('path')
-                    //const Layer = require('express/lib/router/layer')
                     const Layer = require('router/lib/layer')
-                    const basicAuth = require('basic-auth')
                     const { issueCookie } = require(resolve(dirname(require.resolve('n8n')), 'auth/jwt'))
-                    
-                    const basicAuthCredentials = {
-                      username: process.env.N8N_BASIC_AUTH_USER,
-                      password: process.env.N8N_BASIC_AUTH_PASSWORD,
-                    }
-                    
-                    const ignoreAuthRegexp = /^\/(assets|healthz|webhook)/;
-                    
+                    const ignoreAuthRegexp = /^\/(assets|healthz|webhook|rest\/oauth2-credential)/
                     module.exports = {
-                      n8n: {
-                        ready: [
-                          async function ({ app }, config) {
-                            await this.dbCollections.Settings.update(
-                              { key: 'userManagement.isInstanceOwnerSetUp' },
-                              { value: JSON.stringify(true) },
-                            )
+                        n8n: {
+                            ready: [
+                                async function ({ app }, config) {
+                                    const { stack } = app.router
+                                    const index = stack.findIndex((l) => l.name === 'cookieParser')
+                                    stack.splice(index + 1, 0, new Layer('/', {
+                                        strict: false,
+                                        end: false
+                                    }, async (req, res, next) => {
+                                        // skip if URL is ignored
+                                        if (ignoreAuthRegexp.test(req.url)) return next()
                     
-                            config.set('userManagement.isInstanceOwnerSetUp', true)
+                                        // skip if user management is not set up yet
+                                        if (!config.get('userManagement.isInstanceOwnerSetUp', false)) return next()
                     
-                            const { stack } = app._router;
+                                        // skip if cookie already exists
+                                        if (req.cookies?.['n8n-auth']) return next()
                     
-                            if (basicAuthCredentials.username && basicAuthCredentials.password) {
-                              stack.unshift(new Layer('/', {
-                                strict: false,
-                                end: false
-                              }, async (req, res, next) => {
-                                if (ignoreAuthRegexp.test(req.url)) return next();
-                      
-                                const authorization = basicAuth(req);
-                                if (!authorization || authorization.name !== basicAuthCredentials.username || authorization.pass !== basicAuthCredentials.password) {
-                                  res.statusCode = 401
-                                  res.setHeader('WWW-Authenticate', 'Basic realm="n8n"')
-                                  res.end('Access denied')
-                                } else {
-                                  next()
-                                }
-                              }))
-                            }
+                                        // if N8N_FORWARD_AUTH_HEADER is not set, skip
+                                        if (!process.env.N8N_FORWARD_AUTH_HEADER) return next()
                     
-                            const index = stack.findIndex((l) => l.name === 'cookieParser')
-                            stack.splice(index + 1, 0, new Layer('/', {
-                              strict: false,
-                              end: false
-                            }, async (req, res, next) => {
-                              if (!req.cookies?.['n8n-auth']) {
-                                const owner = await this.dbCollections.User.findOneBy({
-                                  globalRole: {
-                                    name: 'owner',
-                                    scope: 'global',
-                                  },
-                                })
-                                issueCookie(res, owner)
-                              }
+                                        // if N8N_FORWARD_AUTH_HEADER header is not found, skip
+                                        const email = req.headers[process.env.N8N_FORWARD_AUTH_HEADER.toLowerCase()]
+                                        if (!email) return next()
                     
-                              next()
-                            }))
+                                        // search for user with email
+                                        const user = await this.dbCollections.User.findOneBy({email})
+                                        if (!user) {
+                                            res.statusCode = 401
+                                            res.end(`User ${email} not found, please have an admin invite the user first.`)
+                                            return
+                                        }
                     
-                            console.log("UM Disabled")
-                          },
-                        ],
-                      },
+                                        // issue cookie if all is OK
+                                        issueCookie(res, user)
+                                        return next()
+                                    }))
+                                },
+                            ],
+                        },
                     }
+                  #authentik.backend.js: |
+                  #  const { dirname, resolve } = require('path')
+                  #  //const Layer = require('express/lib/router/layer')
+                  #  const Layer = require('router/lib/layer')
+                  #  const basicAuth = require('basic-auth')
+                  #  const { issueCookie } = require(resolve(dirname(require.resolve('n8n')), 'auth/jwt'))
+                  #  
+                  #  const basicAuthCredentials = {
+                  #    username: process.env.N8N_BASIC_AUTH_USER,
+                  #    password: process.env.N8N_BASIC_AUTH_PASSWORD,
+                  #  }
+                  #  
+                  #  const ignoreAuthRegexp = /^\/(assets|healthz|webhook)/;
+                  #  
+                  #  module.exports = {
+                  #    n8n: {
+                  #      ready: [
+                  #        async function ({ app }, config) {
+                  #          await this.dbCollections.Settings.update(
+                  #            { key: 'userManagement.isInstanceOwnerSetUp' },
+                  #            { value: JSON.stringify(true) },
+                  #          )
+                  #  
+                  #          config.set('userManagement.isInstanceOwnerSetUp', true)
+                  #  
+                  #          const { stack } = app._router;
+                  #  
+                  #          if (basicAuthCredentials.username && basicAuthCredentials.password) {
+                  #            stack.unshift(new Layer('/', {
+                  #              strict: false,
+                  #              end: false
+                  #            }, async (req, res, next) => {
+                  #              if (ignoreAuthRegexp.test(req.url)) return next();
+                  #    
+                  #              const authorization = basicAuth(req);
+                  #              if (!authorization || authorization.name !== basicAuthCredentials.username || authorization.pass !== basicAuthCredentials.password) {
+                  #                res.statusCode = 401
+                  #                res.setHeader('WWW-Authenticate', 'Basic realm="n8n"')
+                  #                res.end('Access denied')
+                  #              } else {
+                  #                next()
+                  #              }
+                  #            }))
+                  #          }
+                  #  
+                  #          const index = stack.findIndex((l) => l.name === 'cookieParser')
+                  #          stack.splice(index + 1, 0, new Layer('/', {
+                  #            strict: false,
+                  #            end: false
+                  #          }, async (req, res, next) => {
+                  #            if (!req.cookies?.['n8n-auth']) {
+                  #              const owner = await this.dbCollections.User.findOneBy({
+                  #                globalRole: {
+                  #                  name: 'owner',
+                  #                  scope: 'global',
+                  #                },
+                  #              })
+                  #              issueCookie(res, owner)
+                  #            }
+                  #  
+                  #            next()
+                  #          }))
+                  #  
+                  #          console.log("UM Disabled")
+                  #        },
+                  #      ],
+                  #    },
+                  #  }
       #   valueFiles: 
       #     - '$values/values-minikube.yaml'
       #- targetRevision: HEAD
