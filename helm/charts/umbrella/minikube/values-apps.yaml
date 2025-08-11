@@ -317,7 +317,7 @@ argocdManaged:
                 kind: ConfigMap
                 metadata:
                   name: backend-hooks
-                  namespace: {{ $.Release.Namespace }}
+                  namespace: n8n-system
                 data:
                   authentik.js: |
                     const { dirname, resolve } = require('path')
