@@ -84,6 +84,10 @@ main:
           key: licence
     EXECUTIONS_MODE:
       value: queue
+    N8N_RUNNERS_ENABLED:
+      value: true
+    OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS:
+      value: true
     N8N_PROXY_HOPS:
       value: 1
     N8N_TEMPLATES_ENABLED:
