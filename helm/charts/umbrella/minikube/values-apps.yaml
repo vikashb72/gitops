@@ -97,7 +97,7 @@ argocdManaged:
                 EXECUTIONS_MODE:
                   value: "queue"
                 N8N_RUNNERS_ENABLED:
-                  value: true
+                  value: "true"
                 #vix OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS:
                 #vix   value: true
                 #vix N8N_PROXY_HOPS:
