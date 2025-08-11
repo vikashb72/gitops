@@ -106,6 +106,8 @@ argocdManaged:
                   value: "true"
                 EXTERNAL_HOOK_FILES:
                   value: /data/authentik.backend.js
+                N8N_FORWARD_AUTH_HEADER:
+                  value: N8N_BASIC_AUTH_USER
                 #  #values: "/data/backend.js;/data/backend-hook2.js"
                 #EXTERNAL_FRONTEND_HOOKS_URLS
                 #  values: "/data/frontend-hook1.js;/data/frontend-hook2.js"
