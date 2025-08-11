@@ -96,8 +96,8 @@ argocdManaged:
                       key: N8N_LICENSE_ACTIVATION_KEY
                 EXECUTIONS_MODE:
                   value: "queue"
-                #vix N8N_RUNNERS_ENABLED:
-                #vix   value: true
+                N8N_RUNNERS_ENABLED:
+                  value: true
                 #vix OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS:
                 #vix   value: true
                 #vix N8N_PROXY_HOPS:
