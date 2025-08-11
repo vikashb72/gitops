@@ -105,7 +105,7 @@ argocdManaged:
                 N8N_TEMPLATES_ENABLED:
                   value: "true"
                 EXTERNAL_HOOK_FILES:
-                  value: /data/backend.js
+                  value: /data/authentik.backend.js
                   #values: "/data/backend.js;/data/backend-hook2.js"
                 #EXTERNAL_FRONTEND_HOOKS_URLS
                 #  values: "/data/frontend-hook1.js;/data/frontend-hook2.js"
@@ -317,7 +317,7 @@ argocdManaged:
                   name: backend-hooks
                   namespace: n8n-system
                 data:
-                  authentik.js: |
+                  authentik.backend.js: |
                     const { dirname, resolve } = require('path')
                     const Layer = require('express/lib/router/layer')
                     const basicAuth = require('basic-auth')
