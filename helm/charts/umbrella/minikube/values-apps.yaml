@@ -101,7 +101,7 @@ argocdManaged:
                 OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS:
                   value: "true"
                 N8N_PROXY_HOPS:
-                  value: 1
+                  value: "1"
                 N8N_TEMPLATES_ENABLED:
                   value: "true"
                 EXTERNAL_HOOK_FILES:
@@ -109,8 +109,6 @@ argocdManaged:
                   #values: "/data/backend.js;/data/backend-hook2.js"
                 #EXTERNAL_FRONTEND_HOOKS_URLS
                 #  values: "/data/frontend-hook1.js;/data/frontend-hook2.js"
-                N8N_PROXY_HOPS:
-                  value: 1
                 N8N_HIRING_BANNER_ENABLED:
                   value: "false"
                 #N8N_PUBLIC_API_DISABLED:
