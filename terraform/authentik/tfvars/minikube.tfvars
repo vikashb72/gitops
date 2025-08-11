@@ -149,8 +149,8 @@ proxy_providers  = [
     external_host      = "https://n8n.minikube.where-ever.net/",
     groups             = ["n8n Access"],
     basic_auth_enabled = true,
-    basic_auth_password_attribute = "password",
-    basic_auth_username_attribute = "username"
+    basic_auth_password_attribute = "N8N_BASIC_AUTH_PASSWORD",
+    basic_auth_username_attribute = "N8N_BASIC_AUTH_USER"
   }
 ]
 
