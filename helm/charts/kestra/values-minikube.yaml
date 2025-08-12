@@ -1,6 +1,6 @@
 kestra:
   ### This creates a config map of the Kestra configuration
-  configuration: {}
+  #configuration: {}
   # Example: Setting the plugin defaults for the Docker runner
   #   kestra:
   #     plugins:
@@ -8,6 +8,11 @@ kestra:
   #         - type:  io.kestra.plugin.scripts.runner.docker.Docker
   #           values:
   #             volume-enabled: true
+  configuration:
+    kestra:
+      server:
+        basic-auth:
+          enabled: false
   
   
   ### This will create a Kubernetes Secret for the values provided
