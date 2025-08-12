@@ -25,7 +25,7 @@ oauth2_providers = [
     ]
   },
   {
-    key            = "grafana"
+    key            = "grafana",
     name           = "Grafana",
     secret_name    = "minikube/grafana/authentik-client",
     groups         = ["Grafana Admins", "Grafana Editors", "Grafana Viewers"],
@@ -38,7 +38,7 @@ oauth2_providers = [
     ]
   },
   {
-    key            = "kafka-ui"
+    key            = "kafka-ui",
     name           = "Kafka UI",
     secret_name    = "minikube/kafka-ui/authentik-client",
     groups         = ["Kafka UI Admins", "Kafka UI Viewers"],
@@ -51,7 +51,7 @@ oauth2_providers = [
     ]
   },
   {
-    key            = "oauth2-proxy"
+    key            = "oauth2-proxy",
     name           = "OAuth2 Proxy",
     secret_name    = "minikube/oauth2-proxy/authentik-client",
     groups         = ["oauth2 proxy"],
@@ -67,6 +67,19 @@ oauth2_providers = [
       }
     ]
   }
+  #{
+  #  key            = "kestra",
+  #  name           = "Kestra",
+  #  secret_name    = "minikube/kestra/authentik-client",
+  #  groups         = ["Kestra"],
+  #  launch_url     = "https://kestra.minikube.where-ever.net",
+  #  redirect_uris  = [
+  #    {
+  #      "matching_mode" = "strict",
+  #      "url"           = "http://localhost:8080/oauth/callback/authentik"
+  #    }
+  #  ]
+  #}
 ]
 
 saml_providers   = [
@@ -151,7 +164,17 @@ proxy_providers  = [
     basic_auth_enabled = true,
     basic_auth_password_attribute = "N8N_BASIC_AUTH_PASSWORD",
     basic_auth_username_attribute = "N8N_BASIC_AUTH_USER"
-  }
+  },
+  {
+    key           = "kestra",
+    name          = "kestra",
+    mode          = "forward_single",
+    external_host = "https://kestra.minikube.where-ever.net/",
+    groups        = ["kestra Access"],
+    basic_auth_enabled = false,
+    basic_auth_password_attribute = null,
+    basic_auth_username_attribute = null,
+  },
 ]
 
 #admin_group = "736d56b6-f86c-4b90-8e29-b1f9feed563f"
@@ -194,7 +217,9 @@ users = [
         "f621dc5c-20ed-49a9-8efc-890116b99770",
         "2dac679a-3a9c-49ec-be27-58ecfd69546f",
         "05a6cf84-e09a-42fe-8441-aea927693250",
-        "5a1136dc-8a57-4d9b-ac56-e93541174fca"
+        "5a1136dc-8a57-4d9b-ac56-e93541174fca",
+        "e318ab61-438f-44b3-b3b1-b165d6493792"
+        #"ddb13301-4440-4c00-8d41-1b8392c4eebe"
     ]
   }
 ]
