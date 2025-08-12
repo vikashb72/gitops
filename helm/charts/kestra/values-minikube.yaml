@@ -156,6 +156,7 @@ kestra:
       - mountPath: /etc/ssl/certs/
         name: own-ca-bundle
         readOnly: true
+    fullnameOverride: "es-kestra"
   
   ### Minio
   minio:
