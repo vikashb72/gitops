@@ -44,409 +44,409 @@ argocdManaged:
       - path: helm/charts/kestra
     syncOptions:
       ServerSideApply: true
-  n8n:
-    disable: true
-    name: n8n
-    targetNamespace: n8n-system
-    sources:
-      - repoURL: 8gears.container-registry.com/library
-        chart: n8n
-        targetRevision: 1.0.10
-        helm:
-          valueFiles:
-            - values.yaml
-          valuesObject:
-            scaling:
-              enable: true
-              webhook:
-                enabled: true
-            main:
-              config:
-                n8n:
-                  editor_base_url: https://n8n.minikube.where-ever.net/
-                db:
-                  type: postgresdb
-                  postgresdb:
-                    host: db-rw
-                    user: n8n
-                    # password: password is read from cnpg db-n8n secretKeyRef
-                    pool:
-                      size: 10
-                    ssl:
-                      enabled: true
-                      reject_Unauthorized: true
-                      ca_file: "/home/ssl/certs/postgresql/ca.crt"
-                webhook_url: https://n8n.minikube.where-ever.net/
-                queue:
-                  health:
-                    check:
-                      active: true
-                  bull:
-                    redis:
-                      host: n8n-valkey-primary
-                      port: 6379
-              secret: {}
-              extraEnv: &extraEnv
-                DB_POSTGRESDB_PASSWORD:
-                  valueFrom:
-                    secretKeyRef:
-                      name: db-n8n
-                      key: password
-                N8N_ENCRYPTION_KEY:
-                  valueFrom:
-                    secretKeyRef:
-                      name: db-n8n
-                      key: N8N_ENCRYPTION_KEY
-                N8N_LICENSE_ACTIVATION_KEY:
-                  valueFrom:
-                    secretKeyRef:
-                      name: db-n8n
-                      key: N8N_LICENSE_ACTIVATION_KEY
-                EXECUTIONS_MODE:
-                  value: "queue"
-                N8N_RUNNERS_ENABLED:
-                  value: "true"
-                OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS:
-                  value: "true"
-                N8N_PROXY_HOPS:
-                  value: "1"
-                N8N_TEMPLATES_ENABLED:
-                  value: "true"
-                EXTERNAL_HOOK_FILES:
-                  value: /data/authentik.backend.js
-                N8N_FORWARD_AUTH_HEADER:
-                  value: N8N_BASIC_AUTH_USER
-                #  #values: "/data/backend.js;/data/backend-hook2.js"
-                #EXTERNAL_FRONTEND_HOOKS_URLS
-                #  values: "/data/frontend-hook1.js;/data/frontend-hook2.js"
-                N8N_HIRING_BANNER_ENABLED:
-                  value: "false"
-                #N8N_PUBLIC_API_DISABLED:
-                #  value: "true"
-                #N8N_PROTOCOL:
-                #  value: https
-                #N8N_SSL_KEY:
-                #  valueFrom:
-                #    secretKeyRef:
-                #      name: n8n-tls
-                #      key: tls.key
-                #N8N_SSL_CERT:
-                #  valueFrom:
-                #    secretKeyRef:
-                #      name: n8n-tls
-                #      key: tls.crt
-                #N8N_SMTP_HOST:
-                #  value: mailhog.dev-tools.svc.cluster.local
-                #N8N_SMTP_PORT:
-                #  value: 1025
-                #N8N_SMTP_USER:
-                #  value:
-                #N8N_SMTP_PASS:
-                #  value:
-                #N8N_SMTP_SENDER:
-                #  value:
-                #N8N_SMTP_SSL:
-                #  value:  "true"
-                #N8N_SMTP_STARTTLS:
-                #  value:  "true"
-                #N8N_EXTERNAL_STORAGE_S3_HOST:
-                #  value:
-                #N8N_EXTERNAL_STORAGE_S3_BUCKET_NAME:
-                #  value:
-                #N8N_EXTERNAL_STORAGE_S3_BUCKET_REGION:
-                #  value:
-                #N8N_EXTERNAL_STORAGE_S3_ACCESS_KEY:
-                #  value:
-                #N8N_EXTERNAL_STORAGE_S3_ACCESS_SECRET:
-                #  value:
-                #N8N_EXTERNAL_STORAGE_S3_AUTH_AUTO_DETECT:
-                #  value:
-                #N8N_LOG_LEVEL:
-                #  value: info
-              extraVolumeMounts: &extraVolumeMounts
-                - mountPath: /etc/ssl/certs/
-                  name: own-ca-bundle
-                  readOnly: true
-                - name: db-ca-cert
-                  mountPath: /home/ssl/certs/postgresql
-                  readOnly: true
-                - name: backend-hooks
-                  mountPath: /data/
-              extraVolumes: &extraVolumes
-                - name: own-ca-bundle
-                  configMap:
-                    name: own-ca-bundle
-                    defaultMode: 0644
-                    optional: false
-                    items:
-                      - key: own-ca-bundle.pem
-                        path: ca-certificates.crt
-                - name: db-ca-cert
-                  secret:
-                    secretName: psql-tls
-                    items:
-                      - key: ca.crt
-                        path: ca.crt
-                - name: backend-hooks
-                  configMap:
-                    name: backend-hooks
-            worker:
-              enabled: true
-              extraEnv: *extraEnv
-              extraVolumeMounts: *extraVolumeMounts
-              extraVolumes: *extraVolumes
-            webhook:
-              enabled: true
-              extraEnv: *extraEnv
-              extraVolumeMounts: *extraVolumeMounts
-              extraVolumes: *extraVolumes
+  #n8n:
+  #  disable: true
+  #  name: n8n
+  #  targetNamespace: n8n-system
+  #  sources:
+  #    - repoURL: 8gears.container-registry.com/library
+  #      chart: n8n
+  #      targetRevision: 1.0.10
+  #      helm:
+  #        valueFiles:
+  #          - values.yaml
+  #        valuesObject:
+  #          scaling:
+  #            enable: true
+  #            webhook:
+  #              enabled: true
+  #          main:
+  #            config:
+  #              n8n:
+  #                editor_base_url: https://n8n.minikube.where-ever.net/
+  #              db:
+  #                type: postgresdb
+  #                postgresdb:
+  #                  host: db-rw
+  #                  user: n8n
+  #                  # password: password is read from cnpg db-n8n secretKeyRef
+  #                  pool:
+  #                    size: 10
+  #                  ssl:
+  #                    enabled: true
+  #                    reject_Unauthorized: true
+  #                    ca_file: "/home/ssl/certs/postgresql/ca.crt"
+  #              webhook_url: https://n8n.minikube.where-ever.net/
+  #              queue:
+  #                health:
+  #                  check:
+  #                    active: true
+  #                bull:
+  #                  redis:
+  #                    host: n8n-valkey-primary
+  #                    port: 6379
+  #            secret: {}
+  #            extraEnv: &extraEnv
+  #              DB_POSTGRESDB_PASSWORD:
+  #                valueFrom:
+  #                  secretKeyRef:
+  #                    name: db-n8n
+  #                    key: password
+  #              N8N_ENCRYPTION_KEY:
+  #                valueFrom:
+  #                  secretKeyRef:
+  #                    name: db-n8n
+  #                    key: N8N_ENCRYPTION_KEY
+  #              N8N_LICENSE_ACTIVATION_KEY:
+  #                valueFrom:
+  #                  secretKeyRef:
+  #                    name: db-n8n
+  #                    key: N8N_LICENSE_ACTIVATION_KEY
+  #              EXECUTIONS_MODE:
+  #                value: "queue"
+  #              N8N_RUNNERS_ENABLED:
+  #                value: "true"
+  #              OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS:
+  #                value: "true"
+  #              N8N_PROXY_HOPS:
+  #                value: "1"
+  #              N8N_TEMPLATES_ENABLED:
+  #                value: "true"
+  #              EXTERNAL_HOOK_FILES:
+  #                value: /data/authentik.backend.js
+  #              N8N_FORWARD_AUTH_HEADER:
+  #                value: N8N_BASIC_AUTH_USER
+  #              #  #values: "/data/backend.js;/data/backend-hook2.js"
+  #              #EXTERNAL_FRONTEND_HOOKS_URLS
+  #              #  values: "/data/frontend-hook1.js;/data/frontend-hook2.js"
+  #              N8N_HIRING_BANNER_ENABLED:
+  #                value: "false"
+  #              #N8N_PUBLIC_API_DISABLED:
+  #              #  value: "true"
+  #              #N8N_PROTOCOL:
+  #              #  value: https
+  #              #N8N_SSL_KEY:
+  #              #  valueFrom:
+  #              #    secretKeyRef:
+  #              #      name: n8n-tls
+  #              #      key: tls.key
+  #              #N8N_SSL_CERT:
+  #              #  valueFrom:
+  #              #    secretKeyRef:
+  #              #      name: n8n-tls
+  #              #      key: tls.crt
+  #              #N8N_SMTP_HOST:
+  #              #  value: mailhog.dev-tools.svc.cluster.local
+  #              #N8N_SMTP_PORT:
+  #              #  value: 1025
+  #              #N8N_SMTP_USER:
+  #              #  value:
+  #              #N8N_SMTP_PASS:
+  #              #  value:
+  #              #N8N_SMTP_SENDER:
+  #              #  value:
+  #              #N8N_SMTP_SSL:
+  #              #  value:  "true"
+  #              #N8N_SMTP_STARTTLS:
+  #              #  value:  "true"
+  #              #N8N_EXTERNAL_STORAGE_S3_HOST:
+  #              #  value:
+  #              #N8N_EXTERNAL_STORAGE_S3_BUCKET_NAME:
+  #              #  value:
+  #              #N8N_EXTERNAL_STORAGE_S3_BUCKET_REGION:
+  #              #  value:
+  #              #N8N_EXTERNAL_STORAGE_S3_ACCESS_KEY:
+  #              #  value:
+  #              #N8N_EXTERNAL_STORAGE_S3_ACCESS_SECRET:
+  #              #  value:
+  #              #N8N_EXTERNAL_STORAGE_S3_AUTH_AUTO_DETECT:
+  #              #  value:
+  #              #N8N_LOG_LEVEL:
+  #              #  value: info
+  #            extraVolumeMounts: &extraVolumeMounts
+  #              - mountPath: /etc/ssl/certs/
+  #                name: own-ca-bundle
+  #                readOnly: true
+  #              - name: db-ca-cert
+  #                mountPath: /home/ssl/certs/postgresql
+  #                readOnly: true
+  #              - name: backend-hooks
+  #                mountPath: /data/
+  #            extraVolumes: &extraVolumes
+  #              - name: own-ca-bundle
+  #                configMap:
+  #                  name: own-ca-bundle
+  #                  defaultMode: 0644
+  #                  optional: false
+  #                  items:
+  #                    - key: own-ca-bundle.pem
+  #                      path: ca-certificates.crt
+  #              - name: db-ca-cert
+  #                secret:
+  #                  secretName: psql-tls
+  #                  items:
+  #                    - key: ca.crt
+  #                      path: ca.crt
+  #              - name: backend-hooks
+  #                configMap:
+  #                  name: backend-hooks
+  #          worker:
+  #            enabled: true
+  #            extraEnv: *extraEnv
+  #            extraVolumeMounts: *extraVolumeMounts
+  #            extraVolumes: *extraVolumes
+  #          webhook:
+  #            enabled: true
+  #            extraEnv: *extraEnv
+  #            extraVolumeMounts: *extraVolumeMounts
+  #            extraVolumes: *extraVolumes
 
-            valkey:
-              enabled: true
-              architecture: standalone
-              sentinel:
-                enabled: false
-              auth:
-                enabled: false
-              primary:
-                kind: Deployment
-                persistence:
-                  enabled: false
-                resources:
-                  requests:
-                    memory: 256Mi
-                    cpu: 100m
+  #          valkey:
+  #            enabled: true
+  #            architecture: standalone
+  #            sentinel:
+  #              enabled: false
+  #            auth:
+  #              enabled: false
+  #            primary:
+  #              kind: Deployment
+  #              persistence:
+  #                enabled: false
+  #              resources:
+  #                requests:
+  #                  memory: 256Mi
+  #                  cpu: 100m
 
-            # cnpg DB cluster request
-            extraManifests:
-              - apiVersion: external-secrets.io/v1beta1
-                kind: ExternalSecret
-                metadata:
-                  name: db-n8n
-                  namespace: n8n-system
-                spec:
-                  refreshInterval: 4h
-                  secretStoreRef:
-                    name: external-vault-backend
-                    kind: ClusterSecretStore
-                  target:
-                    name: db-n8n
-                    creationPolicy: Owner
-                    deletionPolicy: "Retain"
-                    #template:
-                    #  type: kubernetes.io/basic-auth
-                  data:
-                    - secretKey: username
-                      remoteRef:
-                        conversionStrategy: Default
-                        decodingStrategy: None
-                        key: "kv/minikube/n8n/db-n8n"
-                        metadataPolicy: None
-                        property: username
-                    - secretKey: password
-                      remoteRef:
-                        conversionStrategy: Default
-                        decodingStrategy: None
-                        key: "kv/minikube/n8n/db-n8n"
-                        metadataPolicy: None
-                        property: password
-                    - secretKey: N8N_ENCRYPTION_KEY
-                      remoteRef:
-                        conversionStrategy: Default
-                        decodingStrategy: None
-                        key: "kv/minikube/n8n/db-n8n"
-                        metadataPolicy: None
-                        property: N8N_ENCRYPTION_KEY
-                    - secretKey: N8N_LICENSE_ACTIVATION_KEY
-                      remoteRef:
-                        conversionStrategy: Default
-                        decodingStrategy: None
-                        key: "kv/minikube/n8n/db-n8n"
-                        metadataPolicy: None
-                        property: licence
-              - apiVersion: cert-manager.io/v1
-                kind: Certificate
-                metadata:
-                  name: psql-certmanager-cert
-                  namespace: n8n-system
-                spec:
-                  commonName: "*.n8n-system.svc.cluster.local"
-                  dnsNames:
-                    - db-lb.internal.mydomain.net
-                    - db-rw
-                    - db-rw.n8n-system
-                    - db-rw.n8n-system.svc
-                    - db-rw.n8n-system.svc.cluster
-                    - db-rw.n8n-system.svc.cluster.local
-                    - db-r
-                    - db-r.n8n-system
-                    - db-r.n8n-system.svc
-                    - db-r.n8n-system.svc.cluster
-                    - db-r.n8n-system.svc.cluster.local
-                    - db-ro
-                    - db-ro.n8n-system
-                    - db-ro.n8n-system.svc
-                    - db-ro.n8n-system.svc.cluster
-                    - db-ro.n8n-system.svc.cluster.local
-                  secretName: psql-tls
-                  privateKey:
-                    algorithm: RSA
-                    size: 2048
-                  issuerRef:
-                    name: vault-cert-issuer
-                    kind: ClusterIssuer
-              - apiVersion: postgresql.cnpg.io/v1
-                kind: Cluster
-                metadata:
-                  name: db
-                spec:
-                  instances: 1
-                  certificates:
-                    serverTLSSecret: psql-tls
-                    serverCASecret: psql-tls
-                  bootstrap:
-                    initdb:
-                      database: n8n
-                      owner: n8n
-                      secret:
-                        name: db-n8n
-                  postgresql:
-                    parameters:
-                      shared_buffers: "64MB"
-                  resources:
-                    requests:
-                      memory: "512Mi"
-                    limits:
-                      memory: "512Mi"
-                  storage:
-                    size: 1Gi
-                    storageClass: nfs-client
-              - apiVersion: v1
-                kind: ConfigMap
-                metadata:
-                  name: backend-hooks
-                  namespace: n8n-system
-                data:
-                  authentik.backend.js: |
-                    const { dirname, resolve } = require('path')
-                    const Layer = require('router/lib/layer')
-                    const { issueCookie } = require(resolve(dirname(require.resolve('n8n')), 'auth/jwt'))
-                    const ignoreAuthRegexp = /^\/(assets|healthz|webhook|rest\/oauth2-credential)/
-                    module.exports = {
-                        n8n: {
-                            ready: [
-                                async function ({ app }, config) {
-                                    const { stack } = app.router
-                                    const index = stack.findIndex((l) => l.name === 'cookieParser')
-                                    stack.splice(index + 1, 0, new Layer('/', {
-                                        strict: false,
-                                        end: false
-                                    }, async (req, res, next) => {
-                                        // skip if URL is ignored
-                                        if (ignoreAuthRegexp.test(req.url)) return next()
-                    
-                                        // skip if user management is not set up yet
-                                        if (!config.get('userManagement.isInstanceOwnerSetUp', false)) return next()
-                    
-                                        // skip if cookie already exists
-                                        if (req.cookies?.['n8n-auth']) return next()
-                    
-                                        // if N8N_FORWARD_AUTH_HEADER is not set, skip
-                                        if (!process.env.N8N_FORWARD_AUTH_HEADER) return next()
-                    
-                                        // if N8N_FORWARD_AUTH_HEADER header is not found, skip
-                                        const email = req.headers[process.env.N8N_FORWARD_AUTH_HEADER.toLowerCase()]
-                                        if (!email) return next()
-                    
-                                        // search for user with email
-                                        const user = await this.dbCollections.User.findOneBy({email})
-                                        if (!user) {
-                                            res.statusCode = 401
-                                            res.end(`User ${email} not found, please have an admin invite the user first.`)
-                                            return
-                                        }
-                    
-                                        // issue cookie if all is OK
-                                        issueCookie(res, user)
-                                        return next()
-                                    }))
-                                },
-                            ],
-                        },
-                    }
-                  #authentik.backend.js: |
-                  #  const { dirname, resolve } = require('path')
-                  #  //const Layer = require('express/lib/router/layer')
-                  #  const Layer = require('router/lib/layer')
-                  #  const basicAuth = require('basic-auth')
-                  #  const { issueCookie } = require(resolve(dirname(require.resolve('n8n')), 'auth/jwt'))
-                  #  
-                  #  const basicAuthCredentials = {
-                  #    username: process.env.N8N_BASIC_AUTH_USER,
-                  #    password: process.env.N8N_BASIC_AUTH_PASSWORD,
-                  #  }
-                  #  
-                  #  const ignoreAuthRegexp = /^\/(assets|healthz|webhook)/;
-                  #  
-                  #  module.exports = {
-                  #    n8n: {
-                  #      ready: [
-                  #        async function ({ app }, config) {
-                  #          await this.dbCollections.Settings.update(
-                  #            { key: 'userManagement.isInstanceOwnerSetUp' },
-                  #            { value: JSON.stringify(true) },
-                  #          )
-                  #  
-                  #          config.set('userManagement.isInstanceOwnerSetUp', true)
-                  #  
-                  #          const { stack } = app._router;
-                  #  
-                  #          if (basicAuthCredentials.username && basicAuthCredentials.password) {
-                  #            stack.unshift(new Layer('/', {
-                  #              strict: false,
-                  #              end: false
-                  #            }, async (req, res, next) => {
-                  #              if (ignoreAuthRegexp.test(req.url)) return next();
-                  #    
-                  #              const authorization = basicAuth(req);
-                  #              if (!authorization || authorization.name !== basicAuthCredentials.username || authorization.pass !== basicAuthCredentials.password) {
-                  #                res.statusCode = 401
-                  #                res.setHeader('WWW-Authenticate', 'Basic realm="n8n"')
-                  #                res.end('Access denied')
-                  #              } else {
-                  #                next()
-                  #              }
-                  #            }))
-                  #          }
-                  #  
-                  #          const index = stack.findIndex((l) => l.name === 'cookieParser')
-                  #          stack.splice(index + 1, 0, new Layer('/', {
-                  #            strict: false,
-                  #            end: false
-                  #          }, async (req, res, next) => {
-                  #            if (!req.cookies?.['n8n-auth']) {
-                  #              const owner = await this.dbCollections.User.findOneBy({
-                  #                globalRole: {
-                  #                  name: 'owner',
-                  #                  scope: 'global',
-                  #                },
-                  #              })
-                  #              issueCookie(res, owner)
-                  #            }
-                  #  
-                  #            next()
-                  #          }))
-                  #  
-                  #          console.log("UM Disabled")
-                  #        },
-                  #      ],
-                  #    },
-                  #  }
-      #   valueFiles: 
-      #     - '$values/values-minikube.yaml'
-      #- targetRevision: HEAD
-      #  ref: values
-      #  noHelmValues: true
+  #          # cnpg DB cluster request
+  #          extraManifests:
+  #            - apiVersion: external-secrets.io/v1beta1
+  #              kind: ExternalSecret
+  #              metadata:
+  #                name: db-n8n
+  #                namespace: n8n-system
+  #              spec:
+  #                refreshInterval: 4h
+  #                secretStoreRef:
+  #                  name: external-vault-backend
+  #                  kind: ClusterSecretStore
+  #                target:
+  #                  name: db-n8n
+  #                  creationPolicy: Owner
+  #                  deletionPolicy: "Retain"
+  #                  #template:
+  #                  #  type: kubernetes.io/basic-auth
+  #                data:
+  #                  - secretKey: username
+  #                    remoteRef:
+  #                      conversionStrategy: Default
+  #                      decodingStrategy: None
+  #                      key: "kv/minikube/n8n/db-n8n"
+  #                      metadataPolicy: None
+  #                      property: username
+  #                  - secretKey: password
+  #                    remoteRef:
+  #                      conversionStrategy: Default
+  #                      decodingStrategy: None
+  #                      key: "kv/minikube/n8n/db-n8n"
+  #                      metadataPolicy: None
+  #                      property: password
+  #                  - secretKey: N8N_ENCRYPTION_KEY
+  #                    remoteRef:
+  #                      conversionStrategy: Default
+  #                      decodingStrategy: None
+  #                      key: "kv/minikube/n8n/db-n8n"
+  #                      metadataPolicy: None
+  #                      property: N8N_ENCRYPTION_KEY
+  #                  - secretKey: N8N_LICENSE_ACTIVATION_KEY
+  #                    remoteRef:
+  #                      conversionStrategy: Default
+  #                      decodingStrategy: None
+  #                      key: "kv/minikube/n8n/db-n8n"
+  #                      metadataPolicy: None
+  #                      property: licence
+  #            - apiVersion: cert-manager.io/v1
+  #              kind: Certificate
+  #              metadata:
+  #                name: psql-certmanager-cert
+  #                namespace: n8n-system
+  #              spec:
+  #                commonName: "*.n8n-system.svc.cluster.local"
+  #                dnsNames:
+  #                  - db-lb.internal.mydomain.net
+  #                  - db-rw
+  #                  - db-rw.n8n-system
+  #                  - db-rw.n8n-system.svc
+  #                  - db-rw.n8n-system.svc.cluster
+  #                  - db-rw.n8n-system.svc.cluster.local
+  #                  - db-r
+  #                  - db-r.n8n-system
+  #                  - db-r.n8n-system.svc
+  #                  - db-r.n8n-system.svc.cluster
+  #                  - db-r.n8n-system.svc.cluster.local
+  #                  - db-ro
+  #                  - db-ro.n8n-system
+  #                  - db-ro.n8n-system.svc
+  #                  - db-ro.n8n-system.svc.cluster
+  #                  - db-ro.n8n-system.svc.cluster.local
+  #                secretName: psql-tls
+  #                privateKey:
+  #                  algorithm: RSA
+  #                  size: 2048
+  #                issuerRef:
+  #                  name: vault-cert-issuer
+  #                  kind: ClusterIssuer
+  #            - apiVersion: postgresql.cnpg.io/v1
+  #              kind: Cluster
+  #              metadata:
+  #                name: db
+  #              spec:
+  #                instances: 1
+  #                certificates:
+  #                  serverTLSSecret: psql-tls
+  #                  serverCASecret: psql-tls
+  #                bootstrap:
+  #                  initdb:
+  #                    database: n8n
+  #                    owner: n8n
+  #                    secret:
+  #                      name: db-n8n
+  #                postgresql:
+  #                  parameters:
+  #                    shared_buffers: "64MB"
+  #                resources:
+  #                  requests:
+  #                    memory: "512Mi"
+  #                  limits:
+  #                    memory: "512Mi"
+  #                storage:
+  #                  size: 1Gi
+  #                  storageClass: nfs-client
+  #            - apiVersion: v1
+  #              kind: ConfigMap
+  #              metadata:
+  #                name: backend-hooks
+  #                namespace: n8n-system
+  #              data:
+  #                authentik.backend.js: |
+  #                  const { dirname, resolve } = require('path')
+  #                  const Layer = require('router/lib/layer')
+  #                  const { issueCookie } = require(resolve(dirname(require.resolve('n8n')), 'auth/jwt'))
+  #                  const ignoreAuthRegexp = /^\/(assets|healthz|webhook|rest\/oauth2-credential)/
+  #                  module.exports = {
+  #                      n8n: {
+  #                          ready: [
+  #                              async function ({ app }, config) {
+  #                                  const { stack } = app.router
+  #                                  const index = stack.findIndex((l) => l.name === 'cookieParser')
+  #                                  stack.splice(index + 1, 0, new Layer('/', {
+  #                                      strict: false,
+  #                                      end: false
+  #                                  }, async (req, res, next) => {
+  #                                      // skip if URL is ignored
+  #                                      if (ignoreAuthRegexp.test(req.url)) return next()
+  #                  
+  #                                      // skip if user management is not set up yet
+  #                                      if (!config.get('userManagement.isInstanceOwnerSetUp', false)) return next()
+  #                  
+  #                                      // skip if cookie already exists
+  #                                      if (req.cookies?.['n8n-auth']) return next()
+  #                  
+  #                                      // if N8N_FORWARD_AUTH_HEADER is not set, skip
+  #                                      if (!process.env.N8N_FORWARD_AUTH_HEADER) return next()
+  #                  
+  #                                      // if N8N_FORWARD_AUTH_HEADER header is not found, skip
+  #                                      const email = req.headers[process.env.N8N_FORWARD_AUTH_HEADER.toLowerCase()]
+  #                                      if (!email) return next()
+  #                  
+  #                                      // search for user with email
+  #                                      const user = await this.dbCollections.User.findOneBy({email})
+  #                                      if (!user) {
+  #                                          res.statusCode = 401
+  #                                          res.end(`User ${email} not found, please have an admin invite the user first.`)
+  #                                          return
+  #                                      }
+  #                  
+  #                                      // issue cookie if all is OK
+  #                                      issueCookie(res, user)
+  #                                      return next()
+  #                                  }))
+  #                              },
+  #                          ],
+  #                      },
+  #                  }
+  #                #authentik.backend.js: |
+  #                #  const { dirname, resolve } = require('path')
+  #                #  //const Layer = require('express/lib/router/layer')
+  #                #  const Layer = require('router/lib/layer')
+  #                #  const basicAuth = require('basic-auth')
+  #                #  const { issueCookie } = require(resolve(dirname(require.resolve('n8n')), 'auth/jwt'))
+  #                #  
+  #                #  const basicAuthCredentials = {
+  #                #    username: process.env.N8N_BASIC_AUTH_USER,
+  #                #    password: process.env.N8N_BASIC_AUTH_PASSWORD,
+  #                #  }
+  #                #  
+  #                #  const ignoreAuthRegexp = /^\/(assets|healthz|webhook)/;
+  #                #  
+  #                #  module.exports = {
+  #                #    n8n: {
+  #                #      ready: [
+  #                #        async function ({ app }, config) {
+  #                #          await this.dbCollections.Settings.update(
+  #                #            { key: 'userManagement.isInstanceOwnerSetUp' },
+  #                #            { value: JSON.stringify(true) },
+  #                #          )
+  #                #  
+  #                #          config.set('userManagement.isInstanceOwnerSetUp', true)
+  #                #  
+  #                #          const { stack } = app._router;
+  #                #  
+  #                #          if (basicAuthCredentials.username && basicAuthCredentials.password) {
+  #                #            stack.unshift(new Layer('/', {
+  #                #              strict: false,
+  #                #              end: false
+  #                #            }, async (req, res, next) => {
+  #                #              if (ignoreAuthRegexp.test(req.url)) return next();
+  #                #    
+  #                #              const authorization = basicAuth(req);
+  #                #              if (!authorization || authorization.name !== basicAuthCredentials.username || authorization.pass !== basicAuthCredentials.password) {
+  #                #                res.statusCode = 401
+  #                #                res.setHeader('WWW-Authenticate', 'Basic realm="n8n"')
+  #                #                res.end('Access denied')
+  #                #              } else {
+  #                #                next()
+  #                #              }
+  #                #            }))
+  #                #          }
+  #                #  
+  #                #          const index = stack.findIndex((l) => l.name === 'cookieParser')
+  #                #          stack.splice(index + 1, 0, new Layer('/', {
+  #                #            strict: false,
+  #                #            end: false
+  #                #          }, async (req, res, next) => {
+  #                #            if (!req.cookies?.['n8n-auth']) {
+  #                #              const owner = await this.dbCollections.User.findOneBy({
+  #                #                globalRole: {
+  #                #                  name: 'owner',
+  #                #                  scope: 'global',
+  #                #                },
+  #                #              })
+  #                #              issueCookie(res, owner)
+  #                #            }
+  #                #  
+  #                #            next()
+  #                #          }))
+  #                #  
+  #                #          console.log("UM Disabled")
+  #                #        },
+  #                #      ],
+  #                #    },
+  #                #  }
+  #    #   valueFiles: 
+  #    #     - '$values/values-minikube.yaml'
+  #    #- targetRevision: HEAD
+  #    #  ref: values
+  #    #  noHelmValues: true
   #echoserver:
   #  disable: true
   #  name: echoserver
