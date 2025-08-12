@@ -1,0 +1,25 @@
+{{- if $.Values.env.extAuthz }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ext-authz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ext-authz
+  template:
+    metadata:
+      labels:
+        app: ext-authz
+        sidecar.istio.io/inject: "false" # do not inject the sidecar
+    spec:
+      containers:
+      - image: gcr.io/istio-testing/ext-authz:latest
+        imagePullPolicy: Always
+        name: ext-authz
+        ports:
+        - containerPort: 8000
+        - containerPort: 9000
+---
+{{- end }}
