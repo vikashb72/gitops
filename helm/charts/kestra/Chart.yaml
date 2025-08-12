@@ -3,5 +3,6 @@ name: kestra
 version: 1.0.0
 dependencies:
   - name: kestra
-    version: 0.24.0
+    #version: 0.24.0
+    version: 0.23.9
     repository: https://helm.kestra.io/

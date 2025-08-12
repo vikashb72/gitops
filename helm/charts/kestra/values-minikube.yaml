@@ -11,8 +11,11 @@ kestra:
   configuration:
     kestra:
       server:
-        basic-auth:
+        basicAuth:
           enabled: false
+          #username: kestra-admin@minikube.where-ever.net
+      anonymous-usage-report:
+        enabled: false
   
   
   ### This will create a Kubernetes Secret for the values provided
