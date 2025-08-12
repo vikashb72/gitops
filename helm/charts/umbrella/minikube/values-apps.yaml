@@ -37,6 +37,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   kestra:
+    disable: true
     name: kestra
     targetNamespace: kestra
     sources:
