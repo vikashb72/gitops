@@ -16,7 +16,7 @@ gateways:
           - 'kestra.minikube.where-ever.net'
     VirtualServices:
       - name: kestra-virtual-service
-        #CustomAuthorizationPolicy: true
+        CustomAuthorizationPolicy: true
         hosts:
           - "kestra.minikube.where-ever.net"
         http:
