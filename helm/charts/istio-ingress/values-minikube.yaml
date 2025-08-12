@@ -29,7 +29,7 @@ gateways:
               - destination:
                   host: kestra-service.kestra.svc.cluster.local
                   port:
-                    number: 80
+                    number: 8080
   # n8n (via app-gateway)
   #n8n-gateway:
   #  gateway:
