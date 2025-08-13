@@ -49,13 +49,13 @@ kube-prometheus-stack:
         routes:
           - receiver: "null"
             matchers:
-              alertname: "Watchdog"
+              - alertname = Watchdog
           - receiver: "email-alert"
             continue: true
           - receiver: "dev-email-alert"
             matchers:
-              - namespace = httpbin|echoserver
-                severity  =~ error
+              - namespace = "httpbin|echoserver"
+                severity  =~ "error"
 
       receivers:
         - name: "null"
