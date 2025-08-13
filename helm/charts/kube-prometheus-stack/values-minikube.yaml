@@ -55,7 +55,7 @@ kube-prometheus-stack:
           - receiver: "dev-email-alert"
             matchers:
               - namespace = httpbin|echoserver
-                severity  =~ error
+              - severity  =~ error
 
       receivers:
         - name: "null"
