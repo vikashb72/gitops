@@ -48,16 +48,19 @@ kube-prometheus-stack:
         receiver: "email-alert"
         routes:
           - receiver: "null"
-            match:
+            matchers:
               alertname: "Watchdog"
           - receiver: "email-alert"
             continue: true
+          - receiver: "dev-email-alert"
+            matchers:
+              namespace: "httpbin"
 
       receivers:
         - name: "null"
         - name: "email-alert"
           email_configs:
-            - to: "vikashb@home.where-ever.za.net"
+            - to: "ops@home.where-ever.za.net"
               from: "monitor@minikube.where-ever.net"
               smarthost: "mailhog-smtp.minikube.where-ever.net:1025"
               #smarthost: "odroid-dlna.home.where-ever.za.net:25"
@@ -66,6 +69,16 @@ kube-prometheus-stack:
               #auth_password:
               require_tls: false
               send_resolved: true
+        - name: "dev-email-alert"
+          email_configs:
+            - to: "dev@home.where-ever.za.net"
+              from: "monitor@minikube.where-ever.net"
+              smarthost: "mailhog-smtp.minikube.where-ever.net:1025"
+              #smarthost: "odroid-dlna.home.where-ever.za.net:25"
+              #auth_username: "vmail"
+              #auth_password_file: /etc/alertmanager/secrets/GF_SMTP_PASSWORD
+              #auth_password:
+              require_tls: false
         # https://prometheus.io/docs/alerting/latest/configuration/#email_config
         #- name: "msteams"
         #  msteamsv2_configs:
