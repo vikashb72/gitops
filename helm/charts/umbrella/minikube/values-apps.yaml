@@ -45,6 +45,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   windmill:
+    disable: true
     name: windmill
     targetNamespace: windmill
     sources:
