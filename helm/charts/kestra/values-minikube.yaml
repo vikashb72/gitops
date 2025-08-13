@@ -87,8 +87,15 @@ kestra:
     basicAuth: ""
   
   dind:
-    enabled: false
+    enabled: true
+    #securityContext:
+    #  runAsUser: 0
+    #  runAsGroup: 0
   
+  #securityContext:
+  #  runAsUser: 0
+  #  runAsGroup: 0
+
   ### Kafka
   kafka:
     enabled: true
