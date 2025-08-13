@@ -44,6 +44,13 @@ argocdManaged:
       - path: helm/charts/kestra
     syncOptions:
       ServerSideApply: true
+  windmill:
+    name: windmill
+    targetNamespace: windmill
+    sources:
+      - path: helm/charts/windmill
+    syncOptions:
+      ServerSideApply: true
   #n8n:
   #  disable: true
   #  name: n8n
