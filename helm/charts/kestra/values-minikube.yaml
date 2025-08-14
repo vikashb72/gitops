@@ -301,7 +301,7 @@ kestra:
     auth:
       database: kestra
       username: kestra
-      password: kestra
+      #password: kestra
       existingSecret: "psql-credentials"
       secretKeys:
         adminPasswordKey: "psql-password"
