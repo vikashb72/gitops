@@ -29,6 +29,12 @@ schema:
         - tempo-system
         - vault-system
         - vpa-system
+        - authentik
+        - cnpg-system
+        - kestra
+        - n8n-system
+        - oauth2-proxy
+        - windmill
     json: {}
     #  namespace:
     #    - gloo-mesh
