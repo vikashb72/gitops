@@ -340,7 +340,12 @@ kestra:
   
   extraVolumes: []
   
-  extraEnv: []
+  extraEnv:
+    - name: DATASOURCES_POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: psql-credentials
+          key: user-password
   
   # https://kestra.io/docs/configuration#environment-variables-prefix
   extraConfigMapEnvFrom:
