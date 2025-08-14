@@ -37,6 +37,10 @@ kube-prometheus-stack:
         enabled: false
 
   alertmanager:
+    extraArgs:
+      web.external-url: "https://alertmanager.minikube.where-ever.net/"
+      web.route-prefix: "/"
+
     enabled: true
 
     config:
