@@ -1,3 +1,6 @@
+env:
+  schema: minikube
+
 kestra:
   ### This creates a config map of the Kestra configuration
   #configuration: {}
