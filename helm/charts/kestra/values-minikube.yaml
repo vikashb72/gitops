@@ -290,7 +290,7 @@ kestra:
       postgresql:
         auth:
           postgresPassword: ""
-          username: ""
+          username: "kestra"
           password: ""
           database: "kestra"
           existingSecret: "psql-credentials"
