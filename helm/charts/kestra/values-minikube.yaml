@@ -213,7 +213,7 @@ kestra:
   elasticsearch:
     enabled: true
     secret:
-      enabled: false  # own es-elastic-credential Secret
+      enabled: true  # own es-elastic-credential Secret
     clusterName: "es-kestra"
     createCert: false
     protocol: http
