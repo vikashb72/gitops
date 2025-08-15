@@ -97,6 +97,7 @@ kube-prometheus-stack:
 
     ## Configuration for Alertmanager service
     alertmanagerSpec:
+      externalUrl: "https://alertmanager.minikube.where-ever.net/"
       persistentVolumeClaimRetentionPolicy:
         whenDeleted: Delete
         whenScaled: Retain
