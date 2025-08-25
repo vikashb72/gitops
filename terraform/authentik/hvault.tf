@@ -4,3 +4,8 @@ data "vault_kv_secret_v2" "authentik_clients" {
   mount = "kv"
   name  = each.value.secret_name
 }
+
+data "vault_kv_secret_v2" "idp_token" {
+  mount    = "kv"
+  name     = "infrastructure/authentik/idp"
+}

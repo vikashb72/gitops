@@ -18,3 +18,13 @@ output "saml_groups" {
   description = "SAML Groups"
   value       = { for out in authentik_group.saml_groups : out.name => out.id }
 }
+
+output "roles" {
+  description = "Roles"
+  value       = { for out in authentik_rbac_role.roles: out.name => out.id }
+}
+
+#output "scim" {
+#  description = "SCIM"
+#  value       = authentik_provider_scim.scim_provider.id
+#}

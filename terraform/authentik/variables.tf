@@ -58,3 +58,13 @@ variable "proxy_providers" {
 variable "users" {
   type = list(any)
 }
+
+variable "roles" {
+  type    = list
+  default = []
+}
+
+variable "groups" {
+  type    = list
+  default = []
+}

@@ -2,6 +2,15 @@ environment        = "minikube"
 authentik_url      = "https://authentik.minikube.where-ever.net"
 service_connection = "120cbb17-f3a4-42ac-bcf2-80c93caeb4ba"
 
+roles = [
+  "DevOps",
+  "Dev"
+]
+
+groups = [
+  "Okta"
+]
+
 oauth2_providers = [
   {
     key            = "argocd",

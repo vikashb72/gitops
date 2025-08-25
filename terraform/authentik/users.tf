@@ -13,3 +13,12 @@ resource "authentik_user" "users" {
     authentik_group.proxy_groups
   ]
 }
+
+#resource "authentik_user" "user_tokens" {
+#  for_each = { for u in var.users : u.username => u }
+#
+#  identifier  = format("%s-token", each.value.username)
+#  user        = authentik_user.users[each.value.username].id
+#  description = "My secret token"
+#  expires     = "2025-01-01T15:04:05Z"
+#}
