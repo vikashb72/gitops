@@ -187,6 +187,7 @@ proxy_providers  = [
 ]
 
 #admin_group = "736d56b6-f86c-4b90-8e29-b1f9feed563f"
+#idp_groups    = "9e4a1353-fe96-4e4a-b9d5-f3d3c623b7d4"
 #oauth2_groups = {
 #  "ArgoCD Admins" = "a95aafb1-1b09-4596-92c1-29df26ecdc7b"
 #  "ArgoCD Viewers" = "09d51c4f-167f-4bb2-90e3-2e3bcc46b6e5"
@@ -227,7 +228,8 @@ users = [
         "2dac679a-3a9c-49ec-be27-58ecfd69546f",
         "05a6cf84-e09a-42fe-8441-aea927693250",
         "5a1136dc-8a57-4d9b-ac56-e93541174fca",
-        "e318ab61-438f-44b3-b3b1-b165d6493792"
+        "e318ab61-438f-44b3-b3b1-b165d6493792",
+        "9e4a1353-fe96-4e4a-b9d5-f3d3c623b7d4"
         #"ddb13301-4440-4c00-8d41-1b8392c4eebe"
     ]
   }

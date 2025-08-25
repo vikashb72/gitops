@@ -47,11 +47,3 @@ data "authentik_property_mapping_provider_scim" "user" {
 data "authentik_property_mapping_provider_scim" "group" {
   managed = "goauthentik.io/providers/scim/group"
 }
-
-output "scim_user" {
-   value = data.authentik_property_mapping_provider_scim.user
-}
-
-output "scim_group" {
-   value = data.authentik_property_mapping_provider_scim.group
-}
