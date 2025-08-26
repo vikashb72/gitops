@@ -29,6 +29,12 @@ argocdManaged:
             - values-apps.yaml
     automated:
       allowEmpty: true
+  httpbin:
+    disable: false
+    name: httpbin
+    targetNamespace: httpbin
+    sources:
+      - path: helm/charts/httpbin
   cnpg:
     name: cnpg
     targetNamespace: cnpg-system
@@ -45,7 +51,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   windmill:
-    disable: false
+    disable: true
     name: windmill
     targetNamespace: windmill
     sources:
@@ -461,12 +467,6 @@ argocdManaged:
   #  targetNamespace: echoserver
   #  sources:
   #    - path: helm/charts/echoserver
-  #httpbin:
-  #  disable: true
-  #  name: httpbin
-  #  targetNamespace: httpbin
-  #  sources:
-  #    - path: helm/charts/httpbin
   #redis:
   #  name: redis
   #  targetNamespace: redis

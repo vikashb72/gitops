@@ -10,10 +10,20 @@ metadata:
   namespace: {{ default "istio-system" $.Values.schema.istioNamespace }}
 spec:
   host: {{ .DestinationRule.host }}
-{{- if .DestinationRule.tls }}
   trafficPolicy:
+{{- if .DestinationRule.tls }}
     tls:
       mode: SIMPLE
+{{- end }}
+{{- if .DestinationRule.maxConnections }}
+    connectionPool:
+      tcp:
+        maxConnections: {{ .DestinationRule.maxConnections }}
+        connectTimeout: 5s
+        tcpKeepalive:
+          time: 7200s
+          interval: 75s
+        #idleTimeout:
 {{- end }}
 ---
 {{- end }}

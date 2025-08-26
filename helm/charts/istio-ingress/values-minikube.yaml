@@ -4,32 +4,32 @@ schema:
 
 gateways:
   # n8n (via app-gateway)
-  kestra-gateway:
-    gateway:
-      selector: app-gateway
-    servers:
-      - port:
-          number: 443
-          name: kestra-https
-          protocol: HTTPS
-        hosts:
-          - 'kestra.minikube.where-ever.net'
-    VirtualServices:
-      - name: kestra-virtual-service
-        CustomAuthorizationPolicy: true
-        hosts:
-          - "kestra.minikube.where-ever.net"
-        http:
-          - match:
-              - uri:
-                  regex: ^\/[^\.]+.*
-              - uri:
-                  exact: /
-            route:
-              - destination:
-                  host: kestra-service.kestra.svc.cluster.local
-                  port:
-                    number: 8080
+  #kestra-gateway:
+  #  gateway:
+  #    selector: app-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: kestra-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'kestra.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: kestra-virtual-service
+  #      CustomAuthorizationPolicy: true
+  #      hosts:
+  #        - "kestra.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                regex: ^\/[^\.]+.*
+  #            - uri:
+  #                exact: /
+  #          route:
+  #            - destination:
+  #                host: kestra-service.kestra.svc.cluster.local
+  #                port:
+  #                  number: 8080
   # n8n (via app-gateway)
   #n8n-gateway:
   #  gateway:
@@ -57,32 +57,35 @@ gateways:
   #                host: n8n.n8n-system.svc.cluster.local
   #                port:
   #                  number: 80
-  #httpbin-gateway:
-  #  gateway:
-  #    selector: app-gateway
-  #  servers:
-  #    - port:
-  #        number: 443
-  #        name: httpbin-https
-  #        protocol: HTTPS
-  #      hosts:
-  #        - 'httpbin.minikube.where-ever.net'
-  #  VirtualServices:
-  #    - name: httpbin-virtual-service
-  #      CustomAuthorizationPolicy: true
-  #      hosts:
-  #        - "httpbin.minikube.where-ever.net"
-  #      http:
-  #        - match:
-  #            - uri:
-  #                regex: ^\/[^\.]+.*
-  #            - uri:
-  #                exact: /
-  #          route:
-  #            - destination:
-  #                host: httpbin.httpbin.svc.cluster.local
-  #                port:
-  #                  number: 8000
+  httpbin-gateway:
+    gateway:
+      selector: app-gateway
+    servers:
+      - port:
+          number: 443
+          name: httpbin-https
+          protocol: HTTPS
+        hosts:
+          - 'httpbin.minikube.where-ever.net'
+    VirtualServices:
+      - name: httpbin-virtual-service
+        #CustomAuthorizationPolicy: true
+        DestinationRule:
+          host: httpbin.httpbin.svc.cluster.local
+          maxConnections: 5
+        hosts:
+          - "httpbin.minikube.where-ever.net"
+        http:
+          - match:
+              - uri:
+                  regex: ^\/[^\.]+.*
+              - uri:
+                  exact: /
+            route:
+              - destination:
+                  host: httpbin.httpbin.svc.cluster.local
+                  port:
+                    number: 8000
   ## echoserver (via app-gateway)
   #echoserver-gateway:
   #  gateway:
@@ -279,6 +282,7 @@ gateways:
         DestinationRule:
           host: vault-ui.vault-system.svc.cluster.local
           tls: true
+          maxConnections: 100
         hosts:
           - "vault-ui.minikube.where-ever.net"
         http:
