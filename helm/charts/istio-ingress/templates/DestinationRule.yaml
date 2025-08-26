@@ -23,7 +23,9 @@ spec:
         tcpKeepalive:
           time: 7200s
           interval: 75s
-        #idleTimeout:
+      http:
+        http2MaxRequests: 50
+        maxRequestsPerConnection: 10
 {{- end }}
 ---
 {{- end }}
