@@ -65,6 +65,8 @@ gateways:
           number: 80
           name: httpbin-http
           protocol: HTTP
+        hosts:
+          - 'httpbin.minikube.where-ever.net'
       - port:
           number: 443
           name: httpbin-https
