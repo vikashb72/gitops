@@ -8,7 +8,7 @@ metadata:
   name: {{ $VirtualService.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
-  timeout: 5s
+  #timeout: 5s
 {{- with $VirtualService.hosts }}
   hosts:
     {{- toYaml . | nindent 4 }}
