@@ -24,8 +24,11 @@ spec:
           time: 7200s
           interval: 75s
       http:
-        http2MaxRequests: 50
-        maxRequestsPerConnection: 10
+        http2MaxRequests: 5
+        http1MaxPendingRequests: 10
+        maxRequestsPerConnection: 2
+        useClientProtocol: true
+        maxConcurrentStreams: 2
 {{- end }}
 ---
 {{- end }}
