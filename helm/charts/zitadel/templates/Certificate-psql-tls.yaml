@@ -1,0 +1,31 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: psql-certmanager-cert
+  namespace: {{ $.Release.Namespace }}
+spec:
+  commonName: "*.zitadel.svc.cluster.local"
+  dnsNames:
+    - db-lb.internal.mydomain.net
+    - db-rw
+    - db-rw.zitadel
+    - db-rw.zitadel.svc
+    - db-rw.zitadel.svc.cluster
+    - db-rw.zitadel.svc.cluster.local
+    - db-r
+    - db-r.zitadel
+    - db-r.zitadel.svc
+    - db-r.zitadel.svc.cluster
+    - db-r.zitadel.svc.cluster.local
+    - db-ro
+    - db-ro.zitadel
+    - db-ro.zitadel.svc
+    - db-ro.zitadel.svc.cluster
+    - db-ro.zitadel.svc.cluster.local
+  secretName: psql-tls
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  issuerRef:
+    name: vault-cert-issuer
+    kind: ClusterIssuer
