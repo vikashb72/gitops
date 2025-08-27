@@ -9,3 +9,8 @@ data "vault_kv_secret_v2" "idp_token" {
   mount    = "kv"
   name     = "infrastructure/authentik/idp"
 }
+
+data "vault_kv_secret_v2" "okta_oidc" {
+  mount = "kv"
+  name  = "infrastructure/authentik/okta-source"
+}

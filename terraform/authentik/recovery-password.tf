@@ -13,6 +13,9 @@ data "authentik_stage" "default-authentication-identification" {
 resource "authentik_stage_identification" "recovery" {
   name        = "recovery-authentification-identification"
   user_fields = ["username", "email"]
+
+  #sources       = [authentik_source_oauth.name.uuid]
+  #recovery_flow = authentik_flow.recovery.uuid
 }
 
 resource "authentik_stage_email" "recovery" {
@@ -51,14 +54,17 @@ resource "authentik_flow_stage_binding" "recovery-flow-password-write" {
   order  = 30
 }
 
-# data "authentik_flow" "default-authentication-flow"
 # data "authentik_stage" "default-authentication-identification" {
+
+output "default-authentication-identification" {
+   value = data.authentik_stage.default-authentication-identification
+}
 
 #resource "authentik_stage_identification" "default_authentication_identification" {
 #  name           = "default-authentication-identification"
 #  user_fields    = ["username", "email"]
 #  password_stage = data.authentik_stage.default-authentication-identification.id
-#  case_insensitive_matching = true
-#  recovery_flow = authentik_flow.recovery.uuid
+#  recovery_flow  = authentik_flow.recovery.uuid
+#  sources        = [authentik_source_oauth.name.uuid]
 #}
-#
+

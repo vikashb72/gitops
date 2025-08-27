@@ -47,3 +47,11 @@ data "authentik_property_mapping_provider_scim" "user" {
 data "authentik_property_mapping_provider_scim" "group" {
   managed = "goauthentik.io/providers/scim/group"
 }
+
+data "authentik_flow" "default-source-authentication" {
+  slug = "default-source-authentication"
+}
+
+data "authentik_flow" "default-source-enrollment" {
+  slug = "default-source-enrollment"
+}
