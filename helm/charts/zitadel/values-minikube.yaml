@@ -1,5 +1,6 @@
 zitadel:
   zitadel:
+    masterkey: x123456789012345678901234567891y
     # See all defaults here:
     # https://github.com/zitadel/zitadel/blob/main/cmd/defaults.yaml
     configmapConfig:
