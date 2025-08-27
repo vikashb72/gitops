@@ -13,6 +13,7 @@ zitadel:
             Enabled: true
           Webhook:
             Enabled: false
+
       FirstInstance:
         Org:
           LoginClient:
@@ -96,12 +97,36 @@ zitadel:
   # Additional environment variables
   env:
     - name: ZITADEL_DATABASE_POSTGRES_HOST
-      value: "db-rw"
-    # - name: ZITADEL_DATABASE_POSTGRES_HOST
-    #   valueFrom:
-    #     secretKeyRef:
-    #       name: postgres-pguser-postgres
-    #       key: host
+      value: "db-rw.zitadel.svc.cluster.local"
+    - name: ZITADEL_DATABASE_POSTGRES_DATABASE
+      value: 5432
+    - name: ZITADEL_DATABASE_POSTGRES_DATABASE
+      value: "zitadel"
+    - name: ZITADEL_DATABASE_POSTGRES_MAXOPENCONNS
+      value: 10
+    - name: ZITADEL_DATABASE_POSTGRES_MAXIDLECONNS
+      value: 5
+    - name: ZITADEL_DATABASE_POSTGRES_USER_USERNAME
+       valueFrom:
+         secretKeyRef:
+           name: db-zitadel
+           key: username
+    - name: ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
+       valueFrom:
+         secretKeyRef:
+           name: db-zitadel
+           key: password
+    - name: ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE
+      value: "verify-full"
+    - name: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
+      value: "postgres"
+    - name: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
+       valueFrom:
+         secretKeyRef:
+           name: db-zitadel
+           key: psql
+    - name: ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE
+      value: "verify-full"
   
   # Additional environment variables from the given secret name
   # Zitadel can be configured using environment variables from a secret.
