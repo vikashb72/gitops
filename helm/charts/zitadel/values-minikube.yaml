@@ -107,24 +107,24 @@ zitadel:
     - name: ZITADEL_DATABASE_POSTGRES_MAXIDLECONNS
       value: 5
     - name: ZITADEL_DATABASE_POSTGRES_USER_USERNAME
-       valueFrom:
-         secretKeyRef:
-           name: db-zitadel
-           key: username
+      valueFrom:
+        secretKeyRef:
+          name: db-zitadel
+          key: username
     - name: ZITADEL_DATABASE_POSTGRES_USER_PASSWORD
-       valueFrom:
-         secretKeyRef:
-           name: db-zitadel
-           key: password
+      valueFrom:
+        secretKeyRef:
+          name: db-zitadel
+          key: password
     - name: ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE
       value: "verify-full"
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
       value: "postgres"
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
-       valueFrom:
-         secretKeyRef:
-           name: db-zitadel
-           key: psql
+      valueFrom:
+        secretKeyRef:
+          name: db-zitadel
+          key: psql
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE
       value: "verify-full"
   
