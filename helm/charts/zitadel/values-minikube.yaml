@@ -99,13 +99,13 @@ zitadel:
     - name: ZITADEL_DATABASE_POSTGRES_HOST
       value: "db-rw.zitadel.svc.cluster.local"
     - name: ZITADEL_DATABASE_POSTGRES_DATABASE
-      value: 5432
+      value: "5432"
     - name: ZITADEL_DATABASE_POSTGRES_DATABASE
       value: "zitadel"
     - name: ZITADEL_DATABASE_POSTGRES_MAXOPENCONNS
-      value: 10
+      value: "10"
     - name: ZITADEL_DATABASE_POSTGRES_MAXIDLECONNS
-      value: 5
+      value: "5"
     - name: ZITADEL_DATABASE_POSTGRES_USER_USERNAME
       valueFrom:
         secretKeyRef:
