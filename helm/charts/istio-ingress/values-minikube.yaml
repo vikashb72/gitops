@@ -212,13 +212,22 @@ gateways:
           - "zitadel.minikube.where-ever.net"
         http:
           - match:
-            - uri:
+              - uri:
                 prefix: /
             route:
               - destination:
                   port:
                     number: 8080
                   host: zitadel.zitadel.svc.cluster.local
+          - name:
+            match:
+              - uri:
+                prefix: /ui/v2/login
+            route:
+              - destination:
+                  port:
+                    number: 3000
+                  host: zitadel-login.zitadel.svc.cluster.local
   # grafana (via infra-gateway)
   grafana-gateway:
     gateway:
