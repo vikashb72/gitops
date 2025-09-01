@@ -20,6 +20,19 @@ zitadel:
 
       FirstInstance:
         Org:
+          Machine:
+            Machine:
+              # ZITADEL_DEFAULTINSTANCE_ORG_MACHINE_MACHINE_USERNAME
+              Username: terraform
+              Name: Zitadel # ZITADEL_DEFAULTINSTANCE_ORG_MACHINE_MACHINE_NAME
+            MachineKey:
+              # ZITADEL_DEFAULTINSTANCE_ORG_MACHINE_MACHINEKEY_EXPIRATIONDATE
+              ExpirationDate: 2028-01-01T00:00:00Z
+              # Currently, the only supported value is 1 for JSON
+              Type: 1 # ZITADEL_DEFAULTINSTANCE_ORG_MACHINE_MACHINEKEY_TYPE
+            Pat:
+              # ZITADEL_DEFAULTINSTANCE_ORG_MACHINE_PAT_EXPIRATIONDATE
+              ExpirationDate: 2028-01-01T00:00:00Z
           LoginClient:
             Machine:
               Username: 'login-client'
