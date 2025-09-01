@@ -214,7 +214,7 @@ gateways:
           - name: zitadel
             match:
               - uri:
-                prefix: /
+                  prefix: /
             route:
               - destination:
                   port:
@@ -223,7 +223,7 @@ gateways:
           - name: login
             match:
               - uri:
-                prefix: /ui/v2/login
+                  prefix: /ui/v2/login
             route:
               - destination:
                   port:
