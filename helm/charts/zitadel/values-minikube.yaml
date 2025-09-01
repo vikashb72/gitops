@@ -10,10 +10,10 @@ zitadel:
       ExternalSecure: true
       Machine:
         Identification:
-          Hostname:
+          Hostname: 
             Enabled: true
           Webhook:
-            Enabled: false
+            Enabled: true
 
       TLS:
         Enabled: false
@@ -76,20 +76,20 @@ zitadel:
     # ZITADEL_SERVICE_USER_TOKEN_FILE="/login-client/pat"
     # ZITADEL_API_URL="http://{{ include "zitadel.fullname" . }}:{{ .Values.service.port }}"
     # CUSTOM_REQUEST_HEADERS="Host:{{ .Values.zitadel.configmapConfig.ExternalDomain }}"
-    customConfigmapConfig:
+    #customConfigmapConfig:
+    #  ZITADEL_API_URL="http://zitadel:8080"
     # To deploy zitadel multiple times in the same namespace, use a loginClientSecretPrefix.
     # To mount it, also change the referenced secretName for the login client to "{loginClientSecretPrefix}login-client"
     loginClientSecretPrefix:
     extraVolumeMounts:
-    - name: login-client
-      mountPath: /login-client
-      readOnly: true
+      - name: login-client
+        mountPath: /login-client
+        readOnly: true
     extraVolumes:
-    - name: login-client
-      secret:
-        defaultMode: 444
-        # Adjust this if you want to reference a different secret for the login client PAT.
-        secretName: login-client
+      - name: login-client
+        secret:
+          defaultMode: 444
+          secretName: login-client
     replicaCount: 1
     service:
       type: ClusterIP
@@ -100,6 +100,8 @@ zitadel:
   
   # Additional environment variables
   env:
+    - name: ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINV2_REQUIRED
+      value: "false"
     - name: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME
       valueFrom:
         secretKeyRef:
