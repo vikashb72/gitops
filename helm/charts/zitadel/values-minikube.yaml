@@ -118,8 +118,8 @@ zitadel:
       value: "5432"
     - name: ZITADEL_DATABASE_POSTGRES_DATABASE
       value: "zitadel"
-    - name: ZITADEL_DATABASE_POSTGRES_ADMIN_EXISTINGDATABASE
-      value: "zitadel"
+    #- name: ZITADEL_DATABASE_POSTGRES_ADMIN_EXISTINGDATABASE
+    #  value: "zitadel"
     - name: ZITADEL_DATABASE_POSTGRES_MAXOPENCONNS
       value: "10"
     - name: ZITADEL_DATABASE_POSTGRES_MAXIDLECONNS
