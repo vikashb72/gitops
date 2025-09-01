@@ -100,8 +100,8 @@ zitadel:
   
   # Additional environment variables
   env:
-    #- name: ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINV2_REQUIRED
-    #  value: false
+    - name: ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINV2_REQUIRED
+      value: false
     - name: ZITADEL_MASTERKEY
       valueFrom:
         secretKeyRef:
