@@ -211,7 +211,8 @@ gateways:
         hosts:
           - "zitadel.minikube.where-ever.net"
         http:
-          - match:
+          - name: zitadel
+            match:
               - uri:
                 prefix: /
             route:
@@ -219,7 +220,7 @@ gateways:
                   port:
                     number: 8080
                   host: zitadel.zitadel.svc.cluster.local
-          - name:
+          - name: login
             match:
               - uri:
                 prefix: /ui/v2/login
