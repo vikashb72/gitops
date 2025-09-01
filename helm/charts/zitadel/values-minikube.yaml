@@ -127,6 +127,18 @@ zitadel:
           key: psql
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE
       value: "verify-full"
+    - name: ZITADEL_DATABASE__USER_SSL_ROOTCERT
+      value: /ssl/certs/postgresqlrt/ca.crt
+    - name: ZITADEL_DATABASE__ADMIN_SSL_ROOTCERT
+      value: /ssl/certs/postgresql/ca.crt
+    - name: ZITADEL_DATABASE__ADMIN_SSL_CERT
+      value: /ssl/certs/postgresql/tls.crt
+    - name: ZITADEL_DATABASE__ADMIN_SSL_KEY
+      value: /ssl/certs/postgresql/tls.key
+    - name: ZITADEL_DATABASE__USER_SSL_CERT
+      value: /ssl/certs/postgresql/tls.crt
+    - name: ZITADEL_DATABASE__USER_SSL_KEY
+      value: /ssl/certs/postgresql/tls.key
   
   # Additional environment variables from the given secret name
   # Zitadel can be configured using environment variables from a secret.
