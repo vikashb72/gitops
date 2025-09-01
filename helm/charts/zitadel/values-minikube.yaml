@@ -147,7 +147,7 @@ zitadel:
   pdb:
     enabled: false
   
-  extraVolumes:
+  extraVolumeMounts:
     - mountPath: /etc/ssl/certs/
       name: own-ca-bundle
       readOnly: true
@@ -155,7 +155,7 @@ zitadel:
       mountPath: /ssl/certs/postgresql
       readOnly: true
   
-  extraVolumeMounts:
+  extraVolumes:
     - name: own-ca-bundle
       configMap:
         name: own-ca-bundle
