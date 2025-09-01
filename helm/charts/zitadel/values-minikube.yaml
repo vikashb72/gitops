@@ -99,6 +99,16 @@ zitadel:
   
   # Additional environment variables
   env:
+    - name: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: zitadel-admin
+          key: username
+    - name: ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: zitadel-admin
+          key: password
     - name: ZITADEL_DATABASE_POSTGRES_HOST
       value: "db-rw.zitadel.svc.cluster.local"
     - name: ZITADEL_DATABASE_POSTGRES_DATABASE
@@ -137,17 +147,17 @@ zitadel:
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE
       value: verify-full
       #value: disable
-    - name: ZITADEL_DATABASE__USER_SSL_ROOTCERT
+    - name: ZITADEL_DATABASE_POSTGRES_USER_SSL_ROOTCERT
       value: /ssl/certs/postgresqlrt/ca.crt
-    - name: ZITADEL_DATABASE__ADMIN_SSL_ROOTCERT
-      value: /ssl/certs/postgresql/ca.crt
-    - name: ZITADEL_DATABASE__ADMIN_SSL_CERT
+    - name: ZITADEL_DATABASE_POSTGRES_USER_SSL_CERT
       value: /ssl/certs/postgresql/tls.crt
-    - name: ZITADEL_DATABASE__ADMIN_SSL_KEY
+    - name: ZITADEL_DATABASE_POSTGRES_USER_SSL_KEY
       value: /ssl/certs/postgresql/tls.key
-    - name: ZITADEL_DATABASE__USER_SSL_CERT
+    - name: ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_ROOTCERT
+      value: /ssl/certs/postgresql/ca.crt
+    - name: ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_CERT
       value: /ssl/certs/postgresql/tls.crt
-    - name: ZITADEL_DATABASE__USER_SSL_KEY
+    - name: ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_KEY
       value: /ssl/certs/postgresql/tls.key
   
   # Additional environment variables from the given secret name
