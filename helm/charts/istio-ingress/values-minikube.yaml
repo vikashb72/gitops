@@ -215,6 +215,8 @@ gateways:
             match:
               - uri:
                   prefix: /
+              - uri:
+                  prefix: /ui/console/
             route:
               - destination:
                   port:
