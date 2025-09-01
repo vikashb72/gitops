@@ -9,7 +9,7 @@ spec:
     serverCASecret: psql-tls
   bootstrap:
     initdb:
-      database: zt
+      database: zitadel
       owner: zitadel
       secret:
         name: db-zitadel
