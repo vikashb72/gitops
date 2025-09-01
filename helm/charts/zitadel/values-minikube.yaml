@@ -14,6 +14,9 @@ zitadel:
           Webhook:
             Enabled: false
 
+      TLS:
+        Enabled: false
+
       FirstInstance:
         Org:
           LoginClient:
@@ -119,8 +122,8 @@ zitadel:
           name: db-zitadel
           key: password
     - name: ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE
-      #value: "verify-full"
-      value: disable
+      value: verify-full
+      #value: disable
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
       valueFrom:
         secretKeyRef:
@@ -132,8 +135,8 @@ zitadel:
           name: db-postgres
           key: password
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE
-      #value: "verify-full"
-      value: disable
+      value: verify-full
+      #value: disable
     - name: ZITADEL_DATABASE__USER_SSL_ROOTCERT
       value: /ssl/certs/postgresqlrt/ca.crt
     - name: ZITADEL_DATABASE__ADMIN_SSL_ROOTCERT
