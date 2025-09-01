@@ -196,6 +196,29 @@ gateways:
                   port:
                     number: 80
                   host: authentik-server.authentik.svc.cluster.local
+  zitadel-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: zitadel-https
+          protocol: HTTPS
+        hosts:
+          - 'zitadel.minikube.where-ever.net'
+    VirtualServices:
+      - name: zitadel-virtual-service
+        hosts:
+          - "zitadel.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 8080
+                  host: zitadel.zitadel.svc.cluster.local
   # grafana (via infra-gateway)
   grafana-gateway:
     gateway:
