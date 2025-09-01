@@ -122,12 +122,15 @@ zitadel:
       #value: "verify-full"
       value: disable
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
-      value: "postgres"
+      valueFrom:
+        secretKeyRef:
+          name: db-postgres
+          key: username
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: db-zitadel
-          key: psql
+          name: db-postgres
+          key: password
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE
       value: "verify-full"
     - name: ZITADEL_DATABASE__USER_SSL_ROOTCERT
