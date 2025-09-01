@@ -102,6 +102,8 @@ zitadel:
       value: "5432"
     - name: ZITADEL_DATABASE_POSTGRES_DATABASE
       value: "zitadel"
+    - name: ZITADEL_DATABASE_POSTGRES_ADMIN_EXISTINGDATABASE
+      value: "zitadel"
     - name: ZITADEL_DATABASE_POSTGRES_MAXOPENCONNS
       value: "10"
     - name: ZITADEL_DATABASE_POSTGRES_MAXIDLECONNS
@@ -117,7 +119,8 @@ zitadel:
           name: db-zitadel
           key: password
     - name: ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE
-      value: "verify-full"
+      #value: "verify-full"
+      value: disable
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
       value: "postgres"
     - name: ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
