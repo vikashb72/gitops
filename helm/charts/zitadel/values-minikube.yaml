@@ -148,7 +148,7 @@ zitadel:
       value: verify-full
       #value: disable
     - name: ZITADEL_DATABASE_POSTGRES_USER_SSL_ROOTCERT
-      value: /ssl/certs/postgresqlrt/ca.crt
+      value: /ssl/certs/postgresql/ca.crt
     - name: ZITADEL_DATABASE_POSTGRES_USER_SSL_CERT
       value: /ssl/certs/postgresql/tls.crt
     - name: ZITADEL_DATABASE_POSTGRES_USER_SSL_KEY
