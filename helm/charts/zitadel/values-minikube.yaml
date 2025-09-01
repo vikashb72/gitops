@@ -103,7 +103,6 @@ zitadel:
     - name: ZITADEL_DEFAULTINSTANCE_FEATURES_LOGINV2_REQUIRED
       value: "false"
     - name: ZITADEL_MASTERKEY
-      value: "false"
       valueFrom:
         secretKeyRef:
           name: masterkey
