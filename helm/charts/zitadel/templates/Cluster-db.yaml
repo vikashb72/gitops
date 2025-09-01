@@ -12,7 +12,10 @@ spec:
       database: zitadel
       owner: zitadel
       secret:
-        name: zitadel
+        name: db-zitadel
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: db-postgres
   postgresql:
     parameters:
       shared_buffers: "64MB"
