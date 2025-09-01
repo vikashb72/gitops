@@ -30,7 +30,7 @@ argocdManaged:
     automated:
       allowEmpty: true
   zitadel:
-    disable: true
+    disable: false
     name: zitadel
     targetNamespace: zitadel
     sources:
