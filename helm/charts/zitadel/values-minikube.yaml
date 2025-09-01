@@ -94,7 +94,7 @@ zitadel:
     service:
       type: ClusterIP
     ingress:
-      enabled: true
+      enabled: false
   
   replicaCount: 1
   
