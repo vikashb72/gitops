@@ -6,6 +6,7 @@ zitadel:
     # See all defaults here:
     # https://github.com/zitadel/zitadel/blob/main/cmd/defaults.yaml
     configmapConfig:
+      ExternalDomain: zitadel.minikube.where-ever.net
       ExternalSecure: true
       Machine:
         Identification:
