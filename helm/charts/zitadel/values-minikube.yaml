@@ -40,7 +40,7 @@ zitadel:
     masterkeySecretName: "masterkey"
   
     # The CA Certificate needed for establishing secure database connections
-    dbSslCaCrt: "/ssl/certs/postgresql/ca.crt"
+    dbSslCaCrt: ""
   
     # Annotations set on database SSL CA certificate secret
     dbSslCaCrtAnnotations:
