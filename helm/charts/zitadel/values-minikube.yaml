@@ -24,7 +24,8 @@ zitadel:
             Machine:
               # ZITADEL_DEFAULTINSTANCE_ORG_MACHINE_MACHINE_USERNAME
               Username: terraform
-              Name: Zitadel # ZITADEL_DEFAULTINSTANCE_ORG_MACHINE_MACHINE_NAME
+              # ZITADEL_DEFAULTINSTANCE_ORG_MACHINE_MACHINE_NAME
+              Name: terraform 
             MachineKey:
               # ZITADEL_DEFAULTINSTANCE_ORG_MACHINE_MACHINEKEY_EXPIRATIONDATE
               ExpirationDate: 2028-01-01T00:00:00Z
@@ -37,7 +38,8 @@ zitadel:
             Machine:
               Username: 'login-client'
               Name: 'Automatically Initialized IAM Login Client'
-            Pat.ExpirationDate: '2029-01-01T00:00:00Z'
+            Pat:
+              ExpirationDate: '2029-01-01T00:00:00Z'
   
     # The ZITADEL config under secretConfig is written to a Kubernetes Secret
     # See all defaults here:
