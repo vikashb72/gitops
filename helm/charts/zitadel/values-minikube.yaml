@@ -96,7 +96,7 @@ zitadel:
     ingress:
       enabled: true
   
-  replicaCount: 3
+  replicaCount: 1
   
   # Additional environment variables
   env:
