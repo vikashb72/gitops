@@ -90,11 +90,11 @@ zitadel:
         defaultMode: 444
         # Adjust this if you want to reference a different secret for the login client PAT.
         secretName: login-client
-    replicaCount: 3
+    replicaCount: 1
     service:
       type: ClusterIP
     ingress:
-      enabled: false
+      enabled: true
   
   replicaCount: 3
   
