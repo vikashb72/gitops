@@ -60,6 +60,19 @@ oauth2_providers = [
     ]
   },
   {
+    key            = "zitadel",
+    name           = "Zitadel",
+    secret_name    = "minikube/zitadel/authentik-client",
+    groups         = ["zitadel"],
+    launch_url     = "",
+    redirect_uris  = [
+      {
+        "matching_mode" = "strict",
+        "url"           = "https://zitadel.minikube.where-ever.net/ui/login/login/externalidp/callback"
+      }
+    ]
+  },
+  {
     key            = "oauth2-proxy",
     name           = "OAuth2 Proxy",
     secret_name    = "minikube/oauth2-proxy/authentik-client",
@@ -229,7 +242,8 @@ users = [
         "05a6cf84-e09a-42fe-8441-aea927693250",
         "5a1136dc-8a57-4d9b-ac56-e93541174fca",
         "e318ab61-438f-44b3-b3b1-b165d6493792",
-        "9e4a1353-fe96-4e4a-b9d5-f3d3c623b7d4"
+        "9e4a1353-fe96-4e4a-b9d5-f3d3c623b7d4",
+        "29fa6660-f18b-4c3e-a4ba-95eeb8e6fb08"
         #"ddb13301-4440-4c00-8d41-1b8392c4eebe"
     ]
   }
