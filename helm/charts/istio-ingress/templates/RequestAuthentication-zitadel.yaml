@@ -14,7 +14,9 @@ spec:
       app: {{ .ZitadelAuthPolicy.app }}
   jwtRules:
     - audiences:
-        # - ...
+{{- with .hosts }}
+        {{- toYaml . | nindent 8 }}
+{{- end }}
       forwardOriginalToken: true
       fromHeaders:
         - name: Authorization

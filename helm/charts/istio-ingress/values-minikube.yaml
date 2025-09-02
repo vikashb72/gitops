@@ -24,13 +24,13 @@ gateways:
           - 'httpbin.minikube.where-ever.net'
     VirtualServices:
       - name: httpbin-virtual-service
-        CustomAuthorizationPolicy: true
+        #CustomAuthorizationPolicy: true
         #DestinationRule:
         #  host: httpbin.httpbin.svc.cluster.local
         #  maxConnections: 5
-        #ZitadelAuthPolicy:
-        #  namespace: httpbin
-        #  app: httpbin
+        ZitadelAuthPolicy:
+          namespace: httpbin
+          app: httpbin
         hosts:
           - "httpbin.minikube.where-ever.net"
         http:
