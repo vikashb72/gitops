@@ -76,9 +76,9 @@ gateways:
     VirtualServices:
       - name: httpbin-virtual-service
         #CustomAuthorizationPolicy: true
-        DestinationRule:
-          host: httpbin.httpbin.svc.cluster.local
-          maxConnections: 5
+        #DestinationRule:
+        #  host: httpbin.httpbin.svc.cluster.local
+        #  maxConnections: 5
         hosts:
           - "httpbin.minikube.where-ever.net"
         http:
