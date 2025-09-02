@@ -1,0 +1,30 @@
+{{- range $key, $value := .Values.gateways }}
+{{- if not .disabled }}
+{{- if $value.VirtualServices }}
+{{- range $value.VirtualServices }}
+{{- if .ZitadelAuthPolicy }}
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: {{ .name | replace "virtual-service" "auth-policy-zitadel" }}
+  namespace: {{ default "istio-system" .ZitadelAuthPolicy.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .ZitadelAuthPolicy.app }}
+  rules:
+    - from:
+        - source:
+            requestPrincipals: ["*"]
+      to:
+        - operation:
+{{- with .hosts }}
+            hosts: 
+             {{- toYaml . | nindent 14 }}
+{{- end }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

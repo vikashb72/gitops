@@ -1,6 +1,9 @@
 schema:
   env: minikube
   istioNamespace: istio-system
+  zitadel:
+    issuer: 'https://zitadel.minikube.where-ever.net'
+    jwksUri: 'https://zitadel.minikube.where-ever.net/oauth/v2/keys'
 
 gateways:
   # n8n (via app-gateway)
@@ -79,6 +82,9 @@ gateways:
         #DestinationRule:
         #  host: httpbin.httpbin.svc.cluster.local
         #  maxConnections: 5
+        ZitadelAuthPolicy:
+          namespace: httpbin
+          app: httpbin
         hosts:
           - "httpbin.minikube.where-ever.net"
         http:

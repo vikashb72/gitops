@@ -1,0 +1,20 @@
+{{- range $key, $value := .Values.gateways }}
+{{- if not .disabled }}
+{{- if $value.VirtualServices }}
+{{- range $value.VirtualServices }}
+{{- if .ZitadelAuthPolicy }}
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: {{ .name | replace "virtual-service" "req-auth-zitadel" }}
+  namespace: {{ default "istio-system" $.Values.schema.istioNamespace }}
+spec:
+  jwtRules:
+  - issuer: {{ $.Values.schema.zitadel.issuer }}
+    jwksUri: {{ $.Values.schema.zitadel.jwksUri }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
