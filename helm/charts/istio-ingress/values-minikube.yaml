@@ -6,6 +6,44 @@ schema:
     jwksUri: 'https://zitadel.minikube.where-ever.net/oauth/v2/keys'
 
 gateways:
+  httpbin-gateway:
+    gateway:
+      selector: app-gateway
+    servers:
+      #- port:
+      #    number: 80
+      #    name: httpbin-http
+      #    protocol: HTTP
+      #  hosts:
+      #    - 'httpbin.minikube.where-ever.net'
+      - port:
+          number: 443
+          name: httpbin-https
+          protocol: HTTPS
+        hosts:
+          - 'httpbin.minikube.where-ever.net'
+    VirtualServices:
+      - name: httpbin-virtual-service
+        CustomAuthorizationPolicy: true
+        #DestinationRule:
+        #  host: httpbin.httpbin.svc.cluster.local
+        #  maxConnections: 5
+        #ZitadelAuthPolicy:
+        #  namespace: httpbin
+        #  app: httpbin
+        hosts:
+          - "httpbin.minikube.where-ever.net"
+        http:
+          - match:
+              - uri:
+                  regex: ^\/[^\.]+.*
+              - uri:
+                  exact: /
+            route:
+              - destination:
+                  host: httpbin.httpbin.svc.cluster.local
+                  port:
+                    number: 8000
   # n8n (via app-gateway)
   #kestra-gateway:
   #  gateway:
@@ -60,44 +98,6 @@ gateways:
   #                host: n8n.n8n-system.svc.cluster.local
   #                port:
   #                  number: 80
-  httpbin-gateway:
-    gateway:
-      selector: app-gateway
-    servers:
-      - port:
-          number: 80
-          name: httpbin-http
-          protocol: HTTP
-        hosts:
-          - 'httpbin.minikube.where-ever.net'
-      - port:
-          number: 443
-          name: httpbin-https
-          protocol: HTTPS
-        hosts:
-          - 'httpbin.minikube.where-ever.net'
-    VirtualServices:
-      - name: httpbin-virtual-service
-        #CustomAuthorizationPolicy: true
-        #DestinationRule:
-        #  host: httpbin.httpbin.svc.cluster.local
-        #  maxConnections: 5
-        ZitadelAuthPolicy:
-          namespace: httpbin
-          app: httpbin
-        hosts:
-          - "httpbin.minikube.where-ever.net"
-        http:
-          - match:
-              - uri:
-                  regex: ^\/[^\.]+.*
-              - uri:
-                  exact: /
-            route:
-              - destination:
-                  host: httpbin.httpbin.svc.cluster.local
-                  port:
-                    number: 8000
   ## echoserver (via app-gateway)
   #echoserver-gateway:
   #  gateway:
