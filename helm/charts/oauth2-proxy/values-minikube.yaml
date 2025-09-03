@@ -18,7 +18,8 @@ oauth2-proxy:
       http_address = "127.0.0.1:80" #localdev only
       skip_provider_button = true
       provider_display_name = "ZITADEL"
-      oidc_issuer_url = "https://zitadel.minikube.where-ever.net"
+      oidc_issuer_url = "https://authentik.minikube.where-ever.net/application/o/oauth2-proxy/"
+      #oidc_issuer_url = "https://zitadel.minikube.where-ever.net"
     # configFile: |-
     #   pass_basic_auth = false
     # Use an existing config map (see configmap.yaml for required fields)
