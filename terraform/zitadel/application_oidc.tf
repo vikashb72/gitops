@@ -19,3 +19,15 @@ resource "zitadel_application_oidc" "default" {
   additional_origins           = []
   skip_native_app_success_page = false
 }
+
+resource "vault_kv_secret_v2" "oidc_creds" {
+  mount     = "kv"
+  name      = "infrastructure/oauth-proxy/secrets"
+  data_json = jsonencode(
+    {
+      client-id     = zitadel_application_oidc.default.client_id
+      client-secret = zitadel_application_oidc.default.client_secret
+      cookie-secret = "none"
+    }
+  )
+}
