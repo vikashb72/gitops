@@ -11,7 +11,11 @@ metadata:
 spec:
   selector:
     matchLabels:
+{{- if .ZitadelAuthPolicy.gateway }}
+      istio: {{ .ZitadelAuthPolicy.gateway }}
+{{- else }}
       app: {{ .ZitadelAuthPolicy.app }}
+{{- end }}
   jwtRules:
     - issuer: {{ $.Values.schema.zitadel.issuer }}
       jwksUri: {{ $.Values.schema.zitadel.jwksUri }}

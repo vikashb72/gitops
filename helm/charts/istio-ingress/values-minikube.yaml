@@ -6,6 +6,42 @@ schema:
     jwksUri: 'https://zitadel.minikube.where-ever.net/oauth/v2/keys'
 
 gateways:
+
+  zhttpbin-gateway:
+    gateway:
+      selector: zitadel-gateway
+    servers:
+      - port:
+          number: 443
+          name: httpbin-https
+          protocol: HTTPS
+        hosts:
+          - 'zhttpbin.minikube.where-ever.net'
+    VirtualServices:
+      - name: zhttpbin-virtual-service
+        #CustomAuthorizationPolicy: true
+        #DestinationRule:
+        #  host: httpbin.httpbin.svc.cluster.local
+        #  maxConnections: 5
+        ZitadelAuthPolicy:
+          namespace: httpbin
+          gateway: zitadel-gateway
+          app: httpbin
+          roles:
+            - DevOps
+            - Admin
+        hosts:
+          - "zhttpbin.minikube.where-ever.net"
+        http:
+          - match:
+              - uri:
+                  exact: /
+            route:
+              - destination:
+                  host: httpbin.httpbin.svc.cluster.local
+                  port:
+                    number: 8000
+
   httpbin-gateway:
     gateway:
       selector: app-gateway
@@ -28,12 +64,12 @@ gateways:
         #DestinationRule:
         #  host: httpbin.httpbin.svc.cluster.local
         #  maxConnections: 5
-        ZitadelAuthPolicy:
-          namespace: httpbin
-          app: httpbin
-          roles:
-            - DevOps
-            - Admin
+        #ZitadelAuthPolicy:
+        #  namespace: httpbin
+        #  app: httpbin
+        #  roles:
+        #    - DevOps
+        #    - Admin
         hosts:
           - "httpbin.minikube.where-ever.net"
         http:
