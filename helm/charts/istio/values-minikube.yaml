@@ -78,6 +78,9 @@ istiod:
           headersToDownstreamOnDeny:
             - "content-type"
             - "set-cookie"
+          includeAdditionalHeadersInCheck:
+            authorization: '%REQ(x-auth-request-access-token)%'
+
       #- name: "ext-authz-grpc"
       #  envoyExtAuthzGrpc:
       #    service: "ext-authz.istio-system.svc.cluster.local"

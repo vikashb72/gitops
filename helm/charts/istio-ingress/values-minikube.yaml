@@ -19,8 +19,8 @@ gateways:
           - 'zhttpbin.minikube.where-ever.net'
     VirtualServices:
       - name: zhttpbin-virtual-service
-        CustomAuthorizationPolicy: true
-        meshProvider: oauth2-proxy
+        #CustomAuthorizationPolicy: true
+        #meshProvider: oauth2-proxy
         #DestinationRule:
         #  host: httpbin.httpbin.svc.cluster.local
         #  maxConnections: 5
