@@ -19,6 +19,21 @@ oauth2-proxy:
   service:
     portNumber: 80
 
+  extraVolumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+          - key: own-ca-bundle.pem
+            path: ca-certificates.crt
+
+  extraVolumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
+
 #  config:
 #    # Add config annotations
 #    annotations: {}
