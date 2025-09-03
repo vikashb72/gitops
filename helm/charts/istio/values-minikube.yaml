@@ -60,10 +60,6 @@ istiod:
           pathPrefix: /outpost.goauthentik.io/auth/envoy
           service: authentik-server.authentik.svc.cluster.local
           port: 80
-      #- name: "zitadel-ext-authz"
-      #  envoyExtAuthzHttp:
-      #    service: zitadel.zitadel.svc.cluster.local
-      #    port: 8080 
       #- name: "oauth2-proxy"
       #  envoyExtAuthzHttp:
       #    service: "oauth2-proxy.oauth2-proxy.svc.cluster.local"
@@ -106,56 +102,6 @@ cni:
 ztunnel:
   profile: ambient
 
-#fleetGateway:
-#  name: "fleet-gateway"
-#  profile: ambient
-#
-#  service:
-#    type: LoadBalancer
-#    loadBalancerIP: 192.168.49.250
-#    annotations:
-#      metallb.universe.tf/address-pool: default
-#
-#  volumes:
-#    - name: own-ca-bundle
-#      configMap:
-#        name: own-ca-bundle
-#        defaultMode: 0644
-#        optional: false
-#        items:
-#        - key: own-ca-bundle.pem
-#          path: ca-certificates.crt
-#
-#  volumeMounts:
-#    - mountPath: /etc/ssl/certs/
-#      name: own-ca-bundle
-#      readOnly: true
-
-appGateway:
-  name: "app-gateway"
-  profile: ambient
-
-  service:
-    type: LoadBalancer
-    loadBalancerIP: 192.168.49.251
-    annotations:
-      metallb.universe.tf/address-pool: default
-
-  volumes:
-    - name: own-ca-bundle
-      configMap:
-        name: own-ca-bundle
-        defaultMode: 0644
-        optional: false
-        items:
-        - key: own-ca-bundle.pem
-          path: ca-certificates.crt
-
-  volumeMounts:
-    - mountPath: /etc/ssl/certs/
-      name: own-ca-bundle
-      readOnly: true
-
 infraGateway:
   name: "infra-gateway"
   profile: ambient
@@ -197,6 +143,98 @@ infraGateway:
     - mountPath: /etc/ssl/certs/
       name: own-ca-bundle
       readOnly: true
+
+appGateway:
+  name: "app-gateway"
+  profile: ambient
+
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 192.168.49.251
+    annotations:
+      metallb.universe.tf/address-pool: default
+
+  volumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+        - key: own-ca-bundle.pem
+          path: ca-certificates.crt
+
+  volumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
+
+zitadelGateway:
+  name: "zitadel-gateway"
+  profile: ambient
+
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 192.168.49.250
+    annotations:
+      metallb.universe.tf/address-pool: default
+    ports:
+      - name: status-port
+        port: 15021
+        protocol: TCP
+        targetPort: 15021
+      - name: http2
+        port: 80
+        protocol: TCP
+        targetPort: 80
+      - name: https
+        port: 443
+        protocol: TCP
+        targetPort: 443
+      - name: etcd
+        port: 2379
+        protocol: TCP
+        targetPort: 2379
+
+  volumes:
+    - name: own-ca-bundle
+      configMap:
+        name: own-ca-bundle
+        defaultMode: 0644
+        optional: false
+        items:
+        - key: own-ca-bundle.pem
+          path: ca-certificates.crt
+
+  volumeMounts:
+    - mountPath: /etc/ssl/certs/
+      name: own-ca-bundle
+      readOnly: true
+
+#fleetGateway:
+#  name: "fleet-gateway"
+#  profile: ambient
+#
+#  service:
+#    type: LoadBalancer
+#    loadBalancerIP: 192.168.49.249
+#    annotations:
+#      metallb.universe.tf/address-pool: default
+#
+#  volumes:
+#    - name: own-ca-bundle
+#      configMap:
+#        name: own-ca-bundle
+#        defaultMode: 0644
+#        optional: false
+#        items:
+#        - key: own-ca-bundle.pem
+#          path: ca-certificates.crt
+#
+#  volumeMounts:
+#    - mountPath: /etc/ssl/certs/
+#      name: own-ca-bundle
+#      readOnly: true
 
 kiali-server:
   external_services:
