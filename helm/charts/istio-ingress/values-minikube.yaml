@@ -31,6 +31,9 @@ gateways:
         ZitadelAuthPolicy:
           namespace: httpbin
           app: httpbin
+          roles:
+            - DevOps
+            - Admin
         hosts:
           - "httpbin.minikube.where-ever.net"
         http:

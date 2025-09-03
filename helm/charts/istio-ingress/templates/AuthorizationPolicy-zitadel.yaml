@@ -12,15 +12,15 @@ spec:
   selector:
     matchLabels:
       app: {{ .ZitadelAuthPolicy.app }}
+  action: ALLOW
   rules:
-    - from:
-        - source:
-            requestPrincipals: ["*"]
-      to:
+{{- range .ZitadelAuthPolicy.roles }}
+    - to:
         - operation:
-{{- with .hosts }}
-            hosts: 
-             {{- toYaml . | nindent 14 }}
+            paths: ["/"]
+      when:
+        - key: request.auth.claims[role]
+          values: ["{{ . }}"]
 {{- end }}
 ---
 {{- end }}
