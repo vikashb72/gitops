@@ -15,10 +15,10 @@ oauth2-proxy:
    http-address: 0.0.0.0:4180
    upstream: static://200
    skip-provider-button: true
-   #oidc-issuer-url: "https://authentik.minikube.where-ever.net/application/o/oauth2-proxy/"
    oidc-issuer-url: "https://zitadel.minikube.where-ever.net"
    reverse-proxy: true
    pass-authorization-header: true
+   pass-access-token: true
    whitelist-domain: ".minikube.where-ever.net"
   service:
     portNumber: 4180
