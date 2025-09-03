@@ -16,6 +16,9 @@ oauth2-proxy:
    upstream: static://200
    skip-provider-button: true
    oidc-issuer-url: "https://authentik.minikube.where-ever.net/application/o/oauth2-proxy/"
+   reverse-proxy: true
+   pass-authorization-header: true
+   whitelist-domain: ".minikube.where-ever.net"
   service:
     portNumber: 4180
 
