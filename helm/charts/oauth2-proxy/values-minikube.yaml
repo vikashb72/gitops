@@ -12,7 +12,7 @@ oauth2-proxy:
       user_id_claim = "sub"
       redirect_url = "http://127.0.0.1/oauth2/callback"
       email_domains = [ "*" ]
-      upstreams = [ "file:///dev/null" ]
+      upstreams = [ "http://0.0.0.0:8080" ]
       pass_access_token = true
       cookie_secure = false # localdevonly
       http_address = "127.0.0.1:80" #localdev only
