@@ -12,12 +12,12 @@ oauth2-proxy:
    cookie-name: _oauth2_proxy_istio_ingressgateway
    set-authorization-header: true
    email-domain: "*"
-   http-address: 0.0.0.0:80
+   http-address: 0.0.0.0:4180
    upstream: static://200
    skip-provider-button: true
    oidc-issuer-url: "https://authentik.minikube.where-ever.net/application/o/oauth2-proxy/"
   service:
-    portNumber: 80
+    portNumber: 4180
 
   extraVolumes:
     - name: own-ca-bundle
