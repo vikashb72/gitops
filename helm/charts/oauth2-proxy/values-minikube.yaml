@@ -16,7 +16,7 @@ oauth2-proxy:
    upstream: static://200
    skip-provider-button: true
    #oidc-issuer-url: "https://authentik.minikube.where-ever.net/application/o/oauth2-proxy/"
-   oidc-issuer-url: "https://zitadel.minikube.where-ever.net/"
+   oidc-issuer-url: "https://zitadel.minikube.where-ever.net"
    reverse-proxy: true
    pass-authorization-header: true
    whitelist-domain: ".minikube.where-ever.net"
