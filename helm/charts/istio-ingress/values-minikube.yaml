@@ -20,7 +20,7 @@ gateways:
     VirtualServices:
       - name: zhttpbin-virtual-service
         CustomAuthorizationPolicy:
-           meshProvider: oauth-proxy
+           meshProvider: oauth2-proxy
         #DestinationRule:
         #  host: httpbin.httpbin.svc.cluster.local
         #  maxConnections: 5
