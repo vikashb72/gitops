@@ -10,7 +10,7 @@ oauth2-proxy:
     configFile: |-
       provider = "oidc"
       user_id_claim = "sub"
-      redirect_url = "http://127.0.0.1/oauth2/callback"
+      redirect_url = "http://oauth2-proxy.oauth2-proxy/oauth2/oauth2/callback"
       email_domains = [ "*" ]
       upstreams = [ "http://0.0.0.0:8080" ]
       pass_access_token = true
