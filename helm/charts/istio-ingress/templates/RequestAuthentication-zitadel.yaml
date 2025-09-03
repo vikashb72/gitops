@@ -7,7 +7,7 @@ apiVersion: security.istio.io/v1
 kind: RequestAuthentication
 metadata:
   name: {{ .name | replace "virtual-service" "req-auth-zitadel" }}
-  namespace: {{ default "istio-system" $.Values.schema.istioNamespace }}
+  namespace: {{ default "istio-system" .ZitadelAuthPolicy.namespace }}
 spec:
   selector:
     matchLabels:
