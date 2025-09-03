@@ -21,7 +21,9 @@ spec:
 {{- end }}
 {{- with $VirtualService.http }}
   http:
-{{- if $VirtualService.CustomAuthorizationPolicy }}
+{{- if and $VirtualService.CustomAuthorizationPolicy
+       (eq $VirtualService.CustomAuthorizationPolicy.meshProvider "authentik")
+}}
     - match:
         - uri:
             prefix: /outpost.goauthentik.io
@@ -32,6 +34,14 @@ spec:
               number: 80
 {{- end }}
     {{- toYaml . | nindent 4 }}
+{{- end }}
+{{- if and $VirtualService.CustomAuthorizationPolicy
+       (eq $VirtualService.CustomAuthorizationPolicy.meshProvider "oauth-proxy")
+}}
+        headers:
+          request:
+            set:
+              Authorization: 'Bearer %REQ(x-auth-request-access-token)%'
 {{- end }}
 {{- with $VirtualService.tls }}
   tls:

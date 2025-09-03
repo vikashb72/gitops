@@ -19,8 +19,8 @@ gateways:
           - 'zhttpbin.minikube.where-ever.net'
     VirtualServices:
       - name: zhttpbin-virtual-service
-        #CustomAuthorizationPolicy: true
-        #meshProvider: oauth2-proxy
+        CustomAuthorizationPolicy:
+           meshProvider: oauth-proxy
         #DestinationRule:
         #  host: httpbin.httpbin.svc.cluster.local
         #  maxConnections: 5
@@ -61,7 +61,6 @@ gateways:
           - 'httpbin.minikube.where-ever.net'
     VirtualServices:
       - name: httpbin-virtual-service
-        #CustomAuthorizationPolicy: true
         #DestinationRule:
         #  host: httpbin.httpbin.svc.cluster.local
         #  maxConnections: 5
@@ -97,7 +96,8 @@ gateways:
   #        - 'kestra.minikube.where-ever.net'
   #  VirtualServices:
   #    - name: kestra-virtual-service
-  #      CustomAuthorizationPolicy: true
+  #      CustomAuthorizationPolicy:
+  #        meshProvider: authentik
   #      hosts:
   #        - "kestra.minikube.where-ever.net"
   #      http:
@@ -124,7 +124,8 @@ gateways:
   #        - 'n8n.minikube.where-ever.net'
   #  VirtualServices:
   #    - name: n8n-virtual-service
-  #      CustomAuthorizationPolicy: true
+  #      CustomAuthorizationPolicy:
+  #        meshProvider: authentik
   #      hosts:
   #        - "n8n.minikube.where-ever.net"
   #      http:
@@ -151,7 +152,8 @@ gateways:
   #        - 'echoserver.minikube.where-ever.net'
   #  VirtualServices:
   #    - name: echoserver-virtual-service
-  #      CustomAuthorizationPolicy: true
+  #      CustomAuthorizationPolicy:
+  #        meshProvider: authentik
   #      hosts:
   #        - "echoserver.minikube.where-ever.net"
   #      http:
@@ -202,7 +204,8 @@ gateways:
           - 'prometheus.minikube.where-ever.net'
     VirtualServices:
       - name: prometheus-virtual-service
-        CustomAuthorizationPolicy: true
+        CustomAuthorizationPolicy:
+          meshProvider: authentik
         hosts:
           - "prometheus.minikube.where-ever.net"
         http:
@@ -314,7 +317,8 @@ gateways:
           - 'alertmanager.minikube.where-ever.net'
     VirtualServices:
       - name: alertmanager-virtual-service
-        CustomAuthorizationPolicy: true
+        CustomAuthorizationPolicy:
+          meshProvider: authentik
         hosts:
           - "alertmanager.minikube.where-ever.net"
         http:
