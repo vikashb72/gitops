@@ -19,17 +19,18 @@ gateways:
           - 'zhttpbin.minikube.where-ever.net'
     VirtualServices:
       - name: zhttpbin-virtual-service
-        #CustomAuthorizationPolicy: true
+        CustomAuthorizationPolicy: true
+        meshProvider: zitadel
         #DestinationRule:
         #  host: httpbin.httpbin.svc.cluster.local
         #  maxConnections: 5
-        ZitadelAuthPolicy:
-          namespace: httpbin
-          gateway: zitadel-gateway
-          app: httpbin
-          roles:
-            - DevOps
-            - Admin
+        #ZitadelAuthPolicy:
+        #  namespace: httpbin
+        #  gateway: zitadel-gateway
+        #  app: httpbin
+        #  roles:
+        #    - DevOps
+        #    - Admin
         hosts:
           - "zhttpbin.minikube.where-ever.net"
         http:

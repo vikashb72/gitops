@@ -14,7 +14,7 @@ spec:
       istio: {{ $value.gateway.selector }}
   action: CUSTOM
   provider:
-    name: "authentik"
+    name: {{ default "authentik" .meshProvider }}
   rules:
     - to:
       - operation:
