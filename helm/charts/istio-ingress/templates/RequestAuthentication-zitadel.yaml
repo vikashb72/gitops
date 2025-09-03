@@ -13,19 +13,19 @@ spec:
     matchLabels:
       app: {{ .ZitadelAuthPolicy.app }}
   jwtRules:
-    - audiences:
-{{- with .hosts }}
-        {{- toYaml . | nindent 8 }}
-{{- end }}
+    - issuer: {{ $.Values.schema.zitadel.issuer }}
+      jwksUri: {{ $.Values.schema.zitadel.jwksUri }}
       forwardOriginalToken: true
+#      audiences:
+#{{- with .hosts }}
+#        {{- toYaml . | nindent 8 }}
+#{{- end }}
       fromHeaders:
         - name: Authorization
           prefix: 'Bearer '
       fromParams:
         - authorization
       outputPayloadToHeader: x-jwt-claims
-      issuer: {{ $.Values.schema.zitadel.issuer }}
-      jwksUri: {{ $.Values.schema.zitadel.jwksUri }}
 ---
 {{- end }}
 {{- end }}
