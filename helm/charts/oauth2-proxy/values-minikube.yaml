@@ -11,7 +11,6 @@ oauth2-proxy:
       provider = "oidc"
       user_id_claim = "sub"
       redirect_url = "http://127.0.0.1/oauth2/callback"
-      redirect_uri = "http://127.0.0.1/oauth2/callback"
       email_domains = [ "*" ]
       upstreams = [ "file:///dev/null" ]
       pass_access_token = true
