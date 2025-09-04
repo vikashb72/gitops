@@ -33,10 +33,22 @@ spec:
             port:
               number: 80
 {{- end }}
+{{- if and $VirtualService.CustomAuthorizationPolicy
+       (eq $VirtualService.CustomAuthorizationPolicy.meshProvider "oauth2-proxy")
+}}
+    - match:
+        - uri:
+            prefix: /oauth2
+      route:
+        - destination:
+            host: oauth2-proxy.oauth2-proxy.svc.cluster.local
+            port:
+              number: 4180
+{{- end }}
     {{- toYaml . | nindent 4 }}
 {{- end }}
 {{- if and $VirtualService.CustomAuthorizationPolicy
-       (eq $VirtualService.CustomAuthorizationPolicy.meshProvider "oauth-proxy")
+       (eq $VirtualService.CustomAuthorizationPolicy.meshProvider "oauth2-proxy")
 }}
         headers:
           request:
