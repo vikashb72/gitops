@@ -1,0 +1,602 @@
+schema:
+  env: minikube
+  istioNamespace: istio-system
+  zitadel:
+    issuer: 'https://zitadel.minikube.where-ever.net'
+    jwksUri: 'https://zitadel.minikube.where-ever.net/oauth/v2/keys'
+
+gateways:
+
+  zhttpbin-gateway:
+    gateway:
+      selector: zitadel-gateway
+    servers:
+      - port:
+          number: 443
+          name: httpbin-https
+          protocol: HTTPS
+        hosts:
+          - 'zhttpbin.minikube.where-ever.net'
+    VirtualServices:
+      - name: zhttpbin-virtual-service
+        CustomAuthorizationPolicy:
+           meshProvider: oauth2-proxy
+        #DestinationRule:
+        #  host: httpbin.httpbin.svc.cluster.local
+        #  maxConnections: 5
+        #ZitadelAuthPolicy:
+        #  namespace: httpbin
+        #  gateway: zitadel-gateway
+        #  app: httpbin
+        #  roles:
+        #    - DevOps
+        #    - Admin
+        hosts:
+          - "zhttpbin.minikube.where-ever.net"
+        http:
+          - match:
+              - uri:
+                  exact: /
+            route:
+              - destination:
+                  host: httpbin.httpbin.svc.cluster.local
+                  port:
+                    number: 8000
+
+  httpbin-gateway:
+    gateway:
+      selector: app-gateway
+    servers:
+      #- port:
+      #    number: 80
+      #    name: httpbin-http
+      #    protocol: HTTP
+      #  hosts:
+      #    - 'httpbin.minikube.where-ever.net'
+      - port:
+          number: 443
+          name: httpbin-https
+          protocol: HTTPS
+        hosts:
+          - 'httpbin.minikube.where-ever.net'
+    VirtualServices:
+      - name: httpbin-virtual-service
+        #DestinationRule:
+        #  host: httpbin.httpbin.svc.cluster.local
+        #  maxConnections: 5
+        #ZitadelAuthPolicy:
+        #  namespace: httpbin
+        #  app: httpbin
+        #  roles:
+        #    - DevOps
+        #    - Admin
+        hosts:
+          - "httpbin.minikube.where-ever.net"
+        http:
+          - match:
+              - uri:
+                  regex: ^\/[^\.]+.*
+              - uri:
+                  exact: /
+            route:
+              - destination:
+                  host: httpbin.httpbin.svc.cluster.local
+                  port:
+                    number: 8000
+  # n8n (via app-gateway)
+  #kestra-gateway:
+  #  gateway:
+  #    selector: app-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: kestra-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'kestra.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: kestra-virtual-service
+  #      CustomAuthorizationPolicy:
+  #        meshProvider: authentik
+  #      hosts:
+  #        - "kestra.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                regex: ^\/[^\.]+.*
+  #            - uri:
+  #                exact: /
+  #          route:
+  #            - destination:
+  #                host: kestra-service.kestra.svc.cluster.local
+  #                port:
+  #                  number: 8080
+  # n8n (via app-gateway)
+  #n8n-gateway:
+  #  gateway:
+  #    selector: app-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: n8n-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'n8n.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: n8n-virtual-service
+  #      CustomAuthorizationPolicy:
+  #        meshProvider: authentik
+  #      hosts:
+  #        - "n8n.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                regex: ^\/[^\.]+.*
+  #            - uri:
+  #                exact: /
+  #          route:
+  #            - destination:
+  #                host: n8n.n8n-system.svc.cluster.local
+  #                port:
+  #                  number: 80
+  ## echoserver (via app-gateway)
+  #echoserver-gateway:
+  #  gateway:
+  #    selector: app-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: echoserver-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'echoserver.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: echoserver-virtual-service
+  #      CustomAuthorizationPolicy:
+  #        meshProvider: authentik
+  #      hosts:
+  #        - "echoserver.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                regex: ^\/[^\.]+.*
+  #            - uri:
+  #                prefix: /
+  #          route:
+  #            - destination:
+  #                host: echoserver.echoserver.svc.cluster.local
+  #                port:
+  #                  number: 80
+  # argocd (via infra-gateway)
+  argocd-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: argocd-https
+          protocol: HTTPS
+        hosts:
+          - 'argocd.minikube.where-ever.net'
+    VirtualServices:
+      - name: argocd-virtual-service
+        hosts:
+          - "argocd.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: argocd-server.argocd.svc.cluster.local
+  # prometheus (via infra-gateway)
+  prometheus-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: prometheus-https
+          protocol: HTTPS
+        hosts:
+          - 'prometheus.minikube.where-ever.net'
+    VirtualServices:
+      - name: prometheus-virtual-service
+        CustomAuthorizationPolicy:
+          meshProvider: authentik
+        hosts:
+          - "prometheus.minikube.where-ever.net"
+        http:
+          - match:
+              - uri:
+                  regex: ^\/[^\.]+.*
+              - uri:
+                  prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 9090
+                  host: kube-prometheus-stack-prometheus.monitoring.svc.cluster.local
+  # authentik (via infra-gateway)
+  authentik-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: authentik-https
+          protocol: HTTPS
+        hosts:
+          - 'authentik.minikube.where-ever.net'
+          - 'auth.minikube.where-ever.net'
+    VirtualServices:
+      - name: authentik-virtual-service
+        hosts:
+          - "authentik.minikube.where-ever.net"
+          - "auth.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: authentik-server.authentik.svc.cluster.local
+  zitadel-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: zitadel-https
+          protocol: HTTPS
+        hosts:
+          - 'zitadel.minikube.where-ever.net'
+    VirtualServices:
+      - name: zitadel-virtual-service
+        hosts:
+          - "zitadel.minikube.where-ever.net"
+        http:
+          - name: zitadel
+            match:
+              - uri:
+                  prefix: /
+              - uri:
+                  prefix: /ui/console/
+            route:
+              - destination:
+                  port:
+                    number: 8080
+                  host: zitadel.zitadel.svc.cluster.local
+          - name: login
+            match:
+              - uri:
+                  prefix: /ui/v2/login
+            route:
+              - destination:
+                  port:
+                    number: 3000
+                  host: zitadel-login.zitadel.svc.cluster.local
+  # grafana (via infra-gateway)
+  grafana-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: grafana-https
+          protocol: HTTPS
+        hosts:
+          - 'grafana.minikube.where-ever.net'
+    VirtualServices:
+      - name: grafana-virtual-service
+        hosts:
+          - "grafana.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: kube-prometheus-stack-grafana.monitoring.svc.cluster.local
+  ## alertmanager (via infra-gateway)
+  alertmanager-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: alertmanager-https
+          protocol: HTTPS
+        hosts:
+          - 'alertmanager.minikube.where-ever.net'
+    VirtualServices:
+      - name: alertmanager-virtual-service
+        CustomAuthorizationPolicy:
+          meshProvider: authentik
+        hosts:
+          - "alertmanager.minikube.where-ever.net"
+        http:
+          - match:
+              - uri:
+                  regex: ^\/[^\.]+.*
+              - uri:
+                  prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 9093
+                  host: alertmanager-operated.monitoring.svc.cluster.local
+  ## loki (via infra-gateway)
+  #loki-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: loki-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'loki.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: loki-virtual-service
+  #      hosts:
+  #        - "loki.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 80
+  #                host: loki-gateway.loki-system.svc.cluster.local
+  ## vault (via infra-gateway)
+  vault-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: vault-https
+          protocol: HTTPS
+          #tlsMode: PASSTHROUGH
+        hosts:
+          - 'vault-ui.minikube.where-ever.net'
+    VirtualServices:
+      - name: vault-virtual-service
+        DestinationRule:
+          host: vault-ui.vault-system.svc.cluster.local
+          tls: true
+          maxConnections: 100
+        hosts:
+          - "vault-ui.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 8200
+                  host: vault-ui.vault-system.svc.cluster.local
+  ## goldilocks (via infra-gateway)
+  goldilocks-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: goldilocks-https
+          protocol: HTTPS
+        hosts:
+          - 'goldilocks.minikube.where-ever.net'
+    VirtualServices:
+      - name: goldilocks-virtual-service
+        hosts:
+          - "goldilocks.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: goldilocks-dashboard.goldilocks-system.svc.cluster.local
+  ## mailhog (via infra-gateway)
+  mailhog-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: mailhog-https
+          protocol: HTTPS
+        hosts:
+          - 'mailhog.minikube.where-ever.net'
+    VirtualServices:
+      - name: mailhog-virtual-service
+        hosts:
+          - "mailhog.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 8025
+                  host: mailhog.dev-tools.svc.cluster.local
+  # homepage (via infra-gateway)
+  homepage-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: homepage-https
+          protocol: HTTPS
+        hosts:
+          - 'homepage.minikube.where-ever.net'
+    VirtualServices:
+      - name: homepage-virtual-service
+        hosts:
+          - "homepage.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 3000
+                  host: homepage.homepage.svc.cluster.local
+  # kafka-ui (via infra-gateway)
+  kafka-ui-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 443
+          name: kafka-ui-https
+          protocol: HTTPS
+        hosts:
+          - 'kafka-ui.minikube.where-ever.net'
+    VirtualServices:
+      - name: kafka-ui-virtual-service
+        hosts:
+          - "kafka-ui.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 80
+                  host: kafka-ui.kafka-ui.svc.cluster.local
+  # kafka-rest (via infra-gateway)
+  kafka-rest-gateway:
+    gateway:
+      selector: infra-gateway
+    servers:
+      - port:
+          number: 80
+          name: kafka-rest-http
+          protocol: HTTP
+        hosts:
+          - 'kafka-rest.minikube.where-ever.net'
+        httpsRedirect: true
+      - port:
+          number: 443
+          name: kafka-rest-https
+          protocol: HTTPS
+        hosts:
+          - 'kafka-rest.minikube.where-ever.net'
+    VirtualServices:
+      - name: kafka-rest-virtual-service
+        hosts:
+          - "kafka-rest.minikube.where-ever.net"
+        http:
+          - match:
+            - uri:
+                prefix: /
+            route:
+              - destination:
+                  port:
+                    number: 8082
+                  host: kafka-rest-service.kafka-rest.svc.cluster.local
+  # fleet (via infra-gateway)
+  #fleet-gateway:
+  #  gateway:
+  #    selector: fleet-gateway
+  #  servers:
+  #    - port:
+  #        number: 80
+  #        name: fleet-http
+  #        protocol: HTTP
+  #      hosts:
+  #        - 'fleet.minikube.where-ever.net'
+  #      httpsRedirect: true
+  #    - port:
+  #        number: 443
+  #        name: fleet-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'fleet.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: fleet-virtual-service
+  #      DestinationRule:
+  #        host: fleetdm-service.fleetdm.svc.cluster.local
+  #        tls: true
+  #      hosts:
+  #        - "fleet.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 8080
+  #                host: fleetdm-service.fleetdm.svc.cluster.local
+  ## etcd gateway (via infra-gateway)
+  #etcd-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 2379
+  #        name: etcd-tcp
+  #        protocol: TCP
+  #      hosts:
+  #        - etcd.minikube.where-ever.net
+  #  VirtualServices:
+  #    - name: etcd-virtual-service
+  #      hosts:
+  #        - "etcd.minikube.where-ever.net"
+  #      tcp:
+  #        - match:
+  #            - port: 2379
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 2379
+  #                host: etcd.etcd.svc.cluster.local
+  ## consul-ui (via infra-gateway)
+  #consul-ui-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 80
+  #        name: consul-ui-http
+  #        protocol: HTTP
+  #      hosts:
+  #        - 'consul.minikube.where-ever.net'
+  #      httpsRedirect: true
+  #    - port:
+  #        number: 443
+  #        name: consul-ui-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'consul.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: consul-ui-virtual-service
+  #      hosts:
+  #        - "consul.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #          - uri:
+  #              prefix: /
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 80
+  #                host: consul-consul-ui.consul.svc.cluster.local
