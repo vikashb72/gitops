@@ -71,11 +71,13 @@ argocdManaged:
     sources:
       - path: helm/charts/reloader
   authentik:
+    disable: true
     name: authentik
     targetNamespace: authentik
     sources:
       - path: helm/charts/authentik
   oauth2-proxy:
+    disable: true
     name: oauth2-proxy
     targetNamespace: oauth2-proxy
     sources:

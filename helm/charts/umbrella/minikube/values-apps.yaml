@@ -30,13 +30,13 @@ argocdManaged:
     automated:
       allowEmpty: true
   zitadel:
-    disable: false
+    disable: true
     name: zitadel
     targetNamespace: zitadel
     sources:
       - path: helm/charts/zitadel
   httpbin:
-    disable: false
+    disable: true
     name: httpbin
     targetNamespace: httpbin
     sources:
