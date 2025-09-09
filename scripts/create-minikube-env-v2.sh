@@ -484,7 +484,7 @@ EOF
     fi
     if [ $KEYVAULT_TYPE == "vault" ]; then
         vault kv put -address $EXTERNAL_VAULT_ADDR \
-            kv/{$EVT}/kafka/cluster/ca \
+            kv/${EVT}/kafka/cluster/ca \
             ca.crt=@kafka-cluster-ca.crt \
             ca.key=@kafka-cluster-ca.key \
             ca.password=${CLUSTER_PASS} \
@@ -508,7 +508,7 @@ EOF
     fi
     if [ $KEYVAULT_TYPE == "vault" ]; then
         vault kv put -address $EXTERNAL_VAULT_ADDR \
-            kv/{$EVT}/kafka/client/ca \
+            kv/${EVT}/kafka/client/ca \
             ca.crt=@kafka-client-ca.crt \
             ca.key=@kafka-client-ca.key \
             ca.password="${CLIENT_PASS}" \
