@@ -76,11 +76,15 @@ argocdManaged:
     sources:
       - path: helm/charts/authentik
   oauth2-proxy:
-    disable: true
     name: oauth2-proxy
     targetNamespace: oauth2-proxy
     sources:
       - path: helm/charts/oauth2-proxy
+  zitadel:
+    name: zitadel
+    targetNamespace: zitadel
+    sources:
+      - path: helm/charts/zitadel
   #etcd:
   #  name: etcd
   #  targetNamespace: etcd

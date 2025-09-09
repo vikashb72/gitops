@@ -29,12 +29,6 @@ argocdManaged:
             - values-apps.yaml
     automated:
       allowEmpty: true
-  zitadel:
-    disable: true
-    name: zitadel
-    targetNamespace: zitadel
-    sources:
-      - path: helm/charts/zitadel
   httpbin:
     disable: true
     name: httpbin
