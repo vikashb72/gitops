@@ -32,6 +32,21 @@ terraform init -backend-config=storage_account_name=$TF_STORAGE_ACCOUNT_NAME \
     -upgrade
 
 # get pk from https://authentik.tld/api/v3/outposts/instances/?ordering=name&page=1&page_size=20&search=
+### get the pk for the outpost
+---
+      "pk": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "name": "authentik Embedded Outpost",
+---
+OUTPOST_ID=value of pk 
+
+### get the service connection id
+---
+      "service_connection": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx",
+      "service_connection_obj": {
+        "pk": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx",
+        "name": "Local Kubernetes Cluster",
+---
+update service_connection in tfvars/${EVT}.prd
 
 
 terraform import -var-file="tfvars/minikube.tfvars" \

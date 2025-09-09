@@ -1,6 +1,6 @@
 environment        = "minikube"
 authentik_url      = "https://authentik.minikube.where-ever.net"
-service_connection = "120cbb17-f3a4-42ac-bcf2-80c93caeb4ba"
+service_connection = "d3f3948c-01ca-41a4-abc9-9d3b34626d2c"
 
 roles = [
   "DevOps",
@@ -199,52 +199,55 @@ proxy_providers  = [
   },
 ]
 
-#admin_group = "736d56b6-f86c-4b90-8e29-b1f9feed563f"
-#idp_groups    = "9e4a1353-fe96-4e4a-b9d5-f3d3c623b7d4"
+#admin_group = "774e9e6c-d619-4596-b82d-2711a374fa62"
+#idp_groups = "5ed40add-8e6a-4fd6-918c-a4f971cac063"
 #oauth2_groups = {
-#  "ArgoCD Admins" = "a95aafb1-1b09-4596-92c1-29df26ecdc7b"
-#  "ArgoCD Viewers" = "09d51c4f-167f-4bb2-90e3-2e3bcc46b6e5"
-#  "Grafana Admins" = "d02c440d-ec34-443a-abff-c91bbdd3314c"
-#  "Grafana Editors" = "bdf96bca-5ab4-4095-8571-5a2bdf3504ac"
-#  "Grafana Viewers" = "bfc51dc1-e586-4051-ae3f-7fcbe0bfb022"
-#  "Kafka UI Admins" = "0ae2bb66-dc2a-487d-9c66-1413f82ac4cb"
-#  "Kafka UI Viewers" = "0e24ce25-2c31-4fd5-9039-ed08d5ec33a1"
-#  "oauth2 proxy" = "2dac679a-3a9c-49ec-be27-58ecfd69546f"
+#  "ArgoCD Admins" = "b49ef163-3cd2-49f4-b28a-e17d5d968f5d"
+#  "ArgoCD Viewers" = "ae646535-d6ed-4b9c-b375-c1f2a06db298"
+#  "Grafana Admins" = "eba1793f-1373-4d6d-9510-4c5ab48aab5f"
+#  "Grafana Editors" = "a06c78e1-eb09-41a8-aabf-7f3ac6ef2961"
+#  "Grafana Viewers" = "4f8053e3-ae5c-4650-a816-804f081150c3"
+#  "Kafka UI Admins" = "1ddeb4b0-cacd-4cc9-850a-1dc550549e44"
+#  "Kafka UI Viewers" = "c15dee23-0a33-4bce-bfd3-83a7b9e2550e"
+#  "oauth2 proxy" = "15db5e07-4f20-4d59-bda8-bbfac3d5bcde"
+#  "zitadel" = "dc371521-9b78-4bfb-9c45-f678a67ca2ff"
 #}
 #proxy_groups = {
-#  "alertmanager Access" = "4fcec68f-238f-44dd-be74-19fd00f8792f"
-#  "goldilocks Access" = "280eb34e-3a8f-4659-bb1b-1a6efa5f0522"
-#  "homepage Access" = "5f121c79-8714-4a5b-94b3-ced0189b96e0"
-#  "n8n Access" = "05a6cf84-e09a-42fe-8441-aea927693250"
-#  "prometheus Access" = "9e62d9a3-8351-400a-b8f6-620b3493ac2c"
-#  "vault Access" = "f621dc5c-20ed-49a9-8efc-890116b99770"
+#  "alertmanager Access" = "df6eb397-62a8-4373-a218-6c16308d7eaf"
+#  "goldilocks Access" = "f9d2f76b-7380-45d1-8c74-fef592a44d3b"
+#  "homepage Access" = "a666d42d-c45f-4d49-8795-475d0ff5a4a3"
+#  "kestra Access" = "eb05b708-e3fa-4823-8958-b9bba80a1d55"
+#  "n8n Access" = "eb513bf3-7ca2-454e-9b51-f7fb2ade2b91"
+#  "prometheus Access" = "05d7555b-17fa-4e1e-b7e8-49b3bf1f4cbd"
+#  "vault Access" = "ed9f5f38-07fc-40a5-b618-4707d635cf00"
+#}
+#roles = {
+#  "Dev" = "bf59e00c-88c4-4a6a-8d37-06bd8b106b3e"
+#  "DevOps" = "ec897b1c-c5bb-41d9-b5af-4bcd618bf115"
 #}
 #saml_groups = {
-#  "SAML Test Access" = "5a1136dc-8a57-4d9b-ac56-e93541174fca"
+#  "SAML Test Access" = "93be01e1-08c4-46a9-9817-5e09ef94e335"
 #}
-
 users = [
   {
     username  = "vikash.badal"
     name      = "Vikash Badal"
     email     = "vikash.badal@minikube.where-ever.net"
     groups    =  [
-        "736d56b6-f86c-4b90-8e29-b1f9feed563f",
-        "a95aafb1-1b09-4596-92c1-29df26ecdc7b",
-        "d02c440d-ec34-443a-abff-c91bbdd3314c",
-        "0ae2bb66-dc2a-487d-9c66-1413f82ac4cb",
-        "4fcec68f-238f-44dd-be74-19fd00f8792f",
-        "280eb34e-3a8f-4659-bb1b-1a6efa5f0522",
-        "5f121c79-8714-4a5b-94b3-ced0189b96e0",
-        "9e62d9a3-8351-400a-b8f6-620b3493ac2c",
-        "f621dc5c-20ed-49a9-8efc-890116b99770",
-        "2dac679a-3a9c-49ec-be27-58ecfd69546f",
-        "05a6cf84-e09a-42fe-8441-aea927693250",
-        "5a1136dc-8a57-4d9b-ac56-e93541174fca",
-        "e318ab61-438f-44b3-b3b1-b165d6493792",
-        "9e4a1353-fe96-4e4a-b9d5-f3d3c623b7d4",
-        "29fa6660-f18b-4c3e-a4ba-95eeb8e6fb08"
-        #"ddb13301-4440-4c00-8d41-1b8392c4eebe"
+      "774e9e6c-d619-4596-b82d-2711a374fa62",
+      "5ed40add-8e6a-4fd6-918c-a4f971cac063",
+      "b49ef163-3cd2-49f4-b28a-e17d5d968f5d",
+      "eba1793f-1373-4d6d-9510-4c5ab48aab5f",
+      "1ddeb4b0-cacd-4cc9-850a-1dc550549e44",
+      "15db5e07-4f20-4d59-bda8-bbfac3d5bcde",
+      "dc371521-9b78-4bfb-9c45-f678a67ca2ff",
+      "df6eb397-62a8-4373-a218-6c16308d7eaf",
+      "f9d2f76b-7380-45d1-8c74-fef592a44d3b",
+      "a666d42d-c45f-4d49-8795-475d0ff5a4a3",
+      "eb05b708-e3fa-4823-8958-b9bba80a1d55",
+      "eb513bf3-7ca2-454e-9b51-f7fb2ade2b91",
+      "05d7555b-17fa-4e1e-b7e8-49b3bf1f4cbd",
+      "ed9f5f38-07fc-40a5-b618-4707d635cf00"
     ]
   }
 ]
