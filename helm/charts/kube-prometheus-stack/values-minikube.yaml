@@ -822,6 +822,13 @@ kube-prometheus-stack:
 
   prometheus:
     enabled: true
+    additionalRulesForClusterRole:
+      - apiGroups: ["autoscaling.k8s.io"]
+        resources: ["verticalpodautoscalers"]
+        verbs: ["list", "watch"]
+      - apiGroups: ["apiextensions.k8s.io"]
+        resources: ["customresourcedefinitions"]
+        verbs: ["list", "watch"]
 
     service:
       ipDualStack:
