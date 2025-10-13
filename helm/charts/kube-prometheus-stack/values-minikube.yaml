@@ -570,13 +570,13 @@ kube-prometheus-stack:
     rbac:
       create: true
 
-    extraRules:
-      - apiGroups: ["autoscaling.k8s.io"]
-        resources: ["verticalpodautoscalers"]
-        verbs: ["list", "watch"]
-      - apiGroups: ["apiextensions.k8s.io"]
-        resources: ["customresourcedefinitions"]
-        verbs: ["list", "watch"]
+      extraRules:
+        - apiGroups: ["autoscaling.k8s.io"]
+          resources: ["verticalpodautoscalers"]
+          verbs: ["list", "watch"]
+        - apiGroups: ["apiextensions.k8s.io"]
+          resources: ["customresourcedefinitions"]
+          verbs: ["list", "watch"]
 
     prometheusScrape: true
 
