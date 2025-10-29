@@ -31,6 +31,8 @@ argo-cd:
     # an alternative to the ServiceMonitors
     addPrometheusAnnotations: false
 
+    env: []
+
   configs:
     cm:
       application.sync.impersonation.enabled: false
@@ -39,11 +41,6 @@ argo-cd:
       accounts.argo-readonly: apiKey, login
       accounts.argo-readonly.enabled: "true"
       resource.customizations.health.gloo.solo.io_Settings: |
-        hs = {}
-        hs.status = "Healthy"
-        hs.message = "we are good"
-        return hs
-
       url: https://argocd.minikube.where-ever.net
       dex.config: |
         connectors:
@@ -77,6 +74,7 @@ argo-cd:
         p, role:readonly, applications, get, *, allow
         g, ArgoCD Admins, role:org-admin
         g, ArgoCD Viewers, role:readonly
+      scopes: "[ArgoCD Admins]"
 
     credentialTemplates: {}
       # github-enterprise-creds-1:
@@ -90,6 +88,8 @@ argo-cd:
       #     -----END OPENSSH PRIVATE KEY-----
 
     credentialTemplatesAnnotations: {}
+
+    clusterCredentials: {}
 
     repositories: {}
       # private-helm-repo:
@@ -106,6 +106,23 @@ argo-cd:
         # LDAP_PASSWORD: "mypassword"
 
   controller:
+    extraArgs: []
+    env: []
+    envFrom: []
+    # - configMapRef:
+    #     name: config-map-name
+    # - secretRef:
+    #     name: secret-name
+    volumeMounts: []
+    #  - mountPath: /usr/local/bin/kubelogin
+    #    name: custom-tools
+    #    subPath: kubelogin
+
+    # -- Additional volumes to the application controller pod
+    volumes: []
+    #  - name: custom-tools
+    #    emptyDir: {}
+
     metrics:
       enabled: true
 
@@ -163,6 +180,14 @@ argo-cd:
         additionalLabels:
           release: kube-prometheus-stack
 
+    env: []
+
+    envFrom: []
+    # - configMapRef:
+    #     name: config-map-name
+    # - secretRef:
+    #     name: secret-name
+
     volumeMounts: 
       - mountPath: /etc/ssl/certs/
         name: own-ca-bundle
@@ -185,6 +210,17 @@ argo-cd:
     exporter:
       enabled: true
 
+    extraArgs: []
+    # - --bind
+    # - "0.0.0.0"
+    env: []
+    envFrom: []
+    # - configMapRef:
+    #     name: config-map-name
+    # - secretRef:
+    #     name: secret-name
+
+
     metrics:
       enabled: true
 
@@ -204,6 +240,12 @@ argo-cd:
     env:
       - name: ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT
         value: "0"
+    extraArgs: []
+    envFrom: []
+    # - configMapRef:
+    #     name: config-map-name
+    # - secretRef:
+    #     name: secret-name
 
     extensions:
       enabled: false
