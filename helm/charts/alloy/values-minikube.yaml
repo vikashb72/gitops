@@ -224,6 +224,10 @@ alloy:
     # -- Enables automatically reloading when the Alloy config changes.
     enabled: true
 
+  controller:
+    volumes:
+      extra: []
+
   service:
     enabled: true
     #type: ClusterIP
