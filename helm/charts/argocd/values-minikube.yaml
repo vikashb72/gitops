@@ -74,7 +74,6 @@ argo-cd:
         p, role:readonly, applications, get, *, allow
         g, ArgoCD Admins, role:org-admin
         g, ArgoCD Viewers, role:readonly
-      scopes: "[ArgoCD Admins]"
 
     credentialTemplates: {}
       # github-enterprise-creds-1:
