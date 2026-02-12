@@ -7,41 +7,41 @@ schema:
 
 gateways:
 
-  zhttpbin-gateway:
-    gateway:
-      selector: zitadel-gateway
-    servers:
-      - port:
-          number: 443
-          name: httpbin-https
-          protocol: HTTPS
-        hosts:
-          - 'zhttpbin.minikube.where-ever.net'
-    VirtualServices:
-      - name: zhttpbin-virtual-service
-        CustomAuthorizationPolicy:
-           meshProvider: oauth2-proxy
-        #DestinationRule:
-        #  host: httpbin.httpbin.svc.cluster.local
-        #  maxConnections: 5
-        #ZitadelAuthPolicy:
-        #  namespace: httpbin
-        #  gateway: zitadel-gateway
-        #  app: httpbin
-        #  roles:
-        #    - DevOps
-        #    - Admin
-        hosts:
-          - "zhttpbin.minikube.where-ever.net"
-        http:
-          - match:
-              - uri:
-                  exact: /
-            route:
-              - destination:
-                  host: httpbin.httpbin.svc.cluster.local
-                  port:
-                    number: 8000
+  #zhttpbin-gateway:
+  #  gateway:
+  #    selector: zitadel-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: httpbin-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'zhttpbin.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: zhttpbin-virtual-service
+  #      CustomAuthorizationPolicy:
+  #         meshProvider: oauth2-proxy
+  #      #DestinationRule:
+  #      #  host: httpbin.httpbin.svc.cluster.local
+  #      #  maxConnections: 5
+  #      #ZitadelAuthPolicy:
+  #      #  namespace: httpbin
+  #      #  gateway: zitadel-gateway
+  #      #  app: httpbin
+  #      #  roles:
+  #      #    - DevOps
+  #      #    - Admin
+  #      hosts:
+  #        - "zhttpbin.minikube.where-ever.net"
+  #      http:
+  #        - match:
+  #            - uri:
+  #                exact: /
+  #          route:
+  #            - destination:
+  #                host: httpbin.httpbin.svc.cluster.local
+  #                port:
+  #                  number: 8000
 
   httpbin-gateway:
     gateway:
@@ -245,41 +245,41 @@ gateways:
                   port:
                     number: 80
                   host: authentik-server.authentik.svc.cluster.local
-  zitadel-gateway:
-    gateway:
-      selector: infra-gateway
-    servers:
-      - port:
-          number: 443
-          name: zitadel-https
-          protocol: HTTPS
-        hosts:
-          - 'zitadel.minikube.where-ever.net'
-    VirtualServices:
-      - name: zitadel-virtual-service
-        hosts:
-          - "zitadel.minikube.where-ever.net"
-        http:
-          - name: zitadel
-            match:
-              - uri:
-                  prefix: /
-              - uri:
-                  prefix: /ui/console/
-            route:
-              - destination:
-                  port:
-                    number: 8080
-                  host: zitadel.zitadel.svc.cluster.local
-          - name: login
-            match:
-              - uri:
-                  prefix: /ui/v2/login
-            route:
-              - destination:
-                  port:
-                    number: 3000
-                  host: zitadel-login.zitadel.svc.cluster.local
+  #zitadel-gateway:
+  #  gateway:
+  #    selector: infra-gateway
+  #  servers:
+  #    - port:
+  #        number: 443
+  #        name: zitadel-https
+  #        protocol: HTTPS
+  #      hosts:
+  #        - 'zitadel.minikube.where-ever.net'
+  #  VirtualServices:
+  #    - name: zitadel-virtual-service
+  #      hosts:
+  #        - "zitadel.minikube.where-ever.net"
+  #      http:
+  #        - name: zitadel
+  #          match:
+  #            - uri:
+  #                prefix: /
+  #            - uri:
+  #                prefix: /ui/console/
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 8080
+  #                host: zitadel.zitadel.svc.cluster.local
+  #        - name: login
+  #          match:
+  #            - uri:
+  #                prefix: /ui/v2/login
+  #          route:
+  #            - destination:
+  #                port:
+  #                  number: 3000
+  #                host: zitadel-login.zitadel.svc.cluster.local
   # grafana (via infra-gateway)
   grafana-gateway:
     gateway:
