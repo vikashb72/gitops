@@ -30,6 +30,7 @@ spec:
   privateKey:
     algorithm: RSA
     size: 2048
+  duration: 8760h
   issuerRef:
     name: vault-cert-issuer
     kind: ClusterIssuer
