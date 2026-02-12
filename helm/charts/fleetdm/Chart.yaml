@@ -3,5 +3,5 @@ name: fleetdm
 version: 1.0.0
 dependencies:
   - name: fleet
-    version: v6.6.8
+    version: v6.8.0
     repository: https://fleetdm.github.io/fleet/charts

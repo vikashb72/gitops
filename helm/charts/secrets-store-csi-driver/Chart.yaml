@@ -3,8 +3,8 @@ name: csi-secrets-store
 version: 1.0.0
 dependencies:
   - name: secrets-store-csi-driver
-    version: 1.4.8
+    version: 1.5.5
     repository: https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
   - name: csi-secrets-store-provider-azure
-    version: 1.6.1
+    version: 1.7.2
     repository: https://azure.github.io/secrets-store-csi-driver-provider-azure/charts

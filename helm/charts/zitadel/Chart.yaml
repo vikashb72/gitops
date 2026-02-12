@@ -3,5 +3,5 @@ name: zitadel
 version: 1.0.0
 dependencies:
   - name: zitadel
-    version: 9.1.2
+    version: 9.22.0
     repository: https://charts.zitadel.com

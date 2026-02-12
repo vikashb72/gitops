@@ -3,5 +3,5 @@ name: mailhog
 version: 1.0.0
 dependencies:
   - name: mailpit
-    version: 0.23.1
+    version: 0.31.2
     repository: https://jouve.github.io/charts/

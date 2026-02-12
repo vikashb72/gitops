@@ -2,6 +2,6 @@ apiVersion: v2
 name: redis
 version: 1.0.0
 dependencies:
-  - name: redis
+  - name: 25.0.0
     version: 21.1.6
     repository: https://charts.bitnami.com/bitnami

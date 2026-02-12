@@ -3,5 +3,5 @@ name: consul
 version: 1.0.0
 dependencies:
   - name: consul
-    version: 1.7.2
+    version: 1.9.3
     repository: https://helm.releases.hashicorp.com
