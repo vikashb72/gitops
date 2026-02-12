@@ -239,7 +239,7 @@ argocdManaged:
   #                name: db-n8n
   #                namespace: n8n-system
   #              spec:
-  #                refreshInterval: 4h
+  #                refreshInterval: 4h0m0s
   #                secretStoreRef:
   #                  name: external-vault-backend
   #                  kind: ClusterSecretStore

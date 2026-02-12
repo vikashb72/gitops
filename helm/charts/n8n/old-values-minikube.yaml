@@ -794,7 +794,7 @@ extraTemplateManifests:
       name: db-app
       namespace: {{ $.Release.Namespace }}
     spec:
-      refreshInterval: 4h
+      refreshInterval: 4h0m0s
       secretStoreRef:
         name: external-vault-backend
         kind: ClusterSecretStore
