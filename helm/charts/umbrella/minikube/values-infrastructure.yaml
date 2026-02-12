@@ -80,11 +80,11 @@ argocdManaged:
     targetNamespace: oauth2-proxy
     sources:
       - path: helm/charts/oauth2-proxy
-  zitadel:
-    name: zitadel
-    targetNamespace: zitadel
-    sources:
-      - path: helm/charts/zitadel
+  #zitadel:
+  #  name: zitadel
+  #  targetNamespace: zitadel
+  #  sources:
+  #    - path: helm/charts/zitadel
   #etcd:
   #  name: etcd
   #  targetNamespace: etcd
