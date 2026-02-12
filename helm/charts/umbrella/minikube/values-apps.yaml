@@ -29,35 +29,35 @@ argocdManaged:
             - values-apps.yaml
     automated:
       allowEmpty: true
-  httpbin:
-    disable: true
-    name: httpbin
-    targetNamespace: httpbin
-    sources:
-      - path: helm/charts/httpbin
-  cnpg:
-    name: cnpg
-    targetNamespace: cnpg-system
-    sources:
-      - path: helm/charts/cnpg
-    syncOptions:
-      ServerSideApply: true
-  kestra:
-    disable: true
-    name: kestra
-    targetNamespace: kestra
-    sources:
-      - path: helm/charts/kestra
-    syncOptions:
-      ServerSideApply: true
-  windmill:
-    disable: true
-    name: windmill
-    targetNamespace: windmill
-    sources:
-      - path: helm/charts/windmill
-    syncOptions:
-      ServerSideApply: true
+  #httpbin:
+  #  disable: true
+  #  name: httpbin
+  #  targetNamespace: httpbin
+  #  sources:
+  #    - path: helm/charts/httpbin
+  #cnpg:
+  #  name: cnpg
+  #  targetNamespace: cnpg-system
+  #  sources:
+  #    - path: helm/charts/cnpg
+  #  syncOptions:
+  #    ServerSideApply: true
+  #kestra:
+  #  disable: true
+  #  name: kestra
+  #  targetNamespace: kestra
+  #  sources:
+  #    - path: helm/charts/kestra
+  #  syncOptions:
+  #    ServerSideApply: true
+  #windmill:
+  #  disable: true
+  #  name: windmill
+  #  targetNamespace: windmill
+  #  sources:
+  #    - path: helm/charts/windmill
+  #  syncOptions:
+  #    ServerSideApply: true
   #n8n:
   #  disable: true
   #  name: n8n
