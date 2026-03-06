@@ -65,6 +65,13 @@ argocdManaged:
     syncwave: "4"
     sources:
       - path: helm/charts/cert-manager
+    ignoreDifferences: true 
+    ignoreDifferencesConfig:
+      - group: trust.cert-manager.io
+        kind: Bundle
+        jqPathExpressions:
+          - .spec.target.additionalFormats.jks.password
+          - .spec.target.additionalFormats.pkcs12.password
   reloader:
     name: reloader
     targetNamespace: reloader
