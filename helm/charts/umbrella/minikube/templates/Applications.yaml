@@ -95,11 +95,7 @@ spec:
     {{- end }}
     syncOptions:
       - CreateNamespace=true
-    {{- if .syncOptions }}
-      {{- if .syncOptions.ServerSideApply }}
       - ServerSideApply=true
-      {{- end }}
-    {{- end }}
     retry:
       limit: 5
       backoff:
