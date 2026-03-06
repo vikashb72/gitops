@@ -467,11 +467,11 @@ argocdManaged:
   #  targetNamespace: echoserver
   #  sources:
   #    - path: helm/charts/echoserver
-  #redis:
-  #  name: redis
-  #  targetNamespace: redis
-  #  sources:
-  #    - path: helm/charts/redis
+  redis:
+    name: redis
+    targetNamespace: redis
+    sources:
+      - path: helm/charts/redis
   #valkey:
   #  disable: true
   #  name: valkey
