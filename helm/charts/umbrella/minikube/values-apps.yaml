@@ -35,13 +35,13 @@ argocdManaged:
   #  targetNamespace: httpbin
   #  sources:
   #    - path: helm/charts/httpbin
-  #cnpg:
-  #  name: cnpg
-  #  targetNamespace: cnpg-system
-  #  sources:
-  #    - path: helm/charts/cnpg
-  #  syncOptions:
-  #    ServerSideApply: true
+  cnpg:
+    name: cnpg
+    targetNamespace: cnpg-system
+    sources:
+      - path: helm/charts/cnpg
+    syncOptions:
+      ServerSideApply: true
   #kestra:
   #  disable: true
   #  name: kestra
