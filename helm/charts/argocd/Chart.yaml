@@ -4,7 +4,7 @@ version: 1.0.0
 dependencies:
   - name: argo-cd
     repository: https://argoproj.github.io/argo-helm
-    version: 9.4.7
+    version: 9.4.10
   - name: argo-workflows
     version: 0.47.4
     repository: https://argoproj.github.io/argo-helm
