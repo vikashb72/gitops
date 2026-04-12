@@ -4,16 +4,16 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=4.0.0"
+      version = ">=4.55.0"
     }
 
     azuread = {
-      version = ">= 3.0.0"
+      version = ">= 3.5.0"
     }
 
     authentik = {
       source  = "goauthentik/authentik"
-      version = "2025.6.0"
+      version = "2025.12.1"
     }
 
     null = {
