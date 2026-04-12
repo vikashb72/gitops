@@ -13,17 +13,17 @@ output "proxy_groups" {
   value       = { for out in authentik_group.proxy_groups : out.name => out.id }
 }
 
-output "saml_groups" {
-  description = "SAML Groups"
-  value       = { for out in authentik_group.saml_groups : out.name => out.id }
-}
+#output "saml_groups" {
+#  description = "SAML Groups"
+#  value       = { for out in authentik_group.saml_groups : out.name => out.id }
+#}
 
 output "roles" {
   description = "Roles"
   value       = { for out in authentik_rbac_role.roles: out.name => out.id }
 }
 
-output "idp_groups" {
-  description = "idp groups"
-  value       = authentik_group.idp_group.id
-}
+#output "idp_groups" {
+#  description = "idp groups"
+#  value       = authentik_group.idp_group.id
+#}

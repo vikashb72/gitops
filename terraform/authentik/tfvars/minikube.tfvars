@@ -1,6 +1,7 @@
-environment        = "minikube"
-authentik_url      = "https://authentik.minikube.where-ever.net"
-service_connection = "69d37d8e-fc7d-40e8-b9e5-df6405ddec9e"
+environment         = "minikube"
+authentik_url       = "https://authentik.minikube.where-ever.net"
+service_connection  = "69d37d8e-fc7d-40e8-b9e5-df6405ddec9e"
+embedded_outpost_id =  "8a5ba082-b8dc-4286-85c9-edb64597e7e9"
 
 roles = [
   "DevOps",
@@ -199,34 +200,23 @@ proxy_providers  = [
   #},
 ]
 
-#admin_group = "774e9e6c-d619-4596-b82d-2711a374fa62"
-#idp_groups = "5ed40add-8e6a-4fd6-918c-a4f971cac063"
+#admin_group = "cf88babb-c6dc-489c-9282-e8bd0c5254c1"
+#idp_groups = ""
 #oauth2_groups = {
-#  "ArgoCD Admins" = "b49ef163-3cd2-49f4-b28a-e17d5d968f5d"
-#  "ArgoCD Viewers" = "ae646535-d6ed-4b9c-b375-c1f2a06db298"
-#  "Grafana Admins" = "eba1793f-1373-4d6d-9510-4c5ab48aab5f"
-#  "Grafana Editors" = "a06c78e1-eb09-41a8-aabf-7f3ac6ef2961"
-#  "Grafana Viewers" = "4f8053e3-ae5c-4650-a816-804f081150c3"
-#  "Kafka UI Admins" = "1ddeb4b0-cacd-4cc9-850a-1dc550549e44"
-#  "Kafka UI Viewers" = "c15dee23-0a33-4bce-bfd3-83a7b9e2550e"
-#  "oauth2 proxy" = "15db5e07-4f20-4d59-bda8-bbfac3d5bcde"
-#  "zitadel" = "dc371521-9b78-4bfb-9c45-f678a67ca2ff"
+#  "ArgoCD Admins" = "4d59e347-c415-41eb-89f3-d354f15c73dd"
+#  "ArgoCD Viewers" = "df6f7218-f5d7-4f9a-9a02-09efe4efa782"
+#  "Grafana Admins" = "e0de3db7-c6bc-459f-8485-18105804afee"
+#  "Grafana Editors" = "82859ca2-ea5e-4b8c-8948-92f5d5e37f6b"
+#  "Grafana Viewers" = "38e65eaf-4b06-4360-8923-4bb4d137cd03"
 #}
 #proxy_groups = {
-#  "alertmanager Access" = "df6eb397-62a8-4373-a218-6c16308d7eaf"
-#  "goldilocks Access" = "f9d2f76b-7380-45d1-8c74-fef592a44d3b"
-#  "homepage Access" = "a666d42d-c45f-4d49-8795-475d0ff5a4a3"
-#  "kestra Access" = "eb05b708-e3fa-4823-8958-b9bba80a1d55"
-#  "n8n Access" = "eb513bf3-7ca2-454e-9b51-f7fb2ade2b91"
-#  "prometheus Access" = "05d7555b-17fa-4e1e-b7e8-49b3bf1f4cbd"
-#  "vault Access" = "ed9f5f38-07fc-40a5-b618-4707d635cf00"
+#  "prometheus Access" = "307df824-51ff-4dcc-b0a7-1135aac7d1b0
 #}
 #roles = {
-#  "Dev" = "bf59e00c-88c4-4a6a-8d37-06bd8b106b3e"
-#  "DevOps" = "ec897b1c-c5bb-41d9-b5af-4bcd618bf115"
+#  "Dev" = "acdf4862-9de8-4d91-a015-9ad896c67929"
+#  "DevOps" = "a534ae46-8582-46fc-8151-4ec18404cf04"
 #}
 #saml_groups = {
-#  "SAML Test Access" = "93be01e1-08c4-46a9-9817-5e09ef94e335"
 #}
 users = [
   {

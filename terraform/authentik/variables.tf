@@ -23,6 +23,10 @@ variable "service_connection" {
   type = string
 }
 
+variable "embedded_outpost_id" {
+  type = string
+}
+
 variable "environment" {
   type = string
 }
