@@ -184,7 +184,7 @@ authentik:
       extendedConfiguration: |
         max_connections = 500
 
-      resourcesPreset: "nano"
+      resourcesPreset: "micro"
 
       persistence:
         enabled: true
