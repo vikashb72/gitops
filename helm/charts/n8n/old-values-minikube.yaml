@@ -809,6 +809,7 @@ extraTemplateManifests:
             decodingStrategy: None
             key: "kv/minikube/n8n/db-app"
             metadataPolicy: None
+            nullBytePolicy: Ignore
             property: password
 #      - |
 #        apiVersion: v1
