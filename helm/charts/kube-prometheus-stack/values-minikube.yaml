@@ -420,10 +420,10 @@ kube-prometheus-stack:
           gnetId: 22908
           revision: 1
           datasource: Prometheus
-        cert-manager-overview:
-          gnetId: 20842
-          revision: 3
-          datasource: Prometheus
+        #cert-manager-overview:
+        #  gnetId: 20842
+        #  revision: 3
+        #  datasource: Prometheus
         external-secrets:
           gnetId: 21640
           revision: 4
