@@ -229,7 +229,7 @@ kube-prometheus-stack:
         enabled: true
       smtp:
         enabled: true
-        host: desktop.home.where-ever.za.net:587
+        host: mailhog.dev-tools:8025
         startTLS_policy: "MandatoryStartTLS"
         from_address: monitor@minikube.where-ever.net
         skip_verify: true # for minikube
