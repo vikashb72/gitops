@@ -134,42 +134,18 @@ kube-prometheus-stack:
 
   grafana:
     enabled: true
-    #env:
-    #  GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
-    #envValueFrom:
-    #  GF_SECURITY_ADMIN_USER:
-    #    secretKeyRef:
-    #      name: grafana-admin-credentials
-    #      key: GF_SECURITY_ADMIN_USER
-    #  GF_SECURITY_ADMIN_PASSWORD:
-    #    secretKeyRef:
-    #      name: grafana-admin-credentials
-    #      key: GF_SECURITY_ADMIN_PASSWORD
-    #  GF_SMTP_ENABLED:
-    #    secretKeyRef:
-    #      name: prometheus-alerting-config
-    #      key: GF_SMTP_ENABLED
-    #  GF_SMTP_HOST:
-    #    secretKeyRef:
-    #      name: prometheus-alerting-config
-    #      key: GF_SMTP_HOST
-    #  GF_SMTP_USER:
-    #    secretKeyRef:
-    #      name: prometheus-alerting-config
-    #      key: GF_SMTP_USER
-    #  GF_SMTP_PASSWORD:
-    #    secretKeyRef:
-    #      name: prometheus-alerting-config
-    #      key: GF_SMTP_PASSWORD
-    #  GF_SMTP_FROM_ADDRESS:
-    #    secretKeyRef:
-    #      name: prometheus-alerting-config
-    #      key: GF_SMTP_FROM_ADDRESS
-    #  GF_SMTP_STARTTLS_POLICY:
-    #    secretKeyRef:
-    #      name: prometheus-alerting-config
-    #      key: GF_SMTP_STARTTLS_POLICY
-    #envFromSecret: "grafana-admin-credentials"
+    env:
+      GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: false
+    envValueFrom:
+      GF_SECURITY_ADMIN_USER:
+        secretKeyRef:
+          name: grafana-admin-credentials
+          key: GF_SECURITY_ADMIN_USER
+      GF_SECURITY_ADMIN_PASSWORD:
+        secretKeyRef:
+          name: grafana-admin-credentials
+          key: GF_SECURITY_ADMIN_PASSWORD
+    envFromSecret: "grafana-admin-credentials"
     #adminUser: admin
     #adminPassword: ""
     admin:
@@ -397,7 +373,7 @@ kube-prometheus-stack:
       additionaldashboardproviders.yaml:
         apiVersion: 1
         providers:
-        - name: 'default'
+        - name: 'this-default'
           orgId: 1
           folder: ''
           type: file
@@ -407,7 +383,7 @@ kube-prometheus-stack:
             path: /var/lib/grafana/dashboards/default
 
     dashboards:
-      default:
+      this-default:
         argocd:
           gnetId: 24192
           revision: 1
