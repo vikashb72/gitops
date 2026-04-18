@@ -416,26 +416,35 @@ kube-prometheus-stack:
           gnetId: 14837
           revision: 2
           datasource: Prometheus
-        #redis-exporter:
-        #  gnetId: 11835
-        #  revision: 1
-        #  datasource: Prometheus
-        #vix#vpa-recommendations:
-        #vix#  #https://grafana.com/grafana/dashboards/14588-vpa-recommendations/
-        #vix#  gnetId: 14588
-        #vix#  revision: 5
-        #vix#  datasource: Prometheus
-        # need to fix
-        #cert-manager-2:
-        #  #https://grafana.com/grafana/dashboards/20850-cert-manager/
-        #  gnetId: 20850
-        #  revision: 1
-        #  datasource: Prometheus
+        cert-manager:
+          gnetId: 22908
+          revision: 1
+          datasource: Prometheus
+        cert-manager-overview:
+          gnetId: 20842
+          revision: 3
+          datasource: Prometheus
+        external-secrets:
+          gnetId: 21640
+          revision: 4
+          datasource: Prometheus
+        loki-logs:
+          gnetId: 16976
+          revision: 7
+          datasource: 
+            - name: DS_PROMETHEUS
+              value: Prometheus
+            - name: DS_LOKI
+              value: Loki
         # To Investigate
         #argocd-notifications-overview:
         #  gnetId: 19975
         #  revision: 8
         #  datasource: Prometheus
+        #netzbremse:
+        #  gnetId: 25163
+        #  revision: 1
+        #  datasource: Loki
 
   kubernetesServiceMonitors:
     enabled: true
