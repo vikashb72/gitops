@@ -416,7 +416,16 @@ kube-prometheus-stack:
           gnetId: 19975
           revision: 8
           datasource: Prometheus
+        argocd-app-overview:
+          gnetId: 19974
+          revision: 6
+          datasource: Prometheus
         # ------------------- old --------------- #
+        #vix#argocd-operational-overview:
+        #vix#  #https://grafana.com/grafana/dashboards/19993-argocd-operational-overview/
+        #vix#  gnetId: 19993
+        #vix#  revision: 3
+        #vix#  datasource: Prometheus
         #vix#istio-control-plane:
         #vix#  gnetId: 7645
         #vix#  revision: 247
@@ -454,16 +463,6 @@ kube-prometheus-stack:
         #vix#  #https://grafana.com/grafana/dashboards/21306-istio-ztunnel-dashboard/
         #vix#  gnetId: 21306
         #vix#  revision: 14
-        #vix#  datasource: Prometheus
-        #vix#argocd-app-overview:
-        #vix#  #https://grafana.com/grafana/dashboards/19974-argocd-application-overview/
-        #vix#  gnetId: 19974
-        #vix#  revision: 3
-        #vix#  datasource: Prometheus
-        #vix#argocd-operational-overview:
-        #vix#  #https://grafana.com/grafana/dashboards/19993-argocd-operational-overview/
-        #vix#  gnetId: 19993
-        #vix#  revision: 3
         #vix#  datasource: Prometheus
         #vix#vpa-recommendations:
         #vix#  #https://grafana.com/grafana/dashboards/14588-vpa-recommendations/
