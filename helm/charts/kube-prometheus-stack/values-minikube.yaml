@@ -373,7 +373,7 @@ kube-prometheus-stack:
       additionaldashboardproviders.yaml:
         apiVersion: 1
         providers:
-        - name: 'this-default'
+        - name: 'default'
           orgId: 1
           folder: ''
           type: file
@@ -383,7 +383,7 @@ kube-prometheus-stack:
             path: /var/lib/grafana/dashboards/default
 
     dashboards:
-      this-default:
+      default:
         argocd:
           gnetId: 24192
           revision: 1
