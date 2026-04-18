@@ -308,7 +308,7 @@ kube-prometheus-stack:
       enabled: true
 
     persistence:
-      enabled: true
+      enabled: false
       type: pvc
       storageClassName: nfs-client
       size: 32Gi
