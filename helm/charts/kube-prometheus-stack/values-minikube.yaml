@@ -396,10 +396,12 @@ kube-prometheus-stack:
           gnetId: 19993
           revision: 7
           datasource: Prometheus
-        istio-nodegraph:
-          gnetId: 21773
+        istio-envoy-clusters:
+          gnetId: 23502
           revision: 1
           datasource: Prometheus
+        # istio 7639 11829 7636 7630 7645 13277
+
         # To Investigate
         #argocd-notifications-overview:
         #  gnetId: 19975
