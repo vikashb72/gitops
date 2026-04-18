@@ -398,7 +398,7 @@ kube-prometheus-stack:
           datasource: Prometheus
         istio-envoy-listener:
           gnetId: 23501
-          revision: 1
+          revision: 2
           datasource: Prometheus
         # istio 7639 11829 7636 7630 7645 13277
 
