@@ -396,11 +396,11 @@ kube-prometheus-stack:
           gnetId: 19993
           revision: 7
           datasource: Prometheus
-        istio-envoy-test:
-          gnetId: 23503
-          revision: 2
+        istio-workload:
+          gnetId: 7630
+          revision: 303
           datasource: Prometheus
-        # istio 7639 11829 7636 7630 7645 13277
+        # istio 7630 7636 7639 7645 11829 13277
 
         # To Investigate
         #argocd-notifications-overview:
@@ -412,29 +412,16 @@ kube-prometheus-stack:
         #vix#  gnetId: 7645
         #vix#  revision: 247
         #vix#  datasource: Prometheus
-        #vix#istio-control-plane:
-        #vix#  #https://grafana.com/grafana/dashboards/7645-istio-control-plane-dashboard/
-        #vix#  gnetId: 7645
-        #vix#  revision: 247
-        #vix#  datasource: Prometheus
         #vix#istio-mesh:
-        #vix#  #https://grafana.com/grafana/dashboards/7639-istio-mesh-dashboard/
         #vix#  gnetId: 7639
         #vix#  revision: 247
         #vix#  datasource: Prometheus
         #vix#istio-performance:
-        #vix#  #https://grafana.com/grafana/dashboards/11829-istio-performance-dashboard/
         #vix#  gnetId: 11829
         #vix#  revision: 247
         #vix#  datasource: Prometheus
         #vix#istio-service:
-        #vix#  #https://grafana.com/grafana/dashboards/7636-istio-service-dashboard/
         #vix#  gnetId: 7636
-        #vix#  revision: 247
-        #vix#  datasource: Prometheus
-        #vix#istio-workload:
-        #vix#  #https://grafana.com/grafana/dashboards/7630-istio-workload-dashboard/
-        #vix#  gnetId: 7630
         #vix#  revision: 247
         #vix#  datasource: Prometheus
         #vix#redis-exporter:
