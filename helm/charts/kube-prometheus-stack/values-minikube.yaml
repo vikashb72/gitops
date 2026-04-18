@@ -136,15 +136,15 @@ kube-prometheus-stack:
     enabled: true
     env:
       GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: false
-    envValueFrom:
-      GF_SECURITY_ADMIN_USER:
-        secretKeyRef:
-          name: grafana-admin-credentials
-          key: GF_SECURITY_ADMIN_USER
-      GF_SECURITY_ADMIN_PASSWORD:
-        secretKeyRef:
-          name: grafana-admin-credentials
-          key: GF_SECURITY_ADMIN_PASSWORD
+    #envValueFrom:
+    #  GF_SECURITY_ADMIN_USER:
+    #    secretKeyRef:
+    #      name: grafana-admin-credentials
+    #      key: GF_SECURITY_ADMIN_USER
+    #  GF_SECURITY_ADMIN_PASSWORD:
+    #    secretKeyRef:
+    #      name: grafana-admin-credentials
+    #      key: GF_SECURITY_ADMIN_PASSWORD
     #envFromSecret: "grafana-admin-credentials"
     #adminUser: admin
     #adminPassword: ""
