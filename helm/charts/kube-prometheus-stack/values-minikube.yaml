@@ -400,7 +400,11 @@ kube-prometheus-stack:
           gnetId: 7630
           revision: 303
           datasource: Prometheus
-        # istio 7630 7636 7639 7645 11829 13277
+        istio-service:
+          gnetId: 7636
+          revision: 302
+          datasource: Prometheus
+        # istio 7636 7639 7645 11829 13277
 
         # To Investigate
         #argocd-notifications-overview:
@@ -418,10 +422,6 @@ kube-prometheus-stack:
         #vix#  datasource: Prometheus
         #vix#istio-performance:
         #vix#  gnetId: 11829
-        #vix#  revision: 247
-        #vix#  datasource: Prometheus
-        #vix#istio-service:
-        #vix#  gnetId: 7636
         #vix#  revision: 247
         #vix#  datasource: Prometheus
         #vix#redis-exporter:
