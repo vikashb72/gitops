@@ -388,20 +388,20 @@ kube-prometheus-stack:
           gnetId: 24192
           revision: 1
           datasource: Prometheus
-        argocd-notifications-overview:
-          gnetId: 19975
-          revision: 8
-          datasource: Prometheus
         argocd-app-overview:
           gnetId: 19974
           revision: 6
           datasource: Prometheus
+        argocd-operational-overview:
+          gnetId: 19993
+          revision: 7
+          datasource: Prometheus
+        # To Investigate
+        #argocd-notifications-overview:
+        #  gnetId: 19975
+        #  revision: 8
+        #  datasource: Prometheus
         # ------------------- old --------------- #
-        #vix#argocd-operational-overview:
-        #vix#  #https://grafana.com/grafana/dashboards/19993-argocd-operational-overview/
-        #vix#  gnetId: 19993
-        #vix#  revision: 3
-        #vix#  datasource: Prometheus
         #vix#istio-control-plane:
         #vix#  gnetId: 7645
         #vix#  revision: 247
