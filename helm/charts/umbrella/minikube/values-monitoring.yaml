@@ -49,7 +49,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   tempo-distributed:
-    disable: true
+    disable: false
     name: tempo-distributed
     targetNamespace: tempo-system
     syncwave: "10"
@@ -58,7 +58,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   alloy:
-    disable: true
+    disable: false
     name: alloy
     targetNamespace: alloy-system
     syncwave: "10"
@@ -67,7 +67,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   opentelemetry-collector:
-    disable: true
+    disable: false
     name: opentelemetry-collector
     targetNamespace: opentelemetry-system
     syncwave: "10"
