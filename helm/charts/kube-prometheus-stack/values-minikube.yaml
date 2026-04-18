@@ -408,69 +408,68 @@ kube-prometheus-stack:
 
     dashboards:
       default:
-        istio-control-plane:
-          gnetId: 7645
-          revision: 247
-          datasource: Prometheus
-        istio-control-plane:
-          #https://grafana.com/grafana/dashboards/7645-istio-control-plane-dashboard/
-          gnetId: 7645
-          revision: 247
-          datasource: Prometheus
-        istio-mesh:
-          #https://grafana.com/grafana/dashboards/7639-istio-mesh-dashboard/
-          gnetId: 7639
-          revision: 247
-          datasource: Prometheus
-        istio-performance:
-          #https://grafana.com/grafana/dashboards/11829-istio-performance-dashboard/
-          gnetId: 11829
-          revision: 247
-          datasource: Prometheus
-        istio-service:
-          #https://grafana.com/grafana/dashboards/7636-istio-service-dashboard/
-          gnetId: 7636
-          revision: 247
-          datasource: Prometheus
-        istio-workload:
-          #https://grafana.com/grafana/dashboards/7630-istio-workload-dashboard/
-          gnetId: 7630
-          revision: 247
-          datasource: Prometheus
-        redis-exporter:
-          gnetId: 11835
-          revision: 1
-          datasource: Prometheus
-        istio-ztunnel:
-          #https://grafana.com/grafana/dashboards/21306-istio-ztunnel-dashboard/
-          gnetId: 21306
-          revision: 14
-          datasource: Prometheus
-        argocd-app-overview:
-          #https://grafana.com/grafana/dashboards/19974-argocd-application-overview/
-          gnetId: 19974
-          revision: 3
-          datasource: Prometheus
-        argocd-operational-overview:
-          #https://grafana.com/grafana/dashboards/19993-argocd-operational-overview/
-          gnetId: 19993
-          revision: 3
-          datasource: Prometheus
-        argocd-notifications-overview:
-          #https://grafana.com/grafana/dashboards/19975-argocd-notifications-overview/
-          gnetId: 19975
-          revision: 3
-          datasource: Prometheus
         argocd:
-          #url: https://raw.githubusercontent.com/argoproj/argo-cd/refs/heads/master/examples/dashboard.json
-          gnetId: 22576
+          gnetId: 24192
           revision: 1
           datasource: Prometheus
-        vpa-recommendations:
-          #https://grafana.com/grafana/dashboards/14588-vpa-recommendations/
-          gnetId: 14588
-          revision: 5
-          datasource: Prometheus
+        #vix#istio-control-plane:
+        #vix#  gnetId: 7645
+        #vix#  revision: 247
+        #vix#  datasource: Prometheus
+        #vix#istio-control-plane:
+        #vix#  #https://grafana.com/grafana/dashboards/7645-istio-control-plane-dashboard/
+        #vix#  gnetId: 7645
+        #vix#  revision: 247
+        #vix#  datasource: Prometheus
+        #vix#istio-mesh:
+        #vix#  #https://grafana.com/grafana/dashboards/7639-istio-mesh-dashboard/
+        #vix#  gnetId: 7639
+        #vix#  revision: 247
+        #vix#  datasource: Prometheus
+        #vix#istio-performance:
+        #vix#  #https://grafana.com/grafana/dashboards/11829-istio-performance-dashboard/
+        #vix#  gnetId: 11829
+        #vix#  revision: 247
+        #vix#  datasource: Prometheus
+        #vix#istio-service:
+        #vix#  #https://grafana.com/grafana/dashboards/7636-istio-service-dashboard/
+        #vix#  gnetId: 7636
+        #vix#  revision: 247
+        #vix#  datasource: Prometheus
+        #vix#istio-workload:
+        #vix#  #https://grafana.com/grafana/dashboards/7630-istio-workload-dashboard/
+        #vix#  gnetId: 7630
+        #vix#  revision: 247
+        #vix#  datasource: Prometheus
+        #vix#redis-exporter:
+        #vix#  gnetId: 11835
+        #vix#  revision: 1
+        #vix#  datasource: Prometheus
+        #vix#istio-ztunnel:
+        #vix#  #https://grafana.com/grafana/dashboards/21306-istio-ztunnel-dashboard/
+        #vix#  gnetId: 21306
+        #vix#  revision: 14
+        #vix#  datasource: Prometheus
+        #vix#argocd-app-overview:
+        #vix#  #https://grafana.com/grafana/dashboards/19974-argocd-application-overview/
+        #vix#  gnetId: 19974
+        #vix#  revision: 3
+        #vix#  datasource: Prometheus
+        #vix#argocd-operational-overview:
+        #vix#  #https://grafana.com/grafana/dashboards/19993-argocd-operational-overview/
+        #vix#  gnetId: 19993
+        #vix#  revision: 3
+        #vix#  datasource: Prometheus
+        #vix#argocd-notifications-overview:
+        #vix#  #https://grafana.com/grafana/dashboards/19975-argocd-notifications-overview/
+        #vix#  gnetId: 19975
+        #vix#  revision: 3
+        #vix#  datasource: Prometheus
+        #vix#vpa-recommendations:
+        #vix#  #https://grafana.com/grafana/dashboards/14588-vpa-recommendations/
+        #vix#  gnetId: 14588
+        #vix#  revision: 5
+        #vix#  datasource: Prometheus
         # need to fix
         #cert-manager-2:
         #  #https://grafana.com/grafana/dashboards/20850-cert-manager/
