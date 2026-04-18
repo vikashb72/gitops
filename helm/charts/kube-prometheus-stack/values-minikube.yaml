@@ -145,7 +145,7 @@ kube-prometheus-stack:
         secretKeyRef:
           name: grafana-admin-credentials
           key: GF_SECURITY_ADMIN_PASSWORD
-    envFromSecret: "grafana-admin-credentials"
+    #envFromSecret: "grafana-admin-credentials"
     #adminUser: admin
     #adminPassword: ""
     admin:
