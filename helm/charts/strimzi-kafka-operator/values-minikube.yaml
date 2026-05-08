@@ -38,7 +38,7 @@ cluster:
         - "metallb.universe.tf/address-pool: default"
       #  - 'service.beta.kubernetes.io/azure-load-balancer-internal: "true"'
       #  - 'service.beta.kubernetes.io/azure-load-balancer-internal-subnet: snet-home-za01-workload01'
-      type: route # loadbalancer
+      type: ingress # loadbalancer
       port: 9094
       tls: true
 
