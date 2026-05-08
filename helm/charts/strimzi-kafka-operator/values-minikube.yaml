@@ -2,6 +2,7 @@ schema:
   env: minikube
   auth: true
   tls: true
+  domain: minikube.where-ever.net
 
 strimzi-kafka-operator:
   replicas: 1
