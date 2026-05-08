@@ -74,7 +74,7 @@ spec:
           type: scram-sha-512
 {{- end }}
 {{- if and .Values.cluster.kafka.external_listener .Values.cluster.kafka.external_listener.enabled }}
-      - name: ingress #external
+      - name: external
         port: {{ default 9094 .Values.cluster.kafka.external_listener.port }}
         type: {{ default "loadbalancer" .Values.cluster.kafka.external_listener.type }}
         tls: {{ default false .Values.cluster.kafka.external_listener.tls }}
@@ -89,7 +89,7 @@ spec:
     {{- range .Values.cluster.kafka.external_listener.annotations }}
               {{ . }}
     {{- end }}
-            host: kafka-ext-bootstrap.{{ $.Values.schema.domain }}
+            advertisedHost: kafka-ext-bootstrap.{{ $.Values.schema.domain }}
   {{- end }}
           brokers:
 {{- $count := (.Values.cluster.kafka.replicas | int) }}
@@ -100,7 +100,7 @@ spec:
       {{- range $annotation := $.Values.cluster.kafka.external_listener.annotations }}
                 {{.}}
       {{- end }}
-              host: kafka-node-pool-{{ . }}.{{ $.Values.schema.domain }}
+              advertisedHost: kafka-node-pool-{{ . }}.{{ $.Values.schema.domain }}
     {{- end }}
   {{- end }}
 {{- end }}
