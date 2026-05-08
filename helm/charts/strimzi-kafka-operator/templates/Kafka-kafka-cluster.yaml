@@ -86,7 +86,7 @@ spec:
           bootstrap:
   {{- if .Values.cluster.kafka.external_listener.annotations }}
             annotations:
-              external-dns.alpha.kubernetes.io/hostname: "kafka-ext-bootstrap-{{ . }}.{{ $.Values.schema.domain }}"
+              external-dns.alpha.kubernetes.io/hostname: "kafka-ext-bootstrap.{{ $.Values.schema.domain }}"
     {{- range .Values.cluster.kafka.external_listener.annotations }}
               {{ . }}
     {{- end }}
