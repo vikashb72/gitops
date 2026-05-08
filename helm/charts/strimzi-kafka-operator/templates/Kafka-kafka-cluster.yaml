@@ -83,8 +83,8 @@ spec:
           type: scram-sha-512
 {{- end }}
         configuration:
-          loadBalancerIP: {{ $.Values.schema.ips.ext }}
           bootstrap:
+            loadBalancerIP: {{ $.Values.schema.ips.ext }}
   {{- if .Values.cluster.kafka.external_listener.annotations }}
             annotations:
     {{- range .Values.cluster.kafka.external_listener.annotations }}
