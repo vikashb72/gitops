@@ -86,23 +86,21 @@ spec:
           bootstrap:
   {{- if .Values.cluster.kafka.external_listener.annotations }}
             annotations:
-              external-dns.alpha.kubernetes.io/hostname: "kafka-ext-bootstrap.{{ $.Values.schema.domain }}"
     {{- range .Values.cluster.kafka.external_listener.annotations }}
               {{ . }}
     {{- end }}
-            #host: kafka-ext-bootstrap.{{ $.Values.schema.domain }}
+            advertisedHost: kafka-ext-bootstrap.{{ $.Values.schema.domain }}
   {{- end }}
           brokers:
 {{- $count := (.Values.cluster.kafka.replicas | int) }}
   {{- range until $count }}
             - broker: {{.}}
+              advertisedHost: kafka-node-pool-{{ . }}.{{ $.Values.schema.domain }}
     {{- if $.Values.cluster.kafka.external_listener.annotations }}
               annotations:
-                external-dns.alpha.kubernetes.io/hostname: "kafka-node-pool-{{ . }}.{{ $.Values.schema.domain }}"
       {{- range $annotation := $.Values.cluster.kafka.external_listener.annotations }}
                 {{.}}
       {{- end }}
-              #host: kafka-node-pool-{{ . }}.{{ $.Values.schema.domain }}
     {{- end }}
   {{- end }}
 {{- end }}
