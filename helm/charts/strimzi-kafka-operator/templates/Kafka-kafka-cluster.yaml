@@ -89,7 +89,8 @@ spec:
     {{- range .Values.cluster.kafka.external_listener.annotations }}
               {{ . }}
     {{- end }}
-            #advertisedHost: kafka-ext-bootstrap.{{ $.Values.schema.domain }}
+            alternativeNames:
+             - kafka-ext-bootstrap.{{ $.Values.schema.domain }}
   {{- end }}
           brokers:
 {{- $count := (.Values.cluster.kafka.replicas | int) }}
