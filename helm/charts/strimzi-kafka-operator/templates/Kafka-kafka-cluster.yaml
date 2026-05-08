@@ -74,7 +74,7 @@ spec:
           type: scram-sha-512
 {{- end }}
 {{- if and .Values.cluster.kafka.external_listener .Values.cluster.kafka.external_listener.enabled }}
-      - name: external
+      - name: ingress #external
         port: {{ default 9094 .Values.cluster.kafka.external_listener.port }}
         type: {{ default "loadbalancer" .Values.cluster.kafka.external_listener.type }}
         tls: {{ default false .Values.cluster.kafka.external_listener.tls }}
