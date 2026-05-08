@@ -83,6 +83,7 @@ spec:
           type: scram-sha-512
 {{- end }}
         configuration:
+          loadBalancerIP: {{ $.Values.schema.ips.ext }}
           bootstrap:
   {{- if .Values.cluster.kafka.external_listener.annotations }}
             annotations:
@@ -96,6 +97,7 @@ spec:
 {{- $count := (.Values.cluster.kafka.replicas | int) }}
   {{- range until $count }}
             - broker: {{.}}
+              loadBalancerIP: {{ index $.Values.schema.ips.broker . }}
               advertisedHost: kafka-node-pool-{{ . }}.{{ $.Values.schema.domain }}
     {{- if $.Values.cluster.kafka.external_listener.annotations }}
               annotations:

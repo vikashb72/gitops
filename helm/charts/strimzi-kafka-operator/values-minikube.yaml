@@ -3,6 +3,9 @@ schema:
   auth: true
   tls: true
   domain: minikube.where-ever.net
+  ips: 
+    ext: 192.168.49.201
+    broker: ["192.168.49.202", "192.168.49.203", "192.168.49.204"]
 
 strimzi-kafka-operator:
   replicas: 1
