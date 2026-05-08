@@ -483,6 +483,8 @@ argocdManaged:
     targetNamespace: kafka-system
     sources:
       - path: helm/charts/strimzi-kafka-operator
+    syncOptions:
+      ServerSideApply: true
   #homepage:
   #  name: homepage
   #  targetNamespace: homepage
