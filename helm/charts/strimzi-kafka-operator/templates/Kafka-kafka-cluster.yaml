@@ -89,7 +89,7 @@ spec:
     {{- range .Values.cluster.kafka.external_listener.annotations }}
               {{ . }}
     {{- end }}
-            host: kafka-ext-bootstrap.{{ $.Values.schema.domain }}
+            #host: kafka-ext-bootstrap.{{ $.Values.schema.domain }}
   {{- end }}
           brokers:
 {{- $count := (.Values.cluster.kafka.replicas | int) }}
@@ -100,7 +100,7 @@ spec:
       {{- range $annotation := $.Values.cluster.kafka.external_listener.annotations }}
                 {{.}}
       {{- end }}
-              host: kafka-node-pool-{{ . }}.{{ $.Values.schema.domain }}
+              #host: kafka-node-pool-{{ . }}.{{ $.Values.schema.domain }}
     {{- end }}
   {{- end }}
 {{- end }}
