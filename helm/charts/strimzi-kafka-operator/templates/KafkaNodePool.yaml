@@ -21,3 +21,12 @@ spec:
         size: {{ .size }}
         deleteClaim: {{ .deleteClaim }}
 {{- end }}
+  resources:
+    requests:
+      memory: 256Mi
+    limits:
+      memory: 386Mi
+  jvmOptions:
+    -Xms: 256m
+    -Xmx: 256m
+
