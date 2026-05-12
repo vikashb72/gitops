@@ -3,6 +3,8 @@ schema:
   namespace: alloy-system
 
 alloy:
+  #image:
+  #  registry:
   crds:
     create: true
 
@@ -220,6 +222,13 @@ alloy:
 
     extraArgs: []
 
+  image:
+    registry: "docker.io"
+    repository: grafana/alloy
+    tag: null
+    digest: null
+    pullPolicy: IfNotPresent
+
   configReloader:
     # -- Enables automatically reloading when the Alloy config changes.
     enabled: true
@@ -243,4 +252,3 @@ alloy:
   #   stringData:
   #     PROMETHEUS_HOST: 'https://prometheus-us-central1.grafana.net/api/prom/push'
   #     PROMETHEUS_USERNAME: '123456'
-
