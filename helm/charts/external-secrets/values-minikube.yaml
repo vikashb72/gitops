@@ -90,6 +90,22 @@ external-secrets:
       openshift:
         adaptSecurityContext: disabled
 
+  #image:
+  #  repository: ghcr.io/external-secrets/external-secrets
+  #  pullPolicy: IfNotPresent
+  #  tag: ""
+
+  installCRDs: true
+
+  resources: {}
+    # requests:
+    #   cpu: 10m
+    #   memory: 32Mi
+
+  grafanaDashboard:
+    # -- If true creates a Grafana dashboard.
+    enabled: true
+
   serviceMonitor:
     enabled: true
 
@@ -99,6 +115,12 @@ external-secrets:
       release: kube-prometheus-stack
 
   webhook:
+    #image:
+    #  repository: ghcr.io/external-secrets/external-secrets
+    #  pullPolicy: IfNotPresent
+    #  tag: ""
+    #  flavour: ""
+
     certManager:
       addInjectorAnnotations: true
 
@@ -108,3 +130,16 @@ external-secrets:
           group: cert-manager.io
           kind: "ClusterIssuer"
           name: "vault-cert-issuer"
+
+    resources: {}
+        # requests:
+        #   cpu: 10m
+        #   memory: 32Mi
+
+  certController:
+    create: true
+    #image:
+    #  repository: ghcr.io/external-secrets/external-secrets
+    #  pullPolicy: IfNotPresent
+    #  tag: ""
+    #  flavour: ""
