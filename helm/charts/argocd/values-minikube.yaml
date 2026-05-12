@@ -19,6 +19,8 @@ argo-cd:
 
   crds:
     install: true
+    annotations:
+      argocd.argoproj.io/sync-options: ServerSideApply=true
 
   openshift:
     enabled: false
@@ -33,8 +35,17 @@ argo-cd:
 
     env: []
 
+    extraVolumes: []
+    extraVolumeMounts: []
+
+    #image:
+    #  repository: quay.io/argoproj/argocd
+    #  tag: ""
+    #  imagePullPolicy: IfNotPresent
+
   configs:
     cm:
+      application.instanceLabelKey: argocd.argoproj.io/instance
       application.sync.impersonation.enabled: false
       accounts.argo-admin.enabled: "false"
       accounts.argo-admin: apiKey, login
