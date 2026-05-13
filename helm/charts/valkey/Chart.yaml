@@ -3,5 +3,6 @@ name: valkey
 version: 1.0.0
 dependencies:
   - name: valkey
-    version: 5.1.7
-    repository: https://charts.bitnami.com/bitnami
+    version: 0.9.4
+    repository: https://valkey.io/valkey-helm/
+
