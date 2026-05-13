@@ -10,10 +10,6 @@ valkey:
     create: true
     automount: false
   
-  # Annotations and labels for the pods
-  podAnnotations: {}
-  podLabels: {}
-  
   # Security context for the pod (applies to all containers)
   podSecurityContext:
     fsGroup: 1000
@@ -122,7 +118,7 @@ valkey:
         - ReadWriteOnce
   
   tls:
-    enabled: false
+    enabled: true
     existingSecret: "valkey-tls"
     serverPublicKey: tls.crt
     serverKey: tls.key
