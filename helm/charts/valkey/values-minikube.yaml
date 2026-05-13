@@ -6,12 +6,6 @@ valkey:
     imageRegistry: ""
     imagePullSecrets: []
   
-  image:
-    registry: "docker.io"
-    repository: valkey/valkey
-    pullPolicy: IfNotPresent
-    tag: ""
-  
   serviceAccount:
     create: true
     automount: false
@@ -128,7 +122,7 @@ valkey:
         - ReadWriteOnce
   
   tls:
-    enabled: true
+    enabled: false
     existingSecret: "valkey-tls"
     serverPublicKey: tls.crt
     serverKey: tls.key
@@ -168,39 +162,38 @@ valkey:
       enabled: true
   
     prometheusRule:
-      enabled: true
-      extraLabels: {}
-      rules: []
-       - alert: ValkeyDown
-         annotations:
-           summary: Valkey instance {{ "{{ $labels.instance }}" }} down
-           description: Valkey instance {{ "{{ $labels.instance }}" }} is down.
-         expr: |
-           redis_up{service="{{ include "valkey.fullname" . }}-metrics"} == 0
-         for: 2m
-         labels:
-           severity: error
-       - alert: ValkeyMemoryHigh
-         annotations:
-           summary: Valkey instance {{ "{{ $labels.instance }}" }} is using too much memory
-           description: |
-              Valkey instance {{ "{{ $labels.instance }}" }} is using {{ "{{ $value }}" }}% of its available memory.
-         expr: |
-            redis_memory_used_bytes{service="{{ include "valkey.fullname" . }}-metrics"} * 100
-            /
-            redis_memory_max_bytes{service="{{ include "valkey.fullname" . }}-metrics"}
-            > 90 <= 100
-         for: 2m
-         labels:
-           severity: error
-       - alert: ValkeyKeyEviction
-         annotations:
-           summary: Valkey instance {{ "{{ $labels.instance }}" }} has evicted keys
-           description: |
-              Valkey instance {{ "{{ $labels.instance }}" }} has evicted {{ "{{ $value }}" }} keys in the last 5 minutes.
-         expr: |
-           increase(redis_evicted_keys_total{service="{{ include "valkey.fullname" . }}-metrics"}[5m]) > 0
-         for: 1s
-         labels:
-           severity: error
+      enabled: false
+      rules:
+        - alert: ValkeyDown
+          annotations:
+            summary: Valkey instance {{ "{{ $labels.instance }}" }} down
+            description: Valkey instance {{ "{{ $labels.instance }}" }} is down.
+          expr: |
+            redis_up{service="{{ include "valkey.fullname" . }}-metrics"} == 0
+          for: 2m
+          labels:
+            severity: error
+        - alert: ValkeyMemoryHigh
+          annotations:
+            summary: Valkey instance {{ "{{ $labels.instance }}" }} is using too much memory
+            description: |
+               Valkey instance {{ "{{ $labels.instance }}" }} is using {{ "{{ $value }}" }}% of its available memory.
+          expr: |
+             redis_memory_used_bytes{service="{{ include "valkey.fullname" . }}-metrics"} * 100
+             /
+             redis_memory_max_bytes{service="{{ include "valkey.fullname" . }}-metrics"}
+             > 90 <= 100
+          for: 2m
+          labels:
+            severity: error
+        - alert: ValkeyKeyEviction
+          annotations:
+            summary: Valkey instance {{ "{{ $labels.instance }}" }} has evicted keys
+            description: |
+               Valkey instance {{ "{{ $labels.instance }}" }} has evicted {{ "{{ $value }}" }} keys in the last 5 minutes.
+          expr: |
+            increase(redis_evicted_keys_total{service="{{ include "valkey.fullname" . }}-metrics"}[5m]) > 0
+          for: 1s
+          labels:
+            severity: error
   

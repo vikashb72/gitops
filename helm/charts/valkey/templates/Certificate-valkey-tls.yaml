@@ -6,7 +6,6 @@ metadata:
 spec:
   commonName: "*.{{ $.Release.Namespace }}.svc.cluster.local"
   dnsNames:
-    - "127.0.0.1"
     - "localhost"
     - "valkey"
     - "valkey-headless.{{ $.Release.Namespace }}.svc.cluster.local"
