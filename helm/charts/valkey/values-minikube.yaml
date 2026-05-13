@@ -3,180 +3,204 @@ schema:
 
 valkey:
   global:
-    defaultStorageClass: nfs-client
-    storageClass: nfs-client
-
-  diagnosticMode:
-    enabled: false
-
+    imageRegistry: ""
+    imagePullSecrets: []
+  
   image:
-    debug: false
+    registry: "docker.io"
+    repository: valkey/valkey
+    pullPolicy: IfNotPresent
+    tag: ""
+  
+  serviceAccount:
+    create: true
+    automount: false
+  
+  # Annotations and labels for the pods
+  podAnnotations: {}
+  podLabels: {}
+  
+  # Security context for the pod (applies to all containers)
+  podSecurityContext:
+    fsGroup: 1000
+    runAsUser: 1000
+    runAsGroup: 1000
+    seccompProfile:
+      type: RuntimeDefault
+  
+  # Security context for the Valkey containers
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+  
+  resources: {}
+    # Example:
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  
+  # Resource limits/requests for init containers
+  initResources: {}
+  
+  dataStorage:
+    # Enable persistent volume claim creation
+    enabled: false
+  
+  # Mount additional secrets into the Valkey container
+  extraValkeySecrets: []
+  
+  # Mount additional configMaps into the Valkey container
+  extraValkeyConfigs: []
+  
+  # Mount extra secrets as volume to init container (deprecated, use extraValkeySecrets)
+  extraSecretValkeyConfigs: false
+  
+  # Mount additional emptyDir or hostPath volumes (advanced use)
+  extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
 
-  architecture: replication
+      - name: valkey-users-acl
+        secret:
+          secretName: valkey-users-acl
 
+  extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+
+      - name: valkey-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/valkey/etc/users.acl"
+  
+  # Content for valkey.conf (will be mounted via ConfigMap)
+  valkeyConfig: ""
+  
   auth:
-    enabled: true
-    sentinel: true
-    existingSecret: "valkey-password"
-    existingSecretPasswordKey: "password"
-      
-  commonConfiguration: |
-    maxmemory-policy allkeys-lru
-    maxmemory 32mb
-    repl-backlog-size 2mb
-    appendonly yes
-    save ""
-    aclfile /opt/bitnami/valkey/etc/users.acl
-
-  primary:
-    replicaCount: 3
-    resourcesPreset: "nano" 			# nano, micro, small, medium
-
-    persistence: 
-      enabled: false
-
-    extraVolumes:
-      - name: own-ca-bundle
-        configMap:
-          name: own-ca-bundle
-          defaultMode: 0644
-          optional: false
-          items:
-            - key: own-ca-bundle.pem
-              path: ca-certificates.crt
-
-      - name: valkey-users-acl
-        secret:
-          secretName: valkey-users-acl
-
+    # credentials, creating a security risk.
+    enabled: false
+  
+    # Use an existing secret for user passwords. Key defaults to username.
+    usersExistingSecret: ""
+  
+    # Map of users to create with ACL permissions.
+    # If usersExistingSecret is set, passwords from the secret take priority over inline passwords.
+    # NOTE: If using aclUsers, the 'default' user must be included here.
+    aclUsers: {}
+    aclConfig: ""
+  
+  # Replica configuration for master-replica replication mode
   replica:
-    resourcesPreset: "nano"
-    replicaCount: 3
-
-    persistence:
-      enabled: false
-
-    autoscaling:
-      enabled: false
-
-    extraVolumeMounts:
-      - mountPath: /etc/ssl/certs/
-        name: own-ca-bundle
-        readOnly: true
-
-      - name: valkey-users-acl
-        readOnly: true
-        subPath: users.acl
-        mountPath: "/opt/bitnami/valkey/etc/users.acl"
-
-  sentinel:
     enabled: true
-
-    image:
-      debug: false
-
-    resourcesPreset: "nano"
-
-    persistence:
-      enabled: false
-
+  
+    # Number of replica instances (total pods = replicas + 1 master)
+    replicas: 2
+  
+    replicationUser: "default"
+    disklessSync: false
+  
     service:
-      type: ClusterIP
-      loadBalancerIP: ""
-
-    extraVolumes:
-      - name: own-ca-bundle
-        configMap:
-          name: own-ca-bundle
-          defaultMode: 0644
-          optional: false
-          items:
-            - key: own-ca-bundle.pem
-              path: ca-certificates.crt
-
-      - name: valkey-users-acl
-        secret:
-          secretName: valkey-users-acl
-
-    extraVolumeMounts:
-      - mountPath: /etc/ssl/certs/
-        name: own-ca-bundle
-        readOnly: true
-
-      - name: valkey-users-acl
-        readOnly: true
-        subPath: users.acl
-        mountPath: "/opt/bitnami/valkey/etc/users.acl"
-
+      enabled: true
+  
+    # Persistence configuration (required for replicas)
+    persistence:
+      # Size of the PVC for each replica (required when replica.enabled is true)
+      size: "4Gi"
+      # Storage class name (empty = use default storage class)
+      storageClass: "nfs-client"
+      # Access modes for the PVC
+      accessModes:
+        - ReadWriteOnce
+  
   tls:
     enabled: true
-    authClients: false
-    existingSecret: valkey-tls
-    certFilename: tls.crt
-    certKeyFilename: tls.key
-    certCAFilename: ca.crt
-
+    existingSecret: "valkey-tls"
+    serverPublicKey: tls.crt
+    serverKey: tls.key
+    caPublicKey: ca.crt
+    dhParamKey: ""
+    requireClientCertificate: false
+  
+  # Valkey logging level: debug, verbose, notice, warning
+  valkeyLogLevel: "notice"
+  
+  env: {}
+    # Example:
+    # LOG_LEVEL: info
+  
   metrics:
+    # Enable Prometheus exporter sidecar
     enabled: true
+    # Exporter configuration
+    exporter:
+      image:
+        registry: ghcr.io
+        repository: oliver006/redis_exporter
+        pullPolicy: IfNotPresent
+        tag: "v1.79.0"
+      resources: {}
+      extraVolumeMounts:
+        - mountPath: /etc/ssl/certs/
+          name: own-ca-bundle
+          readOnly: true
 
-    extraVolumeMounts:
-      - mountPath: /etc/ssl/certs/
-        name: own-ca-bundle
-        readOnly: true
-
-      - name: valkey-users-acl
-        readOnly: true
-        subPath: users.acl
-        mountPath: "/opt/bitnami/valkey/etc/users.acl"
+    service:
+      enabled: true
 
     serviceMonitor:
       enabled: true
-      namespace: monitoring
-
-      additionalLabels:
-        release: kube-prometheus-stack
-
     podMonitor:
       enabled: true
-      namespace: monitoring
-
-      additionalLabels:
-        release: kube-prometheus-stack
-
+  
     prometheusRule:
       enabled: true
-      namespace: monitoring
-
-      rules:
-        - alert: ValkeyDown
-          expr: valkey_up{service="{{ template "common.names.fullname" . }}-metrics"} == 0
-          for: 2m
-          labels:
-            severity: error
-          annotations:
-            summary: Valkey&reg; instance {{ "{{ $labels.instance }}" }} down
-            description: Valkey&reg; instance {{ "{{ $labels.instance }}" }} is down
-        - alert: ValkeyMemoryHigh
-          expr: >
-            valkey_memory_used_bytes{service="{{ template "common.names.fullname" . }}-metrics"} * 100
+      extraLabels: {}
+      rules: []
+       - alert: ValkeyDown
+         annotations:
+           summary: Valkey instance {{ "{{ $labels.instance }}" }} down
+           description: Valkey instance {{ "{{ $labels.instance }}" }} is down.
+         expr: |
+           redis_up{service="{{ include "valkey.fullname" . }}-metrics"} == 0
+         for: 2m
+         labels:
+           severity: error
+       - alert: ValkeyMemoryHigh
+         annotations:
+           summary: Valkey instance {{ "{{ $labels.instance }}" }} is using too much memory
+           description: |
+              Valkey instance {{ "{{ $labels.instance }}" }} is using {{ "{{ $value }}" }}% of its available memory.
+         expr: |
+            redis_memory_used_bytes{service="{{ include "valkey.fullname" . }}-metrics"} * 100
             /
-            valkey_memory_max_bytes{service="{{ template "common.names.fullname" . }}-metrics"}
-            > 90
-          for: 2m
-          labels:
-            severity: error
-          annotations:
-            summary: Valkey&reg; instance {{ "{{ $labels.instance }}" }} is using too much memory
-            description: |
-              Valkey&reg; instance {{ "{{ $labels.instance }}" }} is using {{ "{{ $value }}" }}% of its available memory.
-        - alert: ValkeyKeyEviction
-          expr: |
-            increase(valkey_evicted_keys_total{service="{{ template "common.names.fullname" . }}-metrics"}[5m]) > 0
-          for: 1s
-          labels:
-            severity: error
-          annotations:
-            summary: Valkey&reg; instance {{ "{{ $labels.instance }}" }} has evicted keys
-            description: |
-              Valkey&reg; instance {{ "{{ $labels.instance }}" }} has evicted {{ "{{ $value }}" }} keys in the last 5 minutes.
-      
+            redis_memory_max_bytes{service="{{ include "valkey.fullname" . }}-metrics"}
+            > 90 <= 100
+         for: 2m
+         labels:
+           severity: error
+       - alert: ValkeyKeyEviction
+         annotations:
+           summary: Valkey instance {{ "{{ $labels.instance }}" }} has evicted keys
+           description: |
+              Valkey instance {{ "{{ $labels.instance }}" }} has evicted {{ "{{ $value }}" }} keys in the last 5 minutes.
+         expr: |
+           increase(redis_evicted_keys_total{service="{{ include "valkey.fullname" . }}-metrics"}[5m]) > 0
+         for: 1s
+         labels:
+           severity: error
+  
