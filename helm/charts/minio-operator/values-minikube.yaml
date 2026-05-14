@@ -10,6 +10,8 @@ operator:
         value: "on"
       - name: WATCHED_NAMESPACE
         value: "minio-tenant"
+      - name:  MINIO_PROMETHEUS_AUTH_TYPE
+        value: "public"
 
     replicaCount: 3
 
