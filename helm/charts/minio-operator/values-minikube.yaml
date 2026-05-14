@@ -13,7 +13,7 @@ operator:
       - name:  MINIO_PROMETHEUS_AUTH_TYPE
         value: "public"
 
-    replicaCount: 3
+    replicaCount: 1
 
     volumes:
       - name: own-ca-bundle
