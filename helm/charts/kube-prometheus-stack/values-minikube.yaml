@@ -402,14 +402,19 @@ kube-prometheus-stack:
         #  gnetId: 19995
         #  revision: 8
         #  datasource: Prometheus
-        cert-manager:
-          gnetId: 20340 # 22908
+        cert-manager-20340:
+          gnetId: 20340
           revision: 1
           datasource: Prometheus
-        cert-manager-overview:
-          gnetId: 20842
-          revision: 3
-          datasource: Prometheus
+ 
+        #cert-manager:
+        #  gnetId: 20340 # 22908
+        #  revision: 1
+        #  datasource: Prometheus
+        #cert-manager-overview:
+        #  gnetId: 20842
+        #  revision: 3
+        #  datasource: Prometheus
         #vix#istio-mesh:
         #vix#  gnetId: 7639
         #vix#  revision: 303
