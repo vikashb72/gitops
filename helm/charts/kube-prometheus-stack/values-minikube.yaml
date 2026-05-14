@@ -397,10 +397,10 @@ kube-prometheus-stack:
           gnetId: 19974
           revision: 6
           datasource: Prometheus
-        #vix#argocd-operational-overview:
-        #vix#  gnetId: 19993
-        #vix#  revision: 7
-        #vix#  datasource: Prometheus
+        argocd-operational-overview:
+          gnetId: 19993
+          revision: 7
+          datasource: Prometheus
         #vix#cert-manager:
         #vix#  gnetId: 20340 # 22908
         #vix#  revision: 1
