@@ -389,14 +389,14 @@ kube-prometheus-stack:
           gnetId: 14837
           revision: 2
           datasource: Prometheus
-        argocd:
-          gnetId: 24192
-          revision: 1
-          datasource: Prometheus
-        #argocd-app-overview:
-        #  gnetId: 19974
-        #  revision: 6
+        #argocd:
+        #  gnetId: 24192
+        #  revision: 1
         #  datasource: Prometheus
+        argocd-app-overview:
+          gnetId: 19974
+          revision: 6
+          datasource: Prometheus
         #vix#argocd-operational-overview:
         #vix#  gnetId: 19993
         #vix#  revision: 7
