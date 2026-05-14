@@ -473,7 +473,7 @@ argocdManaged:
     sources:
       - path: helm/charts/redis
   valkey:
-    disable: false
+    disable: true
     name: valkey
     targetNamespace: valkey
     sources:
