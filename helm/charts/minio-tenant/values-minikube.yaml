@@ -59,7 +59,8 @@ tenant:
     prometheusOperator: false
     logging: { }
     env:
-      MINIO_PROMETHEUS_AUTH_TYPE: PUBLIC
+      - name: MINIO_PROMETHEUS_AUTH_TYPE
+        value: "public"
   ingress:
     api:
       enabled: false
