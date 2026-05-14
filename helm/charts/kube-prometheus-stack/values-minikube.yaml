@@ -410,6 +410,10 @@ kube-prometheus-stack:
           gnetId: 19237
           revision: 2
           datasource: Prometheus
+        minio-cluster:
+          gnetId: 13502
+          revision: 26
+          datasource: Prometheus
         #external-secrets:
         #  gnetId: 21640
         #  revision: 4
@@ -431,6 +435,10 @@ kube-prometheus-stack:
         #  gnetId: 25163
         #  revision: 1
         #  datasource: Loki
+        #minio-replication:
+        #  gnetId: 15305
+        #  revision: 5
+        #  datasource: Prometheus
 
   kubernetesServiceMonitors:
     enabled: true
