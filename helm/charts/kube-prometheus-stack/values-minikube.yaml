@@ -136,18 +136,6 @@ kube-prometheus-stack:
     enabled: true
     env:
       GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: false
-    #envValueFrom:
-    #  GF_SECURITY_ADMIN_USER:
-    #    secretKeyRef:
-    #      name: grafana-admin-credentials
-    #      key: GF_SECURITY_ADMIN_USER
-    #  GF_SECURITY_ADMIN_PASSWORD:
-    #    secretKeyRef:
-    #      name: grafana-admin-credentials
-    #      key: GF_SECURITY_ADMIN_PASSWORD
-    #envFromSecret: "grafana-admin-credentials"
-    #adminUser: admin
-    #adminPassword: ""
     admin:
       existingSecret: "grafana-admin-credentials"
       userKey: GF_SECURITY_ADMIN_USER
@@ -397,11 +385,6 @@ kube-prometheus-stack:
           gnetId: 19993
           revision: 7
           datasource: Prometheus
-        # Notifications not enabled yet
-        #argocd-notifications:
-        #  gnetId: 19995
-        #  revision: 8
-        #  datasource: Prometheus
         cert-manager-2:
           gnetId: 22184
           revision: 3
@@ -435,19 +418,15 @@ kube-prometheus-stack:
               value: Prometheus
             - name: DS_LOKI
               value: Loki
-        k8s-events-overview:
-          gnetId: 23100
-          revision: 5
-          datasource: Prometheus
-        #vix## To Investigate
-        #vix##argocd-notifications-overview:
-        #vix##  gnetId: 19975
-        #vix##  revision: 8
-        #vix##  datasource: Prometheus
-        #vix##netzbremse:
-        #vix##  gnetId: 25163
-        #vix##  revision: 1
-        #vix##  datasource: Loki
+        # To Investigate
+        #argocd-notifications:
+        #  gnetId: 19995
+        #  revision: 8
+        #  datasource: Prometheus
+        #netzbremse:
+        #  gnetId: 25163
+        #  revision: 1
+        #  datasource: Loki
 
   kubernetesServiceMonitors:
     enabled: true
