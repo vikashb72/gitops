@@ -824,7 +824,15 @@ kube-prometheus-stack:
     #  # The Secrets are mounted into /etc/prometheus/secrets/
     #  - vault_token
 
-    #additionalScrapeConfigs:
+    additionalScrapeConfigs:
+      - job_name: 'authentik'
+        scrape_interval: 15s
+        static_configs:
+          - targets:
+              - 'authentik-server-metrics.authentik:9300'
+            labels:
+              instance: 'authentik'
+
     #  - job_name: vault
     #    # https://developer.hashicorp.com/vault/tutorials/archive/monitor-telemetry-grafana-prometheus
     #    metrics_path: /v1/sys/metrics
