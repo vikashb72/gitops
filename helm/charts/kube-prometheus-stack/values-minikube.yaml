@@ -822,6 +822,38 @@ kube-prometheus-stack:
               - 'cert-manager.cert-manager.svc.cluster.local:9402'
             labels:
               instance: 'cert-manager'
+      - job_name: minio-tenant-cluster
+        metrics_path: /minio/v2/metrics/cluster
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        static_configs:
+          - targets:
+              -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
+      - job_name: minio-tenant-node
+        metrics_path: /minio/v2/metrics/node
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        static_configs:
+          - targets:
+              -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
+      - job_name: minio-tenant-bucket
+        metrics_path: /minio/v2/metrics/bucket
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        static_configs:
+          - targets:
+              -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
+      - job_name: minio-tenant-resource
+        metrics_path: /minio/v2/metrics/resource
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        static_configs:
+          - targets:
+              -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
 
     #  - job_name: vault
     #    # https://developer.hashicorp.com/vault/tutorials/archive/monitor-telemetry-grafana-prometheus
