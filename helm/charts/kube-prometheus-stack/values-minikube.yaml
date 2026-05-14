@@ -407,7 +407,7 @@ kube-prometheus-stack:
           revision: 3
           datasource: Prometheus
         cert-manager-k8s:
-          gnetId: 20842
+          gnetId: 22908
           revision: 1
           datasource: Prometheus
  
