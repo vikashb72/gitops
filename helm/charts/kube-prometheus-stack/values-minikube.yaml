@@ -418,23 +418,23 @@ kube-prometheus-stack:
           gnetId: 21306
           revision: 70
           datasource: Prometheus
-        #vix## nodata
-        #vix##redis:
-        #vix##  gnetId: 24124
-        #vix##  revision: 1
-        #vix##  datasource: Prometheus
-        #vix#external-secrets:
-        #vix#  gnetId: 21640
-        #vix#  revision: 4
-        #vix#  datasource: Prometheus
-        #vix#loki-logs:
-        #vix#  gnetId: 16976
-        #vix#  revision: 7
-        #vix#  datasource: 
-        #vix#    - name: DS_PROMETHEUS
-        #vix#      value: Prometheus
-        #vix#    - name: DS_LOKI
-        #vix#      value: Loki
+        # nodata
+        redis:
+          gnetId: 24124
+          revision: 1
+          datasource: Prometheus
+        external-secrets:
+          gnetId: 21640
+          revision: 4
+          datasource: Prometheus
+        loki-logs:
+          gnetId: 16976
+          revision: 7
+          datasource: 
+            - name: DS_PROMETHEUS
+              value: Prometheus
+            - name: DS_LOKI
+              value: Loki
         #vix## To Investigate
         #vix##argocd-notifications-overview:
         #vix##  gnetId: 19975
