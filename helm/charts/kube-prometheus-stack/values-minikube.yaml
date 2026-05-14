@@ -402,9 +402,9 @@ kube-prometheus-stack:
         #  gnetId: 19995
         #  revision: 8
         #  datasource: Prometheus
-        cert-manager-20340:
-          gnetId: 20340
-          revision: 1
+        cert-manager-2:
+          gnetId: 22184
+          revision: 3
           datasource: Prometheus
  
         #cert-manager:
@@ -836,9 +836,18 @@ kube-prometheus-stack:
         scrape_interval: 15s
         static_configs:
           - targets:
-              - 'authentik-server-metrics.authentik:9300'
+              - 'authentik-server-metrics.authentik.svc.cluster.local:9300'
             labels:
               instance: 'authentik'
+      - job_name: cert-manager
+        scrape_interval: 2m
+        scrape_timeout: 60s
+        metrics_path: /metrics
+        static_configs:
+          - targets:
+              - 'cert-manager.cert-manager.svc.cluster.local:9402'
+            labels:
+              instance: 'cert-manager'
 
     #  - job_name: vault
     #    # https://developer.hashicorp.com/vault/tutorials/archive/monitor-telemetry-grafana-prometheus
