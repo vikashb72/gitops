@@ -58,7 +58,8 @@ tenant:
     # managed by the Prometheus Operator.
     prometheusOperator: false
     logging: { }
-    env: [ ]
+    env:
+      - 'MINIO_PROMETHEUS_AUTH_TYPE="PUBLIC"'
   ingress:
     api:
       enabled: false
