@@ -435,6 +435,10 @@ kube-prometheus-stack:
               value: Prometheus
             - name: DS_LOKI
               value: Loki
+        k8s-events-overview:
+          gnetId: 23100
+          revision: 5
+          datasource: Prometheus
         #vix## To Investigate
         #vix##argocd-notifications-overview:
         #vix##  gnetId: 19975
