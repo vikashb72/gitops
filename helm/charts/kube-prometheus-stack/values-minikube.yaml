@@ -423,10 +423,10 @@ kube-prometheus-stack:
           gnetId: 24124
           revision: 1
           datasource: Prometheus
-        external-secrets:
-          gnetId: 21640
-          revision: 4
-          datasource: Prometheus
+        #external-secrets:
+        #  gnetId: 21640
+        #  revision: 4
+        #  datasource: Prometheus
         loki-logs:
           gnetId: 16976
           revision: 7
