@@ -406,22 +406,18 @@ kube-prometheus-stack:
           gnetId: 22184
           revision: 3
           datasource: Prometheus
-        istio-nodegraph:
-          gnetId: 21773
-          revision: 1
+        istio-mesh:
+          gnetId: 7639
+          revision: 303
           datasource: Prometheus
-        #vix#istio-mesh:
-        #vix#  gnetId: 7639
-        #vix#  revision: 303
-        #vix#  datasource: Prometheus
-        #vix#istio-control-plane:
-        #vix#  gnetId: 7645
-        #vix#  revision: 302
-        #vix#  datasource: Prometheus
-        #vix#istio-ztunnel:
-        #vix#  gnetId: 21306
-        #vix#  revision: 70
-        #vix#  datasource: Prometheus
+        istio-control-plane:
+          gnetId: 7645
+          revision: 302
+          datasource: Prometheus
+        istio-ztunnel:
+          gnetId: 21306
+          revision: 70
+          datasource: Prometheus
         #vix## nodata
         #vix##redis:
         #vix##  gnetId: 24124
