@@ -406,6 +406,10 @@ kube-prometheus-stack:
           gnetId: 24124
           revision: 1
           datasource: Prometheus
+        minio-bucket:
+          gnetId: 19237
+          revision: 2
+          datasource: Prometheus
         #external-secrets:
         #  gnetId: 21640
         #  revision: 4
