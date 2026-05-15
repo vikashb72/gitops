@@ -18,6 +18,7 @@ redis-cluster:
     registry: docker.io
     repository: bitnamilegacy/redis-cluster
     pullPolicy: IfNotPresent
+    debug: true
 
   networkPolicy:
     enabled: true
@@ -56,6 +57,7 @@ redis-cluster:
     image:
       registry: docker.io
       repository: bitnamilegacy/os-shell
+      debug: true
 
   redis:
     extraVolumes:
@@ -165,6 +167,7 @@ redis-cluster:
     image:
       registry: docker.io
       repository: bitnamilegacy/redis-exporter
+      debug: true
     resourcesPreset: "nano"
 
     serviceMonitor:
