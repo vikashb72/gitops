@@ -18,7 +18,7 @@ redis-cluster:
   commonAnnotations: {}
   commonLabels: {}
   diagnosticMode:
-    enabled: false
+    enabled: true
 
   image:
     registry: docker.io
@@ -82,7 +82,7 @@ redis-cluster:
       type: "RuntimeDefault"
 
   ## @param usePassword Use password authentication
-  usePassword: true
+  usePassword: false
   existingSecret: "redis-password"
   existingSecretPasswordKey: "password"
   usePasswordFiles: true
