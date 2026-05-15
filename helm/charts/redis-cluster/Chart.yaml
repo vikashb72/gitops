@@ -1,0 +1,7 @@
+apiVersion: v2
+name: redis
+version: 1.0.0
+dependencies:
+  - name: redis-cluster
+    version: 13.0.4
+    repository: https://charts.bitnami.com/bitnami
