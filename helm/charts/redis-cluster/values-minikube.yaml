@@ -14,9 +14,9 @@ redis-cluster:
 #  diagnosticMode:
 #    enabled: false
 #
-#  image:
-#    registry: docker.io
-#    repository: bitnamilegacy/redis-cluster
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/redis-cluster
 #    pullPolicy: IfNotPresent
 #    debug: true
 #
