@@ -5,16 +5,12 @@ redis-cluster:
   global:
     defaultStorageClass: "nfs-client"
     storageClass: "nfs-client"
-    security:
-      allowInsecureImages: false
     redis:
       password: ""
     compatibility:
       openshift:
         adaptSecurityContext: disabled
 
-  commonAnnotations: {}
-  commonLabels: {}
   diagnosticMode:
     enabled: false
 
@@ -22,60 +18,14 @@ redis-cluster:
     registry: docker.io
     repository: bitnamilegacy/redis-cluster
     pullPolicy: IfNotPresent
-#
-#  networkPolicy:
-#    enabled: true
-#    allowExternal: true
-#    allowExternalEgress: true
-#    extraIngress: []
-#    extraEgress: []
-#
-#  serviceAccount:
-#    create: true
-#    annotations: {}
-#    automountServiceAccountToken: false
-#
-#  rbac:
-#    create: false
-#    role:
-#      rules: []
-#      ## rules:
-#      ##  - apiGroups:
-#      ##    - extensions
-#      ##    resources:
-#      ##      - podsecuritypolicies
-#      ##    verbs:
-#      ##      - use
-#      ##    resourceNames:
-#      ##      - gce.unprivileged
-#
-#  podSecurityContext:
-#    enabled: true
-#    fsGroupChangePolicy: Always
-#    supplementalGroups: []
-#    fsGroup: 1001
-#    sysctls: []
-#
-#  pdb:
-#    create: true
-#    minAvailable: ""
-#    maxUnavailable: ""
-#
-#  ## Containers Security Context
-#  containerSecurityContext:
-#    enabled: true
-#    seLinuxOptions: {}
-#    runAsUser: 1001
-#    runAsGroup: 1001
-#    runAsNonRoot: true
-#    privileged: false
-#    readOnlyRootFilesystem: true
-#    allowPrivilegeEscalation: false
-#    capabilities:
-#      drop: ["ALL"]
-#    seccompProfile:
-#      type: "RuntimeDefault"
-#
+
+  networkPolicy:
+    enabled: true
+    allowExternal: true
+    allowExternalEgress: true
+    extraIngress: []
+    extraEgress: []
+
 #  ## @param usePassword Use password authentication
 #  usePassword: false
 #  existingSecret: "redis-password"
@@ -95,19 +45,6 @@ redis-cluster:
 #    certCAFilename: "ca.crt"
 #    dhParamsFilename: ""
 #
-#  service:
-#    ports:
-#      redis: 6379
-#    annotations: {}
-#    labels: {}
-#    type: ClusterIP
-#    loadBalancerIP: ""
-#    loadBalancerClass: ""
-#    loadBalancerSourceRanges: []
-#    externalTrafficPolicy: Cluster
-#    headless:
-#      annotations: {}
-#
 #  persistence:
 #    enabled: false
 #    path: /bitnami/redis/data
@@ -124,32 +61,11 @@ redis-cluster:
 #
 #  ## Init containers parameters:
   volumePermissions:
-#    enabled: false
+    enabled: false
     image:
       registry: docker.io
       repository: bitnamilegacy/os-shell
-#      #tag: 12-debian-12-r51
-#      #digest: ""
-#      pullPolicy: IfNotPresent
-#      pullSecrets: []
-#
-#    ## Containers Security Context
-#    containerSecurityContext:
-#      enabled: true
-#      seLinuxOptions: {}
-#      runAsUser: 0
-#      privileged: false
-#
-#    ## Container resource requests and limits
-#    resourcesPreset: "nano" # nano, micro, small, medium, large,xlarge,2xlarge
-#    resources: {}
-#
-#  serviceBindings:
-#    enabled: false
-#
-#  podSecurityPolicy:
-#    create: false
-#
+
 #  redis:
 #    command: []
 #    args: []
