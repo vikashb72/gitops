@@ -131,9 +131,9 @@ redis-cluster:
   volumePermissions:
     enabled: false
     image:
-      #registry: docker.io
-      #repository: bitnami/os-shell
-      #tag: 12-debian-12-r51
+      registry: docker.io
+      repository: bitnami/os-shell
+      tag: 12-debian-12-r51
       #digest: ""
       pullPolicy: IfNotPresent
       pullSecrets: []
@@ -306,11 +306,11 @@ redis-cluster:
   
   ## Prometheus Exporter / Metrics
   metrics:
-    enabled: true
+    enabled: false
     image:
-      #registry: docker.io
-      #repository: bitnami/redis-exporter
-      #tag: 1.76.0-debian-12-r0
+      registry: docker.io
+      repository: bitnami/redis-exporter
+      tag: 1.76.0-debian-12-r0
       #digest: ""
       pullPolicy: IfNotPresent
       pullSecrets: []
