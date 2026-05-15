@@ -45,8 +45,8 @@ redis-cluster:
 #    certCAFilename: "ca.crt"
 #    dhParamsFilename: ""
 #
-#  persistence:
-#    enabled: false
+  persistence:
+    enabled: false
 #    path: /bitnami/redis/data
 #    subPath: ""
 #    storageClass: "nfs-client"
