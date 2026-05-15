@@ -5,19 +5,19 @@ redis-cluster:
   global:
     defaultStorageClass: "nfs-client"
     storageClass: "nfs-client"
-#    security:
-#      allowInsecureImages: false
-#    redis:
-#      password: ""
-#    compatibility:
-#      openshift:
-#        adaptSecurityContext: disabled
-#
-#  commonAnnotations: {}
-#  commonLabels: {}
-#  diagnosticMode:
-#    enabled: false
-#
+    security:
+      allowInsecureImages: false
+    redis:
+      password: ""
+    compatibility:
+      openshift:
+        adaptSecurityContext: disabled
+
+  commonAnnotations: {}
+  commonLabels: {}
+  diagnosticMode:
+    enabled: false
+
   image:
     registry: docker.io
     repository: bitnamilegacy/redis-cluster
@@ -123,11 +123,11 @@ redis-cluster:
 #    whenDeleted: Retain
 #
 #  ## Init containers parameters:
-#  volumePermissions:
+  volumePermissions:
 #    enabled: false
-#    image:
-#      registry: docker.io
-#      repository: bitnamilegacy/os-shell
+    image:
+      registry: docker.io
+      repository: bitnamilegacy/os-shell
 #      #tag: 12-debian-12-r51
 #      #digest: ""
 #      pullPolicy: IfNotPresent
@@ -300,11 +300,11 @@ redis-cluster:
 #      newExternalIPs: []
 #  
 #  ## Prometheus Exporter / Metrics
-#  metrics:
+  metrics:
 #    enabled: false
-#    image:
-#      registry: docker.io
-#      repository: bitnamilegacy/redis-exporter
+    image:
+      registry: docker.io
+      repository: bitnamilegacy/redis-exporter
 #      #tag: 1.76.0-debian-12-r0
 #      #digest: ""
 #      pullPolicy: IfNotPresent
@@ -362,8 +362,8 @@ redis-cluster:
 #        http: 9121
 #  
 #  ## Sysctl InitContainer
-#  sysctlImage:
-#    enabled: false
+  sysctlImage:
+    enabled: false
 #    registry: docker.io
 #    repository: bitnamilegacy/os-shell
 #    #tag: 12-debian-12-r51
