@@ -44,8 +44,8 @@ redis-cluster:
     certCAFilename: "ca.crt"
     dhParamsFilename: ""
 
-  persistence:
-    enabled: false
+  #persistence:
+    #enabled: false
     # storageClass: "nfs-client"
     # accessModes:
     #   - ReadWriteOnce
@@ -80,38 +80,14 @@ redis-cluster:
         readOnly: true
         subPath: users.acl
         mountPath: "/opt/bitnami/redis/etc/users.acl"
-#    command: []
-#    args: []
-#    ## @param redis.useAOFPersistence Whether to use AOF Persistence mode or not
-#    ## It is strongly recommended to use this type when dealing with clusters
-#    ## ref: https://redis.io/topics/persistence#append-only-file
-#    ## ref: https://redis.io/topics/cluster-tutorial#creating-and-using-a-redis-cluster
-#    ##
+    resourcesPreset: "nano"
 #    useAOFPersistence: "yes"
 #    ## @param redis.containerPorts.redis Redis&reg; port
 #    containerPorts:
 #      redis: 6379
 #      bus: 16379
-#    ## @param redis.extraEnvVars An array to add extra environment variables
-#    ## For example:
-#    ##  - name: BEARER_AUTH
-#    ##    value: true
-#    ##
-#    extraEnvVars: []
-#    ## @param redis.extraEnvVarsCM ConfigMap with extra environment variables
-#    ##
-#    extraEnvVarsCM: ""
-#    ## @param redis.extraEnvVarsSecret Secret with extra environment variables
-#    ##
-#    extraEnvVarsSecret: ""
-#    ## @param redis.podAnnotations Redis&reg; additional annotations
-#    ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-#    ##
-#    podAnnotations: {}
-#    resourcesPreset: "nano"
-#    resources: {}
-#
-  ## Cluster update job settings
+
+  # Cluster update job settings
   updateJob:
     activeDeadlineSeconds: 600
     automountServiceAccountToken: false
