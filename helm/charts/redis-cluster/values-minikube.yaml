@@ -85,7 +85,7 @@ redis-cluster:
   usePassword: false
   existingSecret: "redis-password"
   existingSecretPasswordKey: "password"
-  usePasswordFiles: true
+  usePasswordFiles: false
 
   tls:
     enabled: true
