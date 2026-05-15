@@ -242,7 +242,7 @@ redis-cluster:
   
   ## Redis(R) Cluster settings
   cluster:
-    init: true
+    init: false
     ## This is total number of nodes including the replicas. Meaning there will be 3 master and 3 replica
     ## nodes (as replica count is set to 1 by default, there will be 1 replica per master node).
     ## Hence, nodes = numberOfMasterNodes + numberOfMasterNodes * replicas
