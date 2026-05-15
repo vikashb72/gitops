@@ -26,12 +26,12 @@ redis-cluster:
     extraIngress: []
     extraEgress: []
 
-#  ## @param usePassword Use password authentication
-#  usePassword: false
-#  existingSecret: "redis-password"
-#  existingSecretPasswordKey: "password"
-#  usePasswordFiles: false
-#
+  ## @param usePassword Use password authentication
+  usePassword: true
+  existingSecret: "redis-password"
+  existingSecretPasswordKey: "password"
+  usePasswordFiles: true
+
   tls:
     enabled: true
     authClients: false
@@ -80,11 +80,6 @@ redis-cluster:
         mountPath: "/opt/bitnami/redis/etc/users.acl"
 #    command: []
 #    args: []
-#    updateStrategy:
-#      type: RollingUpdate
-#    automountServiceAccountToken: false
-#    hostAliases: []
-#    hostNetwork: false
 #    ## @param redis.useAOFPersistence Whether to use AOF Persistence mode or not
 #    ## It is strongly recommended to use this type when dealing with clusters
 #    ## ref: https://redis.io/topics/persistence#append-only-file
@@ -114,175 +109,77 @@ redis-cluster:
 #    resourcesPreset: "nano"
 #    resources: {}
 #
-#  ## Cluster update job settings
-#  updateJob:
-#    activeDeadlineSeconds: 600
-#    automountServiceAccountToken: false
-#    helmHook: post-upgrade
-#    extraVolumes:
-#      - name: own-ca-bundle
-#        configMap:
-#          name: own-ca-bundle
-#          defaultMode: 0644
-#          optional: false
-#          items:
-#            - key: own-ca-bundle.pem
-#              path: ca-certificates.crt
-#      - name: redis-users-acl
-#        secret:
-#          secretName: redis-users-acl
-#    extraVolumeMounts:
-#      - mountPath: /etc/ssl/certs/
-#        name: own-ca-bundle
-#        readOnly: true
-#      - name: redis-users-acl
-#        readOnly: true
-#        subPath: users.acl
-#        mountPath: "/opt/bitnami/redis/etc/users.acl"
-#    resourcesPreset: "nano"
-#    resources: {}
-#  
-#  ## Redis(R) Cluster settings
-#  cluster:
-#    init: false
-#    ## This is total number of nodes including the replicas. Meaning there will be 3 master and 3 replica
-#    ## nodes (as replica count is set to 1 by default, there will be 1 replica per master node).
-#    ## Hence, nodes = numberOfMasterNodes + numberOfMasterNodes * replicas
-#    ##
-#    ## @param cluster.nodes The number of master nodes should always be >= 3, otherwise cluster creation will fail
-#    ##
-#    nodes: 6
-#    ## @param cluster.replicas Number of replicas for every master in the cluster
-#    ## Parameter to be passed as --cluster-replicas to the redis-cli --cluster create
-#    ## 1 means that we want a replica for every master created
-#    ##
-#    replicas: 1
-#    ## Configuration to access the Redis(R) Cluster from outside the Kubernetes cluster
-#    ##
-#    externalAccess:
-#      ## @param cluster.externalAccess.enabled Enable access to the Redis
-#      ##
-#      enabled: false
-#      ## @param cluster.externalAccess.hostMode Set cluster preferred endpoint type as hostname
-#      ## ref: https://github.com/redis/redis/pull/9530
-#      ##
-#      hostMode: false
-#      service:
-#        ## @param cluster.externalAccess.service.disableLoadBalancerIP Disable use of `Service.spec.loadBalancerIP`
-#        ##
-#        disableLoadBalancerIP: false
-#        ## @param cluster.externalAccess.service.loadBalancerIPAnnotaion Name of annotation to specify fixed IP for service in. Disables `Service.spec.loadBalancerIP` if not empty
-#        ##
-#        loadBalancerIPAnnotaion: ""
-#        ## @param cluster.externalAccess.service.type Type for the services used to expose every Pod
-#        ## At this moment only LoadBalancer is supported
-#        ##
-#        type: LoadBalancer
-#        ## @param cluster.externalAccess.service.port Port for the services used to expose every Pod
-#        ##
-#        port: 6379
-#        ## @param cluster.externalAccess.service.loadBalancerIP Array of load balancer IPs for each Redis&reg; node. Length must be the same as cluster.nodes
-#        ##
-#        loadBalancerIP: []
-#        ## @param cluster.externalAccess.service.loadBalancerClass Load Balancer class if service type is `LoadBalancer` (optional, cloud specific)
-#        ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
-#        ##
-#        loadBalancerClass: ""
-#        ## @param cluster.externalAccess.service.loadBalancerSourceRanges Service Load Balancer sources
-#        ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
-#        ## e.g:
-#        ## loadBalancerSourceRanges:
-#        ##   - 10.10.10.0/24
-#        ##
-#        loadBalancerSourceRanges: []
-#        ## @param cluster.externalAccess.service.annotations Annotations to add to the services used to expose every Pod of the Redis(R) Cluster
-#        ##
-#        annotations: {}
-#    ## This section allows to update the Redis&reg; cluster nodes.
-#    ##
-#    update:
-#      addNodes: false
-#      currentNumberOfNodes: 6
-#      currentNumberOfReplicas: 1
-#      newExternalIPs: []
-#  
-#  ## Prometheus Exporter / Metrics
+  ## Cluster update job settings
+  updateJob:
+    activeDeadlineSeconds: 600
+    automountServiceAccountToken: false
+    helmHook: post-upgrade
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
+      - name: redis-users-acl
+        secret:
+          secretName: redis-users-acl
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+      - name: redis-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/redis/etc/users.acl"
+    resourcesPreset: "nano"
+    resources: {}
+  
+  # Redis(R) Cluster settings
+  cluster:
+    #init: false
+    nodes: 6
+    replicas: 1
+    #externalAccess:
+    #  enabled: true
+    #  service:
+    #    disableLoadBalancerIP: false
+    #    loadBalancerIPAnnotaion: ""
+    #    type: LoadBalancer
+    #    port: 6379
+    #    loadBalancerIP: []
+    #    loadBalancerClass: ""
+    #    annotations: {}
+
+    update:
+      addNodes: false
+      currentNumberOfNodes: 6
+      currentNumberOfReplicas: 1
+      newExternalIPs: []
+  
+  # Prometheus Exporter / Metrics
   metrics:
-#    enabled: false
+    #enabled: false
     image:
       registry: docker.io
       repository: bitnamilegacy/redis-exporter
-#      #tag: 1.76.0-debian-12-r0
-#      #digest: ""
-#      pullPolicy: IfNotPresent
-#      pullSecrets: []
-#    resourcesPreset: "nano"
-#    extraArgs: {}
-#    ## @param metrics.extraEnvVars Array with extra environment variables to add to Redis&reg; exporter
-#    ## e.g:
-#    # extraEnvVars:
-#    ##   - name: FOO
-#    ##     value: "bar"
-#    ##
-#    extraEnvVars: []
-#    ## @param metrics.containerPorts.http Metrics HTTP container port
-#    ##
-#    containerPorts:
-#      http: 9121
-#    ## @param metrics.podAnnotations [object] Additional annotations for Metrics exporter pod
-#    ##
-#    podAnnotations:
-#      prometheus.io/scrape: "true"
-#      prometheus.io/port: "9121"
-#    podLabels: {}
-#    containerSecurityContext:
-#      enabled: true
-#      seLinuxOptions: {}
-#      runAsUser: 1001
-#      runAsGroup: 1001
-#      runAsNonRoot: true
-#      privileged: false
-#      readOnlyRootFilesystem: true
-#      allowPrivilegeEscalation: false
-#      capabilities:
-#        drop: ["ALL"]
-#      seccompProfile:
-#        type: "RuntimeDefault"
-#
-#    serviceMonitor:
-#      enabled: true
-#      namespace: "monitoring"
-#      labels: 
-#        release: kube-prometheus-stack
-#      metricRelabelings: []
-#
-#    prometheusRule:
-#      enabled: true
-#      additionalLabels:
-#        release: kube-prometheus-stack
-#      namespace: "monitoring"
-#      rules: []
-#
-#    service:
-#      type: ClusterIP
-#      ports:
-#        http: 9121
-#  
-#  ## Sysctl InitContainer
+    resourcesPreset: "nano"
+
+    serviceMonitor:
+      #enabled: true
+      namespace: "monitoring"
+      labels: 
+        release: kube-prometheus-stack
+
+    prometheusRule:
+      #enabled: true
+      additionalLabels:
+        release: kube-prometheus-stack
+      namespace: "monitoring"
+      rules: []
+  
+  # Sysctl InitContainer
   sysctlImage:
     enabled: false
-#    registry: docker.io
-#    repository: bitnamilegacy/os-shell
-#    #tag: 12-debian-12-r51
-#    digest: ""
-#    pullPolicy: IfNotPresent
-#    pullSecrets: []
-#    mountHostSys: false
-#    containerSecurityContext:
-#      enabled: true
-#      seLinuxOptions: {}
-#      runAsUser: 0
-#      privileged: true
-#    resourcesPreset: "nano"
-#    resources: {}
-#  
