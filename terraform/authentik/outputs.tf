@@ -20,7 +20,7 @@ output "proxy_groups" {
 
 output "roles" {
   description = "Roles"
-  value       = { for out in authentik_rbac_role.roles: out.name => out.id }
+  value       = { for out in authentik_rbac_role.roles : out.name => out.id }
 }
 
 #output "idp_groups" {

@@ -57,7 +57,7 @@ resource "authentik_flow_stage_binding" "recovery-flow-password-write" {
 # data "authentik_stage" "default-authentication-identification" {
 
 output "default-authentication-identification" {
-   value = data.authentik_stage.default-authentication-identification
+  value = data.authentik_stage.default-authentication-identification
 }
 
 #resource "authentik_stage_identification" "default_authentication_identification" {

@@ -64,11 +64,11 @@ variable "users" {
 }
 
 variable "roles" {
-  type    = list
+  type    = list(any)
   default = []
 }
 
 variable "groups" {
-  type    = list
+  type    = list(any)
   default = []
 }

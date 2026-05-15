@@ -6,8 +6,8 @@ data "vault_kv_secret_v2" "authentik_clients" {
 }
 
 data "vault_kv_secret_v2" "idp_token" {
-  mount    = "kv"
-  name     = "infrastructure/authentik/idp"
+  mount = "kv"
+  name  = "infrastructure/authentik/idp"
 }
 
 data "vault_kv_secret_v2" "okta_oidc" {
