@@ -42,9 +42,14 @@ argocdManaged:
       - path: helm/charts/cnpg
     syncOptions:
       ServerSideApply: true
-  redis:
+  redis-cluster:
+    name: redis-cluster
+    targetNamespace: redis
+    sources:
+      - path: helm/charts/redis-cluster
+  redis-sentinel:
     disable: true
-    name: redis
+    name: redis-sentinel
     targetNamespace: redis
     sources:
       - path: helm/charts/redis
