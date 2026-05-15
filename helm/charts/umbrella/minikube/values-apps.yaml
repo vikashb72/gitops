@@ -42,6 +42,100 @@ argocdManaged:
       - path: helm/charts/cnpg
     syncOptions:
       ServerSideApply: true
+  redis:
+    disable: true
+    name: redis
+    targetNamespace: redis
+    sources:
+      - path: helm/charts/redis
+  valkey:
+    disable: true
+    name: valkey
+    targetNamespace: valkey
+    sources:
+      - path: helm/charts/valkey
+  strimzi-kafka-operator:
+    disable: true
+    name: strimzi-kafka-operator
+    targetNamespace: kafka-system
+    sources:
+      - path: helm/charts/strimzi-kafka-operator
+    syncOptions:
+      ServerSideApply: true
+  #homepage:
+  #  name: homepage
+  #  targetNamespace: homepage
+  #  sources:
+  #    - path: helm/charts/homepage
+  #kafka-ui:
+  #  name: kafka-ui
+  #  targetNamespace: kafka-ui
+  #  sources:
+  #    - path: helm/charts/kafka-ui
+  #kafka-rest:
+  #  name: kafka-rest
+  #  targetNamespace: kafka-rest
+  #  sources:
+  #    - path: helm/charts/kafka-rest
+  #mysql:
+  #  disable: true
+  #  name: mysql
+  #  targetNamespace: mysql
+  #  sources:
+  #    - path: helm/charts/mysql
+  #fleetdm:
+  #  disable: true
+  #  name: fleetdm
+  #  targetNamespace: fleetdm
+  #  sources:
+  #    - path: helm/charts/fleetdm
+  #consul:
+  #  name: consul
+  #  targetNamespace: consul
+  #  sources:
+  #    - path: helm/charts/hashicorp-consul
+  #poc-nginx:
+  #  name: poc
+  #  targetNamespace: poc
+  #  sources:
+  #    - path: helm/charts/poc-nginx
+#  keda:
+#    disable: true
+#    name: keda
+#    targetNamespace: keda
+#    sources:
+#      - path: helm/charts/keda
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    disableAutomated: false
+#    automated: {}
+#    syncOptions:
+#      ServerSideApply: true
+#  gha-runner-controller:
+#    disable: true
+#    name: gha-runner-controller
+#    targetNamespace: gha-controller
+#    sources:
+#      - path: helm/charts/gha-runner-controller
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    disableAutomated: false
+#    automated: {}
+#    syncOptions:
+#      ServerSideApply: true
+#  gha-runner-scale-set:
+#    disable: true
+#    name: gha-runner-scale-set
+#    targetNamespace: gha-runners
+#    sources:
+#      - path: helm/charts/gha-runner-scale-set
+#        noHelmValues: false
+#        helm:
+#          envFile: true
+#    disableAutomated: false
+#    automated: {}
   #kestra:
   #  disable: true
   #  name: kestra
@@ -467,96 +561,3 @@ argocdManaged:
   #  targetNamespace: echoserver
   #  sources:
   #    - path: helm/charts/echoserver
-  redis:
-    name: redis
-    targetNamespace: redis
-    sources:
-      - path: helm/charts/redis
-  valkey:
-    disable: true
-    name: valkey
-    targetNamespace: valkey
-    sources:
-      - path: helm/charts/valkey
-  strimzi-kafka-operator:
-    disable: true
-    name: strimzi-kafka-operator
-    targetNamespace: kafka-system
-    sources:
-      - path: helm/charts/strimzi-kafka-operator
-    syncOptions:
-      ServerSideApply: true
-  #homepage:
-  #  name: homepage
-  #  targetNamespace: homepage
-  #  sources:
-  #    - path: helm/charts/homepage
-  #kafka-ui:
-  #  name: kafka-ui
-  #  targetNamespace: kafka-ui
-  #  sources:
-  #    - path: helm/charts/kafka-ui
-  #kafka-rest:
-  #  name: kafka-rest
-  #  targetNamespace: kafka-rest
-  #  sources:
-  #    - path: helm/charts/kafka-rest
-  #mysql:
-  #  disable: true
-  #  name: mysql
-  #  targetNamespace: mysql
-  #  sources:
-  #    - path: helm/charts/mysql
-  #fleetdm:
-  #  disable: true
-  #  name: fleetdm
-  #  targetNamespace: fleetdm
-  #  sources:
-  #    - path: helm/charts/fleetdm
-  #consul:
-  #  name: consul
-  #  targetNamespace: consul
-  #  sources:
-  #    - path: helm/charts/hashicorp-consul
-  #poc-nginx:
-  #  name: poc
-  #  targetNamespace: poc
-  #  sources:
-  #    - path: helm/charts/poc-nginx
-#  keda:
-#    disable: true
-#    name: keda
-#    targetNamespace: keda
-#    sources:
-#      - path: helm/charts/keda
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    disableAutomated: false
-#    automated: {}
-#    syncOptions:
-#      ServerSideApply: true
-#  gha-runner-controller:
-#    disable: true
-#    name: gha-runner-controller
-#    targetNamespace: gha-controller
-#    sources:
-#      - path: helm/charts/gha-runner-controller
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    disableAutomated: false
-#    automated: {}
-#    syncOptions:
-#      ServerSideApply: true
-#  gha-runner-scale-set:
-#    disable: true
-#    name: gha-runner-scale-set
-#    targetNamespace: gha-runners
-#    sources:
-#      - path: helm/charts/gha-runner-scale-set
-#        noHelmValues: false
-#        helm:
-#          envFile: true
-#    disableAutomated: false
-#    automated: {}
