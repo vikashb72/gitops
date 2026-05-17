@@ -59,6 +59,13 @@ redis-cluster:
       repository: bitnamilegacy/os-shell
 
   redis:
+    configmap: |
+      maxmemory-policy allkeys-lru
+      maxmemory 32mb
+      repl-backlog-size 2mb
+      appendonly yes
+      save ""
+      aclfile /opt/bitnami/redis/etc/users.acl
     extraVolumes:
       - name: own-ca-bundle
         configMap:
