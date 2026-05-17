@@ -59,7 +59,7 @@ valkey:
   
   auth:
     # credentials, creating a security risk.
-    enabled: true
+    enabled: false
   
     # Use an existing secret for user passwords. Key defaults to username.
     usersExistingSecret: "valkey-password"
