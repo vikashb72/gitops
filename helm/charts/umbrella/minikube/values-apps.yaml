@@ -43,7 +43,7 @@ argocdManaged:
     syncOptions:
       ServerSideApply: true
   redis-cluster:
-    disable: false
+    disable: true
     name: redis-cluster
     targetNamespace: redis
     sources:
