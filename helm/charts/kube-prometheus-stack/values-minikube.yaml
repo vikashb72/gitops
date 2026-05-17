@@ -780,17 +780,13 @@ kube-prometheus-stack:
 
   prometheus:
     enabled: true
-    additionalRulesForClusterRole:
-      - apiGroups: ["autoscaling.k8s.io"]
-        resources: ["verticalpodautoscalers"]
-        verbs: ["list", "watch"]
-      - apiGroups: ["apiextensions.k8s.io"]
-        resources: ["customresourcedefinitions"]
-        verbs: ["list", "watch"]
-
-    service:
-      ipDualStack:
-        enabled: false
+    #additionalRulesForClusterRole:
+    #  - apiGroups: ["autoscaling.k8s.io"]
+    #    resources: ["verticalpodautoscalers"]
+    #    verbs: ["list", "watch"]
+    #  - apiGroups: ["apiextensions.k8s.io"]
+    #    resources: ["customresourcedefinitions"]
+    #    verbs: ["list", "watch"]
 
     serviceMonitor:
       selfMonitor: true
@@ -820,63 +816,53 @@ kube-prometheus-stack:
     additionalScrapeConfigs:
       - job_name: 'authentik'
         scrape_interval: 15s
-        static_configs:
-          - targets:
-              - 'authentik-server-metrics.authentik.svc.cluster.local:9300'
-            labels:
-              instance: 'authentik'
-      - job_name: cert-manager
-        scrape_interval: 2m
-        scrape_timeout: 60s
-        metrics_path: /metrics
-        static_configs:
-          - targets:
-              - 'cert-manager.cert-manager.svc.cluster.local:9402'
-            labels:
-              instance: 'cert-manager'
-      - job_name: minio-tenant-cluster
-        metrics_path: /minio/v2/metrics/cluster
-        scheme: https
-        tls_config:
-          insecure_skip_verify: true
-        static_configs:
-          - targets:
-              -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
-      - job_name: minio-tenant-node
-        metrics_path: /minio/v2/metrics/node
-        scheme: https
-        tls_config:
-          insecure_skip_verify: true
-        static_configs:
-          - targets:
-              -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
-      - job_name: minio-tenant-bucket
-        metrics_path: /minio/v2/metrics/bucket
-        scheme: https
-        tls_config:
-          insecure_skip_verify: true
-        static_configs:
-          - targets:
-              -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
-      - job_name: minio-tenant-resource
-        metrics_path: /minio/v2/metrics/resource
-        scheme: https
-        tls_config:
-          insecure_skip_verify: true
-        static_configs:
-          - targets:
-              -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
-
-    #  - job_name: vault
-    #    # https://developer.hashicorp.com/vault/tutorials/archive/monitor-telemetry-grafana-prometheus
-    #    metrics_path: /v1/sys/metrics
-    #    params:
-    #      format: ['prometheus']
-    #    scheme: https
-    #    authorization:
-    #      credentials_file: /etc/prometheus/secrets/vault-token
-    #    static_configs:
-    #      - targets: 
-    #          - vault-0.vault-system:8200
-    #          - vault-1.vault-system:8200
-    #          - vault-2.vault-system:8200
+        kubernetes_sd_configs:
+          - role: pod
+            namespace:
+              names:
+                - authentik
+      #- job_name: minio-tenant-cluster
+      #  metrics_path: /minio/v2/metrics/cluster
+      #  scheme: https
+      #  tls_config:
+      #    insecure_skip_verify: true
+      #  static_configs:
+      #    - targets:
+      #        -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
+      #- job_name: minio-tenant-node
+      #  metrics_path: /minio/v2/metrics/node
+      #  scheme: https
+      #  tls_config:
+      #    insecure_skip_verify: true
+      #  static_configs:
+      #    - targets:
+      #        -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
+      #- job_name: minio-tenant-bucket
+      #  metrics_path: /minio/v2/metrics/bucket
+      #  scheme: https
+      #  tls_config:
+      #    insecure_skip_verify: true
+      #  static_configs:
+      #    - targets:
+      #        -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
+      #- job_name: minio-tenant-resource
+      #  metrics_path: /minio/v2/metrics/resource
+      #  scheme: https
+      #  tls_config:
+      #    insecure_skip_verify: true
+      #  static_configs:
+      #    - targets:
+      #        -  'minikube-hl.minio-tenant.svc.cluster.local:9000'
+      #  - job_name: vault
+      #    # https://developer.hashicorp.com/vault/tutorials/archive/monitor-telemetry-grafana-prometheus
+      #    metrics_path: /v1/sys/metrics
+      #    params:
+      #      format: ['prometheus']
+      #    scheme: https
+      #    authorization:
+      #      credentials_file: /etc/prometheus/secrets/vault-token
+      #    static_configs:
+      #      - targets: 
+      #          - vault-0.vault-system:8200
+      #          - vault-1.vault-system:8200
+      #          - vault-2.vault-system:8200
