@@ -2,9 +2,9 @@ schema:
   env: minikube
 
 redis-cluster:
-#  global:
-#    defaultStorageClass: "nfs-client"
-#    storageClass: "nfs-client"
+  global:
+    defaultStorageClass: "nfs-client"
+    storageClass: "nfs-client"
 #    redis:
 #      password: ""
 #    compatibility:
@@ -13,12 +13,12 @@ redis-cluster:
 #  commonLabels:
 #    sidecar.istio.io/inject: "false"
 #
-#  diagnosticMode:
-#    enabled: false
-#
-#  image:
-#    registry: docker.io
-#    repository: bitnamilegacy/redis-cluster
+  diagnosticMode:
+    enabled: false
+
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/redis-cluster
 #
 #  networkPolicy:
 #    enabled: true
@@ -51,12 +51,12 @@ redis-cluster:
 #      - ReadWriteOnce
 #    size: 8Gi
 #
-#  ## Init containers parameters:
-#  volumePermissions:
-#    enabled: false
-#    image:
-#      registry: docker.io
-#      repository: bitnamilegacy/os-shell
+  ## Init containers parameters:
+  volumePermissions:
+    enabled: false
+    image:
+      registry: docker.io
+      repository: bitnamilegacy/os-shell
 #
 #  redis:
 #    configmap: |
@@ -144,13 +144,13 @@ redis-cluster:
 #      newExternalIPs: []
 #  
 #  # Prometheus Exporter / Metrics
-#  metrics:
-#    enabled: true
-#    image:
-#      registry: docker.io
-#      repository: bitnamilegacy/redis-exporter
-#      debug: false
-#    resourcesPreset: "nano"
+  metrics:
+    enabled: true
+    image:
+      registry: docker.io
+      repository: bitnamilegacy/redis-exporter
+      debug: false
+    resourcesPreset: "nano"
 #
 #    serviceMonitor:
 #      enabled: false
