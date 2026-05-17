@@ -10,6 +10,8 @@ redis-cluster:
     compatibility:
       openshift:
         adaptSecurityContext: disabled
+  commonLabels:
+    sidecar.istio.io/inject: "false"
 
   diagnosticMode:
     enabled: false
