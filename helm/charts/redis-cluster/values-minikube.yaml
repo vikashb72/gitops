@@ -11,8 +11,8 @@ redis-cluster:
       openshift:
         adaptSecurityContext: disabled
 
-#  diagnosticMode:
-#    enabled: false
+  diagnosticMode:
+    enabled: false
 
   image:
     registry: docker.io
@@ -25,12 +25,12 @@ redis-cluster:
 #    extraIngress: []
 #    extraEgress: []
 #
-#  ## @param usePassword Use password authentication
-#  usePassword: true
-#  existingSecret: "redis-password"
-#  existingSecretPasswordKey: "password"
-#  usePasswordFiles: true
-#
+  ## @param usePassword Use password authentication
+  usePassword: true
+  existingSecret: "redis-password"
+  existingSecretPasswordKey: "password"
+  usePasswordFiles: true
+
   tls:
     enabled: true
     authClients: false
@@ -43,7 +43,7 @@ redis-cluster:
     dhParamsFilename: ""
 
   persistence:
-    #enabled: false
+    enabled: false
     storageClass: "nfs-client"
     accessModes:
       - ReadWriteOnce
@@ -140,17 +140,17 @@ redis-cluster:
     image:
       registry: docker.io
       repository: bitnamilegacy/redis-exporter
-      debug: true
+      debug: false
     resourcesPreset: "nano"
 
     serviceMonitor:
-      enabled: true
+      enabled: false
       namespace: "monitoring"
       labels: 
         release: kube-prometheus-stack
 
     prometheusRule:
-      enabled: true
+      enabled: false
       additionalLabels:
         release: kube-prometheus-stack
       namespace: "monitoring"
