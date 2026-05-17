@@ -20,7 +20,7 @@ spec:
           command: ["/bin/bash"]
           args:
             - "-c"
-            - "apk add sslscan;ping -i 30 localhost"
+            - "apk add --update sslscan redis;ping -i 30 localhost"
           volumeMounts:
             - mountPath: /etc/ssl/certs/
               name: root-ca-certificate-only
