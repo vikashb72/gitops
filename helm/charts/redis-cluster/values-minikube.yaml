@@ -20,13 +20,13 @@ redis-cluster:
     registry: docker.io
     repository: bitnamilegacy/redis-cluster
 
-#  networkPolicy:
-#    enabled: true
-#    allowExternal: true
-#    allowExternalEgress: true
-#    extraIngress: []
-#    extraEgress: []
-#
+  networkPolicy:
+    enabled: true
+    allowExternal: true
+    allowExternalEgress: true
+    extraIngress: []
+    extraEgress: []
+
   ## @param usePassword Use password authentication
   usePassword: true
   existingSecret: "redis-password"
