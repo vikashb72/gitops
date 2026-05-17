@@ -78,7 +78,7 @@ valkey:
   
   # Replica configuration for master-replica replication mode
   replica:
-    enabled: false
+    enabled: true
   
     # Number of replica instances (total pods = replicas + 1 master)
     replicas: 2
