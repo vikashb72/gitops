@@ -42,8 +42,14 @@ argocdManaged:
       - path: helm/charts/cnpg
     syncOptions:
       ServerSideApply: true
+  valkey:
+    disable: false
+    name: valkey
+    targetNamespace: valkey
+    sources:
+      - path: helm/charts/valkey
   redis-cluster:
-    disable: true
+    disable: false
     name: redis-cluster
     targetNamespace: redis
     sources:
@@ -54,12 +60,6 @@ argocdManaged:
     targetNamespace: redis
     sources:
       - path: helm/charts/redis
-  valkey:
-    disable: false
-    name: valkey
-    targetNamespace: valkey
-    sources:
-      - path: helm/charts/valkey
   strimzi-kafka-operator:
     disable: true
     name: strimzi-kafka-operator
