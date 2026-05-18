@@ -14,7 +14,7 @@ redis-cluster:
 #    sidecar.istio.io/inject: "false"
 #
   diagnosticMode:
-    enabled: false
+    enabled: true
 
   image:
     registry: docker.io
@@ -26,13 +26,13 @@ redis-cluster:
 #    allowExternalEgress: true
 #    extraIngress: []
 #    extraEgress: []
-#
-#  ## @param usePassword Use password authentication
-#  usePassword: true
-#  existingSecret: "redis-password"
-#  existingSecretPasswordKey: "password"
-#  usePasswordFiles: true
-#
+
+  ## @param usePassword Use password authentication
+  usePassword: true
+  existingSecret: "redis-password"
+  existingSecretPasswordKey: "password"
+  usePasswordFiles: true
+
   tls:
     enabled: true
     authClients: false
@@ -57,114 +57,114 @@ redis-cluster:
     image:
       registry: docker.io
       repository: bitnamilegacy/os-shell
-#
-#  redis:
-#    configmap: |
-#      maxmemory-policy allkeys-lru
-#      maxmemory 32mb
-#      repl-backlog-size 2mb
-#      appendonly yes
-#      save ""
-#      aclfile /opt/bitnami/redis/etc/users.acl
-#    extraVolumes:
-#      - name: own-ca-bundle
-#        configMap:
-#          name: own-ca-bundle
-#          defaultMode: 0644
-#          optional: false
-#          items:
-#            - key: own-ca-bundle.pem
-#              path: ca-certificates.crt
-#      - name: redis-users-acl
-#        secret:
-#          secretName: redis-users-acl
-#    extraVolumeMounts:
-#      - mountPath: /etc/ssl/certs/
-#        name: own-ca-bundle
-#        readOnly: true
-#      - name: redis-users-acl
-#        readOnly: true
-#        subPath: users.acl
-#        mountPath: "/opt/bitnami/redis/etc/users.acl"
-#    resourcesPreset: "nano"
-#    useAOFPersistence: "yes"
-#    ## @param redis.containerPorts.redis Redis&reg; port
-#    containerPorts:
-#      redis: 6379
-#      bus: 16379
-#
-#  # Cluster update job settings
-#  updateJob:
-#    activeDeadlineSeconds: 600
-#    automountServiceAccountToken: false
-#    helmHook: post-upgrade
-#    extraVolumes:
-#      - name: own-ca-bundle
-#        configMap:
-#          name: own-ca-bundle
-#          defaultMode: 0644
-#          optional: false
-#          items:
-#            - key: own-ca-bundle.pem
-#              path: ca-certificates.crt
-#      - name: redis-users-acl
-#        secret:
-#          secretName: redis-users-acl
-#    extraVolumeMounts:
-#      - mountPath: /etc/ssl/certs/
-#        name: own-ca-bundle
-#        readOnly: true
-#      - name: redis-users-acl
-#        readOnly: true
-#        subPath: users.acl
-#        mountPath: "/opt/bitnami/redis/etc/users.acl"
-#    resourcesPreset: "nano"
-#    resources: {}
-#  
-#  # Redis(R) Cluster settings
-#  cluster:
-#    #init: false
-#    nodes: 6
-#    replicas: 1
-#    #externalAccess:
-#    #  enabled: true
-#    #  service:
-#    #    disableLoadBalancerIP: false
-#    #    loadBalancerIPAnnotaion: ""
-#    #    type: LoadBalancer
-#    #    port: 6379
-#    #    loadBalancerIP: []
-#    #    loadBalancerClass: ""
-#    #    annotations: {}
-#
-#    update:
-#      addNodes: false
-#      currentNumberOfNodes: 6
-#      currentNumberOfReplicas: 1
-#      newExternalIPs: []
-#  
-#  # Prometheus Exporter / Metrics
+
+  redis:
+    configmap: |
+      maxmemory-policy allkeys-lru
+      maxmemory 32mb
+      repl-backlog-size 2mb
+      appendonly yes
+      save ""
+      aclfile /opt/bitnami/redis/etc/users.acl
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
+      - name: redis-users-acl
+        secret:
+          secretName: redis-users-acl
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+      - name: redis-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/redis/etc/users.acl"
+    resourcesPreset: "nano"
+    useAOFPersistence: "yes"
+    ## @param redis.containerPorts.redis Redis&reg; port
+    containerPorts:
+      redis: 6379
+      bus: 16379
+
+  # Cluster update job settings
+  updateJob:
+    activeDeadlineSeconds: 600
+    automountServiceAccountToken: false
+    helmHook: post-upgrade
+    extraVolumes:
+      - name: own-ca-bundle
+        configMap:
+          name: own-ca-bundle
+          defaultMode: 0644
+          optional: false
+          items:
+            - key: own-ca-bundle.pem
+              path: ca-certificates.crt
+      - name: redis-users-acl
+        secret:
+          secretName: redis-users-acl
+    extraVolumeMounts:
+      - mountPath: /etc/ssl/certs/
+        name: own-ca-bundle
+        readOnly: true
+      - name: redis-users-acl
+        readOnly: true
+        subPath: users.acl
+        mountPath: "/opt/bitnami/redis/etc/users.acl"
+    resourcesPreset: "nano"
+    resources: {}
+  
+  # Redis(R) Cluster settings
+  cluster:
+    #init: false
+    nodes: 6
+    replicas: 1
+    #externalAccess:
+    #  enabled: true
+    #  service:
+    #    disableLoadBalancerIP: false
+    #    loadBalancerIPAnnotaion: ""
+    #    type: LoadBalancer
+    #    port: 6379
+    #    loadBalancerIP: []
+    #    loadBalancerClass: ""
+    #    annotations: {}
+
+    update:
+      addNodes: false
+      currentNumberOfNodes: 6
+      currentNumberOfReplicas: 1
+      newExternalIPs: []
+  
+  # Prometheus Exporter / Metrics
   metrics:
-    enabled: true
+    enabled: false
     image:
       registry: docker.io
       repository: bitnamilegacy/redis-exporter
       debug: false
     resourcesPreset: "nano"
-#
-#    serviceMonitor:
-#      enabled: false
-#      namespace: "monitoring"
-#      labels: 
-#        release: kube-prometheus-stack
-#
-#    prometheusRule:
-#      enabled: false
-#      additionalLabels:
-#        release: kube-prometheus-stack
-#      namespace: "monitoring"
-#      rules: []
-#  
-#  # Sysctl InitContainer
-#  sysctlImage:
-#    enabled: false
+
+    serviceMonitor:
+      enabled: false
+      namespace: "monitoring"
+      labels: 
+        release: kube-prometheus-stack
+
+    prometheusRule:
+      enabled: false
+      additionalLabels:
+        release: kube-prometheus-stack
+      namespace: "monitoring"
+      rules: []
+  
+  # Sysctl InitContainer
+  sysctlImage:
+    enabled: false
