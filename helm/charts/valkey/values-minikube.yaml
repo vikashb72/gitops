@@ -64,7 +64,15 @@ valkey:
     # Map of users to create with ACL permissions.
     # If usersExistingSecret is set, passwords from the secret take priority over inline passwords.
     # NOTE: If using aclUsers, the 'default' user must be included here.
-    aclUsers: {}
+    aclUsers:
+      default:
+        permissions: "~* &* +@all"
+      replicant:
+        permissions: "~* &* +ping +psync +replconf"
+      reader:
+        permissions: "~* &* -@all +@read +ping +info"
+      writer:
+        permissions: "~* &* +@all -@admin -@dangerous"
     # Example:
     # default:
     #   permissions: "~* &* +@all"
@@ -76,7 +84,8 @@ valkey:
     # Inline ACL configuration that will be appended after generated users.
     # NOTE: If using aclConfig, ensure the 'default' user is defined here.
     #aclConfig: |
-    #  user default on >PLACEHOLDER ~* +@all
+    #  user default on >PLACEHOLDER ~* &* +@all
+    #  user replicant on >PLACEHOLDER ~* &* +ping +psync +replconf
     # Example:
     # aclConfig: |
     #   user default on >secretpass ~* &* +@all
@@ -88,7 +97,7 @@ valkey:
     # Number of replica instances (total pods = replicas + 1 master)
     replicas: 2
   
-    replicationUser: "default"
+    replicationUser: "replicant"
   
     disklessSync: true
   
