@@ -112,7 +112,7 @@ valkey:
         - ReadWriteOnce
   
   tls:
-    enabled: false
+    enabled: true
     existingSecret: "valkey-tls"
     serverPublicKey: tls.crt
     serverKey: tls.key
