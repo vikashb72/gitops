@@ -59,7 +59,7 @@ valkey:
     enabled: false
   
     # Use an existing secret for user passwords. Key defaults to username.
-    usersExistingSecret: "valkey-password"
+    usersExistingSecret: "valkey-passwords"
   
     # Map of users to create with ACL permissions.
     # If usersExistingSecret is set, passwords from the secret take priority over inline passwords.
@@ -75,7 +75,8 @@ valkey:
   
     # Inline ACL configuration that will be appended after generated users.
     # NOTE: If using aclConfig, ensure the 'default' user is defined here.
-    aclConfig: ""
+    #aclConfig: |
+    #  user default on >PLACEHOLDER ~* +@all
     # Example:
     # aclConfig: |
     #   user default on >secretpass ~* &* +@all
