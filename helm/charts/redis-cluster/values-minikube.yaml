@@ -14,7 +14,7 @@ redis-cluster:
 #    sidecar.istio.io/inject: "false"
 #
   diagnosticMode:
-    enabled: true
+    enabled: false
 
   image:
     registry: docker.io
