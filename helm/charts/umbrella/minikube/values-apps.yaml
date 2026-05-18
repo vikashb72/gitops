@@ -49,7 +49,7 @@ argocdManaged:
     sources:
       - path: helm/charts/valkey
   redis-cluster:
-    disable: false
+    disable: true
     name: redis-cluster
     targetNamespace: redis
     sources:
