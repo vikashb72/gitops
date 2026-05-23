@@ -54,7 +54,8 @@ argocdManaged:
         kind: Statefulset
         name: valkey
         jsonPointers:
-          - /spec/volumeClaimTemplates
+          - /spec/volumeClaimTemplates/*/apiVersion
+          - /spec/volumeClaimTemplates/*/kind
   redis-cluster:
     disable: true
     name: redis-cluster
