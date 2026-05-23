@@ -52,8 +52,9 @@ argocdManaged:
     ignoreDifferencesConfig:
       - group: apps
         kind: Statefulset
-        jqPathExpressions:
-          - .spec.volumeClaimTemplates[]?.kind
+        name: valkey
+        jsonPointers:
+          - /spec/volumeClaimTemplates
   redis-cluster:
     disable: true
     name: redis-cluster
