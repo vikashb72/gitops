@@ -53,8 +53,11 @@ argocdManaged:
       - group: apps
         kind: Statefulset
         name: valkey
-        jsonPointers:
-          - /spec/volumeClaimTemplates
+        jqPathExpressions:
+          - .spec.volumeClaimTemplates[]? | .apiVersion
+          - .spec.volumeClaimTemplates[]? | .kind
+        #jsonPointers:
+        #  - /spec/volumeClaimTemplates
   redis-cluster:
     disable: true
     name: redis-cluster

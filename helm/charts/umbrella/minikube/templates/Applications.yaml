@@ -107,10 +107,21 @@ spec:
       {{- range .ignoreDifferencesConfig }}
     - group: {{ .group }}
       kind: {{ .kind }}
+      {{- if .name }}
+      name: {{ .name }}
+      {{- end }}
+      {{- if .jsonPointers}}
+      jsonPointers:
+        {{- range .jsonPointers }}
+        - {{ . }}
+        {{- end }}
+      {{- end }}
+      {{- if .jqPathExpressions }}
       jqPathExpressions:
         {{- range .jqPathExpressions }}
         - {{ . }}
         {{- end }}
+      {{- end }}
       {{- end }}
     {{- end }}
 ---
