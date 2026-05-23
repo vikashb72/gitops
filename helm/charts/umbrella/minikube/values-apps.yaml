@@ -51,7 +51,7 @@ argocdManaged:
     ignoreDifferences: true
     ignoreDifferencesConfig:
       - group: apps
-        kind: Statefulset
+        kind: StatefulSet
         name: valkey
         jqPathExpressions:
           - .spec.volumeClaimTemplates[]? | .apiVersion
