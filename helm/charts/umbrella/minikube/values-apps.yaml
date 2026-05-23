@@ -48,6 +48,13 @@ argocdManaged:
     targetNamespace: valkey
     sources:
       - path: helm/charts/valkey
+    ignoreDifferences: true
+    ignoreDifferencesConfig:
+      - group: apps
+        kind: Statefulset
+        jsonPointers:
+          - /spec/volumeClaimTemplates/0/spec/resources
+          - /spec/volumeClaimTemplates/0/status
   redis-cluster:
     disable: true
     name: redis-cluster
