@@ -11,6 +11,8 @@ metadata:
     {{- end }}
   annotations:
     argocd.argoproj.io/sync-wave: "{{ default $.Values.schema.annotations.syncwave .syncwave }}"
+    #notifications.argoproj.io/subscribe.on-sync-failed.smtp: "devops-team@example.com"
+
 spec:
   project: {{ default $.Values.schema.spec.project .project }}
   sources:

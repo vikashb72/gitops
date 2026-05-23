@@ -42,6 +42,8 @@ valkey:
     #- name: valkey-users-acl
     #  secret:
     #    secretName: valkey-users-acl
+    #- name: compiled-acl-dir
+    #  emptyDir: {}
 
   extraVolumeMounts:
     - mountPath: /etc/ssl/certs/
@@ -51,6 +53,11 @@ valkey:
     #  readOnly: true
     #  subPath: users.acl
     #  mountPath: "/opt/bitnami/valkey/etc/users.acl"
+    #- name: valkey-users-acl
+    #  mountPath: /opt/valkey/acl-source # Where keys map to files automatically
+    #- name: compiled-acl-dir
+    #  mountPath: /etc/valkey            # Target location for compiled rules
+
   
   # Content for valkey.conf (will be mounted via ConfigMap)
   valkeyConfig: ""
