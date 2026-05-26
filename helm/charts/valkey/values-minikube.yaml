@@ -39,9 +39,10 @@ valkey:
         items:
           - key: own-ca-bundle.pem
             path: ca-certificates.crt
-    #- name: valkey-users-acl
-    #  secret:
-    #    secretName: valkey-users-acl
+    - name: valkey-users-acl
+      secret:
+        secretName: valkey-users-acl
+        defaultMode: 0400
     #- name: compiled-acl-dir
     #  emptyDir: {}
 
@@ -58,7 +59,66 @@ valkey:
     #- name: compiled-acl-dir
     #  mountPath: /etc/valkey            # Target location for compiled rules
 
-  
+
+  extraContainers:
+    - name: acl-reloader
+      image: valkey/valkey:8
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        runAsNonRoot: true
+        runAsUser: 1000
+      command:
+        - sh
+        - -c
+        - |
+          # Re-read password each cycle in case it rotates
+          get_pass() { cat /valkey-users-secret/default; }
+
+          # Wait for Valkey to accept connections before first reload
+          echo "[acl-reloader] Waiting for Valkey..."
+          until valkey-cli --tls \
+              --cacert /etc/ssl/certs/ca-certificates.crt \
+              -a "$(get_pass)" ping 2>/dev/null | grep -q PONG; do
+            sleep 5
+          done
+          echo "[acl-reloader] Valkey ready. Watching /acl-source/acl.conf ..."
+
+          PREV_HASH=""
+          while true; do
+            CURR_HASH=$(md5sum /acl-source/acl.conf 2>/dev/null | awk '{print $1}')
+            if [ -n "$CURR_HASH" ] && [ "$CURR_HASH" != "$PREV_HASH" ]; then
+              echo "[acl-reloader] Change detected (hash: $CURR_HASH), reloading ACL..."
+              # File is 0400 owned by uid 1000 — owner can chmod
+              chmod 0600 /etc/valkey/users.acl
+              cp /acl-source/acl.conf /etc/valkey/users.acl
+              chmod 0400 /etc/valkey/users.acl
+              valkey-cli --tls \
+                --cacert /etc/ssl/certs/ca-certificates.crt \
+                -a "$(get_pass)" \
+                ACL LOAD \
+                && echo "[acl-reloader] ACL reloaded successfully" \
+                || echo "[acl-reloader] ACL reload failed — will retry next cycle"
+              PREV_HASH="$CURR_HASH"
+            fi
+            sleep 30
+          done
+      volumeMounts:
+        - name: valkey-acl       # Chart's emptyDir — shared with main container
+          mountPath: /etc/valkey
+        - name: valkey-users-acl # ESO-generated ACL — K8s auto-updates this dir
+          mountPath: /acl-source
+          readOnly: true
+        - name: own-ca-bundle    # CA cert for valkey-cli TLS
+          mountPath: /etc/ssl/certs/
+          readOnly: true
+        - name: valkey-users-secret  # Chart-defined volume for existing secret
+          mountPath: /valkey-users-secret
+          readOnly: true
+
   # Content for valkey.conf (will be mounted via ConfigMap)
   valkeyConfig: ""
   
