@@ -14,6 +14,14 @@ schema:
   serviceMonitor:
     templates: false
 
+  oci:
+    - name: gha-runner-scale-set-controller
+      url: ghcr.io/actions/actions-runner-controller-charts
+    - name: gha-runner-scale-set
+      url: ghcr.io/actions/actions-runner-controller-charts
+    - name: n8n
+      url: ghcr.io/n8n-io/n8n-helm-chart
+
 argo-cd:
   namespaceOverride: "argocd"
 
@@ -45,12 +53,13 @@ argo-cd:
 
   configs:
     cm:
+      #Not needed, just for reference
+      #accounts.argo-admin.enabled: "false"
+      #accounts.argo-admin: apiKey, login
+      #accounts.argo-readonly: apiKey, login
+      #accounts.argo-readonly.enabled: "true"
       application.instanceLabelKey: argocd.argoproj.io/instance
       application.sync.impersonation.enabled: false
-      accounts.argo-admin.enabled: "false"
-      accounts.argo-admin: apiKey, login
-      accounts.argo-readonly: apiKey, login
-      accounts.argo-readonly.enabled: "true"
       resource.customizations.health.gloo.solo.io_Settings: |
       url: https://argocd.minikube.where-ever.net
       dex.config: |
@@ -76,15 +85,20 @@ argo-cd:
 
     rbac:
       policy.default: ''
+      # ref: https://github.com/argoproj/argo-cd/blob/master/assets/builtin-policy.csv
       policy.csv: |
-        p, role:org-admin, applications, *, */*, allow
-        p, role:org-admin, clusters, get, *, allow
-        p, role:org-admin, repositories, *, *, allow
-        p, role:org-admin, logs, get, *, allow
-        p, role:org-admin, exec, create, */*, allow
-        p, role:readonly, applications, get, *, allow
-        g, ArgoCD Admins, role:org-admin
-        g, ArgoCD Viewers, role:readonly
+        p, role:readonly-users, applications, sync, *, deny
+        p, role:readonly-users, applications, delete, *, deny
+        p, role:readonly-users, applicationsets, delete, */*, deny
+        p, role:readonly-users, certificates, delete, *, deny
+        p, role:readonly-users, clusters, delete, *, deny
+        p, role:readonly-users, repositories, delete, *, deny
+        p, role:readonly-users, write-repositories, delete, *, deny
+        p, role:readonly-users, projects, delete, *, deny
+        p, role:readonly-users, gpgkeys, delete, *, deny
+        g, role:readonly-users, role:readonly
+        g, ArgoCD Viewers, role:readonly-users
+        g, ArgoCD Admins, role:admin
 
     credentialTemplates: {}
       # github-enterprise-creds-1:
