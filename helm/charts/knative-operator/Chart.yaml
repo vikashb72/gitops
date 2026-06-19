@@ -3,5 +3,5 @@ name: knative
 version: 1.0.0
 dependencies:
   - name: knative-operator
-    version: v1.17.4
+    version: v1.22.2
     repository: https://knative.github.io/operator

@@ -4,18 +4,18 @@ version: 1.0.0
 dependencies:
   - name: argo-cd
     repository: https://argoproj.github.io/argo-helm
-    version: 9.5.14
+    version: 9.5.22
 #  - name: argo-workflows
-#    version: 1.0.13
+#    version: 1.0.16
 #    repository: https://argoproj.github.io/argo-helm
 #  - name: argo-rollouts
-#    version: 2.40.9
+#    version: 2.41.0
 #    repository: https://argoproj.github.io/argo-helm
 #  - name: argo-events
-#    version: 2.4.21
+#    version: 2.4.22
 #    repository: https://argoproj.github.io/argo-helm
 #  - name: argocd-image-updater
-#    version: 1.1.5
+#    version: 1.2.2
 #    repository: https://argoproj.github.io/argo-helm
 #  - name: argocd-notifications
 #    version: 1.8.1
@@ -27,5 +27,5 @@ dependencies:
 #    version: 1.12.1
 #    repository: https://argoproj.github.io/argo-helm
 #  - name: argocd-apps
-#    version: 2.0.4
+#    version: 2.0.5
 #    repository: https://argoproj.github.io/argo-helm
