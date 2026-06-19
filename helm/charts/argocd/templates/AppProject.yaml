@@ -1,5 +1,5 @@
 {{- if not .Values.schema.bootstrap }}
-{{- range $key, $value := .Values.schema.projects -}}
+{{- range $key, $value := .Values.schema.projects }}
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
