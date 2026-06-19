@@ -1,4 +1,4 @@
-{{- range $topic := .Values.topics -}}
+{{- range $topic := .Values.topics }}
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
