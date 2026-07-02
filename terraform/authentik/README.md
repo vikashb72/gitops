@@ -99,7 +99,7 @@ terraform import -var-file="tfvars/minikube.tfvars" \
     authentik_outpost.embedded_outpost $OUTPOST_ID
 ```
 
-# Terraform import
+# Terraform plan
 ```
 terraform plan \
   -var-file="tfvars/${ENVIRONMENT}.tfvars" \
