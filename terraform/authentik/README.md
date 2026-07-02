@@ -54,6 +54,7 @@ EOT
 ```
 
 # Terraform init
+```
 terraform init -backend-config=storage_account_name=$TF_STORAGE_ACCOUNT_NAME \
     -backend-config=container_name=$CONTAINER_NAME \
     -backend-config=key=$CONTAINER_KEY_NAME \
@@ -112,4 +113,3 @@ terraform plan \
 ```
 terraform apply ${ENVIRONMENT}.tfplan
 ```
-
