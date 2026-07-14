@@ -7,7 +7,7 @@ alloy:
     #image:
       #registry:
 
-    #podSecurityContext:
+    podSecurityContext: {}
     #  readOnlyRootFilesystem: true
     #  runAsNonRoot: true
     #  #allowPrivilegeEscalation: false
