@@ -7,12 +7,12 @@ alloy:
     #image:
       #registry:
 
-    #podSecurityContext:
-    #  readOnlyRootFilesystem: true
-    #  runAsNonRoot: true
-    #  allowPrivilegeEscalation: false
-    #  capabilities:
-    #    drop: ["ALL"]
+    podSecurityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      #allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
 
   crds:
     create: true
