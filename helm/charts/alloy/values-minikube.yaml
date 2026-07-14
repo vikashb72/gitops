@@ -7,23 +7,23 @@ alloy:
     #image:
       #registry:
 
-    podSecurityContext:
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      #allowPrivilegeEscalation: false
-      capabilities:
-        drop: ["ALL"]
+    #podSecurityContext:
+    #  readOnlyRootFilesystem: true
+    #  runAsNonRoot: true
+    #  #allowPrivilegeEscalation: false
+    #  capabilities:
+    #    drop: ["ALL"]
 
   crds:
     create: true
 
   alloy:
-    securityContext:
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop: ["ALL"]
+    #securityContext:
+    #  readOnlyRootFilesystem: true
+    #  runAsNonRoot: true
+    #  allowPrivilegeEscalation: false
+    #  capabilities:
+    #    drop: ["ALL"]
 
     storagePath: /tmp/alloy
 
@@ -256,12 +256,12 @@ alloy:
     # -- Enables automatically reloading when the Alloy config changes.
     enabled: true
 
-    securityContext:
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop: ["ALL"]
+    #securityContext:
+    #  readOnlyRootFilesystem: true
+    #  runAsNonRoot: true
+    #  allowPrivilegeEscalation: false
+    #  capabilities:
+    #    drop: ["ALL"]
 
   controller:
     volumes:
