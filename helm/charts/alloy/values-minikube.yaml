@@ -3,12 +3,35 @@ schema:
   namespace: alloy-system
 
 alloy:
-  #image:
-  #  registry:
+  global:
+    #image:
+      #registry:
+
+    podSecurityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+
   crds:
     create: true
 
   alloy:
+    securityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+
+    storagePath: /tmp/alloy
+
+    mounts:
+      extra:
+        - name: alloy-storage
+          mountPath: /tmp/alloy
+
     configMap:
       create: true
        -- Content to assign to the new ConfigMap.
@@ -233,9 +256,18 @@ alloy:
     # -- Enables automatically reloading when the Alloy config changes.
     enabled: true
 
+    securityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+
   controller:
     volumes:
-      extra: []
+      extra:
+        - name: alloy-storage
+          emptyDir: {}
 
   service:
     enabled: true
