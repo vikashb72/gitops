@@ -65,7 +65,7 @@ argocdManaged:
     sources:
       - path: helm/charts/redis-cluster
   redis-sentinel:
-    disable: true
+    disable: false
     name: redis-sentinel
     targetNamespace: redis
     sources:
