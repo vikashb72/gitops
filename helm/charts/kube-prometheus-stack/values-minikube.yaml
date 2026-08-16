@@ -515,7 +515,7 @@ kube-prometheus-stack:
         enabled: false
 
   kubeEtcd:
-    enabled: true
+    enabled: false
 
     service:
       enabled: true
@@ -538,7 +538,7 @@ kube-prometheus-stack:
       enabled: false
 
   kubeProxy:
-    enabled: true
+    enabled: false
 
     service:
       enabled: true
