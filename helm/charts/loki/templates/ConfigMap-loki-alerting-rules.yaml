@@ -9,18 +9,19 @@ data:
   rules.yaml: |
     groups:
       # Use this rule to test set up
-      #- name: test_alert
-      #  rules:
-      #    - alert: Vix-TestAlert
-      #      expr: |
-      #        sum(rate({app="loki"} | logfmt | level="info"[1m])) 
-      #        by (container) > 0
-      #      for: 1m
-      #      labels:
-      #        severity: warning
-      #      annotations:
-      #        summary: Loki info warning per minute rate > 0
-      #        message: 'Loki warning per minute rate > 0 container:"{{`{{`}} $labels.container {{`}}`}}"'
+      - name: test_alert
+        rules:
+          - alert: Vix-TestAlert
+            expr: |
+              sum(rate({app="loki"} | logfmt | level="info"[1m])) 
+              by (container) > 0
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Loki info warning per minute rate > 0
+              message: 'Loki warning per minute rate > 0 container:"{{`{{`}} $labels.container {{`}}`}}"'
+              error: {{`{{`}} if $labels.error_msg {{`}}`}}*Error Message:* {{`{{`}} printf "%.220s" $labels.error_msg {{`}}`}}{{`{{`}} else {{`}}`}}*Error Message:* (not extracted){{`{{`}} end {{`}}`}}
       - name: LokiAlerts
         rules:
           - alert: LokiHighErrorRate
