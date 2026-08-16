@@ -92,9 +92,9 @@ vault:
              tls_cert_file = "/vault/userconfig/vault-tls/tls.crt"
              tls_key_file  = "/vault/userconfig/vault-tls/tls.key"
              tls_client_ca_file = "/vault/userconfig/vault-tls/ca.crt"
-             #telemetry {
-             #    unauthenticated_metrics_access = "true"
-             #}
+             telemetry {
+                 unauthenticated_metrics_access = "true"
+             }
           }
           storage "raft" {
              path = "/vault/data"
@@ -111,7 +111,7 @@ vault:
           }
           telemetry {
             disable_hostname = true
-            prometheus_retention_time = "12h"
+            prometheus_retention_time = "30s"
           }
           disable_mlock = true
           service_registration "kubernetes" {}
