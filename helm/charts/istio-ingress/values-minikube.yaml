@@ -317,8 +317,8 @@ gateways:
           - 'alertmanager.minikube.where-ever.net'
     VirtualServices:
       - name: alertmanager-virtual-service
-        CustomAuthorizationPolicy:
-          meshProvider: authentik
+        #CustomAuthorizationPolicy:
+        #  meshProvider: authentik
         hosts:
           - "alertmanager.minikube.where-ever.net"
         http:
